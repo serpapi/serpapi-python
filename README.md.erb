@@ -1,3 +1,10 @@
+<%-
+def snippet(format, path, start, stop) 
+ slice = File.new(path).readlines[start..stop]
+ slice.reject! { |l| l =~ /expect\(/ }
+ %Q(```#{format}\n#{slice.join}```\n see: #{path})
+end
+-%>
 # User guide
 Scrape Google and other search engines from our fast, easy, and complete API using SerpApi.com
 This ruby library is meant to scrape and parse results from all major search engine available world wide including Google, Bing, Baidu, Yandex, Yahoo, Ebay, Apple and more using [SerpApi](https://serpapi.com).
@@ -79,7 +86,3 @@ The API design was inpired by the most popular Python packages.
 ### Quality expectation
  - 0 lint issues using pylint `make lint`
  - 99% code coverage running `make test`
-
-### TODO
- - Add more test
- - Release flow

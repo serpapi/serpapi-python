@@ -2,48 +2,55 @@
 #
 # current version
 version=$(shell grep version setup.py | cut -d"'" -f2)
+dist=dist/serpapi-$(version).tar.gz
 
 .PHONY: build
 
-all: clean install test test2
+all: clean install readme doc lint test build
 
 clean:
 	find . -name '*.pyc' -delete
 	find . -type d -name "__pycache__" -delete
-	pip3 uninstall google_search_results
+	pip3 uninstall serpapi
 
-install:
-	pip3 install -r requirements.txt
-
+# lint check
 lint:
 	pylint serpapi
 
-# Test with Python 3
-test: lint
+# test with Python 3
+test:
 	pytest --cov=serpapi tests/
+
+# pytest-cov - code coverage extension for pytest
+# sphinx - documentation
+install:
+	pip3 install -U setuptools
+	pip3 install -r requirements.txt
+	pip3 install pytest-cov
+	pip3 install sphinx
+
+readme:
+	erb -T '-' README.md.erb > README.md
+
+doc: readme
+	$(MAKE) -C docs/ html
+
+# https://packaging.python.org/tutorials/packaging-projects/
+build: doc test
+	python3 setup.py sdist
+
+# out of box testing / user acceptance before delivery
+oobt: build
+	pip3 install ./${dist}
+	python3 oobt/oobt.py
+
+check: oobt
+	twine check ${dist}
+
+release: # check
+	twine upload ${dist}
 
 # run example only 
 #  and display output (-s)
 example:
 	pytest -s "tests/test_example.py::TestExample::test_async"
-
-install:
-	pip3 install -U setuptools
-	pip install pytest-cov
-
-doc:
-	pydoc
-
-# https://packaging.python.org/tutorials/packaging-projects/
-build: doc
-	python3 setup.py sdist
-
-oobt: build
-	pip3 install ./dist/google_search_results-$(version).tar.gz
-	python3 oobt/oobt.py
-
-check: oobt
-	twine check dist/google_search_results-$(version).tar.gz
-
-release: # check
-	twine upload dist/google_search_results-$(version).tar.gz

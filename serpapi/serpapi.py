@@ -1,4 +1,4 @@
-"""SerpApi package for python"""
+"""SerpApi client library for python"""
 import json
 import urllib3
 from .error import SerpApiException

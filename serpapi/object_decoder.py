@@ -1,4 +1,4 @@
-"""custom object decoder"""
+"""custom object decoder to convert a JSON into a python object"""
 class ObjectDecoder:
     """
     Allow to convert JSON like datastructure in Python object.

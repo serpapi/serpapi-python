@@ -12,15 +12,44 @@ class TestSerpApi(unittest.TestCase):
 		@unittest.skipIf((os.getenv("API_KEY") == None), "no api_key provided")
 		def test_search(self):
 			client = serpapi.Client({
+				"engine": "google",
 				"api_key": os.getenv("API_KEY")
 				})
 			data = client.search({
         "q": "Coffee", 
-				"location": "Austin,Texas", 
-				"engine": "google_scholar",
+				"location": "Austin,Texas" 
       })
 			assert data.get("error") == None
 			self.assertIsNotNone(data["organic_results"][0]["title"])
+
+		@unittest.skipIf((os.getenv("API_KEY") == None), "no api_key provided")
+		def test_html(self):
+			client = serpapi.Client({
+				"engine": "google",
+				"api_key": os.getenv("API_KEY")
+				})
+			data = client.html({
+        "q": "Coffee", 
+				"location": "Austin,Texas", 
+      })
+			self.assertRegex(data, r'</html>$')
+
+		# test ObjectDecoder
+		@unittest.skipIf((os.getenv("API_KEY") == None), "no api_key provided")
+		def test_object(self):
+			client = serpapi.Client({
+				"engine": "google",
+				"api_key": os.getenv("API_KEY")
+				})
+			data = client.search({
+        "q": "Coffee", 
+				"location": "Austin,Texas"
+      }, decoder="object")
+			self.assertIsInstance(data, object)
+			self.assertIsNotNone(data.organic_results)
+			self.assertIsInstance(data.organic_results, list)
+			self.assertGreater(len(data.organic_results), 3)
+			self.assertIsInstance(data.organic_results[0].link, str)
 
 		def test_invalid_api_key(self):
 			client = serpapi.Client({

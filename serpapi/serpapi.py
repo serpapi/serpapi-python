@@ -57,7 +57,7 @@ class Client(ObjectDecoder):
              str if decoder = 'html'
              object if decoder = 'object'
         """
-        return self.run(path='/search', decoder=decoder, parameter=parameter)
+        return self.start(path='/search', parameter=parameter, decoder=decoder)
 
     def html(self, parameter=None):
         """
@@ -73,7 +73,7 @@ class Client(ObjectDecoder):
         str
         raw html search results directly from the search engine
         """
-        return self.run('/search', 'html', parameter)
+        return self.start('/search', parameter, 'html')
 
     def location(self, parameter=None):
         """
@@ -90,7 +90,7 @@ class Client(ObjectDecoder):
         array
         list of matching locations
         """
-        return self.run('/locations.json', 'json', parameter)
+        return self.start('/locations.json', parameter, 'json')
 
     def search_archive(self, search_id, decoder='json'):
         """
@@ -107,7 +107,7 @@ class Client(ObjectDecoder):
                 path += decoder
         else:
             raise SerpApiException('decoder must be json or html or object')
-        return self.run(path, decoder, {})
+        return self.start(path, {}, decoder)
 
     def account(self, api_key=None):
         """
@@ -117,6 +117,7 @@ class Client(ObjectDecoder):
         ---
         api_key: str
           secret user key provided by serpapi.com
+        
         Returns
         ---
         dict
@@ -124,11 +125,11 @@ class Client(ObjectDecoder):
         """
         if api_key is not None:
             self.parameter['api_key'] = api_key
-        return self.run('/account', 'json', self.parameter)
+        return self.start('/account', self.parameter, 'json')
 
-    def run(self, path, decoder='json', parameter=None):
+    def start(self, path, parameter=None, decoder='json'):
         """
-        run HTTP request and decode response using urllib3
+        start HTTP request and decode response using urllib3
          the response is decoded using the selected decoder:
           - html: raw HTML response
           - json: deep dict contains search results
@@ -169,7 +170,11 @@ class Client(ObjectDecoder):
                                      fields=fields,
                                      timeout=self.timeout,
                                      retries=self.retries)
-
+        # decode response
+        return self.decode(response, decoder)
+    
+    def decode(self, response, decoder):
+        """decode HTTP response using the given decoder"""
         # handle HTTP error
         if response.status != 200:
             try:
@@ -179,18 +184,19 @@ class Client(ObjectDecoder):
             except Exception as ex:
                 raise SerpApiException(raw) from ex
 
+        # HTTP success 200
         payload = response.data.decode('utf-8')
 
         # successful response decoding
         if decoder == 'json':
-            return dict(json.loads(payload))
+            return json.loads(payload)
 
         if decoder == 'html':
             return payload
 
         if decoder == 'object':
-            data = dict(json.loads(payload))
-            return self.dict2object(data, 'response')
+            data = json.loads(payload)
+            return self.dict2object(data)
 
         raise SerpApiException("invalid decoder: " +
                                decoder + ", available: json, html, object")

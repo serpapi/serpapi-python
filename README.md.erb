@@ -1,8 +1,10 @@
 <%-
 def snippet(format, path, start, stop) 
  slice = File.new(path).readlines[start..stop]
- slice.reject! { |l| l =~ /expect\(/ }
- %Q(```#{format}\n#{slice.join}```\n see: #{path})
+ slice.reject! { |l| l =~ /self.assertIsNone\(/ }
+ buf = slice.map { |l| l.gsub(/(^\s+)/, '')}.join
+ buf.gsub!('self.assertIsNotNone(', "pp = pprint.PrettyPrinter(indent=2)\npp.pprint(")
+ %Q(```#{format}\nimport 'serpapi'\nimport 'pprint'\nimport 'os'\n\n#{buf}```\n see: #{path})
 end
 -%>
 # User guide
@@ -23,7 +25,7 @@ First things first, import the serpapi module:
 ```python
 >>> import serpapi
 ```
-You’ll need a Client instance to make search. This object handles all of the details of connection pooling and thread safety so that you don’t have to:
+You'll need a client instance to make a search. This object handles all of the details of connection pooling and thread safety so that you don't have to:
 
 ```python
 >>> client = serpapi.Client()
@@ -65,6 +67,83 @@ parameter = {
   retries: 5,
   timeout: 4.0
 }
+
+## Basic example per search engine
+### Search bing
+<%= snippet('python', 'tests/example_search_bing.py', 9, 25) %>
+(see https://serpapi.com/bing)[https://serpapi.com/bing]
+
+### Search baidu
+<%= snippet('python', 'tests/example_search_baidu.py', 9, 25) %>
+(see https://serpapi.com/baidu)[https://serpapi.com/baidu]
+
+### Search yahoo
+<%= snippet('python', 'tests/example_search_yahoo.py', 9, 25) %>
+(see https://serpapi.com/yahoo)[https://serpapi.com/yahoo]
+
+### Search youtube
+<%= snippet('python', 'tests/example_search_youtube.py', 9, 25) %>
+(see https://serpapi.com/youtube)[https://serpapi.com/youtube]
+
+### Search walmart
+<%= snippet('python', 'tests/example_search_walmart.py', 9, 25) %>
+(see https://serpapi.com/walmart)[https://serpapi.com/walmart]
+
+### Search ebay
+<%= snippet('python', 'tests/example_search_ebay.py', 9, 25) %>
+(see https://serpapi.com/ebay)[https://serpapi.com/ebay]
+
+### Search naver
+<%= snippet('python', 'tests/example_search_naver.py', 9, 25) %>
+(see https://serpapi.com/naver)[https://serpapi.com/naver]
+
+### Search home depot
+<%= snippet('python', 'tests/example_search_home_depot.py', 9, 25) %>
+(see https://serpapi.com/home_depot)[https://serpapi.com/home_depot]
+
+### Search apple app store
+<%= snippet('python', 'tests/example_search_apple_app_store.py', 9, 25) %>
+(see https://serpapi.com/apple_app_store)[https://serpapi.com/apple_app_store]
+
+### Search duckduckgo
+<%= snippet('python', 'tests/example_search_duckduckgo.py', 9, 25) %>
+(see https://serpapi.com/duckduckgo)[https://serpapi.com/duckduckgo]
+
+### Search google scholar
+<%= snippet('python', 'tests/example_search_google_scholar.py', 9, 25) %>
+(see https://serpapi.com/google_scholar)[https://serpapi.com/google_scholar]
+
+### Search google product
+<%= snippet('python', 'tests/example_search_google_product.py', 9, 25) %>
+(see https://serpapi.com/google_product)[https://serpapi.com/google_product]
+
+### Search google reverse image
+<%= snippet('python', 'tests/example_search_google_reverse_image.py', 9, 25) %>
+(see https://serpapi.com/google_reverse_image)[https://serpapi.com/google_reverse_image]
+
+### Search google events
+<%= snippet('python', 'tests/example_search_google_events.py', 9, 25) %>
+(see https://serpapi.com/google_events)[https://serpapi.com/google_events]
+
+### Search google local services
+<%= snippet('python', 'tests/example_search_google_local_services.py', 9, 25) %>
+(see https://serpapi.com/google_local_services)[https://serpapi.com/google_local_services]
+
+### Search google maps
+<%= snippet('python', 'tests/example_search_google_maps.py', 9, 25) %>
+(see https://serpapi.com/google_maps)[https://serpapi.com/google_maps]
+
+### Search google jobs
+<%= snippet('python', 'tests/example_search_google_jobs.py', 9, 25) %>
+(see https://serpapi.com/google_jobs)[https://serpapi.com/google_jobs]
+
+### Search google play
+<%= snippet('python', 'tests/example_search_google_play.py', 9, 25) %>
+(see https://serpapi.com/google_play)[https://serpapi.com/google_play]
+
+### Search google images
+<%= snippet('python', 'tests/example_search_google_images.py', 9, 25) %>
+(see https://serpapi.com/google_images)[https://serpapi.com/google_images]
 
 ## Developer's note
 ### Key goals

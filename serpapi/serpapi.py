@@ -19,23 +19,25 @@ class Client(ObjectDecoder):
     SUPPORTED_DECODER = ['json', 'html', 'object']
 
     def __init__(self, parameter=None):
-        # define default parameter
-        if parameter is None:
-            self.parameter = {}
-        else:
-            self.parameter = parameter
-        # urllib3 options
+        # urllib3 configuration
         # 60s default
         self.timeout = 60.0
         # no HTTP retry
         self.retries = False
-        # override default
-        if 'timeout' in parameter:
-            self.timeout = parameter['timeout']
-        if 'retries' in parameter:
-            self.retries = parameter['retries']
         # initialize the http client
         self.http = urllib3.PoolManager()
+
+        # define default parameter
+        if parameter is None:
+            self.parameter = {}
+        else:
+            # assign user parameter
+            self.parameter = parameter
+            # override default
+            if 'timeout' in parameter:
+                self.timeout = parameter['timeout']
+            if 'retries' in parameter:
+                self.retries = parameter['retries']
 
     def search(self, parameter=None, decoder='json'):
         """
@@ -106,7 +108,7 @@ class Client(ObjectDecoder):
             else:
                 path += decoder
         else:
-            raise SerpApiException('decoder must be json or html or object')
+            raise SerpApiException('Decoder must be json or html or object')
         return self.start(path, {}, decoder)
 
     def account(self, api_key=None):
@@ -174,7 +176,7 @@ class Client(ObjectDecoder):
         return self.decode(response, decoder)
     
     def decode(self, response, decoder):
-        """decode HTTP response using the given decoder"""
+        """Decode HTTP response using a given decoder"""
         # handle HTTP error
         if response.status != 200:
             try:
@@ -198,5 +200,5 @@ class Client(ObjectDecoder):
             data = json.loads(payload)
             return self.dict2object(data)
 
-        raise SerpApiException("invalid decoder: " +
+        raise SerpApiException("Invalid decoder: " +
                                decoder + ", available: json, html, object")

@@ -15,6 +15,9 @@ class ObjectDecoder:
         pytype = type(name, (object, ), {})
         pyobj = pytype()
 
+        if isinstance(node, int):
+            pyobj = node
+            return pyobj
         if isinstance(node, list):
             setattr(pyobj, name, [])
             for item in node:
@@ -29,7 +32,7 @@ class ObjectDecoder:
 
     def add_node(self, name, pyobj, child):
         """
-        add node in object
+        Add node in generic Python object
         """
         if isinstance(child, list):
             setattr(pyobj, name, [])

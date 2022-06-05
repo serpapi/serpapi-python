@@ -19,7 +19,7 @@ lint:
 
 # test with Python 3
 test:
-	pytest --cov=serpapi --cov-report html tests/
+	pytest --cov=serpapi --cov-report html tests/*.py
 
 # pytest-cov - code coverage extension for pytest
 # sphinx - documentation

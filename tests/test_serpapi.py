@@ -39,8 +39,10 @@ class TestSerpApi(unittest.TestCase):
 		def test_object(self):
 			client = serpapi.Client({
 				"engine": "google",
-				"api_key": os.getenv("API_KEY")
-				})
+				"api_key": os.getenv("API_KEY"),
+				'timeout': 120,
+				'retries': True
+			})
 			data = client.search({
         "q": "Coffee", 
 				"location": "Austin,Texas"
@@ -62,7 +64,17 @@ class TestSerpApi(unittest.TestCase):
 					"location": "USA", 
 				})
 
-    # TODO file a ticket default search engine is google
+		def test_invalid_decoder(self):
+			client = serpapi.Client({
+				"engine": "google",
+				"api_key": os.getenv("API_KEY"),
+			})
+			mockResponse = MockResponse()
+			self.assertEqual(mockResponse.status, 200)
+			with pytest.raises(serpapi.SerpApiException, match=r'Invalid decoder'):
+				client.decode(mockResponse, 'bad')
+
+		@unittest.skipIf((os.getenv("API_KEY") == None), "no api_key provided")
 		def test_error_missing_engine(self):
 			client = serpapi.Client({
 				"api_key": os.getenv("API_KEY"),
@@ -71,6 +83,7 @@ class TestSerpApi(unittest.TestCase):
 			with pytest.raises(serpapi.SerpApiException, match=r'Unsupported.*search engine.'):
 				client.search({"q": "Coffee"})
 
+		@unittest.skipIf((os.getenv("API_KEY") == None), "no api_key provided")
 		def test_missing_q(self):
 			client = serpapi.Client({
 				"api_key": os.getenv("API_KEY")
@@ -78,9 +91,31 @@ class TestSerpApi(unittest.TestCase):
 			with pytest.raises(serpapi.SerpApiException, match=r'Missing query'):
 				client.search({"engine": "google"})
 
+		@unittest.skipIf((os.getenv("API_KEY") == None), "no api_key provided")
+		def test_no_parameter(self):
+			client = serpapi.Client()
+			with pytest.raises(serpapi.SerpApiException, match=r'Missing query'):
+				client.search({"engine": "google", 'api_key': os.getenv('API_KEY')})
+
+
 		def debug(self, payload):
 			pp = pprint.PrettyPrinter(indent=2)
 			pp.pprint(payload)
+
+# Mock object to enable higher code coverage
+#
+class MockResponse:
+	'''Mock HTTP response in order to test serpapi.decode'''
+	def __init__(self, status=200):
+		self.status = 200
+		self.data = MockString("{}")
+
+class MockString:
+	def __init__(self, data: str):
+		self.data = data
+
+	def decode(self, encoding) -> str:
+		return self.data 
 
 if __name__ == '__main__':
 		unittest.main()

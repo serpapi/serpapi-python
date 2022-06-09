@@ -12,17 +12,16 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('..'))
-
+sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'serapi-python'
-copyright = '2022, Victor Benarbia'
+project = 'serpapi-python'
+copyright = '© 2022 SerpApi, LLC'
 author = 'Victor Benarbia'
 
 # The full version, including alpha/beta/rc tags
-release = '1.0.0'
+release = '1.0.0-beta'
 
 
 # -- General configuration ---------------------------------------------------

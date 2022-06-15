@@ -1,4 +1,4 @@
-# test baidu
+# test Baidu search engine
 import unittest
 import os
 import serpapi

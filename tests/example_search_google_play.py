@@ -1,10 +1,11 @@
-# test google play
+# test Google Play search engine
 import unittest
 import os
 import serpapi
 
 class TestGooglePlay(unittest.TestCase):
 
+  @unittest.skip
   @unittest.skipIf((os.getenv("API_KEY") == None), "no api_key provided")
   def test_search_google_play(self):
     client = serpapi.Client({
@@ -12,13 +13,10 @@ class TestGooglePlay(unittest.TestCase):
         'api_key': os.getenv("API_KEY")
       })
     data = client.search({
-        "engine": "google_play",
-        "q": "maps",
-        "hl": "en",
-        "gl": "us",
-        "store": "apps"
+        'q': 'coffee', 
+        'store': 'apps', 
     })
-    # self.assertIsNone(data.get('error'))
-    # self.assertIsNotNone(data['organic_results'])
+    self.assertIsNone(data.get('error'))
+    self.assertIsNotNone(data['organic_results'])
     # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
   

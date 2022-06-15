@@ -1,4 +1,4 @@
-# test apple app store
+# test Apple App Store search engine
 import unittest
 import os
 import serpapi

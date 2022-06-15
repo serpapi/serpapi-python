@@ -16,23 +16,23 @@ $ python -m pip install serpapi
 First things first, import the serpapi module:
 
 ```python
->>> import serpapi
+import serpapi
 ```
 You'll need a client instance to make a search. This object handles all of the details of connection pooling and thread safety so that you don't have to:
 
 ```python
->>> client = serpapi.Client()
+client = serpapi.Client()
 ```
-To make a search using SerpApi.com client.
+To make a search using SerpApi.com:
 
 ```python
->>> parameter = {
-      api_key: "secret_api_key", # from serpapi.com
-      engine: "google",     # search engine
-      q: "coffee",          # search topic
-      location: "Austin,TX" # location
-    }
-    results = searpapi.search(parameter)
+parameter = {
+  api_key: "secret_api_key", # from serpapi.com
+  engine: "google",     # search engine
+  q: "coffee",          # search topic
+  location: "Austin,TX" # location
+}
+results = searpapi.search(parameter)
 ```
 Putting everything together.
 ```python
@@ -50,29 +50,28 @@ print(results)
 
 ### Advanced settings
 SerpApi Client uses urllib3 under the hood.
-The HTTP connection be tuned by setting the following client specific setting.
-  - retries : attempt to reconnect if the connection failed by default: False 
+Optionally, rhe HTTP connection can be tuned:
   - timeout : connection timeout by default 60s
+  - retries : attempt to reconnect if the connection failed by default: False. 
+   serpapi is reliable at 99.99% but your company network might not be as stable.
 
   ```python
 parameter = {
    retries: 5,
-   timeout: 4.0
-   # regular parameters
+   timeout: 4.0,
+   # extra user parameters
 }
 ```
 
 for more details: [URL LIB3 documentation](https://urllib3.readthedocs.io/en/stable/user-guide.html)
 
-
-## Basic example per search engine
-### Search bing
-```python
+## Basic example per search engines
+### Search Bing
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'bing',
 'api_key': os.getenv("API_KEY")
 })
@@ -84,15 +83,14 @@ pp.pprint(data['organic_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_bing.py
-[see https://serpapi.com/bing](https://serpapi.com/bing)
+(see https://serpapi.com/bing)[https://serpapi.com/bing]
 
-### Search baidu
-```python
+### Search Baidu
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'baidu',
 'api_key': os.getenv("API_KEY")
 })
@@ -104,15 +102,14 @@ pp.pprint(data['organic_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_baidu.py
-[see https://serpapi.com/baidu](https://serpapi.com/baidu)
+(see https://serpapi.com/baidu)[https://serpapi.com/baidu]
 
-### Search yahoo
-```python
+### Search Yahoo
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'yahoo',
 'api_key': os.getenv("API_KEY")
 })
@@ -124,15 +121,14 @@ pp.pprint(data['organic_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_yahoo.py
-[see https://serpapi.com/yahoo](https://serpapi.com/yahoo)
+(see https://serpapi.com/yahoo)[https://serpapi.com/yahoo]
 
-### Search youtube
-```python
+### Search Youtube
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'youtube',
 'api_key': os.getenv("API_KEY")
 })
@@ -144,15 +140,14 @@ pp.pprint(data['video_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_youtube.py
-[see https://serpapi.com/youtube](https://serpapi.com/youtube)
+(see https://serpapi.com/youtube)[https://serpapi.com/youtube]
 
-### Search walmart
-```python
+### Search Walmart
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'walmart',
 'api_key': os.getenv("API_KEY")
 })
@@ -164,15 +159,14 @@ pp.pprint(data['organic_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_walmart.py
-[see https://serpapi.com/walmart](https://serpapi.com/walmart)
+(see https://serpapi.com/walmart)[https://serpapi.com/walmart]
 
-### Search ebay
-```python
+### Search Ebay
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'ebay',
 'api_key': os.getenv("API_KEY")
 })
@@ -184,15 +178,14 @@ pp.pprint(data['organic_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_ebay.py
-[see https://serpapi.com/ebay](https://serpapi.com/ebay)
+(see https://serpapi.com/ebay)[https://serpapi.com/ebay]
 
-### Search naver
-```python
+### Search Naver
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'naver',
 'api_key': os.getenv("API_KEY")
 })
@@ -204,15 +197,14 @@ pp.pprint(data['ads_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_naver.py
-[see https://serpapi.com/naver](https://serpapi.com/naver)
+(see https://serpapi.com/naver)[https://serpapi.com/naver]
 
-### Search home depot
-```python
+### Search Home Depot
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'home_depot',
 'api_key': os.getenv("API_KEY")
 })
@@ -224,15 +216,14 @@ pp.pprint(data['products'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_home_depot.py
-[see https://serpapi.com/home_depot](https://serpapi.com/home_depot)
+(see https://serpapi.com/home_depot)[https://serpapi.com/home_depot]
 
-### Search apple app store
-```python
+### Search Apple App Store
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'apple_app_store',
 'api_key': os.getenv("API_KEY")
 })
@@ -244,15 +235,14 @@ pp.pprint(data['organic_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_apple_app_store.py
-[see https://serpapi.com/apple_app_store](https://serpapi.com/apple_app_store)
+(see https://serpapi.com/apple_app_store)[https://serpapi.com/apple_app_store]
 
-### Search duckduckgo
-```python
+### Search Duckduckgo
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'duckduckgo',
 'api_key': os.getenv("API_KEY")
 })
@@ -264,15 +254,33 @@ pp.pprint(data['organic_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_duckduckgo.py
-[see https://serpapi.com/duckduckgo](https://serpapi.com/duckduckgo)
+(see https://serpapi.com/duckduckgo)[https://serpapi.com/duckduckgo]
 
-### Search google scholar
-```python
+### Search Google Search
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
+'engine': 'google_search',
+'api_key': os.getenv("API_KEY")
+})
+data = client.search({
+'q': 'coffee', 
+})
+pp = pprint.PrettyPrinter(indent=2)
+pp.pprint(data['organic_results'])
+# os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
+```
+ test: tests/example_search_google_search.py
+(see https://serpapi.com/google_search)[https://serpapi.com/google_search]
+
+### Search Google Scholar
+```ruby
+import 'serpapi'
+import 'pprint'
+import 'os'
+
 'engine': 'google_scholar',
 'api_key': os.getenv("API_KEY")
 })
@@ -284,9 +292,9 @@ pp.pprint(data['organic_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_google_scholar.py
-[see https://serpapi.com/google_scholar](https://serpapi.com/google_scholar)
+(see https://serpapi.com/google_scholar)[https://serpapi.com/google_scholar]
 
-### Search google autocomplete
+### Search Google Autocomplete
 ```ruby
 import 'serpapi'
 import 'pprint'
@@ -303,15 +311,14 @@ pp.pprint(data['suggestions'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_google_autocomplete.py
-[see https://serpapi.com/google_autocomplete](https://serpapi.com/google_autocomplete)
+(see https://serpapi.com/google_autocomplete)[https://serpapi.com/google_autocomplete]
 
-### Search google product
-```python
+### Search Google Product
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'google_product',
 'api_key': os.getenv("API_KEY")
 })
@@ -324,15 +331,14 @@ pp.pprint(data['product_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_google_product.py
-[see https://serpapi.com/google_product](https://serpapi.com/google_product)
+(see https://serpapi.com/google_product)[https://serpapi.com/google_product]
 
-### Search google reverse image
-```python
+### Search Google Reverse Image
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'google_reverse_image',
 'api_key': os.getenv("API_KEY")
 })
@@ -344,15 +350,14 @@ pp.pprint(data['image_sizes'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_google_reverse_image.py
-[see https://serpapi.com/google_reverse_image](https://serpapi.com/google_reverse_image)
+(see https://serpapi.com/google_reverse_image)[https://serpapi.com/google_reverse_image]
 
-### Search google events
-```python
+### Search Google Events
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'google_events',
 'api_key': os.getenv("API_KEY")
 })
@@ -364,15 +369,14 @@ pp.pprint(data['events_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_google_events.py
-[see https://serpapi.com/google_events](https://serpapi.com/google_events)
+(see https://serpapi.com/google_events)[https://serpapi.com/google_events]
 
-### Search google local services
-```python
+### Search Google Local Services
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'google_local_services',
 'api_key': os.getenv("API_KEY")
 })
@@ -385,15 +389,14 @@ pp.pprint(data['local_ads'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_google_local_services.py
-[see https://serpapi.com/google_local_services](https://serpapi.com/google_local_services)
+(see https://serpapi.com/google_local_services)[https://serpapi.com/google_local_services]
 
-### Search google maps
-```python
+### Search Google Maps
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'google_maps',
 'api_key': os.getenv("API_KEY")
 })
@@ -407,15 +410,14 @@ pp.pprint(data['local_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_google_maps.py
-[see https://serpapi.com/google_maps](https://serpapi.com/google_maps)
+(see https://serpapi.com/google_maps)[https://serpapi.com/google_maps]
 
-### Search google jobs
-```python
+### Search Google Jobs
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'google_jobs',
 'api_key': os.getenv("API_KEY")
 })
@@ -427,39 +429,34 @@ pp.pprint(data['jobs_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_google_jobs.py
-[see https://serpapi.com/google_jobs](https://serpapi.com/google_jobs)
+(see https://serpapi.com/google_jobs)[https://serpapi.com/google_jobs]
 
-### Search google play
-```python
+### Search Google Play
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'google_play',
 'api_key': os.getenv("API_KEY")
 })
 data = client.search({
-"engine": "google_play",
-"q": "maps",
-"hl": "en",
-"gl": "us",
-"store": "apps"
+'q': 'coffee', 
+'store': 'apps', 
 })
-# pp = pprint.PrettyPrinter(indent=2)
+pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_google_play.py
-[see https://serpapi.com/google_play](https://serpapi.com/google_play)
+(see https://serpapi.com/google_play)[https://serpapi.com/google_play]
 
-### Search google images
-```python
+### Search Google Images
+```ruby
 import 'serpapi'
 import 'pprint'
 import 'os'
 
-client = serpapi.Client({
 'engine': 'google_images',
 'api_key': os.getenv("API_KEY")
 })
@@ -473,7 +470,7 @@ pp.pprint(data['images_results'])
 # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
 ```
  test: tests/example_search_google_images.py
-[see https://serpapi.com/google_images](https://serpapi.com/google_images)
+(see https://serpapi.com/google_images)[https://serpapi.com/google_images]
 
 ## Developer's note
 ### Key goals

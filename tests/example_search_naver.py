@@ -1,4 +1,4 @@
-# test naver
+# test Naver search engine
 import unittest
 import os
 import serpapi

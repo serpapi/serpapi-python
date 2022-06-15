@@ -1,8 +1,26 @@
 """custom object decoder to convert a JSON into a python object"""
+
+
 class ObjectDecoder:
     """
     Allow to convert JSON like datastructure in Python object.
     """
+
+    def __init__(self, node):
+        self.node = node
+
+    def create(self):
+        """Create Python Object from a Dict or an Array
+        Returns
+        ----
+        pyobj: python Object
+        """
+        pytype = type('response', (object, ), {})
+        pyobj = pytype()
+        for child_key, child_node in self.node.items():
+            self.add_node(child_key, pyobj, child_node)
+        return pyobj
+
     def child2object(self, name, node):
         """Make python object from dict
         Parameters
@@ -42,10 +60,3 @@ class ObjectDecoder:
             setattr(pyobj, name, self.child2object(name, child))
         else:
             setattr(pyobj, name, child)
-
-    def dict2object(self, node):
-        pytype = type('response', (object, ), {})
-        pyobj = pytype()
-        for child_key, child_node in node.items():
-            self.add_node(child_key, pyobj, child_node)
-        return pyobj

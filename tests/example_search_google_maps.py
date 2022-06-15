@@ -1,4 +1,4 @@
-# test google maps
+# test Google Maps search engine
 import unittest
 import os
 import serpapi

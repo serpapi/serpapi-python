@@ -1,4 +1,4 @@
-# test google images
+# test Google Images search engine
 import unittest
 import os
 import serpapi

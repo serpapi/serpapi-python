@@ -1,4 +1,4 @@
-# test google product
+# test Google Product search engine
 import unittest
 import os
 import serpapi

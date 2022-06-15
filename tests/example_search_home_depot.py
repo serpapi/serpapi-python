@@ -1,4 +1,4 @@
-# test home depot
+# test Home Depot search engine
 import unittest
 import os
 import serpapi

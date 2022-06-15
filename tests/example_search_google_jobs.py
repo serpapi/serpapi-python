@@ -1,4 +1,4 @@
-# test google jobs
+# test Google Jobs search engine
 import unittest
 import os
 import serpapi

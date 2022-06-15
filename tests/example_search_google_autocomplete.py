@@ -1,4 +1,4 @@
-# test google autocomplete
+# test Google Autocomplete search engine
 import unittest
 import os
 import serpapi

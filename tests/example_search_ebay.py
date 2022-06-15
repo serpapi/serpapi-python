@@ -1,4 +1,4 @@
-# test ebay
+# test Ebay search engine
 import unittest
 import os
 import serpapi

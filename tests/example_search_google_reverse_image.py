@@ -1,4 +1,4 @@
-# test google reverse image
+# test Google Reverse Image search engine
 import unittest
 import os
 import serpapi

@@ -7,28 +7,35 @@ from .object_decoder import ObjectDecoder
 class HttpClient:
     """Simple HTTP client wrapper around urllib3"""
 
-    def __init__(self, parameter: dict = {}):
+    BACKEND = 'https://serpapi.com'
+    SUPPORTED_DECODER = ['json', 'html', 'object']
+
+    def __init__(self, parameter: dict = None):
         # initialize the http client
         self.http = urllib3.PoolManager()
 
+        # initialize parameter
+        if parameter is None:
+            parameter = {}
+        self.parameter = parameter
+
         # urllib3 configurations
-        # HTTP connect timeout 
+        # HTTP connect timeout
         if 'timeout' in parameter:
             self.timeout = parameter['timeout']
         else:
             # 60s default
             self.timeout = 60.0
-        
+
         # no HTTP retry
         if 'retries' in parameter:
             self.retries = parameter['retries']
         else:
             self.retries = False
 
-    def start(self, path : str, parameter: dict = None, decoder : str = 'json'):
-        """
-        start HTTP request and decode response using urllib3
-         the response is decoded using the selected decoder:
+    def start(self, path: str, parameter: dict = None, decoder: str = 'json'):
+        """start HTTP request and decode response using urllib3.
+         The response is decoded using the selected decoder:
           - html: raw HTML response
           - json: deep dict contains search results
           - object: containing search results as a dynamic object
@@ -47,8 +54,7 @@ class HttpClient:
         Returns:
         ---
         dict|str|object
-        decoded HTTP response
-        """
+        decoded HTTP response"""
         # set client language
         self.parameter['source'] = 'python'
 
@@ -94,12 +100,13 @@ class HttpClient:
 
         if decoder == 'object':
             data = json.loads(payload)
-            return self.dict2object(data)
+            return ObjectDecoder(data).create()
 
         raise SerpApiException("Invalid decoder: " +
                                decoder + ", available: json, html, object")
 
-class Client(ObjectDecoder, HttpClient):
+
+class Client(HttpClient):
     """
     Client performend http query to serpApi.com using urllib3 under the hood.
 
@@ -110,17 +117,12 @@ class Client(ObjectDecoder, HttpClient):
 
     """
 
-    BACKEND = 'https://serpapi.com'
-    SUPPORTED_DECODER = ['json', 'html', 'object']
-
     def __init__(self, parameter: dict = None):
         # define default parameter
         if parameter is None:
-            self.parameter = {}
-        else:
-            # assign user parameter
-            self.parameter = parameter
-        HttpClient.__init__(self, self.parameter)
+            parameter = {}
+        # initialize HTTP client
+        HttpClient.__init__(self, parameter)
 
     def search(self, parameter: dict = None, decoder: str = 'json'):
         """
@@ -177,11 +179,14 @@ class Client(ObjectDecoder, HttpClient):
         """
         return self.start('/locations.json', parameter, 'json')
 
-    def search_archive(self, search_id : str, decoder : str ='json'):
+    def search_archive(self, search_id: str, decoder: str = 'json'):
         """
         Retrieve search results from the Search Archive API
 
         Parameters:
+        -----
+        search_id: str
+            id from a previous search. in the JSON search response it is search_metadata.id
 
         """
         path = "/searches/" + str(search_id) + "."
@@ -201,7 +206,7 @@ class Client(ObjectDecoder, HttpClient):
         Parameters
         ---
         api_key: str
-          secret user key provided by serpapi.com
+        secret user key provided by serpapi.com
 
         Returns
         ---

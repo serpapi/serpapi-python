@@ -1,4 +1,4 @@
-# test google events
+# test Google Events search engine
 import unittest
 import os
 import serpapi

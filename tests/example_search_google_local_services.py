@@ -1,4 +1,4 @@
-# test google local services
+# test Google Local Services search engine
 import unittest
 import os
 import serpapi

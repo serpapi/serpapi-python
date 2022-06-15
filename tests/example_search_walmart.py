@@ -1,4 +1,4 @@
-# test walmart
+# test Walmart search engine
 import unittest
 import os
 import serpapi

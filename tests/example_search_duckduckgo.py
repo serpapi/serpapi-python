@@ -1,4 +1,4 @@
-# test duckduckgo
+# test Duckduckgo search engine
 import unittest
 import os
 import serpapi

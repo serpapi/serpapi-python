@@ -1,4 +1,4 @@
-# test bing
+# test Bing search engine
 import unittest
 import os
 import serpapi

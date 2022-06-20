@@ -1,0 +1,11 @@
+script/
+.coverage
+docs/build
+dist/
+.pytest_cache/
+serpapi.egg-info/
+
+serpapi/__pycache__
+tests/__pycache__
+*.pyc
+.DS_Store

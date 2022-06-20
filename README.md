@@ -1,4 +1,6 @@
 # User guide
+[![SerpApi-Python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
+
 [SerpApi]](https://serpapi.com) allows to scrape any search engine results. 
  It's easy, fast, easy, feature rich, cost effective, scalable and reliable.
 

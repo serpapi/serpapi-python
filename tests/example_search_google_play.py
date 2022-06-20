@@ -13,7 +13,7 @@ class TestGooglePlay(unittest.TestCase):
         'api_key': os.getenv("API_KEY")
       })
     data = client.search({
-        'q': 'coffee', 
+        'q': 'kite', 
         'store': 'apps', 
     })
     self.assertIsNone(data.get('error'))

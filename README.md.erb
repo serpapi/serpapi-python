@@ -4,17 +4,17 @@ def snippet(format, path, start, stop)
  slice.reject! { |l| l =~ /self.assertIsNone\(/ }
  buf = slice.map { |l| l.gsub(/(^\s+)/, '')}.join
  buf.gsub!('self.assertIsNotNone(', "pp = pprint.PrettyPrinter(indent=2)\npp.pprint(")
- %Q(```#{format}\nimport 'serpapi'\nimport 'pprint'\nimport 'os'\n\n#{buf}```\n test: #{path})
+ %Q(```#{format}\nimport serpapi\nimport pprint\nimport os\n\n#{buf}```\n test: #{path})
 end
 -%>
 # User guide
-[SerpApi](https://serpapi.com) allows to scrape any search engine results. 
+[SerpApi]](https://serpapi.com) allows to scrape any search engine results. 
  It's easy, fast, easy, feature rich, cost effective, scalable and reliable.
 
-This Python 3 library is meant to scrape and parse results from all major search engines available world wide including Google, Bing, Baidu, Yandex, Yahoo, Ebay, Home depot, Apple and more using [SerpApi](https://serpapi.com).
+This Python 3 library is meant to scrape and parse results from all major search engines available world wide including Google, Bing, Baidu, Yandex, Yahoo, Ebay, Home depot, Apple and more using [SerpApi]](https://serpapi.com).
 This is an open source project hosted under https://github.com/serpapi/serpapi-python.
 
-SerpApi.com provides a [script builder](https://serpapi.com/demo) to get you started quickly.
+SerpApi.com provides a [script builder]](https://serpapi.com/demo) to get you started quickly.
 
 ## Installation
 SerpApi can be installed with pip.
@@ -74,94 +74,94 @@ parameter = {
 }
 ```
 
-for more details: [URL LIB3 documentation](https://urllib3.readthedocs.io/en/stable/user-guide.html)
+for more details: [URL LIB3 documentation]](https://urllib3.readthedocs.io/en/stable/user-guide.html)
 
 ## Basic example per search engines
 ### Search Bing
-<%= snippet('ruby', 'tests/example_search_bing.py', 10, 25) %>
-(see https://serpapi.com/bing)[https://serpapi.com/bing]
+<%= snippet('python', 'tests/example_search_bing.py', 9, 25) %>
+see: [https://serpapi.com/bing-search-api](https://serpapi.com/bing-search-api)
 
 ### Search Baidu
-<%= snippet('ruby', 'tests/example_search_baidu.py', 10, 25) %>
-(see https://serpapi.com/baidu)[https://serpapi.com/baidu]
+<%= snippet('python', 'tests/example_search_baidu.py', 9, 25) %>
+see: [https://serpapi.com/baidu-search-api](https://serpapi.com/baidu-search-api)
 
 ### Search Yahoo
-<%= snippet('ruby', 'tests/example_search_yahoo.py', 10, 25) %>
-(see https://serpapi.com/yahoo)[https://serpapi.com/yahoo]
+<%= snippet('python', 'tests/example_search_yahoo.py', 9, 25) %>
+see: [https://serpapi.com/yahoo-search-api](https://serpapi.com/yahoo-search-api)
 
 ### Search Youtube
-<%= snippet('ruby', 'tests/example_search_youtube.py', 10, 25) %>
-(see https://serpapi.com/youtube)[https://serpapi.com/youtube]
+<%= snippet('python', 'tests/example_search_youtube.py', 9, 25) %>
+see: [https://serpapi.com/youtube-search-api](https://serpapi.com/youtube-search-api)
 
 ### Search Walmart
-<%= snippet('ruby', 'tests/example_search_walmart.py', 10, 25) %>
-(see https://serpapi.com/walmart)[https://serpapi.com/walmart]
+<%= snippet('python', 'tests/example_search_walmart.py', 9, 25) %>
+see: [https://serpapi.com/walmart-search-api](https://serpapi.com/walmart-search-api)
 
 ### Search Ebay
-<%= snippet('ruby', 'tests/example_search_ebay.py', 10, 25) %>
-(see https://serpapi.com/ebay)[https://serpapi.com/ebay]
+<%= snippet('python', 'tests/example_search_ebay.py', 9, 25) %>
+see: [https://serpapi.com/ebay-search-api](https://serpapi.com/ebay-search-api)
 
 ### Search Naver
-<%= snippet('ruby', 'tests/example_search_naver.py', 10, 25) %>
-(see https://serpapi.com/naver)[https://serpapi.com/naver]
+<%= snippet('python', 'tests/example_search_naver.py', 9, 25) %>
+see: [https://serpapi.com/naver-search-api](https://serpapi.com/naver-search-api)
 
 ### Search Home Depot
-<%= snippet('ruby', 'tests/example_search_home_depot.py', 10, 25) %>
-(see https://serpapi.com/home_depot)[https://serpapi.com/home_depot]
+<%= snippet('python', 'tests/example_search_home_depot.py', 9, 25) %>
+see: [https://serpapi.com/home-depot-search-api](https://serpapi.com/home-depot-search-api)
 
 ### Search Apple App Store
-<%= snippet('ruby', 'tests/example_search_apple_app_store.py', 10, 25) %>
-(see https://serpapi.com/apple_app_store)[https://serpapi.com/apple_app_store]
+<%= snippet('python', 'tests/example_search_apple_app_store.py', 9, 25) %>
+see: [https://serpapi.com/apple-app-store](https://serpapi.com/apple-app-store)
 
 ### Search Duckduckgo
-<%= snippet('ruby', 'tests/example_search_duckduckgo.py', 10, 25) %>
-(see https://serpapi.com/duckduckgo)[https://serpapi.com/duckduckgo]
+<%= snippet('python', 'tests/example_search_duckduckgo.py', 9, 25) %>
+see: [https://serpapi.com/duckduckgo-search-api](https://serpapi.com/duckduckgo-search-api)
 
 ### Search Google Search
-<%= snippet('ruby', 'tests/example_search_google_search.py', 10, 25) %>
-(see https://serpapi.com/google_search)[https://serpapi.com/google_search]
+<%= snippet('python', 'tests/example_search_google_search.py', 9, 25) %>
+see: [https://serpapi.com/search-api](https://serpapi.com/search-api)
 
 ### Search Google Scholar
-<%= snippet('ruby', 'tests/example_search_google_scholar.py', 10, 25) %>
-(see https://serpapi.com/google_scholar)[https://serpapi.com/google_scholar]
+<%= snippet('python', 'tests/example_search_google_scholar.py', 9, 25) %>
+see: [https://serpapi.com/google-scholar-api](https://serpapi.com/google-scholar-api)
 
 ### Search Google Autocomplete
-<%= snippet('ruby', 'tests/example_search_google_autocomplete.py', 10, 25) %>
-(see https://serpapi.com/google_autocomplete)[https://serpapi.com/google_autocomplete]
+<%= snippet('python', 'tests/example_search_google_autocomplete.py', 9, 25) %>
+see: [https://serpapi.com/google-autocomplete-api](https://serpapi.com/google-autocomplete-api)
 
 ### Search Google Product
-<%= snippet('ruby', 'tests/example_search_google_product.py', 10, 25) %>
-(see https://serpapi.com/google_product)[https://serpapi.com/google_product]
+<%= snippet('python', 'tests/example_search_google_product.py', 9, 25) %>
+see: [https://serpapi.com/google-product-api](https://serpapi.com/google-product-api)
 
 ### Search Google Reverse Image
-<%= snippet('ruby', 'tests/example_search_google_reverse_image.py', 10, 25) %>
-(see https://serpapi.com/google_reverse_image)[https://serpapi.com/google_reverse_image]
+<%= snippet('python', 'tests/example_search_google_reverse_image.py', 9, 25) %>
+see: [https://serpapi.com/google-reverse-image](https://serpapi.com/google-reverse-image)
 
 ### Search Google Events
-<%= snippet('ruby', 'tests/example_search_google_events.py', 10, 25) %>
-(see https://serpapi.com/google_events)[https://serpapi.com/google_events]
+<%= snippet('python', 'tests/example_search_google_events.py', 9, 25) %>
+see: [https://serpapi.com/google-events-api](https://serpapi.com/google-events-api)
 
 ### Search Google Local Services
-<%= snippet('ruby', 'tests/example_search_google_local_services.py', 10, 25) %>
-(see https://serpapi.com/google_local_services)[https://serpapi.com/google_local_services]
+<%= snippet('python', 'tests/example_search_google_local_services.py', 9, 25) %>
+see: [https://serpapi.com/google-local-services-api](https://serpapi.com/google-local-services-api)
 
 ### Search Google Maps
-<%= snippet('ruby', 'tests/example_search_google_maps.py', 10, 25) %>
-(see https://serpapi.com/google_maps)[https://serpapi.com/google_maps]
+<%= snippet('python', 'tests/example_search_google_maps.py', 9, 25) %>
+see: [https://serpapi.com/google-maps-api](https://serpapi.com/google-maps-api)
 
 ### Search Google Jobs
-<%= snippet('ruby', 'tests/example_search_google_jobs.py', 10, 25) %>
-(see https://serpapi.com/google_jobs)[https://serpapi.com/google_jobs]
+<%= snippet('python', 'tests/example_search_google_jobs.py', 9, 25) %>
+see: [https://serpapi.com/google-jobs-api](https://serpapi.com/google-jobs-api)
 
 ### Search Google Play
-<%= snippet('ruby', 'tests/example_search_google_play.py', 10, 25) %>
-(see https://serpapi.com/google_play)[https://serpapi.com/google_play]
+<%= snippet('python', 'tests/example_search_google_play.py', 9, 25) %>
+see: [https://serpapi.com/google-play-api](https://serpapi.com/google-play-api)
 
 ### Search Google Images
-<%= snippet('ruby', 'tests/example_search_google_images.py', 10, 25) %>
-(see https://serpapi.com/google_images)[https://serpapi.com/google_images]
+<%= snippet('python', 'tests/example_search_google_images.py', 9, 25) %>
+see: [https://serpapi.com/images-results](https://serpapi.com/images-results)
 
-## Developer's note
+# Developer Guide
 ### Key goals
  - High code quality
  - KISS principles
@@ -175,7 +175,7 @@ for more details: [URL LIB3 documentation](https://urllib3.readthedocs.io/en/sta
  - TDD
  - Best API coding pratice per platform
 
-### Design
+### Inspiration
 The API design was inpired by the most popular Python packages.
  - urllib3 - https://github.com/urllib3/urllib3
  - Boto3 - https://github.com/boto/boto3
@@ -183,3 +183,51 @@ The API design was inpired by the most popular Python packages.
 ### Quality expectation
  - 0 lint issues using pylint `make lint`
  - 99% code coverage running `make test`
+ - 100% test passing: `make test`
+ 
+### Client design: Class diagram
+```mermaid
+classDiagram
+  CustomClient *-- Client
+  HttpClient <-- Client
+  HttpClient *-- urllib3
+  HttpClient *-- ObjectDecoder
+
+  class Client {
+    engine: String
+    api_key: String
+    parameter: Hash
+    search()
+    html()
+    location()
+    search_archive()
+    account()
+  }
+
+  class HttpClient {
+    start()
+    decode()
+  }
+
+  class urllib3 {
+    request()
+  }
+```
+
+## JSON search() : Sequence diagram
+```mermaid
+sequenceDiagram
+    Client->>SerpApi.com: search() : http request 
+    SerpApi.com-->>SerpApi.com: query search engine
+    SerpApi.com-->>SerpApi.com: parse HTML into JSON
+    SerpApi.com-->>Client: JSON payload
+    Client-->>Client: decode JSON into Dict
+```
+
+## Build flow
+
+This project is automated using a good old Makefile.
+To pipe-clean the project run this:
+`make`
+
+Open Makefile for more details.

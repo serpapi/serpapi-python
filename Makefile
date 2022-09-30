@@ -22,11 +22,11 @@ clean:
 
 # lint check
 lint:
-	pylint serpapi
+	python3 -m pylint serpapi
 
 # test with Python 3
 test:
-	pytest --cov=serpapi --cov-report html tests/*.py
+	python3 -m pytest --cov=serpapi --cov-report html tests/*.py
 
 # install dependencies
 # 
@@ -58,12 +58,12 @@ oobt: build
 
 
 check: oobt
-	twine check ${dist}
+	python3 -m twine check ${dist}
 
 release: # check
-	twine upload ${dist}
+	python3 -m twine upload ${dist}
 
 # run example only 
 #  and display output (-s)
 example:
-	pytest -s "tests/test_example.py::TestExample::test_async"
+	python3 -m pytest -s "tests/test_example.py::TestExample::test_async"

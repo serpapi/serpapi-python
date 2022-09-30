@@ -1,22 +1,22 @@
 <%-
 def snippet(format, path, start, stop) 
  slice = File.new(path).readlines[start..stop]
- slice.reject! { |l| l =~ /self.assertIsNone\(/ }
- buf = slice.map { |l| l.gsub(/(^\s+)/, '')}.join
+ slice.reject! { |l| l.match?(/self.assertIsNone\(/) || l.match?(/# os\.getenv\("API_KEY"\)/) }
+ buf = slice.map { |l| l.gsub(/(^\s{4})/, '').gsub(/^\s*$/, '') }.join
  buf.gsub!('self.assertIsNotNone(', "pp = pprint.PrettyPrinter(indent=2)\npp.pprint(")
- %Q(```#{format}\nimport serpapi\nimport pprint\nimport os\n\n#{buf}```\n test: #{path})
+ %Q(```#{format}\nimport serpapi\nimport pprint\nimport os\n\n#{buf}```\ntest: #{path})
 end
 -%>
 # User guide
 [![SerpApi-Python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 
-[SerpApi]](https://serpapi.com) allows to scrape any search engine results. 
- It's easy, fast, easy, feature rich, cost effective, scalable and reliable.
+[SerpApi](https://serpapi.com) allows to scrape any search engine results.
+It's easy, fast, easy, feature rich, cost effective, scalable and reliable.
 
-This Python 3 library is meant to scrape and parse results from all major search engines available world wide including Google, Bing, Baidu, Yandex, Yahoo, Ebay, Home depot, Apple and more using [SerpApi]](https://serpapi.com).
+This Python 3 library is meant to scrape and parse results from all major search engines available world wide including Google, Bing, Baidu, Yandex, Yahoo, Ebay, Home depot, Apple and more using [SerpApi](https://serpapi.com).
 This is an open source project hosted under https://github.com/serpapi/serpapi-python.
 
-SerpApi.com provides a [script builder]](https://serpapi.com/demo) to get you started quickly.
+SerpApi.com provides a [script builder](https://serpapi.com/demo) to get you started quickly.
 
 ## Installation
 SerpApi can be installed with pip.
@@ -26,142 +26,55 @@ $ python -m pip install serpapi
 ```
 
 ## Quick start
-First things first, import the serpapi module:
+
+The following example runs a search for `"coffee"` using your secret API key which you can find at [SerpApi Dashboard](https://serpapi.com/manage-api-key) page. The `serpapi.search` object handles all of the details of connection pooling and thread safety so that you don't have to:
 
 ```python
 import serpapi
-```
-You'll need a client instance to make a search. This object handles all of the details of connection pooling and thread safety so that you don't have to:
 
-```python
-client = serpapi.Client()
-```
-To make a search using SerpApi.com:
+client = serpapi.Client(
+  api_key = "secret_api_key", # from serpapi.com
+)
 
-```python
-parameter = {
-  api_key: "secret_api_key", # from serpapi.com
-  engine: "google",     # search engine
-  q: "coffee",          # search topic
-  location: "Austin,TX" # location
+parameters = {
+  "q": "coffee",
 }
-results = searpapi.search(parameter)
-```
-Putting everything together.
-```python
-import serpapi
 
-parameter = {
-  api_key: "secret_api_key", # from serpapi.com
-  engine: "google",     # search engine
-  q: "coffee",          # search topic
-  location: "Austin,TX" # location
-}
-results = searpapi.search(parameter)
+results = client.search(parameters)
+
 print(results)
 ```
 
 ### Advanced settings
 SerpApi Client uses urllib3 under the hood.
-Optionally, rhe HTTP connection can be tuned:
-  - timeout : connection timeout by default 60s
-  - retries : attempt to reconnect if the connection failed by default: False. 
-   serpapi is reliable at 99.99% but your company network might not be as stable.
 
-  ```python
-parameter = {
-   retries: 5,
-   timeout: 4.0,
-   # extra user parameters
-}
+Optionally, the HTTP connection can be tuned:
+  - timeout : connection timeout by default 60s
+  - retries : attempt to reconnect if the connection failed by default: False. Documentation: https://urllib3.readthedocs.io/en/stable/reference/urllib3.util.html#urllib3.util.Retry
+  - api_key : the secret user API available from http://serpapi.com/manage-api-key
+
+   SerpApi's SLA is 99.95% successful searches: https://serpapi.com/faq/general/do-you-provide-sla-guarantees
+
+```python
+client = serpapi.Client(
+  retries = 5, # or urllib3.util.Retry(connect=5, read=2)
+  timeout = 4.2,
+  api_key = "secret_api_key", # from serpapi.com
+)
 ```
 
-for more details: [URL LIB3 documentation]](https://urllib3.readthedocs.io/en/stable/user-guide.html)
+For more details: [`urllib3` documentation](https://urllib3.readthedocs.io/en/stable/user-guide.html)
 
 ## Basic example per search engines
-### Search Bing
-<%= snippet('python', 'tests/example_search_bing.py', 9, 25) %>
-see: [https://serpapi.com/bing-search-api](https://serpapi.com/bing-search-api)
 
-### Search Baidu
-<%= snippet('python', 'tests/example_search_baidu.py', 9, 25) %>
-see: [https://serpapi.com/baidu-search-api](https://serpapi.com/baidu-search-api)
+<%- Dir.glob('tests/example_search_*.py').each do |example| -%>
+<% engine = example.match('example_search_(\w+)\.py')[1] %>
 
-### Search Yahoo
-<%= snippet('python', 'tests/example_search_yahoo.py', 9, 25) %>
-see: [https://serpapi.com/yahoo-search-api](https://serpapi.com/yahoo-search-api)
-
-### Search Youtube
-<%= snippet('python', 'tests/example_search_youtube.py', 9, 25) %>
-see: [https://serpapi.com/youtube-search-api](https://serpapi.com/youtube-search-api)
-
-### Search Walmart
-<%= snippet('python', 'tests/example_search_walmart.py', 9, 25) %>
-see: [https://serpapi.com/walmart-search-api](https://serpapi.com/walmart-search-api)
-
-### Search Ebay
-<%= snippet('python', 'tests/example_search_ebay.py', 9, 25) %>
-see: [https://serpapi.com/ebay-search-api](https://serpapi.com/ebay-search-api)
-
-### Search Naver
-<%= snippet('python', 'tests/example_search_naver.py', 9, 25) %>
-see: [https://serpapi.com/naver-search-api](https://serpapi.com/naver-search-api)
-
-### Search Home Depot
-<%= snippet('python', 'tests/example_search_home_depot.py', 9, 25) %>
-see: [https://serpapi.com/home-depot-search-api](https://serpapi.com/home-depot-search-api)
-
-### Search Apple App Store
-<%= snippet('python', 'tests/example_search_apple_app_store.py', 9, 25) %>
-see: [https://serpapi.com/apple-app-store](https://serpapi.com/apple-app-store)
-
-### Search Duckduckgo
-<%= snippet('python', 'tests/example_search_duckduckgo.py', 9, 25) %>
-see: [https://serpapi.com/duckduckgo-search-api](https://serpapi.com/duckduckgo-search-api)
-
-### Search Google Search
-<%= snippet('python', 'tests/example_search_google_search.py', 9, 25) %>
-see: [https://serpapi.com/search-api](https://serpapi.com/search-api)
-
-### Search Google Scholar
-<%= snippet('python', 'tests/example_search_google_scholar.py', 9, 25) %>
-see: [https://serpapi.com/google-scholar-api](https://serpapi.com/google-scholar-api)
-
-### Search Google Autocomplete
-<%= snippet('python', 'tests/example_search_google_autocomplete.py', 9, 25) %>
-see: [https://serpapi.com/google-autocomplete-api](https://serpapi.com/google-autocomplete-api)
-
-### Search Google Product
-<%= snippet('python', 'tests/example_search_google_product.py', 9, 25) %>
-see: [https://serpapi.com/google-product-api](https://serpapi.com/google-product-api)
-
-### Search Google Reverse Image
-<%= snippet('python', 'tests/example_search_google_reverse_image.py', 9, 25) %>
-see: [https://serpapi.com/google-reverse-image](https://serpapi.com/google-reverse-image)
-
-### Search Google Events
-<%= snippet('python', 'tests/example_search_google_events.py', 9, 25) %>
-see: [https://serpapi.com/google-events-api](https://serpapi.com/google-events-api)
-
-### Search Google Local Services
-<%= snippet('python', 'tests/example_search_google_local_services.py', 9, 25) %>
-see: [https://serpapi.com/google-local-services-api](https://serpapi.com/google-local-services-api)
-
-### Search Google Maps
-<%= snippet('python', 'tests/example_search_google_maps.py', 9, 25) %>
-see: [https://serpapi.com/google-maps-api](https://serpapi.com/google-maps-api)
-
-### Search Google Jobs
-<%= snippet('python', 'tests/example_search_google_jobs.py', 9, 25) %>
-see: [https://serpapi.com/google-jobs-api](https://serpapi.com/google-jobs-api)
-
-### Search Google Play
-<%= snippet('python', 'tests/example_search_google_play.py', 9, 25) %>
-see: [https://serpapi.com/google-play-api](https://serpapi.com/google-play-api)
-
-### Search Google Images
-<%= snippet('python', 'tests/example_search_google_images.py', 9, 25) %>
-see: [https://serpapi.com/images-results](https://serpapi.com/images-results)
+### Search <%= engine.split('_').map(&:capitalize).join(' ') %>
+<%= snippet('python', "tests/example_search_#{engine}.py", 9, 40) %>
+<br>
+Documentation: https://serpapi.com/<%= engine.tr('_', '-') %>-search-api
+<%- end -%>
 
 # Developer Guide
 ### Key goals

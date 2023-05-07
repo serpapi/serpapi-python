@@ -1,4 +1,4 @@
-# test Naver search engine
+# Example: naver search engine
 import unittest
 import os
 import serpapi
@@ -12,9 +12,10 @@ class TestNaver(unittest.TestCase):
         'api_key': os.getenv("API_KEY")
       })
     data = client.search({
-        'query': 'coffee', 
+        'query': 'coffee',
     })
     self.assertIsNone(data.get('error'))
     self.assertIsNotNone(data['ads_results'])
-    # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
-  
+    # os.getenv("API_KEY") is your secret API Key
+    # copy/paste from [http://serpapi.com/dashboard] to your bash
+    # ```export API_KEY="your_secure_api_key"```

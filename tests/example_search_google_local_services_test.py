@@ -1,4 +1,4 @@
-# test Google Local Services search engine
+# Example: google_local_services search engine
 import unittest
 import os
 import serpapi
@@ -12,10 +12,11 @@ class TestGoogleLocalServices(unittest.TestCase):
         'api_key': os.getenv("API_KEY")
       })
     data = client.search({
-        'q': 'Electrician', 
-        'place_id': 'ChIJOwg_06VPwokRYv534QaPC8g', 
+        'q': 'Electrician',
+        'data_cid': 'ChIJOwg_06VPwokRYv534QaPC8g',
     })
     self.assertIsNone(data.get('error'))
     self.assertIsNotNone(data['local_ads'])
-    # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
-  
+    # os.getenv("API_KEY") is your secret API Key
+    # copy/paste from [http://serpapi.com/dashboard] to your bash
+    # ```export API_KEY="your_secure_api_key"```

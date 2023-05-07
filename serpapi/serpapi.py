@@ -1,8 +1,8 @@
-"""SerpApi client library for python"""
+"""Client for SerpApi.com"""
 import json
 import urllib3
 from .error import SerpApiException
-from .object_decoder import ObjectDecoder
+from ._version import __version__
 
 class HttpClient:
     """Simple HTTP client wrapper around urllib3"""
@@ -11,18 +11,24 @@ class HttpClient:
     SUPPORTED_DECODER = ['json', 'html', 'object']
 
     def __init__(self, parameter: dict = None):
+        """Initialize a SerpApi Client with the default parameters provided.
+        An instance of urllib3 will be created
+         where
+          timeout is 60s by default
+          retries is disabled by default
+        both properties can be override by the parameter.
+          """
         # initialize the http client
         self.http = urllib3.PoolManager()
 
-        # initialize parameter
-        if parameter is None:
-            parameter = {}
+        # initialize default client parameter
         self.parameter = parameter
 
         # urllib3 configurations
         # HTTP connect timeout
         if 'timeout' in parameter:
             self.timeout = parameter['timeout']
+            del parameter['timeout']
         else:
             # 60s default
             self.timeout = 60.0
@@ -30,6 +36,7 @@ class HttpClient:
         # no HTTP retry
         if 'retries' in parameter:
             self.retries = parameter['retries']
+            del parameter['retries']
         else:
             self.retries = False
 
@@ -55,8 +62,8 @@ class HttpClient:
         ---
         dict|str|object
         decoded HTTP response"""
-        # set client language
-        self.parameter['source'] = 'python'
+        # track client language
+        self.parameter['source'] = 'serpapi-python:' + __version__
 
         # set output type
         if decoder == 'object':
@@ -97,10 +104,6 @@ class HttpClient:
 
         if decoder == 'html':
             return payload
-
-        if decoder == 'object':
-            data = json.loads(payload)
-            return ObjectDecoder(data).create()
 
         raise SerpApiException("Invalid decoder: " +
                                decoder + ", available: json, html, object")
@@ -186,7 +189,7 @@ class Client(HttpClient):
         Parameters:
         -----
         search_id: str
-            id from a previous search. in the JSON search response it is search_metadata.id
+            id from a previous client. in the JSON search response it is search_metadata.id
 
         """
         path = "/searches/" + str(search_id) + "."

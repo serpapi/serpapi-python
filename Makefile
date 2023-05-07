@@ -54,7 +54,7 @@ build: doc lint test
 # out of box testing / user acceptance before delivery
 oobt: build
 	pip3 install ./${dist}
-	python3 oobt/oobt.py
+	python3 oobt/demo.py
 
 
 check: oobt

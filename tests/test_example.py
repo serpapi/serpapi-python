@@ -30,21 +30,21 @@
 
 #     @unittest.skipIf((os.getenv("API_KEY") == None), "no api_key provided")
 #     def test_get_json(self):
-#         search = GoogleSearch({"q": "Coffee", "engine": "google_scholar"})
-#         data = search.get_json()
+#         client = GoogleSearch({"q": "Coffee", "engine": "google_scholar"})
+#         data = client.get_json()
 #         print(data['search_metadata'])
 #         search_id = data['search_metadata']['id']
 #         # retrieve search from the archive - blocker
 #         print(search_id + ": get search from archive")
-#         raw_html =  search.get_search_archive(search_id, 'html')
+#         raw_html =  client.get_search_archive(search_id, 'html')
 #         # print(search_id + ": status = " + search_archived['search_metadata']['status'])
 #         print(raw_html)
 #         #print(search_html)
 
 #     @unittest.skipIf((os.getenv("DEBUGAPI_KEY") == None), "no api_key provided")
 #     def test_search_google_images(self):
-#         search = GoogleSearch({"q": "coffe", "tbm": "isch"})
-#         for image_result in search.get_json()['images_results']:
+#         client = GoogleSearch({"q": "coffe", "tbm": "isch"})
+#         for image_result in client.get_json()['images_results']:
 #             try:
 #                 link = image_result["original"]
 #                 print("link is found: " + link)
@@ -61,7 +61,7 @@
 #         search_queue = Queue()
         
 #         # Serp API search
-#         search = GoogleSearch({
+#         client = GoogleSearch({
 #             "location": "Austin,Texas",
 #             "async": True
 #         })
@@ -69,8 +69,8 @@
 #         # loop through companies
 #         for company in ['amd','nvidia','intel']:
 #           print("execute async search: q = " + company)
-#           search.params_dict["q"] = company
-#           data = search.get_dict()
+#           client.params_dict["q"] = company
+#           data = client.get_dict()
 #           if data is not None:
 #               print("oops data is empty for: " + company)
 #               continue
@@ -81,14 +81,14 @@
 #         print("wait until all search statuses are cached or success")
         
 #         # Create regular search
-#         search = GoogleSearch({"async": True})
+#         client = GoogleSearch({"async": True})
 #         while not search_queue.empty():
 #           data = search_queue.get()
 #           search_id = data['search_metadata']['id']
 
 #           # retrieve search from the archive - blocker
 #           print(search_id + ": get search from archive")
-#           search_archived =  search.get_search_archive(search_id)
+#           search_archived =  client.get_search_archive(search_id)
 #           print(search_id + ": status = " + search_archived['search_metadata']['status'])
           
 #           # check status
@@ -105,27 +105,27 @@
         
 #     @unittest.skipIf((os.getenv("DEBUGAPI_KEY") == None), "no api_key provided")
 #     def test_search_google_news(self):
-#         search = GoogleSearch({
+#         client = GoogleSearch({
 #             "q": "coffe",   # search search
 #             "tbm": "nws",   # news
 #             "tbs": "qdr:d", # last 24h
 #             "num": 10
 #         })
 #         for offset in [0,1,2]:
-#             search.params_dict["start"] = offset * 10
-#             data = search.get_json()
+#             client.params_dict["start"] = offset * 10
+#             data = client.get_json()
 #             for news_result in data['news_results']:
 #                 print(str(news_result['position'] + offset * 10) + " - " + news_result['title'])
 
 #     @unittest.skipIf((os.getenv("DEBUGAPI_KEY") == None), "no api_key provided")
 #     def test_search_google_shopping(self):
-#         search = GoogleSearch({
+#         client = GoogleSearch({
 #             "q": "coffe",   # search search
 #             "tbm": "shop",  # news
 #             "tbs": "p_ord:rv", # last 24h
 #             "num": 100
 #         })
-#         data = search.get_json()
+#         data = client.get_json()
 #         if 'shopping_results' in data:
 #             for shopping_result in data['shopping_results']:
 #                 print(str(shopping_result['position']) + " - " + shopping_result['title'])
@@ -136,13 +136,13 @@
 #     def test_search_by_location(self):
 #         for city in ["new york", "paris", "berlin"]:
 #             location = GoogleSearch({}).get_location(city, 1)[0]["canonical_name"]
-#             search = GoogleSearch({
+#             client = GoogleSearch({
 #                 "q": "best coffee shop",   # search search
 #                 "location": location,
 #                 "num": 10,
 #                 "start": 0
 #             })
-#             data = search.get_json()
+#             data = client.get_json()
 #             self.assertIsNone(data.get("error"))
 #             top_result = data['organic_results'][0]["title"]
 #             print("top coffee result for " + location + " is: " + top_result)

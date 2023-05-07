@@ -1,22 +1,21 @@
-# test Google Play search engine
+# Example: bing search engine
 import unittest
 import os
 import serpapi
 
-class TestGooglePlay(unittest.TestCase):
+class TestBing(unittest.TestCase):
 
-  @unittest.skip
   @unittest.skipIf((os.getenv("API_KEY") == None), "no api_key provided")
-  def test_search_google_play(self):
+  def test_search_bing(self):
     client = serpapi.Client({
-        'engine': 'google_play',
+        'engine': 'bing',
         'api_key': os.getenv("API_KEY")
       })
     data = client.search({
-        'q': 'kite', 
-        'store': 'apps', 
+        'q': 'coffee',
     })
     self.assertIsNone(data.get('error'))
     self.assertIsNotNone(data['organic_results'])
-    # os.getenv("API_KEY") captures the secret user API available from http://serpapi.com
-  
+    # os.getenv("API_KEY") is your secret API Key
+    # copy/paste from [http://serpapi.com/dashboard] to your bash
+    # ```export API_KEY="your_secure_api_key"```

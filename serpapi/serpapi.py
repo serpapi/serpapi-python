@@ -8,7 +8,7 @@ class HttpClient:
     """Simple HTTP client wrapper around urllib3"""
 
     BACKEND = 'https://serpapi.com'
-    SUPPORTED_DECODER = ['json', 'html', 'object']
+    SUPPORTED_DECODER = ['json', 'html']
 
     def __init__(self, parameter: dict = None):
         """Initialize a SerpApi Client with the default parameters provided.
@@ -45,7 +45,6 @@ class HttpClient:
          The response is decoded using the selected decoder:
           - html: raw HTML response
           - json: deep dict contains search results
-          - object: containing search results as a dynamic object
 
         Parameters:
         ---
@@ -60,16 +59,11 @@ class HttpClient:
 
         Returns:
         ---
-        dict|str|object
+        dict|str
         decoded HTTP response"""
         # track client language
         self.parameter['source'] = 'serpapi-python:' + __version__
-
-        # set output type
-        if decoder == 'object':
-            self.parameter['output'] = 'json'
-        else:
-            self.parameter['output'] = decoder
+        self.parameter['output'] = decoder
 
         # merge parameter defaults and overrides
         fields = self.parameter.copy()
@@ -106,7 +100,7 @@ class HttpClient:
             return payload
 
         raise SerpApiException("Invalid decoder: " +
-                               decoder + ", available: json, html, object")
+                               decoder + ", available: json, html")
 
 
 class Client(HttpClient):
@@ -130,7 +124,7 @@ class Client(HttpClient):
     def search(self, parameter: dict = None, decoder: str = 'json'):
         """
         make search then decode the output
-         decoder supported 'json', 'html', 'object'
+         decoder supported 'json', 'html'
 
         Parameters
         ----------
@@ -145,7 +139,6 @@ class Client(HttpClient):
             search results returns as :
              dict if decoder = 'json'
              str if decoder = 'html'
-             object if decoder = 'object'
         """
         return self.start(path='/search', parameter=parameter, decoder=decoder)
 
@@ -194,12 +187,9 @@ class Client(HttpClient):
         """
         path = "/searches/" + str(search_id) + "."
         if decoder in self.SUPPORTED_DECODER:
-            if decoder == "object":
-                path += "json"
-            else:
-                path += decoder
+            path += decoder
         else:
-            raise SerpApiException('Decoder must be json or html or object')
+            raise SerpApiException('Decoder must be json or html')
         return self.start(path, {}, decoder)
 
     def account(self, api_key: str = None):

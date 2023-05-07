@@ -1,13 +1,7 @@
 import unittest
 import os
-import pprint
 import serpapi
 import pytest
-
-# This test shows how to extends serpapi.Client
-#  without using client engine wrapper.
-#
-
 
 class TestSearchArchive(unittest.TestCase):
 
@@ -23,11 +17,13 @@ class TestSearchArchive(unittest.TestCase):
       })
       self.assertEqual(data.get("error"), None)
       self.assertIsNotNone(data["organic_results"][0]["title"])
+      # search unique search identifier
       search_id = data['search_metadata']['id']
+      # fetch results from the archive (free of charge)
       data_archive = client.search_archive(search_id)
       self.assertEqual(data_archive['organic_results'][0], data["organic_results"][0])
 
-      # code coverage
+      # fetch results from the archive again (code coverage)
       object_archive = client.search_archive(search_id, 'object')
       self.assertIsNotNone(object_archive)
       self.assertEqual(object_archive.organic_results[0].title, data["organic_results"][0]["title"])

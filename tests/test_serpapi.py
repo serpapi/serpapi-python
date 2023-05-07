@@ -34,25 +34,6 @@ class TestSerpApi(unittest.TestCase):
       })
 			self.assertRegex(data, r'</html>$')
 
-		# test ObjectDecoder
-		@unittest.skipIf((os.getenv("API_KEY") == None), "no api_key provided")
-		def test_object(self):
-			client = serpapi.Client({
-				"engine": "google",
-				"api_key": os.getenv("API_KEY"),
-				'timeout': 120,
-				'retries': True
-			})
-			data = client.search({
-        "q": "Coffee", 
-				"location": "Austin,Texas"
-      }, decoder="object")
-			self.assertIsInstance(data, object)
-			self.assertIsNotNone(data.organic_results)
-			self.assertIsInstance(data.organic_results, list)
-			self.assertGreater(len(data.organic_results), 3)
-			self.assertIsInstance(data.organic_results[0].link, str)
-
 		def test_invalid_api_key(self):
 			client = serpapi.Client({
 				"engine": "google",
@@ -67,7 +48,7 @@ class TestSerpApi(unittest.TestCase):
 		def test_invalid_decoder(self):
 			client = serpapi.Client({
 				"engine": "google",
-				"api_key": os.getenv("API_KEY"),
+				"api_key": os.getenv("API_KEY")
 			})
 			mockResponse = MockResponse()
 			self.assertEqual(mockResponse.status, 200)

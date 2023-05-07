@@ -10,6 +10,7 @@ class TestLocationApi(unittest.TestCase):
         client = serpapi.Client({'api_key': os.getenv('API_KEY')})
         locations = client.location({'q':'Austin', 'limit': 3})
         self.assertGreater(len(locations), 1)
+        self.assertLessEqual(len(locations), 3)
         self.assertTrue('id' in locations[0])
-
-
+        self.assertTrue('name' in locations[0])
+        self.assertTrue('canonical_name' in locations[0])

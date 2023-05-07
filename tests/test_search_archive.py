@@ -24,9 +24,14 @@ class TestSearchArchive(unittest.TestCase):
       self.assertEqual(data_archive['organic_results'][0], data["organic_results"][0])
 
       # fetch results from the archive again (code coverage)
-      object_archive = client.search_archive(search_id, 'object')
+      object_archive = client.search_archive(search_id, 'json')
       self.assertIsNotNone(object_archive)
-      self.assertEqual(object_archive.organic_results[0].title, data["organic_results"][0]["title"])
+      self.assertEqual(object_archive['organic_results'][0]['title'], data["organic_results"][0]["title"])
 
+    def test_bad_decoder(self):
+      client = serpapi.Client({
+        "engine": "google",
+        "api_key": os.getenv("API_KEY")
+        })
       with pytest.raises(serpapi.SerpApiException, match=r'Decoder must be json or html'):
-        client.search_archive(search_id, 'bad')
+        client.search_archive('007', 'bad')

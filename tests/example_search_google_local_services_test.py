@@ -12,8 +12,8 @@ class TestGoogleLocalServices(unittest.TestCase):
         'api_key': os.getenv("API_KEY")
       })
     data = client.search({
-        'q': 'Electrician',
-        'data_cid': 'ChIJOwg_06VPwokRYv534QaPC8g',
+        'q': 'electrician',
+        'data_cid': '6745062158417646970',
     })
     self.assertIsNone(data.get('error'))
     self.assertIsNotNone(data['local_ads'])

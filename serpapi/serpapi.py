@@ -189,7 +189,7 @@ class Client(HttpClient):
         if decoder in self.SUPPORTED_DECODER:
             path += decoder
         else:
-            raise SerpApiException('Decoder must be json or html')
+            raise SerpApiException(f'Invalid decoder: {decoder}  must be json or html. ')
         return self.start(path, {}, decoder)
 
     def account(self, api_key: str = None):

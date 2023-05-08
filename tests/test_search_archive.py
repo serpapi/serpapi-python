@@ -33,5 +33,5 @@ class TestSearchArchive(unittest.TestCase):
         "engine": "google",
         "api_key": os.getenv("API_KEY")
         })
-      with pytest.raises(serpapi.SerpApiException, match=r'Decoder must be json or html'):
+      with pytest.raises(serpapi.SerpApiException, match=r'Invalid decoder'):
         client.search_archive('007', 'bad')

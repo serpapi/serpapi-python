@@ -5,7 +5,7 @@
 
   <a href="https://badge.fury.io/py/serpapi-python">![Package](https://badge.fury.io/py/serpapi.svg)</a> 
   <a href="https://pepy.tech/project/serpapi-python">![Downloads](https://static.pepy.tech/personalized-badge/serpapi?period=month&units=international_system&left_color=grey&right_color=brightgreen&left_text=Downloads)</a> 
-  <a href="https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml">![Build](https://github.com/serpapi/serpapi-python/actions/workflows/python-package.yml/badge.svg)</a>
+  [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 </div>
 
 

@@ -13,7 +13,7 @@ dist=dist/serpapi-$(version).tar.gz
 
 .PHONY: build
 
-all: clean install readme doc lint test build
+all: clean install readme doc lint test build oobt check
 
 clean:
 	find . -name '*.pyc' -delete
@@ -48,7 +48,7 @@ doc: readme
 	$(MAKE) -C docs/ html
 
 # https://packaging.python.org/tutorials/packaging-projects/
-build: doc lint test
+build: 
 	python3 setup.py sdist
 
 # out of box testing / user acceptance before delivery

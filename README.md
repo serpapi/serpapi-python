@@ -5,7 +5,7 @@
 
   <a href="https://badge.fury.io/py/serpapi-python">![Package](https://badge.fury.io/py/serpapi.svg)</a> 
   <a href="https://pepy.tech/project/serpapi-python">![Downloads](https://static.pepy.tech/personalized-badge/serpapi?period=month&units=international_system&left_color=grey&right_color=brightgreen&left_text=Downloads)</a> 
-  <a href="https://github.com/serpapi/serpapi-python/actions/workflows/python-package.yml">![Buiild](https://github.com/serpapi/serpapi-python/actions/workflows/python-package.yml/badge.svg)</a>
+  <a href="https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml">![Build](https://github.com/serpapi/serpapi-python/actions/workflows/python-package.yml/badge.svg)</a>
 </div>
 
 
@@ -39,24 +39,109 @@ This example runs a search for "coffee" on Google. It then returns the results a
 
 ## Advanced Usage
 ### Search API
+```python
+# load pip package
+import serpapi
 
-TODO update this specification
+# serpapi client created with default parameters
+client = serpapi.Client({'api_key': 'secret_key', 'engine': 'google'})
 
-SerpApi Client uses urllib3 under the hood.
-Optionally, rhe HTTP connection can be tuned:
-  - timeout : connection timeout by default 60s
-  - retries : attempt to reconnect if the connection failed by default: False. 
-   serpapi is reliable at 99.99% but your company network might not be as stable.
+# We recommend that you keep your keys safe.
+# At least, don't commit them in plain text.
+# More about configuration via environment variables: 
+# https://hackernoon.com/all-the-secrets-of-encrypting-api-keys-in-ruby-revealed-5qf3t5l
 
-  ```python
-parameter = {
-   retries: 5,
-   timeout: 4.0,
-   # extra user parameters
+# search query overview (more fields available depending on search engine)
+params = {
+  # select the search engine (full list: https://serpapi.com/)
+  'engine': "google",
+  # actual search query for google
+  'q': "Coffee",
+  # then adds search engine specific options.
+  # for example: google specific parameters: https://serpapi.com/search-api
+  'google_domain': "Google Domain",
+  'location': "Location Requested", # example: Portland,Oregon,United States [see: Location API](#Location-API)
+  'device': "desktop|mobile|tablet",
+  'hl': "Google UI Language",
+  'gl': "Google Country",
+  'safe': "Safe Search Flag",
+  'num': "Number of Results",
+  'start': "Pagination Offset",
+  'tbm': "nws|isch|shop",
+  'tbs': "custom to be client criteria",
+  # tweak HTTP client behavior
+  'async': False, # true when async call enabled.
+  'timeout': 60, # HTTP timeout in seconds on the client side only.
 }
+
+# formated search results as a Hash
+#  serpapi.com converts HTML -> JSON 
+results = client.search(params)
+
+# raw search engine html as a String
+#  serpapi.com acts a proxy to provive high throughputs, no search limit and more.
+raw_html = client.html(params)
 ```
 
-for more details: [URL LIB3 documentation]](https://urllib3.readthedocs.io/en/stable/user-guide.html)
+[Google search documentation](https://serpapi.com/search-api). More hands on examples are available below.
+
+### Documentation
+ * [API documentation](https://rubydoc.info/github/serpapi/serpapi-ruby/master)
+ * [Full documentation on SerpApi.com](https://serpapi.com)
+ * [Library Github page](https://github.com/serpapi/serpapi-ruby)
+ * [Library GEM page](https://rubygems.org/gems/serpapi/)
+ * [API health status](https://serpapi.com/status)
+
+### Location API
+
+```python
+import serpapi
+client = serpapi.Client({'api_key': 'secret_api_key'})
+locations = client.location({'q':'Austin', 'limit': 3})
+print([loc['canonical_name'] for loc in locations])
+```
+
+it prints the first 3 locations matching Austin:
+```python
+['Austin,TX,Texas,United States', 'Austin,Texas,United States', 'Rochester,MN-Mason City,IA-Austin,MN,United States']
+```
+
+NOTE: api_key is not required for this endpoint.
+
+### Search Archive API
+
+This API allows retrieving previous search results.
+To fetch earlier results from the search_id.
+
+First, you need to run a search and save the search id.
+```python
+import serpapi
+client = serpapi.Client({'api_key': 'secret_api_key', 'engine': 'google'})
+results = client.search({'q': "Coffee"})
+search_id = results['search_metadata']['id']
+print("search_id: " + search_id)
+```
+
+Now let's retrieve the previous search results from the archive.
+
+```python
+import serpapi
+client = serpapi.Client({'api_key': 'secret_api_key'})
+results = client.search_archive('search_id')
+print(results)
+```
+
+This code prints the search results from the archive. :)
+
+### Account API
+
+```python
+import serpapi
+client = serpapi.Client({'api_key': 'secret_api_key'})
+print(client.account())
+```
+
+It prints your account information including plan, credit, montly
 
 ## Basic example per search engines
 
@@ -425,8 +510,8 @@ client = serpapi.Client({
 'api_key': os.getenv("API_KEY")
 })
 data = client.search({
-'q': 'Electrician',
-'data_cid': 'ChIJOwg_06VPwokRYv534QaPC8g',
+'q': 'electrician',
+'data_cid': '6745062158417646970',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['local_ads'])
@@ -535,27 +620,31 @@ see: [https://serpapi.com/images-results](https://serpapi.com/images-results)
 TODO update this section
 ### Key goals
  - High code quality
- - KISS principles
+ - KISS principles (https://en.wikipedia.org/wiki/KISS_principle)
  - Brand centric instead of search engine based
-   - No hard coded logic per search engine
+   - No hard coded logic per search engine on the client side.
  - Simple HTTP client (lightweight, reduced dependency)
    - No magic default values
    - Thread safe
+   - Leak free
  - Easy to extends
  - Defensive code style (raise custom exception)
- - TDD
- - Best API coding pratice per platform
+ - TDD - Test driven development (lint, ~100% code coverage)
+ - Follow best API coding pratice per platform
 
 ### Inspiration
 The API design was inpired by the most popular Python packages.
  - urllib3 - https://github.com/urllib3/urllib3
  - Boto3 - https://github.com/boto/boto3
+ - Numpy - 
 
 ### Quality expectation
  - 0 lint issues using pylint `make lint`
  - 99% code coverage running `make test`
  - 100% test passing: `make test`
  
+# Developer Guide
+## Design : UML diagram
 ### Client design: Class diagram
 ```mermaid
 classDiagram
@@ -565,8 +654,8 @@ classDiagram
   HttpClient *-- ObjectDecoder
 
   class Client {
-    engine: String
-    api_key: String
+    'engine': String
+    'api_key': String
     parameter: Hash
     search()
     html()
@@ -595,10 +684,64 @@ sequenceDiagram
     Client-->>Client: decode JSON into Dict
 ```
 
-## Build flow
+where:
+  - The end user implements the application.
+  - Client refers to SerpApi:Client.
+  - SerpApi.com is the backend HTTP / REST service.
+  - Engine refers to Google, Baidu, Bing, and more.
 
-This project is automated using a good old Makefile.
-To pipe-clean the project run this:
-`make`
+The SerpApi.com service (backend)
+ - executes a scalable search on `'engine': "google"` using the search query: `q: "coffee"`.
+ - parses the messy HTML responses from Google on the backend.
+ - returns a standardized JSON response.
+The class SerpApi::Client (client side / ruby):
+ - Format the request to SerpApi.com server.
+ - Execute HTTP Get request.
+ - Parse JSON into Ruby Hash using a standard JSON library.
+Et voila!
 
-Open Makefile for more details.
+## Continuous integration
+We love "true open source" and "continuous integration", and Test Drive Development (TDD).
+ We are using RSpec to test [our infrastructure around the clock]) using Github Action to achieve the best QoS (Quality Of Service).
+
+The directory spec/ includes specification which serves the dual purposes of examples and functional tests.
+
+Set your secret API key in your shell before running a test.
+```bash
+export API_KEY="your_secret_key"
+```
+Install testing dependency
+```bash
+$ make install
+```
+
+Check code quality using Lint.
+```bash
+$ make lint
+```
+
+Run regression.
+```bash
+$ make test
+```
+
+To flush the flow.
+```bash
+$ make
+```
+
+Open coverage report generated by `rake test`
+```sh
+open coverage/index.html
+```
+
+Open ./Rakefile for more information.
+
+Contributions are welcome. Feel to submit a pull request!
+
+## Dependencies
+
+HTTP requests are executed using [URL LIB3 documentation](https://urllib3.readthedocs.io/en/stable/user-guide.html). 
+
+## TODO
+ - [] Release version 1.0.0

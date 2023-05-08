@@ -3,10 +3,11 @@ def snippet(format, path)
  lines = File.new(path).readlines
  stop = lines.size - 1 
  slice = lines[9..stop]
- slice.reject! { |l| l =~ /self.assertIsNone\(/ }
- buf = slice.map { |l| l.gsub(/(^\s+)/, '')}.join
+ slice.reject! { |l| l.match?(/self.assertIsNone\(/) }
+ buf = slice.map { |l| l.gsub(/(^\s{4})/, '').gsub(/^\s*$/, '') }.join
+ url = path.gsub(/^.*\/serpapi-python/, 'https://github.com/serpapi/serpapi-python')
  buf.gsub!('self.assertIsNotNone(', "pp = pprint.PrettyPrinter(indent=2)\npp.pprint(")
- %Q(```#{format}\nimport serpapi\nimport pprint\nimport os\n\n#{buf}```\n * test: [#{path}](#{path}))
+ %Q(```#{format}\nimport serpapi\nimport pprint\nimport os\n\n#{buf}```\ntest: [#{url}])
 end
 -%>
 

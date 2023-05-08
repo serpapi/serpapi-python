@@ -18,15 +18,15 @@ all: clean install readme doc lint test build oobt check
 clean:
 	find . -name '*.pyc' -delete
 	find . -type d -name "__pycache__" -delete
-	pip3 uninstall serpapi
+	python3 -m pip uninstall serpapi
 
 # lint check
 lint:
-	pylint serpapi
+	python3 -m pylint serpapi
 
 # test with Python 3
 test:
-	pytest --cov=serpapi --cov-report html tests/*.py
+	python3 -mpytest --cov=serpapi --cov-report html tests/*.py
 
 # install dependencies
 # 
@@ -34,12 +34,12 @@ test:
 # sphinx - documentation
 # twine - release automation
 install:
-	pip3 install -U setuptools
-	pip3 install -r requirements.txt
-	pip3 install pylint
-	pip3 install pytest-cov
-	pip3 install twine
-	pip3 install sphinx
+	python3 -m pip install -U setuptools
+	python3 -m pip install -r requirements.txt
+	python3 -m pip install pylint
+	python3 -m pip install pytest-cov
+	python3 -m pip install twine
+	python3 -m pip install sphinx
 
 readme:
 	erb -T '-' README.md.erb > README.md
@@ -53,17 +53,17 @@ build:
 
 # out of box testing / user acceptance before delivery
 oobt: build
-	pip3 install ./${dist}
+	python3 -m pip install ./${dist}
 	python3 oobt/demo.py
 
 
 check: oobt
-	twine check ${dist}
+	python3 -m twine check ${dist}
 
 release: # check
-	twine upload ${dist}
+	python3 -m twine upload ${dist}
 
 # run example only 
 #  and display output (-s)
 example:
-	pytest -s "tests/test_example.py::TestExample::test_async"
+	python3 -m pytest -s "tests/test_example.py::TestExample::test_async"

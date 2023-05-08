@@ -152,11 +152,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'bing',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'bing',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'coffee',
+    'q': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
@@ -164,7 +164,7 @@ pp.pprint(data['organic_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_bing_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_bing_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_bing_test.py]
 see: [https://serpapi.com/bing-search-api](https://serpapi.com/bing-search-api)
 
 ### Search baidu
@@ -174,11 +174,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'baidu',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'baidu',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'coffee',
+    'q': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
@@ -186,7 +186,7 @@ pp.pprint(data['organic_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_baidu_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_baidu_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_baidu_test.py]
 see: [https://serpapi.com/baidu-search-api](https://serpapi.com/baidu-search-api)
 
 ### Search yahoo
@@ -196,11 +196,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'yahoo',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'yahoo',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'p': 'coffee',
+    'p': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
@@ -208,7 +208,7 @@ pp.pprint(data['organic_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_yahoo_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_yahoo_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_yahoo_test.py]
 see: [https://serpapi.com/yahoo-search-api](https://serpapi.com/yahoo-search-api)
 
 ### Search youtube
@@ -218,11 +218,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'youtube',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'youtube',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'search_query': 'coffee',
+    'search_query': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['video_results'])
@@ -230,7 +230,7 @@ pp.pprint(data['video_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_youtube_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_youtube_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_youtube_test.py]
 see: [https://serpapi.com/youtube-search-api](https://serpapi.com/youtube-search-api)
 
 ### Search walmart
@@ -240,11 +240,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'walmart',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'walmart',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'query': 'coffee',
+    'query': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
@@ -252,7 +252,7 @@ pp.pprint(data['organic_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_walmart_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_walmart_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_walmart_test.py]
 see: [https://serpapi.com/walmart-search-api](https://serpapi.com/walmart-search-api)
 
 ### Search ebay
@@ -262,11 +262,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'ebay',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'ebay',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'_nkw': 'coffee',
+    '_nkw': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
@@ -274,7 +274,7 @@ pp.pprint(data['organic_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_ebay_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_ebay_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_ebay_test.py]
 see: [https://serpapi.com/ebay-search-api](https://serpapi.com/ebay-search-api)
 
 ### Search naver
@@ -284,11 +284,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'naver',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'naver',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'query': 'coffee',
+    'query': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['ads_results'])
@@ -296,7 +296,7 @@ pp.pprint(data['ads_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_naver_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_naver_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_naver_test.py]
 see: [https://serpapi.com/naver-search-api](https://serpapi.com/naver-search-api)
 
 ### Search home depot
@@ -306,11 +306,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'home_depot',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'home_depot',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'table',
+    'q': 'table',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['products'])
@@ -318,7 +318,7 @@ pp.pprint(data['products'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_home_depot_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_home_depot_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_home_depot_test.py]
 see: [https://serpapi.com/home-depot-search-api](https://serpapi.com/home-depot-search-api)
 
 ### Search apple app store
@@ -328,11 +328,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'apple_app_store',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'apple_app_store',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'term': 'coffee',
+    'term': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
@@ -340,7 +340,7 @@ pp.pprint(data['organic_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_apple_app_store_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_apple_app_store_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_apple_app_store_test.py]
 see: [https://serpapi.com/apple-app-store](https://serpapi.com/apple-app-store)
 
 ### Search duckduckgo
@@ -350,11 +350,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'duckduckgo',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'duckduckgo',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'coffee',
+    'q': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
@@ -362,7 +362,7 @@ pp.pprint(data['organic_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_duckduckgo_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_duckduckgo_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_duckduckgo_test.py]
 see: [https://serpapi.com/duckduckgo-search-api](https://serpapi.com/duckduckgo-search-api)
 
 ### Search google
@@ -372,12 +372,12 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'coffee',
-'engine': 'google',
+    'q': 'coffee',
+    'engine': 'google',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
@@ -385,7 +385,7 @@ pp.pprint(data['organic_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_test.py]
 see: [https://serpapi.com/search-api](https://serpapi.com/search-api)
 
 ### Search google scholar
@@ -395,11 +395,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google_scholar',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google_scholar',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'coffee',
+    'q': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
@@ -407,7 +407,7 @@ pp.pprint(data['organic_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_scholar_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_scholar_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_scholar_test.py]
 see: [https://serpapi.com/google-scholar-api](https://serpapi.com/google-scholar-api)
 
 ### Search google autocomplete
@@ -417,11 +417,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google_autocomplete',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google_autocomplete',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'coffee',
+    'q': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['suggestions'])
@@ -429,7 +429,7 @@ pp.pprint(data['suggestions'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_autocomplete_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_autocomplete_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_autocomplete_test.py]
 see: [https://serpapi.com/google-autocomplete-api](https://serpapi.com/google-autocomplete-api)
 
 ### Search google product
@@ -439,12 +439,12 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google_product',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google_product',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'coffee',
-'product_id': '4172129135583325756',
+    'q': 'coffee',
+    'product_id': '4172129135583325756',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['product_results'])
@@ -452,7 +452,7 @@ pp.pprint(data['product_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_product_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_product_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_product_test.py]
 see: [https://serpapi.com/google-product-api](https://serpapi.com/google-product-api)
 
 ### Search google reverse image
@@ -462,11 +462,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google_reverse_image',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google_reverse_image',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'image_url': 'https://i.imgur.com/5bGzZi7.jpg',
+    'image_url': 'https://i.imgur.com/5bGzZi7.jpg',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['image_sizes'])
@@ -474,7 +474,7 @@ pp.pprint(data['image_sizes'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_reverse_image_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_reverse_image_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_reverse_image_test.py]
 see: [https://serpapi.com/google-reverse-image](https://serpapi.com/google-reverse-image)
 
 ### Search google events
@@ -484,11 +484,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google_events',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google_events',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'coffee',
+    'q': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['events_results'])
@@ -496,7 +496,7 @@ pp.pprint(data['events_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_events_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_events_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_events_test.py]
 see: [https://serpapi.com/google-events-api](https://serpapi.com/google-events-api)
 
 ### Search google local services
@@ -506,12 +506,12 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google_local_services',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google_local_services',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'electrician',
-'data_cid': '6745062158417646970',
+    'q': 'electrician',
+    'data_cid': '6745062158417646970',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['local_ads'])
@@ -519,7 +519,7 @@ pp.pprint(data['local_ads'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_local_services_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_local_services_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_local_services_test.py]
 see: [https://serpapi.com/google-local-services-api](https://serpapi.com/google-local-services-api)
 
 ### Search google maps
@@ -529,13 +529,13 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google_maps',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google_maps',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'pizza',
-'ll': '@40.7455096,-74.0083012,15.1z',
-'type': 'search',
+    'q': 'pizza',
+    'll': '@40.7455096,-74.0083012,15.1z',
+    'type': 'search',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['local_results'])
@@ -543,7 +543,7 @@ pp.pprint(data['local_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_maps_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_maps_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_maps_test.py]
 see: [https://serpapi.com/google-maps-api](https://serpapi.com/google-maps-api)
 
 ### Search google jobs
@@ -553,11 +553,11 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google_jobs',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google_jobs',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'coffee',
+    'q': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['jobs_results'])
@@ -565,7 +565,7 @@ pp.pprint(data['jobs_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_jobs_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_jobs_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_jobs_test.py]
 see: [https://serpapi.com/google-jobs-api](https://serpapi.com/google-jobs-api)
 
 ### Search google play
@@ -575,12 +575,12 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google_play',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google_play',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'q': 'kite',
-'store': 'apps',
+    'q': 'kite',
+    'store': 'apps',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['organic_results'])
@@ -588,7 +588,7 @@ pp.pprint(data['organic_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_play_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_play_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_play_test.py]
 see: [https://serpapi.com/google-play-api](https://serpapi.com/google-play-api)
 
 ### Search google images
@@ -598,13 +598,13 @@ import pprint
 import os
 
 client = serpapi.Client({
-'engine': 'google_images',
-'api_key': os.getenv("API_KEY")
-})
+    'engine': 'google_images',
+    'api_key': os.getenv("API_KEY")
+  })
 data = client.search({
-'engine': 'google_images',
-'tbm': 'isch',
-'q': 'coffee',
+    'engine': 'google_images',
+    'tbm': 'isch',
+    'q': 'coffee',
 })
 pp = pprint.PrettyPrinter(indent=2)
 pp.pprint(data['images_results'])
@@ -612,7 +612,7 @@ pp.pprint(data['images_results'])
 # copy/paste from [http://serpapi.com/dashboard] to your bash
 # ```export API_KEY="your_secure_api_key"```
 ```
- * test: [/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_images_test.py](/Users/victor/Project/serpapi/serpapi-python/tests/example_search_google_images_test.py)
+test: [https://github.com/serpapi/serpapi-python/tests/example_search_google_images_test.py]
 see: [https://serpapi.com/images-results](https://serpapi.com/images-results)
     
 

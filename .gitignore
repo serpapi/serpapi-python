@@ -9,3 +9,4 @@ serpapi/__pycache__
 tests/__pycache__
 *.pyc
 .DS_Store
+.envrc

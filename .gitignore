@@ -4,8 +4,10 @@ script/
 .coverage
 docs/build
 dist/
+build/
 .pytest_cache/
 serpapi.egg-info/
+
 
 serpapi/__pycache__
 tests/__pycache__

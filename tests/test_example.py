@@ -7,13 +7,13 @@
 # # regular expression library
 # import re
 
-# # safe queue 
+# # safe queue
 # import sys
 # if (sys.version_info > (3, 0)):
 #   from queue import Queue
 # else:
 #   from Queue import Queue
-  
+
 # # Time utility
 # import time
 
@@ -59,13 +59,13 @@
 #     def test_async(self):
 #         # store searches
 #         search_queue = Queue()
-        
+
 #         # Serp API search
 #         client = GoogleSearch({
 #             "location": "Austin,Texas",
 #             "async": True
 #         })
-        
+
 #         # loop through companies
 #         for company in ['amd','nvidia','intel']:
 #           print("execute async search: q = " + company)
@@ -77,9 +77,9 @@
 #           print("add search to the queue where id: " + data['search_metadata']['id'])
 #           # add search to the search_queue
 #           search_queue.put(data)
-        
+
 #         print("wait until all search statuses are cached or success")
-        
+
 #         # Create regular search
 #         client = GoogleSearch({"async": True})
 #         while not search_queue.empty():
@@ -90,7 +90,7 @@
 #           print(search_id + ": get search from archive")
 #           search_archived =  client.get_search_archive(search_id)
 #           print(search_id + ": status = " + search_archived['search_metadata']['status'])
-          
+
 #           # check status
 #           if re.search('Cached|Success', search_archived['search_metadata']['status']):
 #             print(search_id + ": search done with q = " + search_archived['search_parameters']['q'])
@@ -102,7 +102,7 @@
 #             time.sleep(1)
 #         # search is over.
 #         print('all searches completed')
-        
+
 #     @unittest.skipIf((os.getenv("DEBUGAPI_KEY") == None), "no api_key provided")
 #     def test_search_google_news(self):
 #         client = GoogleSearch({
@@ -131,7 +131,7 @@
 #                 print(str(shopping_result['position']) + " - " + shopping_result['title'])
 #         else:
 #             print("WARNING: oops shopping_results is missing from search result with tbm=shop")
-    
+
 #     @unittest.skipIf((os.getenv("DEBUGAPI_KEY") == None), "no api_key provided")
 #     def test_search_by_location(self):
 #         for city in ["new york", "paris", "berlin"]:

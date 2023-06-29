@@ -1,23 +1,27 @@
 """Client for SerpApi.com"""
+
 import json
+
 import urllib3
-from .error import SerpApiException
-from ._version import __version__
+
+from .__version__ import __version__
+from .exceptions import SerpApiException
+
 
 class HttpClient:
-    """Simple HTTP client wrapper around urllib3"""
+    """Simple HTTP client wrapper around urllib3."""
 
     BACKEND = "https://serpapi.com"
     SUPPORTED_DECODER = ["json", "html"]
 
     def __init__(self, parameter: dict = None):
         """Initialize a SerpApi Client with the default parameters provided.
-        An instance of urllib3 will be created
-         where
-          timeout is 60s by default
-          retries is disabled by default
-        both properties can be override by the parameter.
-          """
+        An instance of urllib3 will be created where:
+          - `timeout` is 60s by default
+          - `retries` is disabled by default
+        
+        Both properties can be override by the parameter.
+        """
         # initialize the http client
         self.http = urllib3.PoolManager()
 
@@ -41,10 +45,11 @@ class HttpClient:
             self.retries = False
 
     def start(self, path: str, parameter: dict = None, decoder: str = "json"):
-        """start HTTP request and decode response using urllib3.
+        """Start HTTP request and decode response using urllib3.
+
          The response is decoded using the selected decoder:
-          - html: raw HTML response
-          - json: deep dict contains search results
+          - `html`: raw HTML response
+          - `json`: deep dict contains search results
 
         Parameters:
         ---
@@ -70,16 +75,19 @@ class HttpClient:
         fields.update(parameter)
 
         # execute HTTP get request
-        response = self.http.request("GET",
-                                     self.BACKEND + path,
-                                     fields=fields,
-                                     timeout=self.timeout,
-                                     retries=self.retries)
+        response = self.http.request(
+            "GET",
+            self.BACKEND + path,
+            fields=fields,
+            timeout=self.timeout,
+            retries=self.retries,
+        )
         # decode response
         return self.decode(response, decoder)
 
     def decode(self, response: any, decoder: str):
-        """Decode HTTP response using a given decoder"""
+        """Decode HTTP response using a given decoder."""
+        
         # handle HTTP error
         if response.status != 200:
             try:
@@ -188,7 +196,9 @@ class Client(HttpClient):
         if decoder in self.SUPPORTED_DECODER:
             path += decoder
         else:
-            raise SerpApiException(f"Invalid decoder: {decoder}, available: json, html. ")
+            raise SerpApiException(
+                f"Invalid decoder: {decoder}, available: json, html. "
+            )
         return self.start(path, {}, decoder)
 
     def account(self, api_key: str = None):

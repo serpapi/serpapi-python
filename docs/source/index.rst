@@ -3,18 +3,57 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to serapi-python's documentation!
-=========================================
+**serpapi-python**
+==================
 
-.. automodule:: serpapi
-   :members: serpapi
-.. automodule:: serpapi.serpapi
+an official Python client library for `SerpApi <https://serpapi.com>`_.
+
+--------------
+
+Getting Started
+===============
+
+This part of the documentation covers installation of `serpapi-python` and a quick tutorial to get you started. 
+
+If you are looking for reference material, please see the :ref:`API Reference <api-reference>`.
+
+
+Installation
+------------
+
+To install ``serpapi-python``, simply use `pip`::
+
+    $ pip install serpapi
+
+
+Please note that Python 3.6+ is required.
+
+API Reference
+=============
+
+.. _api-reference:
+
+This part of the documentation covers all the interfaces of :class:`serpapi` Python module. 
+
+.. module:: serpapi
+   :platform: Unix, Windows
+   :synopsis: SerpApi Python Library
+
+Primary interface
+-----------------
+
+The primary interface to `serpapi-python` is through the :class:`serpapi.Client` class.
+
+.. autoclass:: serpapi.Client
    :members:
-.. toctree::
-   :maxdepth: 2
-   :caption: Contents:
+   
 
 
+
+Exceptions
+----------
+
+.. autoexception:: serpapi.SerpApiException
 
 Indices and tables
 ==================

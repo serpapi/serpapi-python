@@ -61,7 +61,7 @@ check: oobt
 	python3 -m twine check ${dist}
 
 release: # check
-	python3 -m twine upload ${dist}
+	python3 setup.py upload
 
 # run example only 
 #  and display output (-s)

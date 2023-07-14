@@ -20,6 +20,15 @@ class SerpResults(UserDict):
         pp = PrettyPrinter(indent=2, compact=True, width=79)
         return f"{pp.pprint(self.data)}"
 
+    def __getattribute__(self, key):
+        return super().__getattribute__(key)
+
+    def html(self, **extras):
+        html_url = self.get("search_metadata", {}).get("raw_html_file")
+
+        r = self.client.request("GET", html_url, params={}, **extras)
+        return r.text
+
     @property
     def next_page_url(self):
         """The URL of the next page of results, if any."""

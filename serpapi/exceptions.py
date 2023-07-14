@@ -1,5 +1,25 @@
-"""This module contains custom exceptions for this module."""
+import requests
 
 
-class SerpApiException(Exception):
-    """This exception is raised when the SerpApi returns an error."""
+class SerpAPIError(Exception):
+    """Base class for exceptions in this module."""
+
+    pass
+
+
+class APIKeyNotProvided(ValueError, SerpAPIError):
+    """API key is not provided."""
+
+    pass
+
+
+class HTTPConnectionError(requests.exceptions.ConnectionError, SerpAPIError):
+    """Connection Error."""
+
+    pass
+
+
+class HTTPError(requests.exceptions.HTTPError, SerpAPIError):
+    """HTTP Error."""
+
+    pass

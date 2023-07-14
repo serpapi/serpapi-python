@@ -15,13 +15,13 @@ from setuptools import find_packages, setup, Command
 NAME = "serpapi"
 DESCRIPTION = "The official Python client for SerpApi.com."
 URL = "https://github.com/serpapi/serpapi-python"
-EMAIL = "victor@serpapi.com"
+EMAIL = "kenneth@serpapi.com"
 AUTHOR = "SerpAPI.com"
 REQUIRES_PYTHON = ">=3.6.0"
 VERSION = None
 
 # What packages are required for this module to be executed?
-REQUIRED = ["urllib3"]
+REQUIRED = ["requests"]
 
 # What packages are optional?
 EXTRAS = {

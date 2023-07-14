@@ -16,3 +16,4 @@ tests/__pycache__
 .envrc
 
 .vscode
+t.py

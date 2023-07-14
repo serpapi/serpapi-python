@@ -1,5 +1,5 @@
-"""wrap any serpapi related exception"""
+"""This module contains custom exceptions for this module."""
 
 
 class SerpApiException(Exception):
-    """custom exception for this module"""
+    """This exception is raised when the SerpApi returns an error."""

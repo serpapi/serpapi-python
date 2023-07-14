@@ -33,7 +33,6 @@ class SerpResults(UserDict):
         """Return the next page of results, if any."""
 
         if self.next_page_url:
-
             # Include support for the API key, as it is not included in the next page URL.
             params = {"api_key": self.client.api_key}
 
@@ -135,7 +134,7 @@ class SerpAPI(SerpAPIHTTP):
     """A class that handles the HTTP requests to SerpAPI."""
 
     def search(self, params, **extras):
-        r = self.request("get", "/search", params=params, **extras)
+        r = self.request("GET", "/search", params=params, **extras)
         return SerpResults.from_http_response(r, client=self)
 
     def search_html(self, params, **extras):

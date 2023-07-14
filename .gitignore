@@ -9,8 +9,7 @@ build/
 serpapi.egg-info/
 
 
-serpapi/__pycache__
-tests/__pycache__
+__pycache__
 *.pyc
 .DS_Store
 .envrc

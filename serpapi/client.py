@@ -18,7 +18,7 @@ class SerpResults(UserDict):
 
     def __repr__(self):
         pp = PrettyPrinter(indent=2, compact=True, width=79)
-        return f"{pp.pprint(self.data)}"
+        return f"{pp.pformat(self.data)}"
 
     def __getattribute__(self, key):
         return super().__getattribute__(key)
@@ -158,5 +158,7 @@ class Client(HTTPClient):
         return SerpResults.from_http_response(r, client=self)
 
     def location(self, params, **extras):
-        r = self.request("GET", "/locations.json", params=params, **extras)
+        r = self.request(
+            "GET", "/locations.json", params=params, assert_api_key=False, **extras
+        )
         return SerpResults.from_http_response(r, client=self)

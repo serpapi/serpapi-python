@@ -41,9 +41,6 @@ install:
 	python3 -m pip install twine
 	python3 -m pip install sphinx
 
-readme:
-	erb -T '-' README.md.erb > README.md
-
 doc: readme
 	$(MAKE) -C docs/ html
 

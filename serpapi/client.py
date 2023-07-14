@@ -23,11 +23,14 @@ class SerpResults(UserDict):
         serpapi_pagination = self.data.get("serpapi_pagination")
 
         if serpapi_pagination:
-            return serpapi_pagination.get("next")
+            return serpapi_pagination.get("next_link")
 
     def next_page(self):
         if self.next_page_url:
+
+            # Include support for the API key, as it is not included in the next page URL.
             params = {"api_key": self.client.api_key}
+
             r = self.client.request("GET", path=self.next_page_url, params=params)
             return SerpResults.from_http_response(r, client=self.client)
 
@@ -99,6 +102,7 @@ class SerpAPIHTTP:
             r = self.session.request(
                 method=method, url=url, params=params, headers=headers, **kwargs
             )
+
         except requests.exceptions.ConnectionError as e:
             raise HTTPConnectionError(e)
 
@@ -112,21 +116,21 @@ class SerpAPIHTTP:
 
 
 class SerpAPI(SerpAPIHTTP):
-    def search(self, params, *, assert_200=True, **extras):
+    def search(self, params, **extras):
         r = self.request("get", "/search", params=params, **extras)
-        return SerpResults.from_http_response(r, assert_200=assert_200, client=self)
+        return SerpResults.from_http_response(r, client=self)
 
-    def search_html(self, params, *, assert_200=True, **extras):
-        search = self.search(params, assert_200=assert_200, **extras)
+    def search_html(self, params, **extras):
+        search = self.search(params, **extras)
         html_url = search.get("search_metadata", {}).get("raw_html_file")
 
-        r = self.request("GET", html_url, params={}, assert_200=assert_200, **extras)
+        r = self.request("GET", html_url, params={}, **extras)
         return r.text
 
-    def search_archive(self, params, *, assert_200=True, **extras):
-        r = self.request("get", "/searches", params=params, **extras)
-        return SerpResults.from_http_response(r, assert_200=assert_200, client=self)
+    def search_archive(self, params, **extras):
+        r = self.request("GET", "/searches", params=params, **extras)
+        return SerpResults.from_http_response(r, client=self)
 
-    def location(self, params, *, assert_200=True, **extras):
-        r = self.request("get", "/locations.json", params=params, **extras)
-        return SerpResults.from_http_response(r, assert_200=assert_200, client=self)
+    def location(self, params, **extras):
+        r = self.request("GET", "/locations.json", params=params, **extras)
+        return SerpResults.from_http_response(r, client=self)

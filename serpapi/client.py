@@ -20,9 +20,6 @@ class SerpResults(UserDict):
         pp = PrettyPrinter(indent=2, compact=True, width=79)
         return f"{pp.pformat(self.data)}"
 
-    def __getattribute__(self, key):
-        return super().__getattribute__(key)
-
     def html(self, **extras):
         html_url = self.get("search_metadata", {}).get("raw_html_file")
 
@@ -146,19 +143,32 @@ class Client(HTTPClient):
         r = self.request("GET", "/search", params=params, **extras)
         return SerpResults.from_http_response(r, client=self)
 
-    def search_html(self, params, **extras):
-        search = self.search(params, **extras)
-        html_url = search.get("search_metadata", {}).get("raw_html_file")
-
-        r = self.request("GET", html_url, params={}, **extras)
-        return r.text
-
     def search_archive(self, params, **extras):
+        """Get a result from the SerpAPI archive.
+
+        Learn more:"""
         r = self.request("GET", "/searches", params=params, **extras)
         return SerpResults.from_http_response(r, client=self)
 
     def location(self, params, **extras):
+        """Get a list of supported Google locations.
+
+        Learn more: https://serpapi.com/locations-api
+        """
+
         r = self.request(
             "GET", "/locations.json", params=params, assert_api_key=False, **extras
         )
+        return SerpResults.from_http_response(r, client=self)
+
+    def account(self, params=None, **extras):
+        """Get account information.
+
+        Learn more: https://serpapi.com/account-api
+        """
+
+        if params is None:
+            params = {}
+
+        r = self.request("GET", "/account.json", params=params, **extras)
         return SerpResults.from_http_response(r, client=self)

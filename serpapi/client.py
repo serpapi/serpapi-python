@@ -8,6 +8,8 @@ from .__version__ import __version__
 
 
 class SerpResults(UserDict):
+    """A dictionary-like object that represents the results of a SERP API request."""
+
     def __init__(self, data, *, client):
         super().__init__(data)
         self.client = client
@@ -20,12 +22,16 @@ class SerpResults(UserDict):
 
     @property
     def next_page_url(self):
+        """The URL of the next page of results, if any."""
+
         serpapi_pagination = self.data.get("serpapi_pagination")
 
         if serpapi_pagination:
             return serpapi_pagination.get("next_link")
 
     def next_page(self):
+        """Return the next page of results, if any."""
+
         if self.next_page_url:
 
             # Include support for the API key, as it is not included in the next page URL.
@@ -35,6 +41,8 @@ class SerpResults(UserDict):
             return SerpResults.from_http_response(r, client=self.client)
 
     def yield_pages(self, max_pages=1_000):
+        """Yield the next page of results, if any."""
+
         current_page_count = 0
 
         current_page = self
@@ -45,6 +53,12 @@ class SerpResults(UserDict):
 
     @classmethod
     def from_http_response(cls, r, *, assert_200=True, client=None):
+        """Construct a SerpResults object from an HTTP response.
+
+        Optionally (but default behavior), will raise an exception if the status code is not 200.
+        This functionality can be disabled by setting `assert_200=False`.
+        """
+
         # Raise an exception if the status code is not 200.
         if assert_200:
             try:
@@ -60,6 +74,8 @@ class SerpResults(UserDict):
 
 
 class SerpAPIHTTP:
+    """A class that handles the HTTP requests to the SERP API."""
+
     BASE_DOMAIN = "https://serpapi.com"
     DASHBOARD_URL = "https://serpapi.com/dashboard"
     USER_AGENT = f"SerpApi Python Client, v{__version__}"
@@ -116,6 +132,8 @@ class SerpAPIHTTP:
 
 
 class SerpAPI(SerpAPIHTTP):
+    """A class that handles the HTTP requests to SerpAPI."""
+
     def search(self, params, **extras):
         r = self.request("get", "/search", params=params, **extras)
         return SerpResults.from_http_response(r, client=self)

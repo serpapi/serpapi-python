@@ -72,7 +72,7 @@ class SerpResults(UserDict):
         return cls
 
 
-class SerpAPIHTTP:
+class HTTPClient:
     """A class that handles the HTTP requests to the SERP API."""
 
     BASE_DOMAIN = "https://serpapi.com"
@@ -130,7 +130,7 @@ class SerpAPIHTTP:
         return r
 
 
-class SerpAPI(SerpAPIHTTP):
+class Client(HTTPClient):
     """A class that handles the HTTP requests to SerpAPI."""
 
     def search(self, params, **extras):

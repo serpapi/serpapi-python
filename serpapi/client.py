@@ -150,16 +150,21 @@ class Client(HTTPClient):
         r = self.request("GET", "/searches", params=params, **extras)
         return SerpResults.from_http_response(r, client=self)
 
-    def location(self, params, **extras):
+    def locations(self, params, **extras):
         """Get a list of supported Google locations.
 
         Learn more: https://serpapi.com/locations-api
         """
 
         r = self.request(
-            "GET", "/locations.json", params=params, assert_api_key=False, **extras
+            "GET",
+            "/locations.json",
+            params=params,
+            assert_api_key=False,
+            assert_200=True,
+            **extras,
         )
-        return SerpResults.from_http_response(r, client=self)
+        return r.json()
 
     def account(self, params=None, **extras):
         """Get account information.
@@ -170,5 +175,7 @@ class Client(HTTPClient):
         if params is None:
             params = {}
 
-        r = self.request("GET", "/account.json", params=params, **extras)
-        return SerpResults.from_http_response(r, client=self)
+        r = self.request(
+            "GET", "/account.json", params=params, assert_200=True, **extras
+        )
+        return r.json()

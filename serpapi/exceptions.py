@@ -13,6 +13,12 @@ class APIKeyNotProvided(ValueError, SerpAPIError):
     pass
 
 
+class SearchIDNotProvided(ValueError, SerpAPIError):
+    """Search ID is not provided."""
+
+    pass
+
+
 class HTTPConnectionError(requests.exceptions.ConnectionError, SerpAPIError):
     """Connection Error."""
 

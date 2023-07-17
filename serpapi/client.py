@@ -3,7 +3,12 @@ from collections import UserDict
 
 import requests
 
-from .exceptions import APIKeyNotProvided, HTTPError, HTTPConnectionError
+from .exceptions import (
+    APIKeyNotProvided,
+    HTTPError,
+    HTTPConnectionError,
+    SearchIDNotProvided,
+)
 from .__version__ import __version__
 
 
@@ -17,7 +22,7 @@ class SerpResults(UserDict):
         self.response = None
 
     def __repr__(self):
-        pp = PrettyPrinter(indent=2, compact=True, width=79)
+        pp = PrettyPrinter(indent=2)
         return f"{pp.pformat(self.data)}"
 
     def html(self, **extras):
@@ -139,18 +144,35 @@ class HTTPClient:
 class Client(HTTPClient):
     """A class that handles the HTTP requests to SerpAPI."""
 
-    def search(self, params, **extras):
-        r = self.request("GET", "/search", params=params, **extras)
+    def __repr__(self):
+        return "<SerpAPI Client>"
+
+    def search(self, **params):
+        """Get a page of results from SerpAPI.
+
+        Learn more: https://serpapi.com/search-api
+        """
+
+        r = self.request("GET", "/search", params=params)
         return SerpResults.from_http_response(r, client=self)
 
-    def search_archive(self, params, **extras):
-        """Get a result from the SerpAPI archive.
+    def search_archive(self, **params):
+        """Get a result from the SerpAPI Search Archive API.
 
-        Learn more:"""
-        r = self.request("GET", "/searches", params=params, **extras)
+        Learn more: https://serpapi.com/search-archive-api
+        """
+
+        try:
+            search_id = params["search_id"]
+        except KeyError:
+            raise SearchIDNotProvided(
+                f"Please provide 'search_id', found here: { self.DASHBOARD_URL }"
+            )
+
+        r = self.request("GET", f"/searches/{ search_id }", params=params)
         return SerpResults.from_http_response(r, client=self)
 
-    def locations(self, params, **extras):
+    def locations(self, **params):
         """Get a list of supported Google locations.
 
         Learn more: https://serpapi.com/locations-api
@@ -162,20 +184,17 @@ class Client(HTTPClient):
             params=params,
             assert_api_key=False,
             assert_200=True,
-            **extras,
         )
         return r.json()
 
-    def account(self, params=None, **extras):
-        """Get account information.
+    def account(
+        self,
+        **params,
+    ):
+        """Get SerpAPI account information.
 
         Learn more: https://serpapi.com/account-api
         """
 
-        if params is None:
-            params = {}
-
-        r = self.request(
-            "GET", "/account.json", params=params, assert_200=True, **extras
-        )
+        r = self.request("GET", "/account.json", params=params, assert_200=True)
         return r.json()

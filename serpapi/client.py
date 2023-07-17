@@ -46,7 +46,7 @@ class SerpResults(UserDict):
             return SerpResults.from_http_response(r, client=self.client)
 
     def yield_pages(self, max_pages=1_000):
-        """Yield the next page of results, if any."""
+        """Yields the next page of results, if any."""
 
         current_page_count = 0
 

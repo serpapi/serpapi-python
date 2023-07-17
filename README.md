@@ -23,4 +23,4 @@ To install the `serpapi` package, simply run the following command:
 $ pip install serpapi
 ```
 
-Please note that this package is seperate from the `serpapi` module, which is currently available on PyPi as `google-search-results`.
+Please note that this package is seperate from the *soon–to–be* legacy `serpapi` module, which is currently available on PyPi as `google-search-results`.

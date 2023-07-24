@@ -22,7 +22,9 @@ class SerpResults(UserDict):
         self.response = None
 
     def __repr__(self):
-        pp = PrettyPrinter(indent=2)
+        pp = PrettyPrinter(
+            indent=2,
+        )
         return f"{pp.pformat(self.data)}"
 
     def html(self, **extras):
@@ -76,11 +78,15 @@ class SerpResults(UserDict):
             except requests.exceptions.HTTPError as e:
                 raise HTTPError(e)
 
-        cls = cls(r.json(), client=client)
-        cls.request = r.request
-        cls.response = r
+        try:
+            cls = cls(r.json(), client=client)
+            cls.request = r.request
+            cls.response = r
 
-        return cls
+            return cls
+        except ValueError:
+            # If the response is not JSON, return the raw text.
+            return r.text
 
 
 class HTTPClient:
@@ -154,6 +160,7 @@ class Client(HTTPClient):
         """
 
         r = self.request("GET", "/search", params=params)
+
         return SerpResults.from_http_response(r, client=self)
 
     def search_archive(self, **params):

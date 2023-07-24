@@ -15,6 +15,14 @@ from .__version__ import __version__
 class SerpResults(UserDict):
     """A dictionary-like object that represents the results of a SerpAPI request.
 
+    .. code-block:: python
+
+        >>> serpapi = SerpAPI(api_key=os.environ["API_KEY"])
+        >>> search = serpapi.search(q="Coffee", location="Austin, Texas, United States")
+
+        >>> print(search["search_metadata"].keys())
+        dict_keys(['id', 'status', 'json_endpoint', 'created_at', 'processed_at', 'google_url', 'raw_html_file', 'total_time_taken'])
+
     An instance of this class is returned if the response is a valid JSON object.
     It can be used like a dictionary, but also has some additional methods.
     """
@@ -74,8 +82,11 @@ class SerpResults(UserDict):
     def from_http_response(cls, r, *, assert_200=True, client=None):
         """Construct a SerpResults object from an HTTP response.
 
+        :param assert_200: if ``True`` (default), raise an exception if the status code is not 200.
+        :param client: the Client instance which was used to send this request.
+
         An instance of this class is returned if the response is a valid JSON object.
-        Otherwise, the raw text is returned.
+        Otherwise, the raw text (as a properly decoded unicode string) is returned.
         """
 
         # Raise an exception if the status code is not 200.
@@ -178,14 +189,28 @@ class Client(HTTPClient):
         return "<SerpAPI Client>"
 
     def search(self, **params):
-        """Fetch a page of results from SerpAPI.
+        """Fetch a page of results from SerpAPI. Returns a :class:`SerpResults <serpapi.client.SerpResults>` object, or unicode text (*e.g.* if ``'output': 'html'`` was passed).
 
-        Returns a :class:`SerpResults <serpapi.client.SerpResults>` object.
+        The following two calls are equivalent:
 
-        :param params: the query parameters to send to SerpAPI, as outlined in
-          the documentation: https://serpapi.com/search-api
+        .. code-block:: python
 
-        Learn more: https://serpapi.com/search-api
+            >>> s = serpapi.search(q="Coffee", location="Austin, Texas, United States")
+
+        .. code-block:: python
+
+            >>> params = {"q": "Coffee", "location": "Austin, Texas, United States"}
+            >>> s = serpapi.search(**params)
+
+
+        :param q: typically, this is the parameter for the search engine query.
+        :param engine: the search engine to use. Defaults to ``google``.
+        :param output: The output format desired (``html`` or ``json``). Defaults to ``json``.
+        :param api_key: The API Key to use for SerpAPI.com.
+        :param **: any additional parameters to pass to the API.
+
+
+        **Learn more**: https://serpapi.com/search-api
         """
 
         r = self.request("GET", "/search", params=params)
@@ -195,7 +220,7 @@ class Client(HTTPClient):
     def search_archive(self, **params):
         """Get a result from the SerpAPI Search Archive API.
 
-        Learn more: https://serpapi.com/search-archive-api
+        **Learn more**: https://serpapi.com/search-archive-api
         """
 
         try:
@@ -211,7 +236,7 @@ class Client(HTTPClient):
     def locations(self, **params):
         """Get a list of supported Google locations.
 
-        Learn more: https://serpapi.com/locations-api
+        **Learn more**: https://serpapi.com/locations-api
         """
 
         r = self.request(
@@ -229,7 +254,7 @@ class Client(HTTPClient):
     ):
         """Get SerpAPI account information.
 
-        Learn more: https://serpapi.com/account-api
+        **Learn more**: https://serpapi.com/account-api
         """
 
         r = self.request("GET", "/account.json", params=params, assert_200=True)

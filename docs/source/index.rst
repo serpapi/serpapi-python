@@ -13,7 +13,7 @@ an official Python client library for `SerpApi <https://serpapi.com>`_.
 Getting Started
 ===============
 
-This part of the documentation covers installation of `serpapi-python` and a quick tutorial to get you started. 
+This part of the documentation covers installation of `serpapi-python` and a quick tutorial to get you started.
 
 If you are looking for reference material, please see the :ref:`API Reference <api-reference>`.
 
@@ -33,7 +33,7 @@ API Reference
 
 .. _api-reference:
 
-This part of the documentation covers all the interfaces of :class:`serpapi` Python module. 
+This part of the documentation covers all the interfaces of :class:`serpapi` Python module.
 
 .. module:: serpapi
    :platform: Unix, Windows
@@ -46,14 +46,33 @@ The primary interface to `serpapi-python` is through the :class:`serpapi.Client`
 
 .. autoclass:: serpapi.Client
    :members:
-   
+
+.. autoclass:: serpapi.client.SerpResults
+   :members:
 
 
 
 Exceptions
 ----------
 
-.. autoexception:: serpapi.SerpApiException
+.. autoexception:: serpapi.SerpAPIError
+   :members:
+
+.. autoexception:: serpapi.APIKeyNotProvided
+   :members:
+
+.. autoexception:: serpapi.SearchIDNotProvided
+   :members:
+
+.. autoexception:: serpapi.HTTPError
+   :members:
+
+.. autoexception:: serpapi.HTTPConnectionError
+   :members:
+
+
+
+
 
 Indices and tables
 ==================

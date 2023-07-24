@@ -13,7 +13,11 @@ from .__version__ import __version__
 
 
 class SerpResults(UserDict):
-    """A dictionary-like object that represents the results of a SERP API request."""
+    """A dictionary-like object that represents the results of a SerpAPI request.
+
+    An instance of this class is returned if the response is a valid JSON object.
+    It can be used like a dictionary, but also has some additional methods.
+    """
 
     def __init__(self, data, *, client):
         super().__init__(data)
@@ -53,7 +57,10 @@ class SerpResults(UserDict):
             return SerpResults.from_http_response(r, client=self.client)
 
     def yield_pages(self, max_pages=1_000):
-        """Yields the next page of results, if any."""
+        """A generator that ``yield`` s the next ``n`` pages of search results, if any.
+
+        :param max_pages: limit the number of pages yielded to ``n``.
+        """
 
         current_page_count = 0
 
@@ -67,8 +74,8 @@ class SerpResults(UserDict):
     def from_http_response(cls, r, *, assert_200=True, client=None):
         """Construct a SerpResults object from an HTTP response.
 
-        Optionally (but default behavior), will raise an exception if the status code is not 200.
-        This functionality can be disabled by setting `assert_200=False`.
+        An instance of this class is returned if the response is a valid JSON object.
+        Otherwise, the raw text is returned.
         """
 
         # Raise an exception if the status code is not 200.
@@ -148,13 +155,35 @@ class HTTPClient:
 
 
 class Client(HTTPClient):
-    """A class that handles the HTTP requests to SerpAPI."""
+    """A class that handles API requests to SerpAPI in a user–friendly manner.
+
+    :param api_key: The API Key to use for SerpAPI.com.
+
+    Please provide ``api_key`` when instantiating this class. We recommend storing this in an environment variable, like so:
+
+        .. code-block:: bash
+
+            $ export SERPAPI_KEY=YOUR_API_KEY
+
+        .. code-block:: python
+
+            import os
+            import serpapi
+
+            serpapi = serpapi.Client(api_key=os.environ["SERPAPI_KEY"])
+
+    """
 
     def __repr__(self):
         return "<SerpAPI Client>"
 
     def search(self, **params):
-        """Get a page of results from SerpAPI.
+        """Fetch a page of results from SerpAPI.
+
+        Returns a :class:`SerpResults <serpapi.client.SerpResults>` object.
+
+        :param params: the query parameters to send to SerpAPI, as outlined in
+          the documentation: https://serpapi.com/search-api
 
         Learn more: https://serpapi.com/search-api
         """

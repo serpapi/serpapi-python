@@ -19,13 +19,13 @@ class SearchIDNotProvided(ValueError, SerpAPIError):
     pass
 
 
-class HTTPConnectionError(requests.exceptions.ConnectionError, SerpAPIError):
-    """Connection Error."""
+class HTTPError(requests.exceptions.HTTPError, SerpAPIError):
+    """HTTP Error."""
 
     pass
 
 
-class HTTPError(requests.exceptions.HTTPError, SerpAPIError):
-    """HTTP Error."""
+class HTTPConnectionError(HTTPError, requests.exceptions.ConnectionError, SerpAPIError):
+    """Connection Error."""
 
     pass

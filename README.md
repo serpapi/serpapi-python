@@ -8,8 +8,7 @@
   [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 </div>
 
-
-Integrate search data into your Ruby application. This library is the official wrapper for SerpApi (https://serpapi.com).
+Integrate search data into your Python application. This library is the official wrapper for SerpApi (https://serpapi.com).
 
 SerpApi supports Google, Google Maps, Google Shopping, Baidu, Yandex, Yahoo, eBay, App Stores, and more.
 
@@ -35,7 +34,7 @@ results = client.search({
 print(results['organic_results'])
 ```
 
-This example runs a search for "coffee" on Google. It then returns the results as a regular Ruby Hash. See the [playground](https://serpapi.com/playground) to generate your own code.
+This example runs a search for "coffee" on Google. It then returns the results as a dict. See the [playground](https://serpapi.com/playground) to generate your own code.
 
 ## Advanced Usage
 ### Search API
@@ -86,10 +85,8 @@ raw_html = client.html(params)
 [Google search documentation](https://serpapi.com/search-api). More hands on examples are available below.
 
 ### Documentation
- * [API documentation](https://rubydoc.info/github/serpapi/serpapi-ruby/master)
  * [Full documentation on SerpApi.com](https://serpapi.com)
  * [Library Github page](https://github.com/serpapi/serpapi-ruby)
- * [Library GEM page](https://rubygems.org/gems/serpapi/)
  * [API health status](https://serpapi.com/status)
 
 ### Location API
@@ -697,7 +694,7 @@ The SerpApi.com service (backend)
 The class SerpApi::Client (client side / ruby):
  - Format the request to SerpApi.com server.
  - Execute HTTP Get request.
- - Parse JSON into Ruby Hash using a standard JSON library.
+ - Parse JSON into Python dictionary / dict using a standard JSON module.
 Et voila!
 
 ## Continuous integration

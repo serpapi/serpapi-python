@@ -1,0 +1,118 @@
+from .http import HTTPClient
+from .exceptions import SearchIDNotProvided
+from .models import SerpResults
+
+
+class Client(HTTPClient):
+    """A class that handles API requests to SerpApi in a user–friendly manner.
+
+    :param api_key: The API Key to use for SerpApi.com.
+
+    Please provide ``api_key`` when instantiating this class. We recommend storing this in an environment variable, like so:
+
+        .. code-block:: bash
+
+            $ export SERPAPI_KEY=YOUR_API_KEY
+
+        .. code-block:: python
+
+            import os
+            import serpapi
+
+            serpapi = serpapi.Client(api_key=os.environ["SERPAPI_KEY"])
+
+    """
+
+    def __repr__(self):
+        return "<SerpApi Client>"
+
+    def search(self, **params):
+        """Fetch a page of results from SerpApi. Returns a :class:`SerpResults <serpapi.client.SerpResults>` object, or unicode text (*e.g.* if ``'output': 'html'`` was passed).
+
+        The following two calls are equivalent:
+
+        .. code-block:: python
+
+            >>> s = serpapi.search(q="Coffee", location="Austin, Texas, United States")
+
+        .. code-block:: python
+
+            >>> params = {"q": "Coffee", "location": "Austin, Texas, United States"}
+            >>> s = serpapi.search(**params)
+
+
+        :param q: typically, this is the parameter for the search engine query.
+        :param engine: the search engine to use. Defaults to ``google``.
+        :param output: The output format desired (``html`` or ``json``). Defaults to ``json``.
+        :param api_key: The API Key to use for SerpApi.com.
+        :param **: any additional parameters to pass to the API.
+
+
+        **Learn more**: https://serpapi.com/search-api
+        """
+
+        r = self.request("GET", "/search", params=params)
+
+        return SerpResults.from_http_response(r, client=self)
+
+    def search_archive(self, **params):
+        """Get a result from the SerpApi Search Archive API.
+
+        **Learn more**: https://serpapi.com/search-archive-api
+        """
+
+        try:
+            search_id = params["search_id"]
+        except KeyError:
+            raise SearchIDNotProvided(
+                f"Please provide 'search_id', found here: { self.DASHBOARD_URL }"
+            )
+
+        r = self.request("GET", f"/searches/{ search_id }", params=params)
+        return SerpResults.from_http_response(r, client=self)
+
+    def locations(self, **params):
+        """Get a list of supported Google locations.
+
+        **Learn more**: https://serpapi.com/locations-api
+        """
+
+        r = self.request(
+            "GET",
+            "/locations.json",
+            params=params,
+            assert_200=True,
+        )
+        return r.json()
+
+    def account(
+        self,
+        **params,
+    ):
+        """Get SerpApi account information.
+
+        **Learn more**: https://serpapi.com/account-api
+        """
+
+        r = self.request("GET", "/account.json", params=params, assert_200=True)
+        return r.json()
+
+
+def search(**params):
+    client = Client()
+    return client.search(**params)
+
+
+def search_archive(**params):
+    client = Client()
+    return client.search_archive(**params)
+
+
+def locations(**params):
+    client = Client()
+    return client.locations(**params)
+
+
+def account(**params):
+    client = Client()
+    return client.account(**params)

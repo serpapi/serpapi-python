@@ -32,9 +32,25 @@ Please note that Python 3.6+ is required.
 Usage
 -----
 
-To use this module,
+Usage of this module is fairly straight-forward. In general, this module attempts to be as close to the actual API as possible, while still being Pythonic.
 
-TODO write this.
+For example, the API endpoint ``https://serpapi.com/search.json`` is represented by the method ``serpapi.search()``.
+
+.. code-block:: python
+
+   >>> import serpapi
+   >>> s = serpapi.search(q="Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
+   >>> s["organic_results"][0]["link"]
+   'https://en.wikipedia.org/wiki/Coffee'
+
+Any parameters that you pass to ``search()`` will be passed to the API. This includes the ``api_key`` parameter, which is required for all requests.
+
+To make this less repetitive, and gain the benefit of connection pooling, let's start using the API Client directly::
+
+   >>> client = serpapi.Client(api_key="secret_api_key")
+   >>> s = client.search(q="Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
+
+The ``api_key`` parameter is now automatically passed to all requests made by the client.
 
 
 API Reference

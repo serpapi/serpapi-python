@@ -8,7 +8,7 @@ from .__version__ import __version__
 
 
 class HTTPClient:
-    """A class that handles the HTTP requests to the SERP API."""
+    """A class that handles the HTTP requests to SerpApi.com."""
 
     BASE_DOMAIN = "https://serpapi.com"
     DASHBOARD_URL = "https://serpapi.com/dashboard"

@@ -43,8 +43,8 @@ class Client(HTTPClient):
 
         :param q: typically, this is the parameter for the search engine query.
         :param engine: the search engine to use. Defaults to ``google``.
-        :param output: The output format desired (``html`` or ``json``). Defaults to ``json``.
-        :param api_key: The API Key to use for SerpApi.com.
+        :param output: the output format desired (``html`` or ``json``). Defaults to ``json``.
+        :param api_key: the API Key to use for SerpApi.com.
         :param **: any additional parameters to pass to the API.
 
 
@@ -57,6 +57,10 @@ class Client(HTTPClient):
 
     def search_archive(self, **params):
         """Get a result from the SerpApi Search Archive API.
+
+        :param search_id: the Search ID of the search to retrieve from the archive.
+        :param api_key: the API Key to use for SerpApi.com.
+        :param **: any additional parameters to pass to the API.
 
         **Learn more**: https://serpapi.com/search-archive-api
         """
@@ -74,6 +78,11 @@ class Client(HTTPClient):
     def locations(self, **params):
         """Get a list of supported Google locations.
 
+
+        :param q: restricts your search to locations that contain the supplied string.
+        :param limit: limits the number of locations returned.
+        :param **: any additional parameters to pass to the API.
+
         **Learn more**: https://serpapi.com/locations-api
         """
 
@@ -90,6 +99,9 @@ class Client(HTTPClient):
         **params,
     ):
         """Get SerpApi account information.
+
+        :param api_key: the API Key to use for SerpApi.com.
+        :param **: any additional parameters to pass to the API.
 
         **Learn more**: https://serpapi.com/account-api
         """

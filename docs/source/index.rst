@@ -73,14 +73,14 @@ This class also alleviates the need to pass an ``api_key```  along with every se
 Results from SerpApi.com
 ------------------------
 
-When a successful ``serpapi.search`` has been executed, the call returns
-an :class:`SerpResults <serpapi.SerpResults>` object, which acts just like a standard dictionary,
+When a successful search has been executed, the method returns
+a :class:`SerpResults <serpapi.SerpResults>` object, which acts just like a standard dictionary,
 with some convenient functions added on top.
 
 
 .. code-block:: python
 
-   >>> s = serpapi.search("Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
+   >>> s = serpapi.search(q="Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
    >>> type(s)
    <class 'serpapi.models.SerpResults'>
 
@@ -90,6 +90,33 @@ with some convenient functions added on top.
    >>> s["search_metadata"]
    {'id': '64c148d35119a60ab1e00cc9', 'status': 'Success', 'json_endpoint': 'https://serpapi.com/searches/a15e1b92727f292c/64c148d35119a60ab1e00cc9.json', 'created_at': '2023-07-26 16:24:51 UTC', 'processed_at': '2023-07-26 16:24:51 UTC', 'google_url': 'https://www.google.com/search?q=Coffee&oq=Coffee&uule=w+CAIQICIdQXVzdGluLFRYLFRleGFzLFVuaXRlZCBTdGF0ZXM&hl=en&gl=us&sourceid=chrome&ie=UTF-8', 'raw_html_file': 'https://serpapi.com/searches/a15e1b92727f292c/64c148d35119a60ab1e00cc9.html', 'total_time_taken': 1.55}
 
+Optionally, if you want exactly a dictionary of the entire response, you can use the ``as_dict()`` method::
+
+   >>> type(s.as_dict())
+   <class 'dict'>
+
+You can get the next page of results::
+
+   >>> type(s.next_page())
+   <class 'serpapi.models.SerpResults'>
+
+Or iterate over all pages of results::
+
+   >>> for page in s.yield_pages():
+   ...     print(page["search_metadata"]["page_number"])
+   1
+   2
+   3
+   4
+   5
+   6
+   7
+   8
+   9
+   10
+
+
+Here's documentation of the class itself and its methods:
 
 .. autoclass:: serpapi.SerpResults
 

@@ -16,16 +16,18 @@ NAME = "serpapi"
 DESCRIPTION = "The official Python client for SerpApi.com."
 URL = "https://github.com/serpapi/serpapi-python"
 EMAIL = "kenneth@serpapi.com"
-AUTHOR = "SerpAPI.com"
+AUTHOR = "SerpApi.com"
 REQUIRES_PYTHON = ">=3.6.0"
 VERSION = None
 
 # What packages are required for this module to be executed?
-REQUIRED = ["requests"]
+REQUIRED = [
+    "requests",
+]
 
 # What packages are optional?
 EXTRAS = {
-    # 'fancy feature': ['django'],
+    "color": ["pygments"],
 }
 
 here = os.path.abspath(os.path.dirname(__file__))

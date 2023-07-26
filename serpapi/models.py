@@ -41,14 +41,11 @@ class SerpResults(UserDict):
 
         return prettify_json(json.dumps(self.data, indent=4))
 
-    def __str__(self):
-        return str(self.data)
-
     def as_dict(self):
         """Returns the data as a standard Python dictionary.
         This can be useful when using ``json.dumps(search), for example."""
 
-        return self.data
+        return self.data.copy()
 
     @property
     def next_page_url(self):

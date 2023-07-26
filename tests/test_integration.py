@@ -61,3 +61,10 @@ def test_coffee_search_n_pages(coffee_search):
         page_count += 1
 
     assert page_count == max_pages
+
+
+def test_coffee_search_next_page(coffee_search):
+    next_page = coffee_search.next_page()
+
+    assert isinstance(next_page, serpapi.SerpResults)
+    assert coffee_search["search_metadata"]["id"] != next_page["search_metadata"]["id"]

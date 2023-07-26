@@ -80,7 +80,7 @@ class SerpResults(UserDict):
             yield current_page
 
     @classmethod
-    def from_http_response(cls, r, *, assert_200=True, client=None):
+    def from_http_response(cls, r, *, client=None):
         """Construct a SerpResults object from an HTTP response.
 
         :param assert_200: if ``True`` (default), raise an exception if the status code is not 200.
@@ -89,13 +89,6 @@ class SerpResults(UserDict):
         An instance of this class is returned if the response is a valid JSON object.
         Otherwise, the raw text (as a properly decoded unicode string) is returned.
         """
-
-        # Raise an exception if the status code is not 200.
-        if assert_200:
-            try:
-                r.raise_for_status()
-            except requests.exceptions.HTTPError as e:
-                raise HTTPError(e)
 
         try:
             cls = cls(r.json(), client=client)

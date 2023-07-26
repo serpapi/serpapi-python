@@ -5,6 +5,7 @@ from collections import UserDict
 
 import requests
 
+from .textui import prettify_json
 from .exceptions import HTTPError
 
 
@@ -38,7 +39,10 @@ class SerpResults(UserDict):
         ease of use.
         """
 
-        return json.dumps(self.data, indent=4)
+        return prettify_json(json.dumps(self.data, indent=4))
+
+    def __str__(self):
+        return str(self.data)
 
     def as_dict(self):
         """Returns the data as a standard Python dictionary.

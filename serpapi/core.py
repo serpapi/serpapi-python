@@ -62,6 +62,7 @@ class Client(HTTPClient):
 
         :param search_id: the Search ID of the search to retrieve from the archive.
         :param api_key: the API Key to use for SerpApi.com.
+        :param output: the output format desired (``html`` or ``json``). Defaults to ``json``.
         :param **: any additional parameters to pass to the API.
 
         **Learn more**: https://serpapi.com/search-archive-api

@@ -19,21 +19,28 @@ def test_entrypoints(client):
 
 
 def test_account_without_credentials():
+    """Ensure that an HTTPError is raised when account is accessed without API Credentials."""
     with pytest.raises(serpapi.HTTPError):
         serpapi.account()
 
 
 def test_account_with_bad_credentials(invalid_key_client):
+    """Ensure that an HTTPError is raised when account is accessed with invalid API Credentials."""
     with pytest.raises(serpapi.HTTPError):
         invalid_key_client.account()
 
 
 def test_account_with_credentials(client):
-    assert client.account().keys()
+    """Ensure that account appears to be returning valid data if the API Key is correct."""
+    account = client.account()
+    assert account
+    assert account.keys()
+    assert isinstance(account, dict)
 
 
 def test_coffee_search(coffee_search):
     assert isinstance(coffee_search, serpapi.SerpResults)
+    assert hasattr(coffee_search, "__getitem__")
 
 
 def test_coffee_search_as_dict(coffee_search):
@@ -43,6 +50,7 @@ def test_coffee_search_as_dict(coffee_search):
 
 def test_coffee_search_html(coffee_search_html):
     assert isinstance(coffee_search_html, str)
+    assert not hasattr(coffee_search_html, "next_page_url")
 
 
 def test_coffee_search_n_pages(coffee_search):

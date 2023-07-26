@@ -98,21 +98,27 @@ class Client(HTTPClient):
         return r.json()
 
 
-def search(**params):
-    client = Client()
-    return client.search(**params)
+_client = Client()
+search = _client.search
+search_archive = _client.search_archive
+locations = _client.locations
+account = _client.account
+
+# def search(**params):
+#     client = Client()
+#     return client.search(**params)
 
 
-def search_archive(**params):
-    client = Client()
-    return client.search_archive(**params)
+# def search_archive(**params):
+#     client = Client()
+#     return client.search_archive(**params)
 
 
-def locations(**params):
-    client = Client()
-    return client.locations(**params)
+# def locations(**params):
+#     client = Client()
+#     return client.locations(**params)
 
 
-def account(**params):
-    client = Client()
-    return client.account(**params)
+# def account(**params):
+#     client = Client()
+#     return client.account(**params)

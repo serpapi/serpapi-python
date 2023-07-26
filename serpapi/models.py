@@ -26,8 +26,6 @@ class SerpResults(UserDict):
     def __init__(self, data, *, client):
         super().__init__(data)
         self.client = client
-        self.request = None
-        self.response = None
 
     def __getstate__(self):
         return self.data
@@ -36,9 +34,16 @@ class SerpResults(UserDict):
         self.data = state
 
     def __repr__(self):
-        return json.dumps(self.data, indent=2)
+        """The visual representation of the data, which is pretty printed, for
+        ease of use.
+        """
+
+        return json.dumps(self.data, indent=4)
 
     def as_dict(self):
+        """Returns the data as a standard Python dictionary.
+        This can be useful when using ``json.dumps(search), for example."""
+
         return self.data
 
     @property
@@ -94,8 +99,6 @@ class SerpResults(UserDict):
 
         try:
             cls = cls(r.json(), client=client)
-            cls.request = r.request
-            cls.response = r
 
             return cls
         except ValueError:

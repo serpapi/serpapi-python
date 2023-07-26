@@ -1,10 +1,8 @@
 import requests
 
 from .exceptions import (
-    APIKeyNotProvided,
     HTTPError,
     HTTPConnectionError,
-    SearchIDNotProvided,
 )
 from .__version__ import __version__
 
@@ -22,7 +20,7 @@ class HTTPClient:
         self.api_key = api_key
         self.session = requests.Session()
 
-    def request(self, method, path, params, *, assert_200=False, **kwargs):
+    def request(self, method, path, params, *, assert_200=True, **kwargs):
         # Inject the API Key into the params.
         if "api_key" not in params:
             params["api_key"] = self.api_key
@@ -55,6 +53,7 @@ class HTTPClient:
 
 def raise_for_status(r):
     """Raise an exception if the status code is not 200."""
+    # TODO: put custom behavior in here for various status codes.
 
     try:
         r.raise_for_status()

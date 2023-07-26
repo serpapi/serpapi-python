@@ -23,6 +23,8 @@ class Client(HTTPClient):
 
     """
 
+    DASHBOARD_URL = "https://serpapi.com/dashboard"
+
     def __repr__(self):
         return "<SerpApi Client>"
 

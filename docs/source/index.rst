@@ -10,14 +10,6 @@ an official Python client library for `SerpApi <https://serpapi.com>`_.
 
 --------------
 
-Getting Started
-===============
-
-This part of the documentation covers installation of `serpapi-python` and a quick tutorial to get you started.
-
-If you are looking for reference material, please see the :ref:`API Reference <api-reference>`.
-
-
 Installation
 ------------
 
@@ -53,8 +45,31 @@ To make this less repetitive, and gain the benefit of connection pooling, let's 
 The ``api_key`` parameter is now automatically passed to all requests made by the client.
 
 
+Concise Tutorial
+----------------
+
+Let's start by searching for ``Coffee`` on Google::
+
+   >>> import serpapi
+   >>> s = serpapi.search(q="Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
+
+The ``s`` variable now contains a :class:`SerpResults <serpapi.SerpResults>` object, which acts just like a standard dictionary, with some convenient functions added on top.
+
+Let's print the first result::
+
+   >>> print(s["organic_results"][0]["link"])
+   https://en.wikipedia.org/wiki/Coffee
+
+Let's print the title of the first result, but in a more Pythonic way::
+
+   >>> print(s["organic_results"][0].get("title"))
+   Coffee - Wikipedia
+
+The `SerpApi.com API Documentation <https://serpapi.com/search-api>`_ contains a list of all the possible parameters that can be passed to the API.
+
+
 API Reference
-=============
+-------------
 
 .. _api-reference:
 
@@ -71,19 +86,6 @@ This part of the documentation covers all the interfaces of :class:`serpapi` Pyt
 .. autofunction:: serpapi.locations
 .. autofunction:: serpapi.account
 
-API Client
-----------
-
-The primary interface to `serpapi-python` is through the :class:`serpapi.Client` class.
-The primary benefit of using this class is to benefit from Requests' HTTP Connection Pooling.
-This class also alleviates the need to pass an ``api_key```  along with every search made to the platform.
-
-.. autoclass:: serpapi.Client
-
-   .. automethod:: Client.search
-   .. automethod:: Client.search_archive
-   .. automethod:: Client.account
-   .. automethod:: Client.locations
 
 
 Results from SerpApi.com
@@ -139,6 +141,22 @@ Here's documentation of the class itself and its methods:
    .. automethod:: SerpResults.next_page
    .. automethod:: SerpResults.yield_pages
    .. autoproperty:: SerpResults.next_page_url
+
+
+API Client
+----------
+
+The primary interface to `serpapi-python` is through the :class:`serpapi.Client` class.
+The primary benefit of using this class is to benefit from Requests' HTTP Connection Pooling.
+This class also alleviates the need to pass an ``api_key```  along with every search made to the platform.
+
+.. autoclass:: serpapi.Client
+
+   .. automethod:: Client.search
+   .. automethod:: Client.search_archive
+   .. automethod:: Client.account
+   .. automethod:: Client.locations
+
 
 
 Exceptions

@@ -14,7 +14,6 @@ class SerpResults(UserDict):
 
     .. code-block:: python
 
-        >>> serpapi = SerpAPI(api_key=os.environ["API_KEY"])
         >>> search = serpapi.search(q="Coffee", location="Austin, Texas, United States")
 
         >>> print(search["search_metadata"].keys())

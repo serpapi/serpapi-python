@@ -28,6 +28,15 @@ To install ``serpapi-python``, simply use `pip`::
 
 Please note that Python 3.6+ is required.
 
+
+Usage
+-----
+
+To use this module,
+
+TODO write this.
+
+
 API Reference
 =============
 
@@ -38,27 +47,61 @@ This part of the documentation covers all the interfaces of :class:`serpapi` Pyt
 .. module:: serpapi
    :platform: Unix, Windows
    :synopsis: SerpApi Python Library
+   :members:
+   :undoc-members:
 
-Primary interface
------------------
+.. autofunction:: serpapi.search
+.. autofunction:: serpapi.search_archive
+.. autofunction:: serpapi.locations
+.. autofunction:: serpapi.account
+
+API Client
+----------
 
 The primary interface to `serpapi-python` is through the :class:`serpapi.Client` class.
+The primary benefit of using this class is to benefit from Requests' HTTP Connection Pooling.
+This class also alleviates the need to pass an ``api_key```  along with every search made to the platform.
 
 .. autoclass:: serpapi.Client
-   :members:
 
-.. autoclass:: serpapi.client.SerpResults
-   :members:
+   .. automethod:: Client.search
+   .. automethod:: Client.search_archive
+   .. automethod:: Client.account
+   .. automethod:: Client.locations
 
+
+Results from SerpApi.com
+------------------------
+
+When a successful ``serpapi.search`` has been executed, the call returns
+an :class:`SerpResults <serpapi.SerpResults>` object, which acts just like a standard dictionary,
+with some convenient functions added on top.
+
+
+.. code-block:: python
+
+   >>> s = serpapi.search("Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
+   >>> type(s)
+   <class 'serpapi.models.SerpResults'>
+
+   >>> s["organic_results"][0]["link"]
+   'https://en.wikipedia.org/wiki/Coffee'
+
+   >>> s["search_metadata"]
+   {'id': '64c148d35119a60ab1e00cc9', 'status': 'Success', 'json_endpoint': 'https://serpapi.com/searches/a15e1b92727f292c/64c148d35119a60ab1e00cc9.json', 'created_at': '2023-07-26 16:24:51 UTC', 'processed_at': '2023-07-26 16:24:51 UTC', 'google_url': 'https://www.google.com/search?q=Coffee&oq=Coffee&uule=w+CAIQICIdQXVzdGluLFRYLFRleGFzLFVuaXRlZCBTdGF0ZXM&hl=en&gl=us&sourceid=chrome&ie=UTF-8', 'raw_html_file': 'https://serpapi.com/searches/a15e1b92727f292c/64c148d35119a60ab1e00cc9.html', 'total_time_taken': 1.55}
+
+
+.. autoclass:: serpapi.SerpResults
+
+   .. automethod:: SerpResults.next_page
+   .. automethod:: SerpResults.yield_pages
+   .. autoproperty:: SerpResults.next_page_url
 
 
 Exceptions
 ----------
 
 .. autoexception:: serpapi.SerpAPIError
-   :members:
-
-.. autoexception:: serpapi.APIKeyNotProvided
    :members:
 
 .. autoexception:: serpapi.SearchIDNotProvided

@@ -11,8 +11,7 @@ class HTTPClient:
     """A class that handles the HTTP requests to SerpApi.com."""
 
     BASE_DOMAIN = "https://serpapi.com"
-    DASHBOARD_URL = "https://serpapi.com/dashboard"
-    USER_AGENT = f"SerpApi Python Client, v{__version__}"
+    USER_AGENT = f"serpapi-python, v{__version__}"
 
     def __init__(self, *, api_key=None):
         # Used to authenticate requests.
@@ -48,6 +47,7 @@ class HTTPClient:
                 raise_for_status(r)
             except requests.exceptions.HTTPError as e:
                 raise HTTPError(e)
+
         return r
 
 

@@ -35,7 +35,6 @@ requests==2.31.0
 requests-toolbelt==1.0.0
 rfc3986==2.0.0
 rich==13.4.2
--e git+ssh://git@github.com/serpapi/serpapi-python.git@a2a89dd36c6d81dc61e77cf0e4e35203d50d3af1#egg=serpapi
 six==1.16.0
 snowballstemmer==2.2.0
 Sphinx==7.0.1
@@ -51,3 +50,4 @@ urllib3==2.0.3
 webencodings==0.5.1
 wrapt==1.15.0
 zipp==3.15.0
+-e ../

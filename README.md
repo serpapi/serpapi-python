@@ -24,4 +24,11 @@ $ pip install serpapi
 ```
 
 Please note that this package is separate from the *soon–to–be* legacy `serpapi` module, which is currently available on PyPi as `google-search-results`.
-i
+
+## License
+
+MIT
+
+## Contributing
+
+Bug reports and pull requests are welcome on GitHub. Once dependencies are installed, you can run the tests with `pytest`.

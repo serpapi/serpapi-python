@@ -19,7 +19,7 @@ This project is under development, and will be released to the public on PyPi so
 
 To install the `serpapi` package, simply run the following command:
 
-```sh
+```bash
 $ pip install serpapi
 ```
 

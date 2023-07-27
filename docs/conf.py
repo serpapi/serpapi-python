@@ -57,3 +57,13 @@ html_static_path = ["_static"]
 
 
 # -- Extension configuration -------------------------------------------------
+html_theme_options = {
+    "logo": "serpapi-python.png",
+    "logo_name": "serapi-python",
+}
+
+html_sidebars = {
+    "**": [
+        "about.html",
+    ]
+}

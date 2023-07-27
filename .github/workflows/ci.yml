@@ -31,6 +31,6 @@ jobs:
       run: pip install -e .[test]
 
     - name: Test with pytest
-      run: pipenv run pytest
+      run: pytest
       env:
         API_KEY: ${{secrets.API_KEY}}

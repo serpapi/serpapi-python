@@ -36,13 +36,17 @@ The `s` variable now contains a `SerpResults` object, which acts just like a sta
 
 Let’s print the first result:
 
-    >>> print(s["organic_results"][0]["link"])
-    https://en.wikipedia.org/wiki/Coffee
+```pycon
+>>> s["organic_results"][0]["link"]
+'https://en.wikipedia.org/wiki/Coffee'
+```
 
 Let’s print the title of the first result, but in a more Pythonic way:
 
-    >>> print(s["organic_results"][0].get("title"))
-    Coffee - Wikipedia
+```pycon
+>>> s["organic_results"][0].get("title")
+'Coffee - Wikipedia'
+```
 
 The [SerpApi.com API Documentation](https://serpapi.com/search-api) contains a list of all the possible parameters that can be passed to the API.
 
@@ -52,7 +56,7 @@ Documentation is [available on Read the Docs](https://serpapi-python.readthedocs
 
 ## License
 
-MIT
+MIT License.
 
 ## Contributing
 

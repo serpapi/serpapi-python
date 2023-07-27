@@ -29,8 +29,10 @@ Please note that this package is separate from the *soon–to–be* legacy `serp
 
 Let’s start by searching for Coffee on Google:
 
-    >>> import serpapi
-    >>>> s = serpapi.search(q="Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
+```pycon
+>>> import serpapi
+>>> s = serpapi.search(q="Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
+```
 
 The `s` variable now contains a `SerpResults` object, which acts just like a standard dictionary, with some convenient functions added on top.
 

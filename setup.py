@@ -21,7 +21,7 @@ REQUIRES_PYTHON = ">=3.6.0"
 VERSION = None
 
 # What packages are required for this module to be executed?
-REQUIRED = ["requests", "pygments"]
+REQUIRED = ["requests"]
 
 # What packages are optional?
 EXTRAS = {"color": ["pygments"], "test": ["pytest"]}

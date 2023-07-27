@@ -13,7 +13,7 @@ SerpApi supports Google, Google Maps, Google Shopping, Bing, Baidu, Yandex, Yaho
 
 ## Current Status
 
-This project is under development, and will be released to the public soon.
+This project is under development, and will be released to the public on PyPi soon.
 
 ## Installation
 
@@ -24,6 +24,31 @@ $ pip install serpapi
 ```
 
 Please note that this package is separate from the *soon–to–be* legacy `serpapi` module, which is currently available on PyPi as `google-search-results`.
+
+## Usage
+
+Let’s start by searching for Coffee on Google:
+
+    >>> import serpapi
+    >>>> s = serpapi.search(q="Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
+
+The `s` variable now contains a `SerpResults` object, which acts just like a standard dictionary, with some convenient functions added on top.
+
+Let’s print the first result:
+
+    >>> print(s["organic_results"][0]["link"])
+    https://en.wikipedia.org/wiki/Coffee
+
+Let’s print the title of the first result, but in a more Pythonic way:
+
+    >>> print(s["organic_results"][0].get("title"))
+    Coffee - Wikipedia
+
+The [SerpApi.com API Documentation](https://serpapi.com/search-api) contains a list of all the possible parameters that can be passed to the API.
+
+## Documentation
+
+Documentation is [available on Read the Docs](https://serpapi-python.readthedocs.io/en/latest/).
 
 ## License
 

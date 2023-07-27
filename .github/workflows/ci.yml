@@ -27,9 +27,8 @@ jobs:
         python-version: ${{ matrix.python-version }}
 
 
-    - name: Install pipenv
-      run: curl https://raw.githubusercontent.com/pypa/pipenv/master/get-pipenv.py | python
-    - run: pipenv install --dev --deploy
+    - name: Install dependencies
+      run: pip install -e .[test]
 
     - name: Test with pytest
       run: pipenv run pytest

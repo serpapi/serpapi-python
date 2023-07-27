@@ -24,9 +24,7 @@ VERSION = None
 REQUIRED = ["requests", "pygments"]
 
 # What packages are optional?
-EXTRAS = {
-    "color": ["pygments"],
-}
+EXTRAS = {"color": ["pygments"], "test": ["pytest"]}
 
 here = os.path.abspath(os.path.dirname(__file__))
 

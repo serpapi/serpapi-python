@@ -1,11 +1,18 @@
+.vscode/**
+
 script/
 .coverage
 docs/build
 dist/
+build/
 .pytest_cache/
 serpapi.egg-info/
 
-serpapi/__pycache__
-tests/__pycache__
+
+__pycache__
 *.pyc
 .DS_Store
+.envrc
+
+.vscode
+t.py

@@ -1,12 +1,4 @@
-"""serpapi.com client implementation in python
-This simple HTTP client allow to interact with SerpApi.com
+from .__version__ import __version__
 
-see: https://serpapi.com for more information
-"""
-
-from ._version import __version__
-from .error import SerpApiException
-from .serpapi import Client
-
-__author__ = "Victor Benarbia victor@serpapi.com"
-__license__ = "MIT"
+from .core import *
+from .exceptions import *

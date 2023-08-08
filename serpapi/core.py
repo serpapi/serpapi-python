@@ -28,10 +28,10 @@ class Client(HTTPClient):
     def __repr__(self):
         return "<SerpApi Client>"
 
-    def search(self, **params):
+    def search(self, params=None, **kwargs):
         """Fetch a page of results from SerpApi. Returns a :class:`SerpResults <serpapi.client.SerpResults>` object, or unicode text (*e.g.* if ``'output': 'html'`` was passed).
 
-        The following two calls are equivalent:
+        The following three calls are equivalent:
 
         .. code-block:: python
 
@@ -41,6 +41,11 @@ class Client(HTTPClient):
 
             >>> params = {"q": "Coffee", "location": "Austin, Texas, United States"}
             >>> s = serpapi.search(**params)
+
+        .. code-block:: python
+
+            >>> params = {"q": "Coffee", "location": "Austin, Texas, United States"}
+            >>> s = serpapi.search(params)
 
 
         :param q: typically, this is the parameter for the search engine query.
@@ -52,12 +57,17 @@ class Client(HTTPClient):
 
         **Learn more**: https://serpapi.com/search-api
         """
+        if params is None:
+            params = {}
+
+        if kwargs:
+            params.update(kwargs)
 
         r = self.request("GET", "/search", params=params)
 
         return SerpResults.from_http_response(r, client=self)
 
-    def search_archive(self, **params):
+    def search_archive(self, params=None, **kwargs):
         """Get a result from the SerpApi Search Archive API.
 
         :param search_id: the Search ID of the search to retrieve from the archive.
@@ -67,6 +77,12 @@ class Client(HTTPClient):
 
         **Learn more**: https://serpapi.com/search-archive-api
         """
+        if params is None:
+            params = {}
+
+        if kwargs:
+            params.update(kwargs)
+
 
         try:
             search_id = params["search_id"]
@@ -78,7 +94,7 @@ class Client(HTTPClient):
         r = self.request("GET", f"/searches/{ search_id }", params=params)
         return SerpResults.from_http_response(r, client=self)
 
-    def locations(self, **params):
+    def locations(self, params=None, **kwargs):
         """Get a list of supported Google locations.
 
 
@@ -88,6 +104,11 @@ class Client(HTTPClient):
 
         **Learn more**: https://serpapi.com/locations-api
         """
+        if params is None:
+            params = {}
+
+        if kwargs:
+            params.update(kwargs)
 
         r = self.request(
             "GET",
@@ -99,7 +120,8 @@ class Client(HTTPClient):
 
     def account(
         self,
-        **params,
+        params=None,
+        **kwargs,
     ):
         """Get SerpApi account information.
 
@@ -109,10 +131,16 @@ class Client(HTTPClient):
         **Learn more**: https://serpapi.com/account-api
         """
 
+        if params is None:
+            params = {}
+
+        if kwargs:
+            params.update(kwargs)
+
         r = self.request("GET", "/account.json", params=params, assert_200=True)
         return r.json()
 
-
+# An un-authenticated client instance, .
 _client = Client()
 search = _client.search
 search_archive = _client.search_archive

@@ -78,7 +78,6 @@ This part of the documentation covers all the interfaces of :class:`serpapi` Pyt
 .. module:: serpapi
    :platform: Unix, Windows
    :synopsis: SerpApi Python Library
-   :members:
    :undoc-members:
 
 .. autofunction:: serpapi.search
@@ -162,7 +161,7 @@ This class also alleviates the need to pass an ``api_key```  along with every se
 Exceptions
 ----------
 
-.. autoexception:: serpapi.SerpAPIError
+.. autoexception:: serpapi.SerpApiError
    :members:
 
 .. autoexception:: serpapi.SearchIDNotProvided

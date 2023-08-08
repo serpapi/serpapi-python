@@ -78,7 +78,6 @@ This part of the documentation covers all the interfaces of :class:`serpapi` Pyt
 .. module:: serpapi
    :platform: Unix, Windows
    :synopsis: SerpApi Python Library
-   :undoc-members:
 
 .. autofunction:: serpapi.search
 .. autofunction:: serpapi.search_archive

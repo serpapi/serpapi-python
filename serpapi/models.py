@@ -10,7 +10,7 @@ from .exceptions import HTTPError
 
 
 class SerpResults(UserDict):
-    """A dictionary-like object that represents the results of a SerpAPI request.
+    """A dictionary-like object that represents the results of a SerpApi request.
 
     .. code-block:: python
 

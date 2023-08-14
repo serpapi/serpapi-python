@@ -136,7 +136,7 @@ class Client(HTTPClient):
         return r.json()
 
 
-# An un-authenticated client instance, .
+# An un-authenticated client instance.
 _client = Client()
 search = _client.search
 search_archive = _client.search_archive

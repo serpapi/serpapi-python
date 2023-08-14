@@ -68,3 +68,14 @@ def test_coffee_search_next_page(coffee_search):
 
     assert isinstance(next_page, serpapi.SerpResults)
     assert coffee_search["search_metadata"]["id"] != next_page["search_metadata"]["id"]
+
+
+def test_search_function_signature(coffee_params, client):
+    s = client.search(coffee_params)
+    assert s["search_metadata"]["id"]
+
+    s = client.search(**coffee_params)
+    assert s["search_metadata"]["id"]
+
+    s = client.search(q='coffee')
+    assert s["search_metadata"]["id"]

@@ -1,31 +1,31 @@
 import requests
 
 
-class SerpAPIError(Exception):
+class SerpApiError(Exception):
     """Base class for exceptions in this module."""
 
     pass
 
 
-class APIKeyNotProvided(ValueError, SerpAPIError):
+class APIKeyNotProvided(ValueError, SerpApiError):
     """API key is not provided."""
 
     pass
 
 
-class SearchIDNotProvided(ValueError, SerpAPIError):
+class SearchIDNotProvided(ValueError, SerpApiError):
     """Search ID is not provided."""
 
     pass
 
 
-class HTTPError(requests.exceptions.HTTPError, SerpAPIError):
+class HTTPError(requests.exceptions.HTTPError, SerpApiError):
     """HTTP Error."""
 
     pass
 
 
-class HTTPConnectionError(HTTPError, requests.exceptions.ConnectionError, SerpAPIError):
+class HTTPConnectionError(HTTPError, requests.exceptions.ConnectionError, SerpApiError):
     """Connection Error."""
 
     pass

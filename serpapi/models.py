@@ -3,8 +3,6 @@ import json
 from pprint import pformat
 from collections import UserDict
 
-import requests
-
 from .textui import prettify_json
 from .exceptions import HTTPError
 

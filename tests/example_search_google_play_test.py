@@ -3,9 +3,7 @@ import pytest
 import os
 import serpapi
 
-@pytest.mark.skipif((os.getenv("API_KEY") == None), reason="no api_key provided")
-def test_search_google_play():
-  client = serpapi.Client(api_key=os.getenv("API_KEY"))
+def test_search_google_play(client):
   data = client.search({
       'engine': 'google_play',
       'q': 'kite',

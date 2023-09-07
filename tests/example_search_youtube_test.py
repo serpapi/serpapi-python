@@ -3,9 +3,8 @@ import pytest
 import os
 import serpapi
 
-@pytest.mark.skipif((os.getenv("API_KEY") == None), reason="no api_key provided")
-def test_search_youtube():
-  client = serpapi.Client(api_key=os.getenv("API_KEY"))
+def test_search_youtube(client):
+
   data = client.search({
       'engine': 'youtube',
       'search_query': 'coffee',

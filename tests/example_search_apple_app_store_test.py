@@ -3,9 +3,7 @@ import pytest
 import os
 import serpapi
 
-@pytest.mark.skipif((os.getenv("API_KEY") == None), reason="no api_key provided")
-def test_search_apple_app_store():
-  client = serpapi.Client(api_key=os.getenv("API_KEY"))
+def test_search_apple_app_store(client):
   data = client.search({
       'engine': 'apple_app_store',
       'term': 'coffee',

@@ -3,9 +3,7 @@ import pytest
 import os
 import serpapi
 
-@pytest.mark.skipif((os.getenv("API_KEY") == None), reason="no api_key provided")
-def test_search_google_reverse_image():
-  client = serpapi.Client(api_key=os.getenv("API_KEY"))
+def test_search_google_reverse_image(client):
   data = client.search({
       'engine': 'google_reverse_image',
       'image_url': 'https://i.imgur.com/5bGzZi7.jpg',

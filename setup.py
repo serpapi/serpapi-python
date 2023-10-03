@@ -104,7 +104,7 @@ setup(
     extras_require=EXTRAS,
     include_package_data=True,
     license="MIT",
-    project_urls={"Documentation": "https://serpapi.com/search-api"},
+    project_urls={"Documentation": "https://serpapi-python.readthedocs.io/en/latest/"},
     keywords="scrape,serp,api,serpapi,scraping,json,search,localized,rank,google,bing,baidu,yandex,yahoo,ebay,scale,datamining,training,machine,ml,youtube,naver,walmart,apple,store,app,serpapi",
     classifiers=[
         # Trove classifiers

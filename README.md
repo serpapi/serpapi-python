@@ -7,13 +7,10 @@
   [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 </div>
 
-This repository is the home of the *soon–to–be* official Python API wrapper for SerpApi (https://serpapi.com). This `serpapi` module allows you to access search data in your Python application.
+This repository is the home of theofficial Python API wrapper for SerpApi (https://serpapi.com). This `serpapi` module allows you to access search data in your Python application.
 
 SerpApi supports Google, Google Maps, Google Shopping, Bing, Baidu, Yandex, Yahoo, eBay, App Stores, and more. Check out the [documentation](https://serpapi.com/search-api) for a full list.
 
-## Current Status
-
-This project is under development, and will be released to the public on PyPi soon.
 
 ## Installation
 
@@ -23,7 +20,7 @@ To install the `serpapi` package, simply run the following command:
 $ pip install serpapi
 ```
 
-Please note that this package is separate from the *soon–to–be* legacy `serpapi` module, which is currently available on PyPi as `google-search-results`.
+Please note that this package is separate from the legacy `serpapi` module, which is available on PyPi as `google-search-results`. This package is maintained by SerpApi, and is the recommended way to access the SerpApi service from Python.
 
 ## Usage
 

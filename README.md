@@ -7,7 +7,7 @@
   [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 </div>
 
-This repository is the home of theofficial Python API wrapper for SerpApi (https://serpapi.com). This `serpapi` module allows you to access search data in your Python application.
+This repository is the home of the official Python API wrapper for SerpApi (https://serpapi.com). This `serpapi` module allows you to access search data in your Python application.
 
 SerpApi supports Google, Google Maps, Google Shopping, Bing, Baidu, Yandex, Yahoo, eBay, App Stores, and more. Check out the [documentation](https://serpapi.com/search-api) for a full list.
 

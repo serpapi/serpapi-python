@@ -1,10 +1,15 @@
 Release History
 ===============
 
+0.1.4 (2023-10-06)
+------------------
+
+- Support for Python 3.12.0 (no changes).
+
 0.1.3 (2023-10-06)
 ------------------
 
-- Replace deprecated serpapi_pagination.next_link with 'next'. 
+- Replace deprecated `serpapi_pagination.next_link` with `next`. 
 - Improve documentation: how to use the client directly for pagination searches.
 
 0.1.2 (2023-10-03)

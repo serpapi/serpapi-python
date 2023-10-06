@@ -46,6 +46,27 @@ else:
     about["__version__"] = VERSION
 
 
+class TestCommand(Command):
+    """Support setup.py test."""
+
+    description = "Test the package."
+    user_options = []
+
+    @staticmethod
+    def status(s):
+        """Prints things in bold."""
+        print("\033[1m{0}\033[0m".format(s))
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        os.system("{0} -m pytest".format(sys.executable))
+        sys.exit()
+        
 class UploadCommand(Command):
     """Support setup.py upload."""
 
@@ -129,5 +150,6 @@ setup(
     # $ setup.py publish support.
     cmdclass={
         "upload": UploadCommand,
+        "test": TestCommand
     },
 )

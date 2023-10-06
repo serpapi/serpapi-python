@@ -66,7 +66,7 @@ class TestCommand(Command):
     def run(self):
         os.system("{0} -m pytest".format(sys.executable))
         sys.exit()
-        
+
 class UploadCommand(Command):
     """Support setup.py upload."""
 
@@ -140,6 +140,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Natural Language :: English",
         "Topic :: Utilities",
         "Topic :: Internet :: WWW/HTTP",

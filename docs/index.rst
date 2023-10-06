@@ -1,4 +1,4 @@
-.. serapi-python documentation master file, created by
+.. serpapi-python documentation master file, created by
    sphinx-quickstart on Sun Apr  3 21:09:40 2022.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
@@ -36,6 +36,11 @@ For example, the API endpoint ``https://serpapi.com/search.json`` is represented
    'https://en.wikipedia.org/wiki/Coffee'
 
 Any parameters that you pass to ``search()`` will be passed to the API. This includes the ``api_key`` parameter, which is required for all requests.
+
+.. _using-api-client-directly:
+
+Using the API Client directly
+^^^^^^^^^
 
 To make this less repetitive, and gain the benefit of connection pooling, let's start using the API Client directly::
 
@@ -116,9 +121,11 @@ You can get the next page of results::
    >>> type(s.next_page())
    <class 'serpapi.models.SerpResults'>
 
-Or iterate over all pages of results::
+To iterate over all pages of results, it's recommended to :ref:`use the API Client directly <using-api-client-directly>`::
 
-   >>> for page in s.yield_pages():
+   >>> client = serpapi.Client(api_key="secret_api_key")
+   >>> search = client.search(q="Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
+   >>> for page in search.yield_pages():
    ...     print(page["search_metadata"]["page_number"])
    1
    2

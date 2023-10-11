@@ -59,7 +59,6 @@ Documentation is [available on Read the Docs](https://serpapi-python.readthedocs
 ### Search Bing
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -74,7 +73,6 @@ results = client.search({
 ### Search Baidu
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -89,7 +87,6 @@ results = client.search({
 ### Search Yahoo
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -104,7 +101,6 @@ results = client.search({
 ### Search YouTube
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -119,7 +115,6 @@ results = client.search({
 ### Search Walmart
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -134,7 +129,6 @@ results = client.search({
 ### Search eBay
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -149,7 +143,6 @@ results = client.search({
 ### Search Naver
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -164,7 +157,6 @@ results = client.search({
 ### Search Home Depot
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -179,7 +171,6 @@ results = client.search({
 ### Search Apple App Store
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -194,7 +185,6 @@ results = client.search({
 ### Search DuckDuckGo
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -209,7 +199,6 @@ results = client.search({
 ### Search Google
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -225,7 +214,6 @@ results = client.search({
 ### Search Google Scholar
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -240,7 +228,6 @@ results = client.search({
 ### Search Google Autocomplete
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -255,7 +242,6 @@ results = client.search({
 ### Search Google Product
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -271,7 +257,6 @@ results = client.search({
 ### Search Google Reverse Image
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -287,7 +272,6 @@ results = client.search({
 ### Search Google Events
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -302,7 +286,6 @@ results = client.search({
 ### Search Google Local Services
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -318,7 +301,6 @@ results = client.search({
 ### Search Google Maps
 ```python
 import os
-
 import serpapi
 
 
@@ -336,7 +318,6 @@ results = client.search({
 ### Search Google Jobs
 ```python
 import os
-
 import serpapi
 
 
@@ -352,7 +333,6 @@ results = client.search({
 ### Search Google Play
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
@@ -369,7 +349,6 @@ results = client.search({
 ### Search Google Images
 ```python
 import os
-
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))

@@ -1,12 +1,23 @@
 Release History
 ===============
 
-dev
----
+0.1.3 (2023-10-06)
+------------------
 
-* Initial release
+- Replace deprecated serpapi_pagination.next_link with 'next'. 
+- Improve documentation: how to use the client directly for pagination searches.
 
-1.0.0 (planned)
----------------
+0.1.2 (2023-10-03)
+------------------
 
-- First planned release
+- Update project status to Production/Stable.
+
+0.1.1 (2023-10-03)
+------------------
+
+- Update documentation link to point to Read the Docs.
+
+0.1.0 (2023-10-03)
+------------------
+
+- First release on PyPI.

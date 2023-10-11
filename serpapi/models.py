@@ -51,7 +51,7 @@ class SerpResults(UserDict):
         serpapi_pagination = self.data.get("serpapi_pagination")
 
         if serpapi_pagination:
-            return serpapi_pagination.get("next_link")
+            return serpapi_pagination.get("next")
 
     def next_page(self):
         """Return the next page of results, if any."""

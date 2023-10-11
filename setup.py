@@ -46,6 +46,27 @@ else:
     about["__version__"] = VERSION
 
 
+class TestCommand(Command):
+    """Support setup.py test."""
+
+    description = "Test the package."
+    user_options = []
+
+    @staticmethod
+    def status(s):
+        """Prints things in bold."""
+        print("\033[1m{0}\033[0m".format(s))
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        os.system("{0} -m pytest".format(sys.executable))
+        sys.exit()
+
 class UploadCommand(Command):
     """Support setup.py upload."""
 
@@ -104,7 +125,7 @@ setup(
     extras_require=EXTRAS,
     include_package_data=True,
     license="MIT",
-    project_urls={"Documentation": "https://serpapi.com/search-api"},
+    project_urls={"Documentation": "https://serpapi-python.readthedocs.io/en/latest/"},
     keywords="scrape,serp,api,serpapi,scraping,json,search,localized,rank,google,bing,baidu,yandex,yahoo,ebay,scale,datamining,training,machine,ml,youtube,naver,walmart,apple,store,app,serpapi",
     classifiers=[
         # Trove classifiers
@@ -119,6 +140,7 @@ setup(
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
         "Natural Language :: English",
         "Topic :: Utilities",
         "Topic :: Internet :: WWW/HTTP",
@@ -129,5 +151,6 @@ setup(
     # $ setup.py publish support.
     cmdclass={
         "upload": UploadCommand,
+        "test": TestCommand
     },
 )

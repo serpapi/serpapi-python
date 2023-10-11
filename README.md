@@ -67,8 +67,7 @@ results = client.search({
     'q': 'coffee',
 })
 ```
-- test: [tests/example_search_bing_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_bing_test.py)
-- see: [serpapi.com/bing-search-api](https://serpapi.com/bing-search-api)
+- API Documentation: [serpapi.com/bing-search-api](https://serpapi.com/bing-search-api)
 
 ### Search Baidu
 ```python
@@ -81,8 +80,7 @@ results = client.search({
     'q': 'coffee',
 })
 ```
-- test: [tests/example_search_baidu_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_baidu_test.py)
-- see: [serpapi.com/baidu-search-api](https://serpapi.com/baidu-search-api)
+- API Documentation: [serpapi.com/baidu-search-api](https://serpapi.com/baidu-search-api)
 
 ### Search Yahoo
 ```python
@@ -95,8 +93,7 @@ results = client.search({
     'p': 'coffee',
 })
 ```
-- test: [tests/example_search_yahoo_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_yahoo_test.py)
-- see: [serpapi.com/yahoo-search-api](https://serpapi.com/yahoo-search-api)
+- API Documentation: [serpapi.com/yahoo-search-api](https://serpapi.com/yahoo-search-api)
 
 ### Search YouTube
 ```python
@@ -109,8 +106,7 @@ results = client.search({
     'search_query': 'coffee',
 })
 ```
-- test: [tests/example_search_youtube_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_youtube_test.py)
-- see: [serpapi.com/youtube-search-api](https://serpapi.com/youtube-search-api)
+- API Documentation: [serpapi.com/youtube-search-api](https://serpapi.com/youtube-search-api)
 
 ### Search Walmart
 ```python
@@ -123,8 +119,7 @@ results = client.search({
     'query': 'coffee',
 })
 ```
-- test: [tests/example_search_walmart_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_walmart_test.py)
-- see: [serpapi.com/walmart-search-api](https://serpapi.com/walmart-search-api)
+- API Documentation: [serpapi.com/walmart-search-api](https://serpapi.com/walmart-search-api)
 
 ### Search eBay
 ```python
@@ -137,8 +132,7 @@ results = client.search({
     '_nkw': 'coffee',
 })
 ```
-- test: [tests/example_search_ebay_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_ebay_test.py)
-- see: [serpapi.com/ebay-search-api](https://serpapi.com/ebay-search-api)
+- API Documentation: [serpapi.com/ebay-search-api](https://serpapi.com/ebay-search-api)
 
 ### Search Naver
 ```python
@@ -151,8 +145,7 @@ results = client.search({
     'query': 'coffee',
 })
 ```
-- test: [tests/example_search_naver_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_naver_test.py)
-- see: [serpapi.com/naver-search-api](https://serpapi.com/naver-search-api)
+- API Documentation: [serpapi.com/naver-search-api](https://serpapi.com/naver-search-api)
 
 ### Search Home Depot
 ```python
@@ -165,8 +158,7 @@ results = client.search({
     'q': 'table',
 })
 ```
-- test: [tests/example_search_home_depot_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_home_depot_test.py)
-- see: [serpapi.com/home-depot-search-api](https://serpapi.com/home-depot-search-api)
+- API Documentation: [serpapi.com/home-depot-search-api](https://serpapi.com/home-depot-search-api)
 
 ### Search Apple App Store
 ```python
@@ -179,8 +171,7 @@ results = client.search({
     'term': 'coffee',
 })
 ```
-- test: [tests/example_search_apple_app_store_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_apple_app_store_test.py)
-- see: [serpapi.com/apple-app-store](https://serpapi.com/apple-app-store)
+- API Documentation: [serpapi.com/apple-app-store](https://serpapi.com/apple-app-store)
 
 ### Search DuckDuckGo
 ```python
@@ -193,8 +184,7 @@ results = client.search({
     'q': 'coffee',
 })
 ```
-- test: [tests/example_search_duckduckgo_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_duckduckgo_test.py)
-- see: [serpapi.com/duckduckgo-search-api](https://serpapi.com/duckduckgo-search-api)
+- API Documentation: [serpapi.com/duckduckgo-search-api](https://serpapi.com/duckduckgo-search-api)
 
 ### Search Google
 ```python
@@ -208,8 +198,7 @@ results = client.search({
     'engine': 'google',
 })
 ```
-- test: [tests/example_search_google_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_test.py)
-- see: [serpapi.com/search-api](https://serpapi.com/search-api)
+- API Documentation: [serpapi.com/search-api](https://serpapi.com/search-api)
 
 ### Search Google Scholar
 ```python
@@ -222,8 +211,7 @@ results = client.search({
     'q': 'coffee',
 })
 ```
-- test: [tests/example_search_google_scholar_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_scholar_test.py)
-- see: [serpapi.com/google-scholar-api](https://serpapi.com/google-scholar-api)
+- API Documentation: [serpapi.com/google-scholar-api](https://serpapi.com/google-scholar-api)
 
 ### Search Google Autocomplete
 ```python
@@ -236,8 +224,7 @@ results = client.search({
     'q': 'coffee',
 })
 ```
-- test: [tests/example_search_google_autocomplete_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_autocomplete_test.py)
-- see: [serpapi.com/google-autocomplete-api](https://serpapi.com/google-autocomplete-api)
+- API Documentation: [serpapi.com/google-autocomplete-api](https://serpapi.com/google-autocomplete-api)
 
 ### Search Google Product
 ```python
@@ -251,8 +238,7 @@ results = client.search({
     'product_id': '4887235756540435899',
 })
 ```
-- test: [tests/example_search_google_product_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_product_test.py)
-- ee: [serpapi.com/google-product-api](https://serpapi.com/google-product-api)
+- API Documentation: [serpapi.com/google-product-api](https://serpapi.com/google-product-api)
 
 ### Search Google Reverse Image
 ```python
@@ -266,8 +252,7 @@ results = client.search({
     'max_results': '1',
 })
 ```
-- test: [tests/example_search_google_reverse_image_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_reverse_image_test.py)
-- see: [serpapi.com/google-reverse-image](https://serpapi.com/google-reverse-image)
+- API Documentation: [serpapi.com/google-reverse-image](https://serpapi.com/google-reverse-image)
 
 ### Search Google Events
 ```python
@@ -280,8 +265,7 @@ results = client.search({
     'q': 'coffee',
 })
 ```
-- test: [tests/example_search_google_events_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_events_test.py)
-- see: [serpapi.com/google-events-api](https://serpapi.com/google-events-api)
+- API Documentation: [serpapi.com/google-events-api](https://serpapi.com/google-events-api)
 
 ### Search Google Local Services
 ```python
@@ -295,8 +279,7 @@ results = client.search({
     'data_cid': '6745062158417646970',
 })
 ```
-- test: [tests/example_search_google_local_services_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_local_services_test.py)
-- see: [serpapi.com/google-local-services-api](https://serpapi.com/google-local-services-api)
+- API Documentation: [serpapi.com/google-local-services-api](https://serpapi.com/google-local-services-api)
 
 ### Search Google Maps
 ```python
@@ -312,8 +295,7 @@ results = client.search({
     'type': 'search',
 })
 ```
-- test: [tests/example_search_google_maps_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_maps_test.py)
-- see: [serpapi.com/google-maps-api](https://serpapi.com/google-maps-api)
+- API Documentation: [serpapi.com/google-maps-api](https://serpapi.com/google-maps-api)
 
 ### Search Google Jobs
 ```python
@@ -327,8 +309,7 @@ results = client.search({
     'q': 'coffee',
 })
 ```
-- test: [tests/example_search_google_jobs_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_jobs_test.py)
-- see: [serpapi.com/google-jobs-api](https://serpapi.com/google-jobs-api)
+- API Documentation: [serpapi.com/google-jobs-api](https://serpapi.com/google-jobs-api)
 
 ### Search Google Play
 ```python
@@ -343,8 +324,7 @@ results = client.search({
     'max_results': '2',
 })
 ```
-- test: [tests/example_search_google_play_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_play_test.py)
-- see: [serpapi.com/google-play-api](https://serpapi.com/google-play-api)
+- API Documentation: [serpapi.com/google-play-api](https://serpapi.com/google-play-api)
 
 ### Search Google Images
 ```python
@@ -359,8 +339,7 @@ results = client.search({
     'q': 'coffee',
 })
 ```
-- test: [tests/example_search_google_images_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_images_test.py)
-- see: [serpapi.com/images-results](https://serpapi.com/images-results)
+- API Documentation: [serpapi.com/images-results](https://serpapi.com/images-results)
 
 
 ## License

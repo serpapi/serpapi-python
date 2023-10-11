@@ -54,333 +54,334 @@ The [SerpApi.com API Documentation](https://serpapi.com/search-api) contains a l
 
 Documentation is [available on Read the Docs](https://serpapi-python.readthedocs.io/en/latest/).
 
-## Examples in python
-Here is how to calls the APIs.
+## Basic Examples in Python
 
-### Search bing
+### Search Bing
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'bing',
     'q': 'coffee',
 })
 ```
-test: [tests/example_search_bing_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_bing_test.py)
-see: [serpapi.com/bing-search-api](https://serpapi.com/bing-search-api)
+- test: [tests/example_search_bing_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_bing_test.py)
+- see: [serpapi.com/bing-search-api](https://serpapi.com/bing-search-api)
 
-### Search baidu
+### Search Baidu
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'baidu',
     'q': 'coffee',
 })
 ```
-test: [tests/example_search_baidu_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_baidu_test.py)
-see: [serpapi.com/baidu-search-api](https://serpapi.com/baidu-search-api)
+- test: [tests/example_search_baidu_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_baidu_test.py)
+- see: [serpapi.com/baidu-search-api](https://serpapi.com/baidu-search-api)
 
-### Search yahoo
+### Search Yahoo
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'yahoo',
     'p': 'coffee',
 })
 ```
-test: [tests/example_search_yahoo_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_yahoo_test.py)
-see: [serpapi.com/yahoo-search-api](https://serpapi.com/yahoo-search-api)
+- test: [tests/example_search_yahoo_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_yahoo_test.py)
+- see: [serpapi.com/yahoo-search-api](https://serpapi.com/yahoo-search-api)
 
-### Search youtube
+### Search YouTube
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'youtube',
     'search_query': 'coffee',
 })
 ```
-test: [tests/example_search_youtube_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_youtube_test.py)
-see: [serpapi.com/youtube-search-api](https://serpapi.com/youtube-search-api)
+- test: [tests/example_search_youtube_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_youtube_test.py)
+- see: [serpapi.com/youtube-search-api](https://serpapi.com/youtube-search-api)
 
-### Search walmart
+### Search Walmart
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'walmart',
     'query': 'coffee',
 })
 ```
-test: [tests/example_search_walmart_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_walmart_test.py)
-see: [serpapi.com/walmart-search-api](https://serpapi.com/walmart-search-api)
+- test: [tests/example_search_walmart_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_walmart_test.py)
+- see: [serpapi.com/walmart-search-api](https://serpapi.com/walmart-search-api)
 
-### Search ebay
+### Search eBay
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'ebay',
     '_nkw': 'coffee',
 })
 ```
-test: [tests/example_search_ebay_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_ebay_test.py)
-see: [serpapi.com/ebay-search-api](https://serpapi.com/ebay-search-api)
+- test: [tests/example_search_ebay_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_ebay_test.py)
+- see: [serpapi.com/ebay-search-api](https://serpapi.com/ebay-search-api)
 
-### Search naver
+### Search Naver
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'naver',
     'query': 'coffee',
 })
 ```
-test: [tests/example_search_naver_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_naver_test.py)
-see: [serpapi.com/naver-search-api](https://serpapi.com/naver-search-api)
+- test: [tests/example_search_naver_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_naver_test.py)
+- see: [serpapi.com/naver-search-api](https://serpapi.com/naver-search-api)
 
-### Search home depot
+### Search Home Depot
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'home_depot',
     'q': 'table',
 })
 ```
-test: [tests/example_search_home_depot_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_home_depot_test.py)
-see: [serpapi.com/home-depot-search-api](https://serpapi.com/home-depot-search-api)
+- test: [tests/example_search_home_depot_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_home_depot_test.py)
+- see: [serpapi.com/home-depot-search-api](https://serpapi.com/home-depot-search-api)
 
-### Search apple app store
+### Search Apple App Store
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'apple_app_store',
     'term': 'coffee',
 })
 ```
-test: [tests/example_search_apple_app_store_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_apple_app_store_test.py)
-see: [serpapi.com/apple-app-store](https://serpapi.com/apple-app-store)
+- test: [tests/example_search_apple_app_store_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_apple_app_store_test.py)
+- see: [serpapi.com/apple-app-store](https://serpapi.com/apple-app-store)
 
-### Search duckduckgo
+### Search DuckDuckGo
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'duckduckgo',
     'q': 'coffee',
 })
 ```
-test: [tests/example_search_duckduckgo_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_duckduckgo_test.py)
-see: [serpapi.com/duckduckgo-search-api](https://serpapi.com/duckduckgo-search-api)
+- test: [tests/example_search_duckduckgo_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_duckduckgo_test.py)
+- see: [serpapi.com/duckduckgo-search-api](https://serpapi.com/duckduckgo-search-api)
 
-### Search google
+### Search Google
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google',
     'q': 'coffee',
     'engine': 'google',
 })
 ```
-test: [tests/example_search_google_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_test.py)
-see: [serpapi.com/search-api](https://serpapi.com/search-api)
+- test: [tests/example_search_google_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_test.py)
+- see: [serpapi.com/search-api](https://serpapi.com/search-api)
 
-### Search google scholar
+### Search Google Scholar
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google_scholar',
     'q': 'coffee',
 })
 ```
-test: [tests/example_search_google_scholar_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_scholar_test.py)
-see: [serpapi.com/google-scholar-api](https://serpapi.com/google-scholar-api)
+- test: [tests/example_search_google_scholar_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_scholar_test.py)
+- see: [serpapi.com/google-scholar-api](https://serpapi.com/google-scholar-api)
 
-### Search google autocomplete
+### Search Google Autocomplete
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google_autocomplete',
     'q': 'coffee',
 })
 ```
-test: [tests/example_search_google_autocomplete_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_autocomplete_test.py)
-see: [serpapi.com/google-autocomplete-api](https://serpapi.com/google-autocomplete-api)
+- test: [tests/example_search_google_autocomplete_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_autocomplete_test.py)
+- see: [serpapi.com/google-autocomplete-api](https://serpapi.com/google-autocomplete-api)
 
-### Search google product
+### Search Google Product
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google_product',
     'q': 'coffee',
     'product_id': '4887235756540435899',
 })
 ```
-test: [tests/example_search_google_product_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_product_test.py)
-see: [serpapi.com/google-product-api](https://serpapi.com/google-product-api)
+- test: [tests/example_search_google_product_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_product_test.py)
+- ee: [serpapi.com/google-product-api](https://serpapi.com/google-product-api)
 
-### Search google reverse image
+### Search Google Reverse Image
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google_reverse_image',
     'image_url': 'https://i.imgur.com/5bGzZi7.jpg',
     'max_results': '1',
 })
 ```
-test: [tests/example_search_google_reverse_image_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_reverse_image_test.py)
-see: [serpapi.com/google-reverse-image](https://serpapi.com/google-reverse-image)
+- test: [tests/example_search_google_reverse_image_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_reverse_image_test.py)
+- see: [serpapi.com/google-reverse-image](https://serpapi.com/google-reverse-image)
 
-### Search google events
+### Search Google Events
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google_events',
     'q': 'coffee',
 })
 ```
-test: [tests/example_search_google_events_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_events_test.py)
-see: [serpapi.com/google-events-api](https://serpapi.com/google-events-api)
+- test: [tests/example_search_google_events_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_events_test.py)
+- see: [serpapi.com/google-events-api](https://serpapi.com/google-events-api)
 
-### Search google local services
+### Search Google Local Services
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google_local_services',
     'q': 'electrician',
     'data_cid': '6745062158417646970',
 })
 ```
-test: [tests/example_search_google_local_services_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_local_services_test.py)
-see: [serpapi.com/google-local-services-api](https://serpapi.com/google-local-services-api)
+- test: [tests/example_search_google_local_services_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_local_services_test.py)
+- see: [serpapi.com/google-local-services-api](https://serpapi.com/google-local-services-api)
 
-### Search google maps
+### Search Google Maps
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google_maps',
     'q': 'pizza',
     'll': '@40.7455096,-74.0083012,15.1z',
     'type': 'search',
 })
 ```
-test: [tests/example_search_google_maps_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_maps_test.py)
-see: [serpapi.com/google-maps-api](https://serpapi.com/google-maps-api)
+- test: [tests/example_search_google_maps_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_maps_test.py)
+- see: [serpapi.com/google-maps-api](https://serpapi.com/google-maps-api)
 
-### Search google jobs
+### Search Google Jobs
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google_jobs',
     'q': 'coffee',
 })
 ```
-test: [tests/example_search_google_jobs_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_jobs_test.py)
-see: [serpapi.com/google-jobs-api](https://serpapi.com/google-jobs-api)
+- test: [tests/example_search_google_jobs_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_jobs_test.py)
+- see: [serpapi.com/google-jobs-api](https://serpapi.com/google-jobs-api)
 
-### Search google play
+### Search Google Play
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google_play',
     'q': 'kite',
     'store': 'apps',
     'max_results': '2',
 })
 ```
-test: [tests/example_search_google_play_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_play_test.py)
-see: [serpapi.com/google-play-api](https://serpapi.com/google-play-api)
+- test: [tests/example_search_google_play_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_play_test.py)
+- see: [serpapi.com/google-play-api](https://serpapi.com/google-play-api)
 
-### Search google images
+### Search Google Images
 ```python
-import serpapi
-import pprint
 import os
 
+import serpapi
+
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-data = client.search({
+results = client.search({
     'engine': 'google_images',
     'engine': 'google_images',
     'tbm': 'isch',
     'q': 'coffee',
 })
 ```
-test: [tests/example_search_google_images_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_images_test.py)
-see: [serpapi.com/images-results](https://serpapi.com/images-results)
+- test: [tests/example_search_google_images_test.py](https://github.com/serpapi/serpapi-python/blob/master/tests/example_search_google_images_test.py)
+- see: [serpapi.com/images-results](https://serpapi.com/images-results)
 
 
 ## License

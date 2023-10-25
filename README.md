@@ -334,7 +334,6 @@ import serpapi
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
 results = client.search({
     'engine': 'google_images',
-    'engine': 'google_images',
     'tbm': 'isch',
     'q': 'coffee',
 })

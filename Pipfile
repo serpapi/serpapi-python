@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 serpapi = {editable = true, path = "."}
+pytest = "*"
 
 [dev-packages]
 alabaster = "*"

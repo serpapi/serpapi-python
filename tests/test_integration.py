@@ -58,6 +58,9 @@ def test_coffee_search_n_pages(coffee_search):
     max_pages = 3
 
     for page in coffee_search.yield_pages(max_pages=max_pages):
+        if page_count == 0:
+            assert 'start' not in page['search_parameters'], "The 'start' parameter should not be in the first page"
+        
         page_count += 1
 
     assert page_count == max_pages

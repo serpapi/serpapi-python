@@ -64,7 +64,7 @@ import serpapi
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
 results = client.search({
     'engine': 'bing',
-    'q': 'coffee',
+    'q': 'coffee'
 })
 ```
 - API Documentation: [serpapi.com/bing-search-api](https://serpapi.com/bing-search-api)

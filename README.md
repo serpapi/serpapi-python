@@ -194,7 +194,7 @@ import serpapi
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
 results = client.search({
     'engine': 'google',
-    'q': 'coffee',
+    'q': 'coffee'
 })
 ```
 - API Documentation: [serpapi.com/search-api](https://serpapi.com/search-api)

@@ -70,12 +70,16 @@ class SerpResults(UserDict):
         """
 
         current_page_count = 0
-
+              
         current_page = self
-        while current_page.next_page_url and current_page_count < max_pages:
-            current_page = current_page.next_page()
-            current_page_count += 1
+        while current_page and current_page_count < max_pages:
             yield current_page
+            current_page_count += 1
+            if current_page.next_page_url:
+                current_page = current_page.next_page()
+            else:
+                break
+            
 
     @classmethod
     def from_http_response(cls, r, *, client=None):

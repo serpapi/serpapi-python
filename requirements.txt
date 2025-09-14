@@ -1,0 +1,10 @@
+# Core dependencies
+aiohttp>=3.9.0,<4
+yarl>=1.9
+multidict>=6
+
+# Development dependencies (optional)
+pytest>=7
+pytest-asyncio>=0.23
+mypy>=1.8
+pytest-cov>=4.1

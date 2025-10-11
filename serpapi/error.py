@@ -6,7 +6,7 @@ SerpApi error handling module.
 class SerpApiError(Exception):
     """
     SerpApiError wraps any errors related to the SerpApi client.
-    
+
     Handles the following types of errors:
     - HTTP response errors from SerpApi.com
     - Missing API key
@@ -16,4 +16,5 @@ class SerpApiError(Exception):
     - Network timeouts
     - And more...
     """
+
     pass

@@ -140,14 +140,26 @@ The UV Package Manager must be installed. See [uv installation instructions](htt
 The following commands are available:
 
 ```bash
-# Install with development dependencies
+# Install dependencies (including formatting tools)
 uv sync --dev
-
 # Run tests
 uv run pytest
 
 # Run test with coverage
 uv run pytest --cov=serpapi tests/
+
+# Type checking with mypy
+uv run mypy serpapi/
+
+# Format code with black
+uv run black serpapi/
+
+# Sort imports with isort  
+uv run isort serpapi/
+
+# Check formatting without making changes
+uv run black --check .
+uv run isort --check-only .
 ```
 
 ### UV Benefits

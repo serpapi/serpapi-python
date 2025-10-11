@@ -1,0 +1,73 @@
+# SerpApi Python Client - AI Assistant Configuration
+
+## Project Overview
+This is a Python client library for SerpApi.com - Search Engine Results API. It's a migration from Ruby to Python with async/await support.
+
+## Key Technologies
+- Python 3.11+
+- Async/await with aiohttp
+- Type hints with mypy
+- UV package manager
+- Black and isort for code formatting
+- Pytest for testing
+
+## Project Structure
+```
+serpapi/
+├── __init__.py          # Main package exports
+├── client.py           # Async HTTP client
+├── error.py            # Custom exceptions
+└── version.py          # Version information
+
+tests/
+├── test_client.py      # Client functionality tests
+└── test_error.py       # Error handling tests
+
+examples/
+├── basic_usage.py      # Basic usage examples
+├── async_batch_search.py # Batch processing examples
+└── multiple_engines.py # Multi-engine examples
+```
+
+## Development Workflow
+- Use `uv sync --dev` to update dependencies
+- Use `uv run pytest` to run tests
+- Use `uv run mypy serpapi/` to run type checking
+- Use `uv run black .` to format code
+- Use `uv run isort .` to sort imports
+- Use `uv run python script.py` to run Python scripts
+
+
+## Code Style Guidelines
+- Follow PEP 8 for Python code
+- Use type hints for all functions
+- Prefer async/await over blocking calls
+- Use f-strings for string formatting
+- Keep functions focused and testable
+
+## Important Files
+- `serpapi/client.py` - Main client implementation
+- `README.md` - User documentation
+- `pyproject.toml` - Project configuration and tool settings
+- `MIGRATION_SUMMARY.md` - Ruby to Python migration details
+
+## API Key Configuration
+Set environment variable: `export SERPAPI_KEY="your_api_key"`
+
+## Testing Strategy
+- Unit tests for individual components
+- Integration tests for API calls
+- Type checking with mypy
+- Import testing for basic functionality
+
+## Common Patterns
+- Use context managers for client lifecycle
+- Handle SerpApiError exceptions
+- Use persistent connections for better performance
+- Batch multiple requests with asyncio.gather()
+
+## Migration Notes
+- Converted from Ruby gem to Python package
+- Maintained API compatibility where possible
+- Added async support for better performance
+- Used modern Python packaging with pyproject.toml

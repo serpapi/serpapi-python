@@ -49,7 +49,7 @@ async def main():
         print(f"Found {len(locations)} locations:")
         for location in locations:
             print(
-                f"- {location.get('name', 'No name')} ({location.get('country_code', 'No country')})"
+                f"- {location.get('canonical_name', 'No canonical name')} "
             )
         print()
 

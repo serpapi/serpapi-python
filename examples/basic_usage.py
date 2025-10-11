@@ -9,7 +9,6 @@ import asyncio
 import os
 from serpapi import Client, SerpApiError
 
-
 async def main():
     """Main example function."""
     # Get API key from environment variable

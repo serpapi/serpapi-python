@@ -12,6 +12,7 @@ Official Python client for SerpApi.com - Search Engine Results API.
 
 ## Installation
 
+
 ```bash
 # Using pip
 pip install serpapi
@@ -39,8 +40,6 @@ async def main():
 asyncio.run(main())
 ```
 
- → [SerpApi documentation](https://serpapi.com/search-api).
-
 ## API Key
 
 Get your API key from [serpapi.com/signup](https://serpapi.com/users/sign_up?plan=free).
@@ -50,44 +49,31 @@ Set environment variable:
 export SERPAPI_KEY="your_secret_key"
 ```
 
-#### Documentations
-This library is well documented, and you can find the following resources:
- * [Full documentation on SerpApi.com](https://serpapi.com)
- * [Library Github page](https://github.com/serpapi/serpapi-ruby)
- * [Library GEM page](https://rubygems.org/gems/serpapi/)
- * [Library API documentation](https://rubydoc.info/github/serpapi/serpapi-ruby/master)
- * [API health status](https://serpapi.com/status)
-
 ## Usage Examples
 
 ### Basic Search
 ```python
 results = await client.search({"q": "coffee"})
-print(f"Found {len(results.get('organic_results', []))} organic results")
 ```
 
 ### HTML Search
 ```python
 html_content = await client.html({"q": "coffee"})
-print(f"HTML content length: {len(html_content)} characters")
 ```
 
 ### Location API
 ```python
 locations = await client.location({"q": "Austin", "limit": 3})
-print(f"Found {len(locations)} locations")
 ```
 
 ### Search Archive
 ```python
 archived = await client.search_archive(search_id)
-print(f"Retrieved archived search: {archived.get('search_metadata', {}).get('id')}")
 ```
 
 ### Account Info
 ```python
 account = await client.account()
-print(f"Account plan: {account.get('plan')}")
 ```
 
 ## Async Batch Processing

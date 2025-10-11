@@ -58,7 +58,7 @@ class TestClient:
         expected = {
             "api_key": "test_key",
             "engine": "google",
-            "source": "serpapi-python:1.0.1",
+            "source": "serpapi-python:0.2.0",
             "param1": "value1",
             "param2": "value2",
             "q": "coffee"
@@ -169,12 +169,14 @@ class TestClient:
         """Test successful JSON request."""
         client = Client(api_key="test_key")
         
-        mock_response = MagicMock()
+        mock_response = AsyncMock()
         mock_response.status = 200
         mock_response.json = AsyncMock(return_value={"result": "success"})
         
-        with patch.object(client, '_get_session') as mock_session:
-            mock_session.return_value.get.return_value.__aenter__.return_value = mock_response
+        with patch.object(client, '_get_session') as mock_get_session:
+            mock_session = AsyncMock()
+            mock_session.get.return_value = mock_response
+            mock_get_session.return_value = mock_session
             
             result = await client._make_request('/test', {"param": "value"}, 'json')
             
@@ -185,12 +187,14 @@ class TestClient:
         """Test JSON request with error response."""
         client = Client(api_key="test_key")
         
-        mock_response = MagicMock()
+        mock_response = AsyncMock()
         mock_response.status = 200
         mock_response.json = AsyncMock(return_value={"error": "API Error"})
         
-        with patch.object(client, '_get_session') as mock_session:
-            mock_session.return_value.get.return_value.__aenter__.return_value = mock_response
+        with patch.object(client, '_get_session') as mock_get_session:
+            mock_session = AsyncMock()
+            mock_session.get.return_value = mock_response
+            mock_get_session.return_value = mock_session
             
             with pytest.raises(SerpApiError, match="HTTP request failed with error: API Error"):
                 await client._make_request('/test', {"param": "value"}, 'json')
@@ -200,14 +204,16 @@ class TestClient:
         """Test JSON request with HTTP error status."""
         client = Client(api_key="test_key")
         
-        mock_response = MagicMock()
+        mock_response = AsyncMock()
         mock_response.status = 400
         mock_response.json = AsyncMock(return_value={"error": "Bad Request"})
         
-        with patch.object(client, '_get_session') as mock_session:
-            mock_session.return_value.get.return_value.__aenter__.return_value = mock_response
+        with patch.object(client, '_get_session') as mock_get_session:
+            mock_session = AsyncMock()
+            mock_session.get.return_value = mock_response
+            mock_get_session.return_value = mock_session
             
-            with pytest.raises(SerpApiError, match="HTTP request failed with response status: 400"):
+            with pytest.raises(SerpApiError, match="HTTP request failed with error: Bad Request"):
                 await client._make_request('/test', {"param": "value"}, 'json')
     
     @pytest.mark.asyncio
@@ -215,12 +221,14 @@ class TestClient:
         """Test successful HTML request."""
         client = Client(api_key="test_key")
         
-        mock_response = MagicMock()
+        mock_response = AsyncMock()
         mock_response.status = 200
         mock_response.text = AsyncMock(return_value="<html>Test</html>")
         
-        with patch.object(client, '_get_session') as mock_session:
-            mock_session.return_value.get.return_value.__aenter__.return_value = mock_response
+        with patch.object(client, '_get_session') as mock_get_session:
+            mock_session = AsyncMock()
+            mock_session.get.return_value = mock_response
+            mock_get_session.return_value = mock_session
             
             result = await client._make_request('/test', {"param": "value"}, 'html')
             
@@ -249,6 +257,7 @@ class TestClient:
         client = Client(api_key="test_key")
         
         mock_session = AsyncMock()
+        mock_session.closed = False
         client._session = mock_session
         
         await client.close()

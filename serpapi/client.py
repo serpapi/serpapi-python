@@ -7,7 +7,7 @@ Powered by aiohttp for async HTTP requests and persistent connections.
 import asyncio
 import json
 import os
-from typing import Dict, Any, Optional, Union, List
+from typing import Dict, Any, Optional, Union, List, overload, Literal
 from urllib.parse import urlencode
 
 import aiohttp
@@ -41,7 +41,7 @@ class Client:
         async_mode: bool = False,
         timeout: int = 120,
         symbolize_names: bool = True,
-        **kwargs
+        **kwargs: Any
     ):
         """
         Initialize SerpApi client.
@@ -141,6 +141,22 @@ class Client:
         # Remove None values
         return {k: v for k, v in merged.items() if v is not None}
     
+    @overload
+    async def _make_request(
+        self,
+        endpoint: str,
+        params: Dict[str, Any],
+        response_format: Literal['json'] = 'json'
+    ) -> Dict[str, Any]: ...
+
+    @overload
+    async def _make_request(
+        self,
+        endpoint: str,
+        params: Dict[str, Any],
+        response_format: Literal['html']
+    ) -> str: ...
+
     async def _make_request(
         self,
         endpoint: str,
@@ -166,41 +182,39 @@ class Client:
         
         try:
             async with session.get(endpoint, params=query_params) as response:
-                if response_format == 'json':
+                if response.status != 200:
                     try:
                         data = await response.json()
                         if isinstance(data, dict) and 'error' in data:
                             raise SerpApiError(
-                                f"HTTP request failed with error: {data['error']} "
-                                f"from url: https://{self.BACKEND}{endpoint}, "
-                                f"params: {params}, response status: {response.status}"
+                                f"SerpApi error: {data['error']}"
+                                f" from url: https://{self.BACKEND}{endpoint} with status: {response.status}"
                             )
-                        elif response.status != 200:
-                            raise SerpApiError(
-                                f"HTTP request failed with response status: {response.status} "
-                                f"response: {data} on get url: https://{self.BACKEND}{endpoint}, "
-                                f"params: {params}"
-                            )
+                    except json.JSONDecodeError:
+                        err = await response.text()
+                        raise SerpApiError(
+                            f"HTTP request failed with error: {err}"
+                            f" from url: https://{self.BACKEND}{endpoint} with status: {response.status}"
+                        )
+
+                if response_format == 'json':
+                    try:
+                        data = await response.json()
+                        if isinstance(data, dict) and 'error' in data:
+                            raise SerpApiError(f"SerpApi error: {data['error']}")
                         return data
-                    except json.JSONDecodeError as e:
+                    except json.JSONDecodeError:
                         text = await response.text()
-                        raise SerpApiError(
-                            f"JSON parse error: {text} on get url: https://{self.BACKEND}{endpoint}, "
-                            f"params: {params}, response status: {response.status}"
-                        )
+                        raise SerpApiError(f"Invalid JSON response: {text}")
+                
                 elif response_format == 'html':
-                    if response.status != 200:
-                        text = await response.text()
-                        raise SerpApiError(
-                            f"HTTP request failed with response status: {response.status} "
-                            f"response: {text} on get url: https://{self.BACKEND}{endpoint}, "
-                            f"params: {params}"
-                        )
                     return await response.text()
+                
                 else:
                     raise SerpApiError(f"Unsupported response format: {response_format}")
+        
         except aiohttp.ClientError as e:
-            raise SerpApiError(f"HTTP client error: {str(e)}")
+            raise SerpApiError(f"HTTP client error: {e}")
     
     async def search(self, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """

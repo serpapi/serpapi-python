@@ -96,12 +96,12 @@ class Client:
     @property
     def engine(self) -> str:
         """Get default search engine."""
-        return self._params.get("engine", "google")
+        return str(self._params.get("engine", "google"))
 
     @property
     def api_key(self) -> str:
         """Get API key."""
-        return self._params.get("api_key", "")
+        return str(self._params.get("api_key", ""))
 
     async def _get_session(self) -> ClientSession:
         """Get or create HTTP session."""
@@ -202,7 +202,7 @@ class Client:
                         data = await response.json()
                         if isinstance(data, dict) and "error" in data:
                             raise SerpApiError(f"SerpApi error: {data['error']}")
-                        return data
+                        return data  # type: ignore
                     except json.JSONDecodeError:
                         text = await response.text()
                         raise SerpApiError(f"Invalid JSON response: {text}")
@@ -262,7 +262,8 @@ class Client:
         """
         if params is None:
             params = {}
-        return await self._make_request("/locations.json", params, "json")
+        result = await self._make_request("/locations.json", params, "json")
+        return result  # type: ignore
 
     async def search_archive(
         self, search_id: Union[str, int], format_type: str = "json"
@@ -283,9 +284,19 @@ class Client:
         if format_type not in ["json", "html"]:
             raise SerpApiError("format_type must be json or html")
 
-        return await self._make_request(
-            f"/searches/{search_id}.{format_type}", {}, format_type
-        )
+        empty_params: Dict[str, Any] = {}
+        if format_type == "json":
+            json_result: Dict[str, Any] = await self._make_request(
+                f"/searches/{search_id}.{format_type}", empty_params, "json"
+            )
+            return json_result
+        elif format_type == "html":
+            html_result: str = await self._make_request(
+                f"/searches/{search_id}.{format_type}", empty_params, "html"
+            )
+            return html_result
+        else:
+            raise SerpApiError("format_type must be json or html")
 
     async def account(self, api_key: Optional[str] = None) -> Dict[str, Any]:
         """
@@ -300,20 +311,20 @@ class Client:
         params = {"api_key": api_key} if api_key else {}
         return await self._make_request("/account", params, "json")
 
-    async def close(self):
+    async def close(self) -> None:
         """Close HTTP session if persistent connections are enabled."""
         if self._session and not self._session.closed:
             await self._session.close()
 
-    async def __aenter__(self):
+    async def __aenter__(self) -> "Client":
         """Async context manager entry."""
         return self
 
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
+    async def __aexit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
         """Async context manager exit."""
         await self.close()
 
-    def __del__(self):
+    def __del__(self) -> None:
         """Destructor to ensure session is closed."""
         if hasattr(self, "_session") and self._session and not self._session.closed:
             # Schedule the session close in the event loop

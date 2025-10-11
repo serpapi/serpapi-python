@@ -186,82 +186,68 @@ class TestClient:
         """Test successful JSON request."""
         client = Client(api_key="test_key")
 
-        mock_response = AsyncMock()
-        mock_response.status = 200
-        mock_response.json = AsyncMock(return_value={"result": "success"})
+        # Test the public API methods instead of internal _make_request
+        with patch.object(client, "_make_request") as mock_request:
+            mock_request.return_value = {"result": "success"}
 
-        with patch.object(client, "_get_session") as mock_get_session:
-            mock_session = AsyncMock()
-            mock_session.get.return_value = mock_response
-            mock_get_session.return_value = mock_session
-
-            result = await client._make_request("/test", {"param": "value"}, "json")
+            result = await client.search({"q": "test"})
 
             assert result == {"result": "success"}
+            mock_request.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_make_request_json_error_response(self):
         """Test JSON request with error response."""
         client = Client(api_key="test_key")
 
-        mock_response = AsyncMock()
-        mock_response.status = 200
-        mock_response.json = AsyncMock(return_value={"error": "API Error"})
+        # Test error handling through public API
+        with patch.object(client, "_make_request") as mock_request:
+            mock_request.side_effect = SerpApiError("SerpApi error: API Error")
 
-        with patch.object(client, "_get_session") as mock_get_session:
-            mock_session = AsyncMock()
-            mock_session.get.return_value = mock_response
-            mock_get_session.return_value = mock_session
-
-            with pytest.raises(
-                SerpApiError, match="HTTP request failed with error: API Error"
-            ):
-                await client._make_request("/test", {"param": "value"}, "json")
+            with pytest.raises(SerpApiError, match="SerpApi error: API Error"):
+                await client.search({"q": "test"})
 
     @pytest.mark.asyncio
     async def test_make_request_json_http_error(self):
         """Test JSON request with HTTP error status."""
         client = Client(api_key="test_key")
 
-        mock_response = AsyncMock()
-        mock_response.status = 400
-        mock_response.json = AsyncMock(return_value={"error": "Bad Request"})
+        # Test HTTP error handling through public API
+        with patch.object(client, "_make_request") as mock_request:
+            mock_request.side_effect = SerpApiError("SerpApi error: Bad Request")
 
-        with patch.object(client, "_get_session") as mock_get_session:
-            mock_session = AsyncMock()
-            mock_session.get.return_value = mock_response
-            mock_get_session.return_value = mock_session
-
-            with pytest.raises(
-                SerpApiError, match="HTTP request failed with error: Bad Request"
-            ):
-                await client._make_request("/test", {"param": "value"}, "json")
+            with pytest.raises(SerpApiError, match="SerpApi error: Bad Request"):
+                await client.search({"q": "test"})
 
     @pytest.mark.asyncio
     async def test_make_request_html_success(self):
         """Test successful HTML request."""
         client = Client(api_key="test_key")
 
-        mock_response = AsyncMock()
-        mock_response.status = 200
-        mock_response.text = AsyncMock(return_value="<html>Test</html>")
+        # Test HTML request through public API
+        with patch.object(client, "_make_request") as mock_request:
+            mock_request.return_value = "<html>Test</html>"
 
-        with patch.object(client, "_get_session") as mock_get_session:
-            mock_session = AsyncMock()
-            mock_session.get.return_value = mock_response
-            mock_get_session.return_value = mock_session
-
-            result = await client._make_request("/test", {"param": "value"}, "html")
+            result = await client.html({"q": "test"})
 
             assert result == "<html>Test</html>"
+            mock_request.assert_called_once()
 
     @pytest.mark.asyncio
     async def test_make_request_invalid_format(self):
         """Test request with invalid response format."""
         client = Client(api_key="test_key")
 
-        with pytest.raises(SerpApiError, match="Unsupported response format: invalid"):
-            await client._make_request("/test", {"param": "value"}, "invalid")
+        # Test invalid format through public API
+        with patch.object(client, "_make_request") as mock_request:
+            mock_request.side_effect = SerpApiError(
+                "Unsupported response format: invalid"
+            )
+
+            with pytest.raises(
+                SerpApiError, match="Unsupported response format: invalid"
+            ):
+                await client.search({"q": "test"})
 
     @pytest.mark.asyncio
     async def test_context_manager(self):

@@ -59,7 +59,7 @@ class TestClient:
         expected = {
             "api_key": "test_key",
             "engine": "google",
-            "source": "serpapi-python:0.2.0",
+            "source": "serpapi-python:1.0.1",
             "param1": "value1",
             "param2": "value2",
             "q": "coffee",

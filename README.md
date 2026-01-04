@@ -137,7 +137,20 @@ except SerpApiError as e:
  
 The UV Package Manager must be installed. See [uv installation instructions](https://docs.astral.sh/uv/getting-started/installation).
 
-The following commands are available:
+The library also includes a `Rakefile` for developers coming from the Ruby ecosystem, providing a familiar interface for common tasks:
+
+```bash
+# Run tests with coverage
+rake coverage
+
+# Run all quality checks (lint, test, coverage)
+rake default
+
+# Build and test local package
+rake oobt
+```
+
+The following commands are also available via `uv`:
 
 ```bash
 # Install dependencies (including formatting tools)

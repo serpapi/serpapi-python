@@ -26,8 +26,10 @@ def test_account_without_credentials():
 
 def test_account_with_bad_credentials(invalid_key_client):
     """Ensure that an HTTPError is raised when account is accessed with invalid API Credentials."""
-    with pytest.raises(serpapi.HTTPError):
+    with pytest.raises(serpapi.HTTPError) as exc_info:
         invalid_key_client.account()
+        
+    assert exc_info.value.response.status_code == 401
 
 
 def test_account_with_credentials(client):
@@ -36,6 +38,14 @@ def test_account_with_credentials(client):
     assert account
     assert account.keys()
     assert isinstance(account, dict)
+
+
+def test_search_with_missing_params(client):
+    with pytest.raises(serpapi.HTTPError) as exc_info:
+        client.search({ "q": "" })
+        
+    assert exc_info.value.status_code == 400
+    assert "Missing query `q` parameter" in exc_info.value.error
 
 
 def test_coffee_search(coffee_search):

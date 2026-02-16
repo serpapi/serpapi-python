@@ -50,6 +50,29 @@ Let's print the title of the first result, but in a more Pythonic way:
 
 The [SerpApi.com API Documentation](https://serpapi.com/search-api) contains a list of all the possible parameters that can be passed to the API.
 
+### Error handling
+
+Unsuccessful requests raise `serpapi.HTTPError` exception. The returned status code will reflect the sort of error that occurred, please refer to [Status and Error Codes Documentation](https://serpapi.com/api-status-and-error-codes) for more details.
+
+```python
+import serpapi
+
+client = serpapi.Client(api_key=os.getenv("API_KEY"))
+
+try:
+    results = client.search({
+        'engine': 'google',
+        'q': 'coffee',
+    })
+except serpapi.HTTPError as e:
+    if e.status_code == 401: # Invalid API key
+        print(e.error) # "Invalid API key. Your API key should be here: https://serpapi.com/manage-api-key"
+    elif e.status_code == 400: # Missing required parameter
+        pass
+    elif e.status_code == 429: # Exceeds the hourly throughput limit OR account run out of searches
+        pass
+```
+
 ## Documentation
 
 Documentation is [available on Read the Docs](https://serpapi-python.readthedocs.io/en/latest/).
@@ -338,7 +361,6 @@ results = client.search({
 })
 ```
 - API Documentation: [serpapi.com/images-results](https://serpapi.com/images-results)
-
 
 ## License
 

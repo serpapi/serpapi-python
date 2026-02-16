@@ -1,13 +1,8 @@
 ## PROJECT::GENERAL
 __pycache__
 
-serpapi.egg-info/dependency_links.txt
-serpapi.egg-info/PKG-INFO
-serpapi.egg-info/requires.txt
-serpapi.egg-info/SOURCES.txt
-serpapi.egg-info/top_level.txt
-.vscode/launch.json
-.vscode/settings.json
+serpapi.egg-info/
+.vscode/
 .coverage
 .DS_Store
 uv.lock

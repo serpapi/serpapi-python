@@ -3,7 +3,7 @@
 <h1 align="center">SerpApi Python Library & Package</h1>
   <img src="https://user-images.githubusercontent.com/78694043/233921372-bb57c347-9005-4b59-8f09-993698a87eb6.svg" width="600" alt="serpapi python library logo">
 
-  <a href="https://badge.fury.io/py/serpapi-python">![Package](https://badge.fury.io/py/serpapi.svg)</a>
+  <a href="https://pypi.org/project/serpapi">![Package](https://badge.fury.io/py/serpapi.svg)</a>
   
   [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 </div>

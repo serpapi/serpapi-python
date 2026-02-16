@@ -31,6 +31,11 @@ jobs:
       run: pip install -e .[test]
 
     - name: Test with pytest
-      run: pytest
+      run: |
+        if [ "${{ matrix.python-version }}" == "3.11" ]; then
+          pytest
+        else
+          pytest -k "not example"
+        fi
       env:
         API_KEY: ${{secrets.API_KEY}}

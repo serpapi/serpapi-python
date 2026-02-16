@@ -52,12 +52,13 @@ The [SerpApi.com API Documentation](https://serpapi.com/search-api) contains a l
 
 ### Error handling
 
-Unsuccessful requests raise `serpapi.HTTPError` exception. The returned status code will reflect the sort of error that occurred, please refer to [Status and Error Codes Documentation](https://serpapi.com/api-status-and-error-codes) for more details.
+Unsuccessful requests raise `serpapi.HTTPError` or `serpapi.TimeoutError` exceptions. The returned status code will reflect the sort of error that occurred, please refer to [Status and Error Codes Documentation](https://serpapi.com/api-status-and-error-codes) for more details.
 
 ```python
 import serpapi
 
-client = serpapi.Client(api_key=os.getenv("API_KEY"))
+# A default timeout can be set here.
+client = serpapi.Client(api_key=os.getenv("API_KEY"), timeout=10)
 
 try:
     results = client.search({
@@ -71,6 +72,9 @@ except serpapi.HTTPError as e:
         pass
     elif e.status_code == 429: # Exceeds the hourly throughput limit OR account run out of searches
         pass
+except serpapi.TimeoutError as e:
+    # Handle timeout
+    print(f"The request timed out: {e}")
 ```
 
 ## Documentation

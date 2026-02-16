@@ -43,3 +43,9 @@ class HTTPConnectionError(HTTPError, requests.exceptions.ConnectionError, SerpAp
     """Connection Error."""
 
     pass
+
+
+class TimeoutError(requests.exceptions.Timeout, SerpApiError):
+    """Timeout Error."""
+
+    pass

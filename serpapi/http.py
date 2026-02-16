@@ -3,6 +3,7 @@ import requests
 from .exceptions import (
     HTTPError,
     HTTPConnectionError,
+    TimeoutError,
 )
 from .__version__ import __version__
 
@@ -13,10 +14,11 @@ class HTTPClient:
     BASE_DOMAIN = "https://serpapi.com"
     USER_AGENT = f"serpapi-python, v{__version__}"
 
-    def __init__(self, *, api_key=None):
+    def __init__(self, *, api_key=None, timeout=None):
         # Used to authenticate requests.
         # TODO: do we want to support the environment variable? Seems like a security risk.
         self.api_key = api_key
+        self.timeout = timeout
         self.session = requests.Session()
 
     def request(self, method, path, params, *, assert_200=True, **kwargs):
@@ -34,12 +36,18 @@ class HTTPClient:
         try:
             headers = {"User-Agent": self.USER_AGENT}
 
+            # Use the default timeout if one was provided to the client.
+            if self.timeout and "timeout" not in kwargs:
+                kwargs["timeout"] = self.timeout
+
             r = self.session.request(
                 method=method, url=url, params=params, headers=headers, **kwargs
             )
 
         except requests.exceptions.ConnectionError as e:
             raise HTTPConnectionError(e)
+        except requests.exceptions.Timeout as e:
+            raise TimeoutError(e)
 
         # Raise an exception if the status code is not 200.
         if assert_200:

@@ -25,6 +25,9 @@ class Client(HTTPClient):
 
     DASHBOARD_URL = "https://serpapi.com/dashboard"
 
+    def __init__(self, *, api_key=None, timeout=None):
+        super().__init__(api_key=api_key, timeout=timeout)
+
     def __repr__(self):
         return "<SerpApi Client>"
 
@@ -60,10 +63,16 @@ class Client(HTTPClient):
         if params is None:
             params = {}
 
+        # These are arguments that should be passed to the underlying requests.request call.
+        request_kwargs = {}
+        for key in ["timeout", "proxies", "verify", "stream", "cert"]:
+            if key in kwargs:
+                request_kwargs[key] = kwargs.pop(key)
+
         if kwargs:
             params.update(kwargs)
 
-        r = self.request("GET", "/search", params=params)
+        r = self.request("GET", "/search", params=params, **request_kwargs)
 
         return SerpResults.from_http_response(r, client=self)
 
@@ -80,6 +89,12 @@ class Client(HTTPClient):
         if params is None:
             params = {}
 
+        # These are arguments that should be passed to the underlying requests.request call.
+        request_kwargs = {}
+        for key in ["timeout", "proxies", "verify", "stream", "cert"]:
+            if key in kwargs:
+                request_kwargs[key] = kwargs.pop(key)
+
         if kwargs:
             params.update(kwargs)
 
@@ -90,7 +105,7 @@ class Client(HTTPClient):
                 f"Please provide 'search_id', found here: { self.DASHBOARD_URL }"
             )
 
-        r = self.request("GET", f"/searches/{ search_id }", params=params)
+        r = self.request("GET", f"/searches/{ search_id }", params=params, **request_kwargs)
         return SerpResults.from_http_response(r, client=self)
 
     def locations(self, params: dict = None, **kwargs):
@@ -106,6 +121,12 @@ class Client(HTTPClient):
         if params is None:
             params = {}
 
+        # These are arguments that should be passed to the underlying requests.request call.
+        request_kwargs = {}
+        for key in ["timeout", "proxies", "verify", "stream", "cert"]:
+            if key in kwargs:
+                request_kwargs[key] = kwargs.pop(key)
+
         if kwargs:
             params.update(kwargs)
 
@@ -114,6 +135,7 @@ class Client(HTTPClient):
             "/locations.json",
             params=params,
             assert_200=True,
+            **request_kwargs,
         )
         return r.json()
 
@@ -129,10 +151,16 @@ class Client(HTTPClient):
         if params is None:
             params = {}
 
+        # These are arguments that should be passed to the underlying requests.request call.
+        request_kwargs = {}
+        for key in ["timeout", "proxies", "verify", "stream", "cert"]:
+            if key in kwargs:
+                request_kwargs[key] = kwargs.pop(key)
+
         if kwargs:
             params.update(kwargs)
 
-        r = self.request("GET", "/account.json", params=params, assert_200=True)
+        r = self.request("GET", "/account.json", params=params, assert_200=True, **request_kwargs)
         return r.json()
 
 

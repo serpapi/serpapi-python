@@ -1,6 +1,12 @@
 Release History
 ===============
 
+0.1.6 (2026-02-16)
+------------------
+
+- Add support for request timeouts.
+- Add status and error codes support - https://serpapi.com/api-status-and-error-codes
+
 0.1.5 (2023-11-01)
 ------------------
 

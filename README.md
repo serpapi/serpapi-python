@@ -3,7 +3,7 @@
 <h1 align="center">SerpApi Python Library & Package</h1>
   <img src="https://user-images.githubusercontent.com/78694043/233921372-bb57c347-9005-4b59-8f09-993698a87eb6.svg" width="600" alt="serpapi python library logo">
 
-  <a href="https://badge.fury.io/py/serpapi-python">![Package](https://badge.fury.io/py/serpapi.svg)</a>
+  <a href="https://pypi.org/project/serpapi">![Package](https://badge.fury.io/py/serpapi.svg)</a>
   
   [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 </div>
@@ -52,12 +52,13 @@ The [SerpApi.com API Documentation](https://serpapi.com/search-api) contains a l
 
 ### Error handling
 
-Unsuccessful requests raise `serpapi.HTTPError` exception. The returned status code will reflect the sort of error that occurred, please refer to [Status and Error Codes Documentation](https://serpapi.com/api-status-and-error-codes) for more details.
+Unsuccessful requests raise `serpapi.HTTPError` or `serpapi.TimeoutError` exceptions. The returned status code will reflect the sort of error that occurred, please refer to [Status and Error Codes Documentation](https://serpapi.com/api-status-and-error-codes) for more details.
 
 ```python
 import serpapi
 
-client = serpapi.Client(api_key=os.getenv("API_KEY"))
+# A default timeout can be set here.
+client = serpapi.Client(api_key=os.getenv("API_KEY"), timeout=10)
 
 try:
     results = client.search({
@@ -71,11 +72,16 @@ except serpapi.HTTPError as e:
         pass
     elif e.status_code == 429: # Exceeds the hourly throughput limit OR account run out of searches
         pass
+except serpapi.TimeoutError as e:
+    # Handle timeout
+    print(f"The request timed out: {e}")
 ```
 
 ## Documentation
 
 Documentation is [available on Read the Docs](https://serpapi-python.readthedocs.io/en/latest/).
+
+Change history is [available on GitHub](https://github.com/serpapi/serpapi-python/blob/master/HISTORY.md).
 
 ## Basic Examples in Python
 

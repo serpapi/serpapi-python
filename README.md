@@ -196,6 +196,14 @@ serpapi-python/
 └── README.md               # This file
 ```
 
+## Changelog
+
+ - 0.2.0: python 3.11+ support only because of dependency changes
+    - switch to aiohttp as HTTP client
+    - 3x faster than previous versions
+    - same API frontend
+ - 0.1.5: python 3.8 - 3.12 support
+
 ## License
 
 MIT License - see LICENSE file for details.

@@ -81,6 +81,8 @@ except serpapi.TimeoutError as e:
 
 Documentation is [available on Read the Docs](https://serpapi-python.readthedocs.io/en/latest/).
 
+Change history is [available on GitHub](https://github.com/serpapi/serpapi-python/blob/master/HISTORY.md).
+
 ## Basic Examples in Python
 
 ### Search Bing

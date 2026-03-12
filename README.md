@@ -1,17 +1,11 @@
+# SerpApi Python Library & Package
+[![Package](https://badge.fury.io/py/serpapi.svg)](https://pypi.org/project/serpapi) [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 
-<div align="center">
-<h1 align="center">SerpApi Python Library & Package</h1>
-  <img src="https://user-images.githubusercontent.com/78694043/233921372-bb57c347-9005-4b59-8f09-993698a87eb6.svg" width="600" alt="serpapi python library logo">
+Integrate search data into your AI workflow, RAG / fine-tuning, or Python application using this official wrapper for [SerpApi](https://serpapi.com). 
 
-  <a href="https://pypi.org/project/serpapi">![Package](https://badge.fury.io/py/serpapi.svg)</a>
-  
-  [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
-</div>
+SerpApi supports Google, Google Maps, Google Shopping, Baidu, Yandex, Yahoo, eBay, App Stores, and [more](https://serpapi.com). 
 
-This repository is the home of the official Python API wrapper for [SerpApi](https://serpapi.com). This `serpapi` module allows you to access search data in your Python application.
-
-[SerpApi](https://serpapi.com) supports Google, Google Maps, Google Shopping, Bing, Baidu, Yandex, Yahoo, eBay, App Stores, and more. Check out the [documentation](https://serpapi.com/search-engine-apis) for a full list.
-
+Query a vast range of data at scale, including web search results, flight schedules, stock market data, news headlines, and [more](https://serpapi.com).
 
 ## Installation
 
@@ -23,32 +17,33 @@ $ pip install serpapi
 
 Please note that this package is separate from the legacy `serpapi` module, which is available on PyPi as `google-search-results`. This package is maintained by SerpApi, and is the recommended way to access the SerpApi service from Python.
 
-## Usage
+## Simple Usage
 
 Let's start by searching for Coffee on Google:
 
-```pycon
->>> import serpapi
->>> s = serpapi.search(q="Coffee", engine="google", location="Austin, Texas", hl="en", gl="us")
+```python
+import os
+import serpapi
+
+client = serpapi.Client(api_key=os.getenv("SERPAPI_KEY"))
+results = client.search({
+  "engine": "google",
+  "q": "coffee"
+})
+
+print(results)
 ```
 
-The `s` variable now contains a `SerpResults` object, which acts just like a standard dictionary, with some convenient functions added on top.
+The `results` variable now contains a `SerpResults` object, which acts just like a standard dictionary, with some convenient functions added on top.
 
-Let's print the first result:
+This example runs a search for "coffee" on Google. It then returns the results as a regular Python Hash.
+ See the [playground](https://serpapi.com/playground) to generate your own code.
 
-```pycon
->>> s["organic_results"][0]["link"]
-'https://en.wikipedia.org/wiki/Coffee'
-```
+The SerpApi key can be obtained from [serpapi.com/signup](https://serpapi.com/users/sign_up?plan=free).
 
-Let's print the title of the first result, but in a more Pythonic way:
-
-```pycon
->>> s["organic_results"][0].get("title")
-'Coffee - Wikipedia'
-```
-
-The [SerpApi.com API Documentation](https://serpapi.com/search-engine-apis) contains a list of all the possible parameters that can be passed to the API.
+Environment variables are a secure, safe, and easy way to manage secrets.
+ Set `export SERPAPI_KEY=<secret_serpapi_key>` in your shell.
+ Python accesses these variables from `os.environ["SERPAPI_KEY"]`.
 
 ### Error handling
 

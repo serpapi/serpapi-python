@@ -8,9 +8,9 @@
   [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 </div>
 
-This repository is the home of the *soon–to–be* official Python API wrapper for [SerpApi](https://serpapi.com). This `serpapi` module allows you to access search data in your Python application.
+This repository is the home of the official Python API wrapper for [SerpApi](https://serpapi.com). This `serpapi` module allows you to access search data in your Python application.
 
-[SerpApi](https://serpapi.com) supports Google, Google Maps, Google Shopping, Bing, Baidu, Yandex, Yahoo, eBay, App Stores, and more. Check out the [documentation](https://serpapi.com/search-api) for a full list.
+[SerpApi](https://serpapi.com) supports Google, Google Maps, Google Shopping, Bing, Baidu, Yandex, Yahoo, eBay, App Stores, and more. Check out the [documentation](https://serpapi.com/search-engine-apis) for a full list.
 
 
 ## Installation
@@ -48,13 +48,14 @@ Let's print the title of the first result, but in a more Pythonic way:
 'Coffee - Wikipedia'
 ```
 
-The [SerpApi.com API Documentation](https://serpapi.com/search-api) contains a list of all the possible parameters that can be passed to the API.
+The [SerpApi.com API Documentation](https://serpapi.com/search-engine-apis) contains a list of all the possible parameters that can be passed to the API.
 
 ### Error handling
 
 Unsuccessful requests raise `serpapi.HTTPError` or `serpapi.TimeoutError` exceptions. The returned status code will reflect the sort of error that occurred, please refer to [Status and Error Codes Documentation](https://serpapi.com/api-status-and-error-codes) for more details.
 
 ```python
+import os
 import serpapi
 
 # A default timeout can be set here.
@@ -254,19 +255,18 @@ results = client.search({
 ```
 - API Documentation: [serpapi.com/google-autocomplete-api](https://serpapi.com/google-autocomplete-api)
 
-### Search Google Product
+### Search Google Immersive Product
 ```python
 import os
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
 results = client.search({
-    'engine': 'google_product',
-    'q': 'coffee',
-    'product_id': '4887235756540435899',
+    'engine': 'google_immersive_product',
+    'page_token': 'eyJlaSI6Im5ZVmxaOXVVTDY2X3A4NFBqTnZELUFjIiwicHJvZHVjdGlkIjoiIiwiY2F0YWxvZ2lkIjoiNTE1NDU2NTc1NTc5MzcxMDY3NSIsImhlYWRsaW5lT2ZmZXJEb2NpZCI6IjI1MDkyMjcwMDUzMjk2NzQwODMiLCJpbWFnZURvY2lkIjoiMTYzOTg5MjU0MDcwMDU4MDA1NTQiLCJyZHMiOiJQQ18zNDg4MDE0MTg3ODgxNzc5NjU0fFBST0RfUENfMzQ4ODAxNDE4Nzg4MTc3OTY1NCIsInF1ZXJ5IjoibGcrdHYiLCJncGNpZCI6IjM0ODgwMTQxODc4ODE3Nzk2NTQiLCJtaWQiOiI1NzY0NjI3ODM3Nzc5MTUzMTMiLCJwdnQiOiJoZyIsInV1bGUiOm51bGx9=',
 })
 ```
-- API Documentation: [serpapi.com/google-product-api](https://serpapi.com/google-product-api)
+- API Documentation: [serpapi.com/google-immersive-product-api](https://serpapi.com/google-immersive-product-api)
 
 ### Search Google Reverse Image
 ```python
@@ -290,7 +290,7 @@ import serpapi
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
 results = client.search({
     'engine': 'google_events',
-    'q': 'coffee',
+    'q': 'Events in Austin',
 })
 ```
 - API Documentation: [serpapi.com/google-events-api](https://serpapi.com/google-events-api)
@@ -349,7 +349,6 @@ results = client.search({
     'engine': 'google_play',
     'q': 'kite',
     'store': 'apps',
-    'max_results': '2',
 })
 ```
 - API Documentation: [serpapi.com/google-play-api](https://serpapi.com/google-play-api)
@@ -366,7 +365,7 @@ results = client.search({
     'q': 'coffee',
 })
 ```
-- API Documentation: [serpapi.com/images-results](https://serpapi.com/images-results)
+- API Documentation: [serpapi.com/google-images-api](https://serpapi.com/google-images-api)
 
 ## License
 

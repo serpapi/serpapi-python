@@ -1,0 +1,143 @@
+name: Release
+
+on:
+  push:
+    tags: ['v**']
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    name: Test / Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: pip install -e .[test]
+
+      - name: Run tests
+        run: pytest -k "not example"
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+
+      - name: Run example tests
+        if: matrix.python-version == '3.13'
+        run: pytest -k "example"
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+
+  build:
+    name: Build distribution
+    needs: [test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Build sdist and wheel
+        run: |
+          pip install build
+          python -m build
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+          if-no-files-found: error
+
+  publish:
+    name: Publish release
+    needs: [build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release create ${{ github.ref_name }} dist/* --generate-notes \
+            || gh release upload ${{ github.ref_name }} dist/* --clobber
+
+      - name: Install twine
+        run: pip install --upgrade pip twine
+
+      - name: Publish to PyPI
+        env:
+          TWINE_USERNAME: __token__
+          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
+        run: twine upload dist/*
+
+      - name: Publish to GitHub Packages
+        env:
+          TWINE_USERNAME: ${{ github.repository_owner }}
+          TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        run: twine upload --repository-url https://upload.pypi.pkg.github.com/${{ github.repository_owner }}/ dist/*
+
+  smoke-test:
+    name: Smoke test published package
+    needs: [publish]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Wait for PyPI availability
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          echo "Waiting for serpapi==$VERSION on PyPI..."
+          for i in $(seq 1 12); do
+            if pip index versions serpapi 2>/dev/null | grep -q "$VERSION"; then
+              echo "Available!"
+              exit 0
+            fi
+            echo "Attempt $i/12 — sleeping 10s..."
+            sleep 10
+          done
+          echo "Timed out waiting for PyPI propagation" && exit 1
+
+      - name: Install from PyPI
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          pip install "serpapi==$VERSION"
+
+      - name: Verify import and version
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          python - <<PY
+import os
+import serpapi
+assert serpapi.__version__ == '$VERSION', f'Version mismatch: {serpapi.__version__} != $VERSION'
+print(f'OK: serpapi=={serpapi.__version__} installed successfully')
+client = serpapi.Client(api_key=os.environ["API_KEY"])
+results = client.search({"engine": "google", "q": "coffee"})
+assert results.get("organic_results"), "No organic results returned"
+print(f'OK: live search returned {len(results["organic_results"])} organic results')
+PY

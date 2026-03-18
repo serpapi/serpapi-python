@@ -369,3 +369,15 @@ MIT License.
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub. Once dependencies are installed, you can run the tests with `pytest`.
+
+## Publishing a new release
+
+1. Update the version in `serpapi/__version__.py`.
+2. Push a tag — the release pipeline runs automatically:
+   ```sh
+   git tag v1.2.3
+   git push origin v1.2.3
+   ```
+   This triggers the [release workflow](.github/workflows/release.yml), which tests, builds, and publishes to PyPI, then smoke-tests the published package.
+
+> **Required secrets:** `PYPI_API_TOKEN` (PyPI upload token) and `API_KEY` (used in smoke-test live search).

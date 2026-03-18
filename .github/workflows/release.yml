@@ -129,15 +129,15 @@ jobs:
       - name: Verify import and version
         env:
           API_KEY: ${{ secrets.API_KEY }}
+          EXPECTED_VERSION: ${{ github.ref_name }}
+        shell: python3 {0}
         run: |
-          VERSION=${GITHUB_REF_NAME#v}
-          python - <<PY
-import os
-import serpapi
-assert serpapi.__version__ == '$VERSION', f'Version mismatch: {serpapi.__version__} != $VERSION'
-print(f'OK: serpapi=={serpapi.__version__} installed successfully')
-client = serpapi.Client(api_key=os.environ["API_KEY"])
-results = client.search({"engine": "google", "q": "coffee"})
-assert results.get("organic_results"), "No organic results returned"
-print(f'OK: live search returned {len(results["organic_results"])} organic results')
-PY
+          import os
+          import serpapi
+          expected = os.environ["EXPECTED_VERSION"].lstrip("v")
+          assert serpapi.__version__ == expected, f"Version mismatch: {serpapi.__version__} != {expected}"
+          print(f"OK: serpapi=={serpapi.__version__} installed successfully")
+          client = serpapi.Client(api_key=os.environ["API_KEY"])
+          results = client.search({"engine": "google", "q": "coffee"})
+          assert results.get("organic_results"), "No organic results returned"
+          print(f"OK: live search returned {len(results['organic_results'])} organic results")

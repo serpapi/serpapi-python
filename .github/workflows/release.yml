@@ -92,13 +92,6 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: twine upload dist/*
 
-      - name: Publish to GitHub Packages
-        continue-on-error: true
-        env:
-          TWINE_USERNAME: ${{ github.repository_owner }}
-          TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
-        run: twine upload --repository-url https://pypi.pkg.github.com/${{ github.repository_owner }}/ dist/*
-
   smoke-test:
     name: Smoke test published package
     needs: [publish]

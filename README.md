@@ -1,5 +1,5 @@
 # SerpApi Python Library & Package
-[![Package](https://badge.fury.io/py/serpapi.svg)](https://pypi.org/project/serpapi) [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
+[![Package](https://img.shields.io/pypi/v/serpapi?color=green)](https://pypi.org/project/serpapi) [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 
 Integrate search data into your AI workflow, RAG / fine-tuning, or Python application using this official wrapper for [SerpApi](https://serpapi.com). 
 

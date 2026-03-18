@@ -92,6 +92,28 @@ jobs:
           TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
         run: twine upload dist/*
 
+  docs:
+    name: Deploy docs to Read the Docs
+    needs: [publish]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Read the Docs build
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          # Activate and build the tagged version
+          curl -sf -X PATCH \
+            -H "Authorization: Token ${{ secrets.READTHEDOCS_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"active": true}' \
+            "https://readthedocs.org/api/v3/projects/serpapi-python/versions/v${VERSION}/" || true
+          curl -sf -X POST \
+            -H "Authorization: Token ${{ secrets.READTHEDOCS_TOKEN }}" \
+            "https://readthedocs.org/api/v3/projects/serpapi-python/versions/v${VERSION}/builds/"
+          # Also rebuild stable/latest
+          curl -sf -X POST \
+            -H "Authorization: Token ${{ secrets.READTHEDOCS_TOKEN }}" \
+            "https://readthedocs.org/api/v3/projects/serpapi-python/versions/stable/builds/" || true
+
   smoke-test:
     name: Smoke test published package
     needs: [publish]

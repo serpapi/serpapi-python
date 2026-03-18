@@ -1,6 +1,13 @@
 Release History
 ===============
 
+1.0.0 (2026-03-18)
+------------------
+
+- Automated PyPI release pipeline via GitHub Actions (tag-triggered: test → build → publish → smoke test).
+- Modernized packaging to PEP 621 (pyproject.toml), removing legacy setup.py and Pipfile.
+- Added Python 3.13 support.
+
 0.1.6 (2026-02-16)
 ------------------
 

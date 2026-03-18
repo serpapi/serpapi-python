@@ -93,6 +93,7 @@ jobs:
         run: twine upload dist/*
 
       - name: Publish to GitHub Packages
+        continue-on-error: true
         env:
           TWINE_USERNAME: ${{ github.repository_owner }}
           TWINE_PASSWORD: ${{ secrets.GITHUB_TOKEN }}

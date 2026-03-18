@@ -1,3 +1,55 @@
 [build-system]
-requires = ["setuptools", "wheel"]
-build-backend = "setuptools.build_meta:__legacy__"
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "serpapi"
+dynamic = ["version"]
+description = "The official Python client for SerpApi.com."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "SerpApi", email = "support@serpapi.com" }]
+requires-python = ">=3.6"
+dependencies = ["requests"]
+keywords = [
+  "scrape", "serp", "api", "serpapi", "scraping", "json", "search",
+  "localized", "rank", "google", "bing", "baidu", "yandex", "yahoo",
+  "ebay", "scale", "datamining", "training", "machine", "ml",
+  "youtube", "naver", "walmart", "apple", "store", "app",
+]
+classifiers = [
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Natural Language :: English",
+  "Topic :: Utilities",
+  "Topic :: Internet :: WWW/HTTP",
+  "Topic :: Internet :: WWW/HTTP :: Indexing/Search",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.optional-dependencies]
+color = ["pygments"]
+test = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/serpapi/serpapi-python"
+Source = "https://github.com/serpapi/serpapi-python"
+Documentation = "https://serpapi-python.readthedocs.io/en/latest/"
+
+[tool.setuptools.dynamic]
+version = { attr = "serpapi.__version__.__version__" }
+
+[tool.setuptools.packages.find]
+exclude = ["tests", "tests.*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

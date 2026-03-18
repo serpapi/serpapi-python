@@ -19,10 +19,10 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v5
+      uses: actions/setup-python@v6
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -30,12 +30,13 @@ jobs:
     - name: Install dependencies
       run: pip install -e .[test]
 
-    - name: Test with pytest
-      run: |
-        if [ "${{ matrix.python-version }}" == "3.11" ]; then
-          pytest
-        else
-          pytest -k "not example"
-        fi
+    - name: Run tests
+      run: pytest -k "not example"
       env:
-        API_KEY: ${{secrets.API_KEY}}
+        API_KEY: ${{ secrets.API_KEY }}
+
+    - name: Run example tests
+      if: matrix.python-version == '3.13'
+      run: pytest -k "example"
+      env:
+        API_KEY: ${{ secrets.API_KEY }}

@@ -16,3 +16,4 @@ __pycache__
 
 .vscode
 t.py
+.venv/

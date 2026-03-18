@@ -1,6 +1,11 @@
 Release History
 ===============
 
+1.0.1 (2026-03-18)
+------------------
+
+- Fix release workflow: YAML syntax error in smoke test step and remove broken GitHub Packages publish.
+
 1.0.0 (2026-03-18)
 ------------------
 

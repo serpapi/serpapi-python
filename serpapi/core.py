@@ -4,9 +4,10 @@ from .models import SerpResults
 
 
 class Client(HTTPClient):
-    """A class that handles API requests to SerpApi in a user–friendly manner.
+    """A class that handles API requests to SerpApi in a user-friendly manner.
 
     :param api_key: The API Key to use for SerpApi.com.
+    :param timeout: The default timeout to use for requests.
 
     Please provide ``api_key`` when instantiating this class. We recommend storing this in an environment variable, like so:
 
@@ -34,28 +35,21 @@ class Client(HTTPClient):
     def search(self, params: dict = None, **kwargs):
         """Fetch a page of results from SerpApi. Returns a :class:`SerpResults <serpapi.client.SerpResults>` object, or unicode text (*e.g.* if ``'output': 'html'`` was passed).
 
-        The following three calls are equivalent:
+        Dictionary parameters and keyword parameters are both supported:
 
         .. code-block:: python
 
-            >>> s = serpapi.search(q="Coffee", location="Austin, Texas, United States")
-
-        .. code-block:: python
-
-            >>> params = {"q": "Coffee", "location": "Austin, Texas, United States"}
-            >>> s = serpapi.search(**params)
-
-        .. code-block:: python
-
-            >>> params = {"q": "Coffee", "location": "Austin, Texas, United States"}
-            >>> s = serpapi.search(params)
+            >>> import types
+            >>> client = Client(api_key="secret_api_key")
+            >>> client.request = lambda method, path, params, **kwargs: types.SimpleNamespace(json=lambda: {"search_parameters": params}, text="")
+            >>> client.search({"engine": "google", "q": "Coffee"})["search_parameters"]["q"]
+            'Coffee'
+            >>> client.search(engine="google", q="Coffee")["search_parameters"]["engine"]
+            'google'
 
 
-        :param q: typically, this is the parameter for the search engine query.
-        :param engine: the search engine to use. Defaults to ``google``.
-        :param output: the output format desired (``html`` or ``json``). Defaults to ``json``.
-        :param api_key: the API Key to use for SerpApi.com.
-        :param **: any additional parameters to pass to the API.
+        :param params: SerpApi search parameters such as ``engine``, ``q``, ``location``, and ``output``.
+        :param kwargs: Additional SerpApi parameters or request options. ``timeout``, ``proxies``, ``verify``, ``stream``, and ``cert`` are passed to the underlying HTTP request.
 
 
         **Learn more**: https://serpapi.com/search-api
@@ -79,10 +73,8 @@ class Client(HTTPClient):
     def search_archive(self, params: dict = None, **kwargs):
         """Get a result from the SerpApi Search Archive API.
 
-        :param search_id: the Search ID of the search to retrieve from the archive.
-        :param api_key: the API Key to use for SerpApi.com.
-        :param output: the output format desired (``html`` or ``json``). Defaults to ``json``.
-        :param **: any additional parameters to pass to the API.
+        :param params: Archive parameters. Must include ``search_id``.
+        :param kwargs: Additional archive parameters or request options. ``timeout``, ``proxies``, ``verify``, ``stream``, and ``cert`` are passed to the underlying HTTP request.
 
         **Learn more**: https://serpapi.com/search-archive-api
         """
@@ -112,9 +104,8 @@ class Client(HTTPClient):
         """Get a list of supported Google locations.
 
 
-        :param q: restricts your search to locations that contain the supplied string.
-        :param limit: limits the number of locations returned.
-        :param **: any additional parameters to pass to the API.
+        :param params: Location API parameters such as ``q`` and ``limit``.
+        :param kwargs: Additional location parameters or request options. ``timeout``, ``proxies``, ``verify``, ``stream``, and ``cert`` are passed to the underlying HTTP request.
 
         **Learn more**: https://serpapi.com/locations-api
         """
@@ -142,8 +133,8 @@ class Client(HTTPClient):
     def account(self, params: dict = None, **kwargs):
         """Get SerpApi account information.
 
-        :param api_key: the API Key to use for SerpApi.com.
-        :param **: any additional parameters to pass to the API.
+        :param params: Account API parameters.
+        :param kwargs: Additional account parameters or request options. ``timeout``, ``proxies``, ``verify``, ``stream``, and ``cert`` are passed to the underlying HTTP request.
 
         **Learn more**: https://serpapi.com/account-api
         """

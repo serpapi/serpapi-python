@@ -1,0 +1,115 @@
+display_name: SerpApi Python
+module: serpapi
+parser: sphinx
+dynamic: true
+
+repo: https://github.com/serpapi/serpapi-python
+site_url: https://serpapi.github.io/serpapi-python/
+github_style: icon
+pypi: true
+
+source:
+  enabled: true
+  branch: master
+  path: serpapi
+  placement: title
+
+authors:
+  - name: SerpApi
+    role: Author
+    email: support@serpapi.com
+    homepage: https://serpapi.com
+
+funding:
+  name: SerpApi, LLC
+  roles:
+    - Copyright holder
+  homepage: https://serpapi.com
+
+logo:
+  light: assets/serpapi-logo.svg
+  dark: assets/serpapi-logo-dark.svg
+  alt: SerpApi
+  height: 32px
+  href: index.html
+
+favicon: assets/serpapi-icon.png
+
+hero:
+  enabled: false
+  logo: false
+  name: SerpApi Python
+  tagline: Official Python client for SerpApi search data.
+  badges: auto
+
+homepage: index
+user_guide: docs/user_guide
+sections:
+  - title: Examples
+    dir: docs/examples
+markdown_pages: true
+dark_mode_toggle: true
+
+accent_color:
+  light: "#377FEA"
+  dark: "#6937EA"
+navbar_color:
+  light: "#FFFFFF"
+  dark: "#2F3030"
+
+site:
+  theme: flatly
+  toc: true
+  toc-depth: 2
+  language: en
+  show_dates: false
+  show_author: false
+
+include_in_header:
+  - text: '<script>(function(){var m=document.querySelector("meta[name=\"quarto:offset\"]");var l=document.createElement("link");l.rel="stylesheet";l.href=(m?m.content:"")+"assets/serpapi-theme.css";document.head.appendChild(l);})();</script>'
+  - text: '<script>(function(){function fixLogoHomeLink(){var m=document.querySelector("meta[name=\"quarto:offset\"]");var base=m?m.content:"";document.querySelectorAll(".navbar-brand-logo").forEach(function(a){a.setAttribute("href",base+"index.html");});}if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",fixLogoHomeLink);}else{fixLogoHomeLink();}})();</script>'
+
+changelog:
+  enabled: false
+
+skill:
+  enabled: false
+
+sidebar_filter:
+  enabled: true
+  min_items: 8
+
+inline_methods: true
+exclude:
+  - HTTPClient
+  - http
+  - models
+  - textui
+  - utils
+  - core
+  - requests
+  - exceptions
+  - SerpResults.__getstate__
+  - SerpResults.__setstate__
+  - SerpResults.__repr__
+  - SerpResults.from_http_response
+  - http.raise_for_status
+  - models.prettify_json
+  - textui.prettify_json
+
+reference:
+  - title: Search Client
+    desc: Main entry points for making requests and working with responses.
+    contents:
+      - Client
+      - SerpResults
+
+  - title: Exceptions
+    desc: Errors raised by the client for API, HTTP, connection, and timeout failures.
+    contents:
+      - SerpApiError
+      - APIKeyNotProvided
+      - SearchIDNotProvided
+      - HTTPError
+      - HTTPConnectionError
+      - TimeoutError

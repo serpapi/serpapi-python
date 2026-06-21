@@ -15,7 +15,7 @@ To install the `serpapi` package, simply run the following command:
 $ pip install serpapi
 ```
 
-Please note that this package is separate from the legacy `serpapi` module, which is available on PyPi as `google-search-results`. This package is maintained by SerpApi, and is the recommended way to access the SerpApi service from Python.
+Please note that this package is separate from the deprecated `google-search-results` SDK. This package is maintained by SerpApi and is the recommended way to access the SerpApi service from Python.
 
 ## Simple Usage
 
@@ -75,7 +75,7 @@ except serpapi.TimeoutError as e:
 
 ## Documentation
 
-Documentation is [available on Read the Docs](https://serpapi-python.readthedocs.io/en/latest/).
+Documentation is built with [Great Docs](https://posit-dev.github.io/great-docs/) and published at the repository's default GitHub Pages site: [serpapi.github.io/serpapi-python](https://serpapi.github.io/serpapi-python/).
 
 Change history is [available on GitHub](https://github.com/serpapi/serpapi-python/blob/master/HISTORY.md).
 
@@ -368,7 +368,13 @@ MIT License.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub. Once dependencies are installed, you can run the tests with `pytest`.
+Bug reports and pull requests are welcome on GitHub. Once dependencies are installed, you can run the tests with `pytest`. Pytest is configured to include doctests from the `serpapi` package.
+
+To run only doctests:
+
+```bash
+pytest --doctest-modules serpapi
+```
 
 ## Publishing a new release
 

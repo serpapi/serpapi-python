@@ -1,6 +1,8 @@
 # SerpApi Python Library & Package
 [![Package](https://img.shields.io/pypi/v/serpapi?color=green)](https://pypi.org/project/serpapi) [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 
+[Full documentation](https://serpapi.github.io/serpapi-python/)
+
 Integrate search data into your AI workflow, RAG / fine-tuning, or Python application using this official wrapper for [SerpApi](https://serpapi.com). 
 
 SerpApi supports Google, Google Maps, Google Shopping, Baidu, Yandex, Yahoo, eBay, App Stores, and [more](https://serpapi.com). 

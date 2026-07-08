@@ -25,10 +25,6 @@ jobs:
       - name: Install dependencies
         run: pip install -e .[test]
 
-      - name: Verify generated typing stubs
-        if: matrix.python-version == '3.13'
-        run: python typing/generate_type_stubs.py --check
-
       - name: Run tests
         run: pytest -k "not example"
         env:

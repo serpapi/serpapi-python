@@ -81,13 +81,13 @@ Choose the path that matches what you are building. Start with setup and a first
 - Existing `google-search-results` users: follow the [Migration Guide](user-guide/migrating-from-google-search-results.md).
 - Engine setup: use [Parameters and Engines](user-guide/parameters-and-engines.md) with the [SerpApi Playground](https://serpapi.com/playground).
 - Production workflows: review [pagination](user-guide/pagination.md), [timeouts and errors](user-guide/errors-and-timeouts.md), [request options](user-guide/request-options.md), [account/location helpers](user-guide/account-and-locations.md), [async search archive](user-guide/async-search-archive.md), [JSON Restrictor](user-guide/json-restrictor.md), and [zero trace controls](user-guide/zero-trace.md).
-- [Examples](docs/examples/google-across-countries.md): browse focused recipes for search, maps, shopping, flights, finance, trends, AI Overview, news, jobs, and YouTube.
+- [Examples](docs/examples/index.qmd): browse focused recipes grouped by search engines, AI answers, local/maps, shopping, travel, finance, trends, jobs, events, media, apps, and research.
 
 <div class="docs-home-actions">
   <a href="user-guide/getting-started.md">Getting Started</a>
   <a href="user-guide/client-usage.md">Client Usage</a>
   <a href="user-guide/migrating-from-google-search-results.md">Migration Guide</a>
-  <a href="docs/examples/google-across-countries.md">Examples</a>
+  <a href="docs/examples/index.qmd">Examples</a>
   <a href="https://serpapi.com/playground">SerpApi Playground</a>
 </div>
 
@@ -119,17 +119,14 @@ Choose the path that matches what you are building. Start with setup and a first
 
 ### Examples
 
-- [Google Across Countries](docs/examples/google-across-countries.md)
-- [Bing Search](docs/examples/bing-search.md)
-- [Google Maps Local Business](docs/examples/google-maps-local-business.md)
-- [Google Shopping Products](docs/examples/google-shopping-products.md)
-- [Google Flights Travel](docs/examples/google-flights-travel.md)
-- [Google Finance Market Data](docs/examples/google-finance-market-data.md)
-- [Google Trends Demand](docs/examples/google-trends-demand.md)
-- [Google AI Overview](docs/examples/google-ai-overview.md)
-- [Google News Monitoring](docs/examples/google-news-monitoring.md)
-- [Google Jobs Listings](docs/examples/google-jobs-listings.md)
-- [YouTube Video Search](docs/examples/youtube-video-search.md)
+- [Examples Overview](docs/examples/index.qmd)
+- Search Engines: [Google](docs/examples/google-across-countries.md), [Bing](docs/examples/bing-search.md), [DuckDuckGo](docs/examples/duckduckgo-search.md), [Baidu](docs/examples/baidu-search.md)
+- AI Answers: [Google AI Overview](docs/examples/google-ai-overview.md)
+- Local and Maps: [Google Maps](docs/examples/google-maps-local-business.md), [Google Local Services](docs/examples/google-local-services.md)
+- Shopping and Marketplaces: [Google Shopping](docs/examples/google-shopping-products.md), [Amazon](docs/examples/amazon-product-search.md), [Walmart](docs/examples/walmart-product-search.md), [eBay](docs/examples/ebay-product-listings.md), [Home Depot](docs/examples/home-depot-product-search.md)
+- Travel and Hospitality: [Google Flights](docs/examples/google-flights-travel.md), [Tripadvisor](docs/examples/tripadvisor-travel-search.md)
+- Finance, Trends, Jobs, and Events: [Google Finance](docs/examples/google-finance-market-data.md), [Google Trends](docs/examples/google-trends-demand.md), [Google Jobs](docs/examples/google-jobs-listings.md), [Google Events](docs/examples/google-events-discovery.md)
+- Media, Apps, and Research: [YouTube](docs/examples/youtube-video-search.md), [Google Images](docs/examples/google-images-search.md), [Google Scholar](docs/examples/google-scholar-research.md), [Google Play](docs/examples/google-play-store-apps.md)
 
 :::
 

@@ -458,6 +458,21 @@ td code:not(.sourceCode) {
   text-decoration: none;
 }
 
+#quarto-sidebar .sidebar-link {
+  min-width: 0;
+}
+
+#quarto-sidebar .sidebar-link .menu-text {
+  min-inline-size: min-content;
+  overflow-wrap: normal;
+  word-break: keep-all;
+  hyphens: none;
+}
+
+body:not(.gd-ref-sidebar) #quarto-sidebar .sidebar-link .menu-text wbr {
+  display: none;
+}
+
 .sidebar .sidebar-link:hover,
 .sidebar .sidebar-link:focus {
   background: rgba(47, 115, 217, 0.08);

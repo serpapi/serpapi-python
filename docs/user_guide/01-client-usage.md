@@ -141,8 +141,9 @@ next_results = results.next_page()
 To iterate through all available pages, use `yield_pages()`:
 
 ```python
-for page in results.yield_pages(max_pages=10):
-    print(page["search_metadata"].get("page_number"))
+for page_number, page in enumerate(results.yield_pages(max_pages=10), start=1):
+    current = page.get("serpapi_pagination", {}).get("current", page_number)
+    print(current)
 ```
 
 See [Pagination](pagination.md) for fuller pagination examples and Google `start` offsets.

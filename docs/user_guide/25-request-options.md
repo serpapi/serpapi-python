@@ -48,6 +48,7 @@ results = client.search(
 
 Pass a `requests`-style proxies dictionary:
 
+<!-- docs-test: skip uses an example proxy host -->
 ```python
 results = client.search(
     engine="google",
@@ -64,6 +65,7 @@ Keep proxy credentials in environment variables or your secret manager rather th
 
 By default, `requests` verifies TLS certificates. You can pass a custom CA bundle path:
 
+<!-- docs-test: skip uses an example CA bundle path -->
 ```python
 results = client.search(
     engine="google",
@@ -74,6 +76,7 @@ results = client.search(
 
 Only disable verification for controlled local debugging:
 
+<!-- docs-test: skip intentionally disables TLS verification -->
 ```python
 results = client.search(
     engine="google",
@@ -88,6 +91,7 @@ Do not use `verify=False` in production code.
 
 Pass a client certificate path, or a `(cert, key)` tuple, using `cert`:
 
+<!-- docs-test: skip uses example client certificate paths -->
 ```python
 results = client.search(
     engine="google",

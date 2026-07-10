@@ -27,10 +27,11 @@ search = client.search(
 ai_overview = search.get("ai_overview", {})
 
 if ai_overview.get("page_token"):
-    ai_overview = client.search(
+    response = client.search(
         engine="google_ai_overview",
         page_token=ai_overview["page_token"],
     )
+    ai_overview = response.get("ai_overview", {})
 
 for block in ai_overview.get("text_blocks", [])[:3]:
     print(block.get("snippet") or block.get("text"))
@@ -38,6 +39,6 @@ for block in ai_overview.get("text_blocks", [])[:3]:
 
 ## What to Read
 
-Use `text_blocks` for the generated answer and `references` for cited sources when present. If the first Google Search response already includes the AI Overview content, you can read it directly without the second request.
+Use `ai_overview.text_blocks` for the generated answer and `ai_overview.references` for cited sources when present. If the first Google Search response already includes the AI Overview content, you can read it directly without the second request.
 
 See the [Google Search API AI Overview docs](https://serpapi.com/search-api#api-examples-results-for-ai-overview) and the [Google AI Overview API documentation](https://serpapi.com/google-ai-overview-api). Use the [SerpApi Playground](https://serpapi.com/playground) to find queries that currently return AI Overview data.

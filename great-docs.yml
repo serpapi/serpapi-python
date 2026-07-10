@@ -41,6 +41,45 @@ user_guide: docs/user_guide
 sections:
   - title: Examples
     dir: docs/examples
+    index: true
+    sidebar_groups:
+      - section: Search Engines
+        contents:
+          - google-across-countries.md
+          - bing-search.md
+          - duckduckgo-search.md
+          - baidu-search.md
+      - section: AI Answers
+        contents:
+          - google-ai-overview.md
+      - section: Local and Maps
+        contents:
+          - google-maps-local-business.md
+          - google-local-services.md
+      - section: Shopping and Marketplaces
+        contents:
+          - google-shopping-products.md
+          - google-shopping-price-monitoring.md
+          - amazon-product-search.md
+          - walmart-product-search.md
+          - ebay-product-listings.md
+          - home-depot-product-search.md
+      - section: Travel and Hospitality
+        contents:
+          - google-flights-travel.md
+          - tripadvisor-travel-search.md
+      - section: Finance, Trends, Jobs, and Events
+        contents:
+          - google-finance-market-data.md
+          - google-trends-demand.md
+          - google-jobs-listings.md
+          - google-events-discovery.md
+      - section: Media, Apps, and Research
+        contents:
+          - youtube-video-search.md
+          - google-images-search.md
+          - google-scholar-research.md
+          - google-play-store-apps.md
 markdown_pages: true
 pre_render:
   - scripts/build_llms_txt.py

@@ -9,8 +9,6 @@ SerpApi supports Google, Google Maps, Google Shopping, Bing, DuckDuckGo, Baidu, 
 
 Query a wide range of data at scale, including web search results, local business listings, shopping results, flight schedules, stock market data, job listings, trends, news headlines, AI Overview results, and video search results.
 
-This package is separate from the deprecated `google-search-results` SDK. This package is maintained by SerpApi and is the recommended Python package for new integrations. If your project still depends on `google-search-results`, see [Migrating from google-search-results](user-guide/migrating-from-google-search-results.md).
-
 ## Install
 
 With `pip`:
@@ -19,21 +17,20 @@ With `pip`:
 pip install serpapi
 ```
 
-With `uv` in a project:
+Or, if you are using `uv` for dependency management:
 
 ```bash
 uv add serpapi
 ```
 
-With `uv` in an existing environment:
-
-```bash
-uv pip install serpapi
-```
 
 Python 3.6 or newer is required by the package. Building this documentation site uses Great Docs and Quarto on Python 3.11 or newer.
 
 ## First Request
+
+Sign up at [SerpApi](https://serpapi.com/users/sign_up) and get your free API key from [dashboard](https://serpapi.com/manage-api-key) . Then, set the `SERPAPI_KEY` environment variable in your shell.
+
+```bash
 
 ```python
 import os
@@ -58,6 +55,18 @@ Request parameters map directly to the SerpApi HTTP API. The actual full support
 :::{.docs-home-nav}
 
 :::{.docs-home-nav__intro}
+
+
+## Where to Go Next
+
+- Start with [Getting Started](user-guide/getting-started.md) for installation and a first request.
+- Read [Client Usage](user-guide/client-usage.md) to learn the Python API, response helpers, request options, and archive helpers.
+- Use [Migrating from google-search-results](user-guide/migrating-from-google-search-results.md) if your project still depends on the deprecated SDK.
+- Use [Parameters and Engines](user-guide/parameters-and-engines.md) for links to the full supported engine and parameter docs.
+- Browse [Examples](docs/examples/google-flights-travel.md) for focused recipes covering travel, finance, trends, AI Overview, local business, shopping, Bing, jobs, news, and video search.
+- Review the generated API reference for `Client`, `SerpResults`, and exception classes.
+- Use the [SerpApi Playground](https://serpapi.com/playground) to build and test request parameters before putting them in code.
+
 
 ## Documentation Map
 
@@ -112,13 +121,3 @@ The full guide and examples are listed here on the homepage so you can jump dire
 :::
 
 :::
-
-## Where to Go Next
-
-- Start with [Getting Started](user-guide/getting-started.md) for installation and a first request.
-- Read [Client Usage](user-guide/client-usage.md) to learn the Python API, response helpers, request options, and archive helpers.
-- Use [Migrating from google-search-results](user-guide/migrating-from-google-search-results.md) if your project still depends on the deprecated SDK.
-- Use [Parameters and Engines](user-guide/parameters-and-engines.md) for links to the full supported engine and parameter docs.
-- Browse [Examples](docs/examples/google-flights-travel.md) for focused recipes covering travel, finance, trends, AI Overview, local business, shopping, Bing, jobs, news, and video search.
-- Review the generated API reference for `Client`, `SerpResults`, and exception classes.
-- Use the [SerpApi Playground](https://serpapi.com/playground) to build and test request parameters before putting them in code.

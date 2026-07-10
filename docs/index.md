@@ -11,72 +11,83 @@ Query a wide range of data at scale, including web search results, local busines
 
 ## Install
 
-With `pip`:
+:::{.panel-tabset}
+
+## pip
 
 ```bash
 pip install serpapi
 ```
 
-Or, if you are using `uv` for dependency management:
+## uv
 
 ```bash
 uv add serpapi
 ```
 
+:::
 
-Python 3.6 or newer is required by the package. Building this documentation site uses Great Docs and Quarto on Python 3.11 or newer.
+Python 3.6 or newer is required by the package.
 
 ## First Request
 
-Sign up at [SerpApi](https://serpapi.com/users/sign_up) and get your free API key from [dashboard](https://serpapi.com/manage-api-key) . Then, set the `SERPAPI_KEY` environment variable in your shell.
+Sign up at [SerpApi](https://serpapi.com/users/sign_up), copy your API key from the [dashboard](https://serpapi.com/manage-api-key), and set it in your shell:
+
+:::{.panel-tabset}
+
+## macOS / Linux
 
 ```bash
+export SERPAPI_KEY="secret_api_key"
+```
+
+## Windows
+
+```powershell
+$env:SERPAPI_KEY = "secret_api_key"
+```
+
+:::
 
 ```python
 import os
 import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"])
-results = client.search({
-    "engine": "google",
-    "q": "coffee",
-    "location": "Austin, Texas",
-    "hl": "en",
-    "gl": "us",
-})
+results = client.search(
+    engine="google",
+    q="coffee",
+    location="Austin, Texas",
+    hl="en",
+    gl="us",
+)
 
 print(results["organic_results"][0]["link"])
 ```
 
 The `results` variable contains a `SerpResults` object. It behaves like a standard dictionary and adds convenience helpers for response conversion, pagination, and fetching search archives.
 
-Request parameters map directly to the SerpApi HTTP API. The actual full supported engine list and engine-specific parameters are maintained in the [SerpApi API documentation](https://serpapi.com/search-api). Use the [SerpApi Playground](https://serpapi.com/playground) to build a request visually, test it, and copy the final parameters into Python.
+Request parameters map directly to the SerpApi HTTP API. For the full engine list and engine-specific parameters, use the [SerpApi API documentation](https://serpapi.com/search-api). Use the [SerpApi Playground](https://serpapi.com/playground) to build and test a request before moving it into Python.
 
 :::{.docs-home-nav}
 
 :::{.docs-home-nav__intro}
 
-
-## Where to Go Next
-
-- Start with [Getting Started](user-guide/getting-started.md) for installation and a first request.
-- Read [Client Usage](user-guide/client-usage.md) to learn the Python API, response helpers, request options, and archive helpers.
-- Use [Migrating from google-search-results](user-guide/migrating-from-google-search-results.md) if your project still depends on the deprecated SDK.
-- Use [Parameters and Engines](user-guide/parameters-and-engines.md) for links to the full supported engine and parameter docs.
-- Browse [Examples](docs/examples/google-flights-travel.md) for focused recipes covering travel, finance, trends, AI Overview, local business, shopping, Bing, jobs, news, and video search.
-- Review the generated API reference for `Client`, `SerpResults`, and exception classes.
-- Use the [SerpApi Playground](https://serpapi.com/playground) to build and test request parameters before putting them in code.
-
-
 ## Documentation Map
 
-The full guide and examples are listed here on the homepage so you can jump directly into the workflow you need. Guide pages also include the standard collapsible docs sidebar when you open them.
+Choose the path that matches what you are building. Start with setup and a first request, then move into client behavior, request parameters, pagination, error handling, or engine-specific examples.
+
+- New integrations: read [Getting Started](user-guide/getting-started.md), then [Client Usage](user-guide/client-usage.md).
+- Existing `google-search-results` users: follow the [Migration Guide](user-guide/migrating-from-google-search-results.md).
+- Engine setup: use [Parameters and Engines](user-guide/parameters-and-engines.md) with the [SerpApi Playground](https://serpapi.com/playground).
+- Production workflows: review [pagination](user-guide/pagination.md), [timeouts and errors](user-guide/errors-and-timeouts.md), [request options](user-guide/request-options.md), [account/location helpers](user-guide/account-and-locations.md), [async search archive](user-guide/async-search-archive.md), [JSON Restrictor](user-guide/json-restrictor.md), and [zero trace controls](user-guide/zero-trace.md).
+- [Examples](docs/examples/google-across-countries.md): browse focused recipes for search, maps, shopping, flights, finance, trends, AI Overview, news, jobs, and YouTube.
 
 <div class="docs-home-actions">
   <a href="user-guide/getting-started.md">Getting Started</a>
   <a href="user-guide/client-usage.md">Client Usage</a>
   <a href="user-guide/migrating-from-google-search-results.md">Migration Guide</a>
-  <a href="docs/examples/google-flights-travel.md">Travel Example</a>
+  <a href="docs/examples/google-across-countries.md">Examples</a>
   <a href="https://serpapi.com/playground">SerpApi Playground</a>
 </div>
 
@@ -103,6 +114,8 @@ The full guide and examples are listed here on the homepage so you can jump dire
 - [Parallel Requests with Threads](user-guide/threading.md)
 - [Parallel Requests with Multiprocessing](user-guide/multiprocessing.md)
 - [Zero Trace and Cache Controls](user-guide/zero-trace.md)
+- [JSON Restrictor](user-guide/json-restrictor.md)
+- [Request Options](user-guide/request-options.md)
 
 ### Examples
 

@@ -19,12 +19,12 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 
 def search_country(country):
     client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
-    results = client.search({
-        "engine": "google",
-        "q": "best coffee beans",
-        "gl": country,
-        "hl": "en",
-    })
+    results = client.search(
+        engine="google",
+        q="best coffee beans",
+        gl=country,
+        hl="en",
+    )
 
     organic_results = results.get("organic_results", [])
     return {
@@ -61,14 +61,13 @@ For Google Search, independent `start` offsets can be distributed across workers
 ```python
 def search_offset(start):
     client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
-    results = client.search({
-        "engine": "google",
-        "q": "coffee",
-        "location": "Austin, Texas",
-        "start": start,
-    })
+    results = client.search(
+        engine="google",
+        q="coffee",
+        location="Austin, Texas",
+        start=start,
+    )
     return results.get("organic_results", [])
 ```
 
 Check the relevant engine docs before parallelizing offsets because pagination parameters vary by engine.
-

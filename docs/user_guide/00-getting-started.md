@@ -12,37 +12,47 @@ Use this page to install the package, configure your API key, and make a first G
 
 ## Installation
 
-Install with `pip`:
+:::{.panel-tabset}
+
+## pip
 
 ```bash
 pip install serpapi
 ```
 
-Or add it to a project with `uv`:
+## uv project
 
 ```bash
 uv add serpapi
 ```
 
-For an existing virtual environment managed outside a `uv` project:
+## uv environment
 
 ```bash
 uv pip install serpapi
 ```
 
+:::
+
 Python 3.6 or newer is required by the package.
 
-Set your API key in the environment:
+Create or sign in to your SerpApi account, copy your API key from the [dashboard](https://serpapi.com/manage-api-key), and set it in the environment:
+
+:::{.panel-tabset}
+
+## macOS / Linux
 
 ```bash
 export SERPAPI_KEY="secret_api_key"
 ```
 
-On Windows PowerShell:
+## Windows
 
 ```powershell
-$env:SERPAPI_KEY="secret_api_key"
+$env:SERPAPI_KEY = "secret_api_key"
 ```
+
+:::
 
 ## First Search
 
@@ -52,13 +62,13 @@ import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 
-results = client.search({
-    "engine": "google",
-    "q": "coffee shops",
-    "location": "Austin, Texas",
-    "hl": "en",
-    "gl": "us",
-})
+results = client.search(
+    engine="google",
+    q="coffee shops",
+    location="Austin, Texas",
+    hl="en",
+    gl="us",
+)
 
 first_result = results["organic_results"][0]
 print(first_result["title"])
@@ -79,7 +89,7 @@ The example above sends a Google Search request:
 | `hl` | Interface language. |
 | `gl` | Country for Google results. |
 
-SerpApi supports many engines and engine-specific parameters. The authoritative list lives in the [SerpApi API documentation](https://serpapi.com/search-api). The [SerpApi Playground](https://serpapi.com/playground) is the fastest way to build a request and copy the final parameters into Python.
+SerpApi supports many engines and engine-specific parameters. The authoritative list lives in the [SerpApi API documentation](https://serpapi.com/search-api). The [SerpApi Playground](https://serpapi.com/playground) is the fastest way to build and test a request before moving it into Python.
 
 ## When to Use the Client
 
@@ -101,7 +111,7 @@ For production code, prefer a client instance:
 
 ```python
 client = serpapi.Client(api_key="secret_api_key", timeout=20)
-results = client.search({"engine": "google", "q": "coffee"})
+results = client.search(engine="google", q="coffee")
 ```
 
 ## Next Steps

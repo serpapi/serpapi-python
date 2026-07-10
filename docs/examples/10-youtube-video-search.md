@@ -16,10 +16,10 @@ import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 
-results = client.search({
-    "engine": "youtube",
-    "search_query": "coffee brewing guide",
-})
+results = client.search(
+    engine="youtube",
+    search_query="coffee brewing guide",
+)
 
 for video in results.get("video_results", [])[:5]:
     print(video.get("title"))

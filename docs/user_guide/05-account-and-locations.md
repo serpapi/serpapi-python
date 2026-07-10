@@ -38,12 +38,11 @@ for location in locations:
 Then pass the selected location to a search:
 
 ```python
-results = client.search({
-    "engine": "google",
-    "q": "coffee",
-    "location": "Austin, Texas, United States",
-})
+results = client.search(
+    engine="google",
+    q="coffee",
+    location="Austin, Texas, United States",
+)
 ```
 
 The [SerpApi Locations API documentation](https://serpapi.com/locations-api) has the full endpoint behavior.
-

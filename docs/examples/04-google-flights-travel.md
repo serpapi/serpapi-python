@@ -16,16 +16,16 @@ import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=30)
 
-results = client.search({
-    "engine": "google_flights",
-    "departure_id": "AUS",
-    "arrival_id": "LAX",
-    "outbound_date": "2026-09-15",
-    "return_date": "2026-09-22",
-    "currency": "USD",
-    "hl": "en",
-    "gl": "us",
-})
+results = client.search(
+    engine="google_flights",
+    departure_id="AUS",
+    arrival_id="LAX",
+    outbound_date="2026-09-15",
+    return_date="2026-09-22",
+    currency="USD",
+    hl="en",
+    gl="us",
+)
 
 flights = results.get("best_flights") or results.get("other_flights", [])
 
@@ -40,4 +40,3 @@ for itinerary in flights[:3]:
 Start with `best_flights`, then fall back to `other_flights` when needed. Useful fields include `price`, `total_duration`, `carbon_emissions`, and the nested `flights` list for airline, airport, and timing data.
 
 For trip type, cabin, date, currency, and airport parameters, see the [Google Flights API documentation](https://serpapi.com/google-flights-api). The [SerpApi Playground](https://serpapi.com/playground) is useful for testing routes before adding them to code.
-

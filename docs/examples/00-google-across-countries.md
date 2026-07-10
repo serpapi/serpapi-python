@@ -25,13 +25,13 @@ markets = [
 ]
 
 for market in markets:
-    results = client.search({
-        "engine": "google",
-        "q": "best coffee beans",
-        "location": market["location"],
-        "gl": market["gl"],
-        "hl": market["hl"],
-    })
+    results = client.search(
+        engine="google",
+        q="best coffee beans",
+        location=market["location"],
+        gl=market["gl"],
+        hl=market["hl"],
+    )
 
     organic = results.get("organic_results", [])
     first = organic[0] if organic else {}
@@ -47,14 +47,14 @@ for market in markets:
 Some workflows also need a specific Google domain:
 
 ```python
-results = client.search({
-    "engine": "google",
-    "q": "best coffee beans",
-    "google_domain": "google.co.in",
-    "gl": "in",
-    "hl": "en",
-    "location": "Mumbai, Maharashtra",
-})
+results = client.search(
+    engine="google",
+    q="best coffee beans",
+    google_domain="google.co.in",
+    gl="in",
+    hl="en",
+    location="Mumbai, Maharashtra",
+)
 ```
 
 ## Finding Valid Locations

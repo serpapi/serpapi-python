@@ -22,12 +22,12 @@ API_KEY = os.environ["SERPAPI_KEY"]
 
 def search_country(country):
     client = serpapi.Client(api_key=API_KEY, timeout=20)
-    results = client.search({
-        "engine": "google",
-        "q": "best coffee beans",
-        "gl": country,
-        "hl": "en",
-    })
+    results = client.search(
+        engine="google",
+        q="best coffee beans",
+        gl=country,
+        hl="en",
+    )
     return country, results.get("organic_results", [])
 
 
@@ -69,4 +69,3 @@ with ThreadPoolExecutor(max_workers=5) as executor:
 
         print("Finished:", country, len(organic_results))
 ```
-

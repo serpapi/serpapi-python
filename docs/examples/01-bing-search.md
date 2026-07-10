@@ -16,11 +16,11 @@ import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 
-results = client.search({
-    "engine": "bing",
-    "q": "coffee",
-    "location": "Austin, Texas",
-})
+results = client.search(
+    engine="bing",
+    q="coffee",
+    location="Austin, Texas",
+)
 
 for result in results.get("organic_results", [])[:5]:
     print(result.get("position"), result.get("title"))
@@ -36,4 +36,3 @@ print(results.keys())
 ```
 
 For every supported Bing parameter, use the [Bing Search API documentation](https://serpapi.com/bing-search-api). To tune a query interactively, use the [SerpApi Playground](https://serpapi.com/playground).
-

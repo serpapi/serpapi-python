@@ -16,12 +16,12 @@ import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 
-results = client.search({
-    "engine": "google_maps",
-    "q": "coffee shops",
-    "ll": "@30.2672,-97.7431,14z",
-    "type": "search",
-})
+results = client.search(
+    engine="google_maps",
+    q="coffee shops",
+    ll="@30.2672,-97.7431,14z",
+    type="search",
+)
 
 for place in results.get("local_results", [])[:5]:
     print(place.get("title"))
@@ -34,4 +34,3 @@ for place in results.get("local_results", [])[:5]:
 Start with `local_results`. Common fields include `title`, `rating`, `reviews`, `address`, `phone`, `website`, and `gps_coordinates`. Some responses also include `place_results` when the query resolves to a specific place.
 
 For the complete parameter list, use the [Google Maps API documentation](https://serpapi.com/google-maps-api). Use the [SerpApi Playground](https://serpapi.com/playground) to find a working `ll` value for your target market.
-

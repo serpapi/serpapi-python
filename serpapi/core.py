@@ -6,22 +6,11 @@ from .models import SerpResults
 class Client(HTTPClient):
     """A class that handles API requests to SerpApi in a user-friendly manner.
 
+    Store your API key in an environment variable, then create a client with
+    ``serpapi.Client(api_key=os.environ["SERPAPI_KEY"])``.
+
     :param api_key: The API Key to use for SerpApi.com.
     :param timeout: The default timeout to use for requests.
-
-    Please provide ``api_key`` when instantiating this class. We recommend storing this in an environment variable, like so:
-
-        .. code-block:: bash
-
-            $ export SERPAPI_KEY=YOUR_API_KEY
-
-        .. code-block:: python
-
-            import os
-            import serpapi
-
-            serpapi = serpapi.Client(api_key=os.environ["SERPAPI_KEY"])
-
     """
 
     DASHBOARD_URL = "https://serpapi.com/dashboard"
@@ -33,22 +22,15 @@ class Client(HTTPClient):
         return "<SerpApi Client>"
 
     def search(self, params: dict = None, **kwargs):
-        """Fetch a page of results from SerpApi. Returns a :class:`SerpResults <serpapi.client.SerpResults>` object, or unicode text (*e.g.* if ``'output': 'html'`` was passed).
+        """Fetch a page of results from SerpApi.
 
-        Dictionary parameters and keyword parameters are both supported:
-
-        .. code-block:: python
-
-            >>> import types
-            >>> client = Client(api_key="secret_api_key")
-            >>> client.request = lambda method, path, params, **kwargs: types.SimpleNamespace(json=lambda: {"search_parameters": params}, text="")
-            >>> client.search({"engine": "google", "q": "Coffee"})["search_parameters"]["q"]
-            'Coffee'
-            >>> client.search(engine="google", q="Coffee")["search_parameters"]["engine"]
-            'google'
+        Returns a ``serpapi.SerpResults`` object for JSON responses, or text
+        when ``output="html"`` is requested. Prefer passing SerpApi engine
+        parameters as keyword arguments. A parameter dictionary is also accepted
+        when your code already has parameters in a mapping.
 
 
-        :param params: SerpApi search parameters such as ``engine``, ``q``, ``location``, and ``output``.
+        :param params: Optional mapping of SerpApi search parameters such as ``engine``, ``q``, ``location``, and ``output``.
         :param kwargs: Additional SerpApi parameters or request options. ``timeout``, ``proxies``, ``verify``, ``stream``, and ``cert`` are passed to the underlying HTTP request.
 
 

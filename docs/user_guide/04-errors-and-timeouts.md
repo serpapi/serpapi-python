@@ -47,7 +47,8 @@ Override it for one request:
 
 ```python
 results = client.search(
-    {"engine": "google", "q": "coffee"},
+    engine="google",
+    q="coffee",
     timeout=5,
 )
 ```
@@ -73,4 +74,3 @@ results = client.search(engine="google", q="coffee")
 if "error" in results:
     raise RuntimeError(results["error"])
 ```
-

@@ -11,12 +11,12 @@ SerpApi supports server-side async searches. This is different from Python `asyn
 ## Submit an Async Search
 
 ```python
-submitted = client.search({
-    "engine": "google",
-    "q": "coffee",
-    "location": "Austin, Texas",
-    "async": True,
-})
+submitted = client.search(
+    engine="google",
+    q="coffee",
+    location="Austin, Texas",
+    **{"async": True},
+)
 
 search_id = submitted["search_metadata"]["id"]
 print(search_id)
@@ -54,4 +54,3 @@ while True:
 Async searches are useful when you want to submit work quickly and collect results later, especially from job queues, scheduled workers, or data pipelines.
 
 Do not combine `async=true` with `no_cache=true`. Use the [SerpApi Search Archive API documentation](https://serpapi.com/search-archive-api) for retention windows and status details.
-

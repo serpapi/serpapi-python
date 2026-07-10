@@ -16,12 +16,12 @@ import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 
-results = client.search({
-    "engine": "google_finance",
-    "q": "GOOGL:NASDAQ",
-    "window": "1M",
-    "hl": "en",
-})
+results = client.search(
+    engine="google_finance",
+    q="GOOGL:NASDAQ",
+    window="1M",
+    hl="en",
+)
 
 summary = results.get("summary", {})
 knowledge = results.get("knowledge_graph", {})
@@ -36,4 +36,3 @@ print("Graph points:", len(results.get("graph", [])))
 Use `summary` and `knowledge_graph` for quote-level details, `graph` for time-series points, and `news_results` for finance-related headlines when present. Use `window` to change the graph range.
 
 See the [Google Finance API documentation](https://serpapi.com/google-finance-api) for supported `q` formats and time windows. You can test symbols in the [SerpApi Playground](https://serpapi.com/playground).
-

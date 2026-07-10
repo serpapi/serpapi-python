@@ -20,19 +20,7 @@ The Search API docs include engines such as Google Search, Google Maps, Google I
 
 ## Passing Parameters
 
-Pass engine parameters as a dictionary:
-
-```python
-results = client.search({
-    "engine": "google",
-    "q": "coffee",
-    "location": "Austin, Texas",
-    "hl": "en",
-    "gl": "us",
-})
-```
-
-Or pass them as keyword arguments:
+Pass engine parameters as keyword arguments:
 
 ```python
 results = client.search(
@@ -42,6 +30,19 @@ results = client.search(
     hl="en",
     gl="us",
 )
+```
+
+You can also pass a dictionary when you already have parameters in one:
+
+```python
+params = {
+    "engine": "google",
+    "q": "coffee",
+    "location": "Austin, Texas",
+    "hl": "en",
+    "gl": "us",
+}
+results = client.search(params)
 ```
 
 ## Common Google Parameters
@@ -62,6 +63,7 @@ These are common Google Search parameters. Other engines have their own paramete
 | `async` | Submit a server-side async search. |
 | `no_cache` | Force SerpApi to fetch fresh results. |
 | `zero_trace` | Request zero data retention behavior when enabled for your account. |
+| `json_restrictor` | Return only selected JSON fields from the API response. |
 
 For the full supported list and the exact meaning of each parameter, use the [SerpApi Search API documentation](https://serpapi.com/search-api).
 

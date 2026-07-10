@@ -24,22 +24,23 @@ client = serpapi.Client(
 
 ## Search
 
-Pass parameters as a dictionary:
-
-```python
-results = client.search({
-    "engine": "google",
-    "q": "coffee",
-})
-```
-
-Keyword arguments are also supported:
+Pass engine parameters as keyword arguments:
 
 ```python
 results = client.search(engine="google", q="coffee")
 ```
 
-Dictionary parameters and keyword arguments can be mixed. Keyword arguments update the dictionary:
+You can also pass a dictionary when parameters are already stored in one:
+
+```python
+params = {
+    "engine": "google",
+    "q": "coffee",
+}
+results = client.search(params)
+```
+
+Dictionary parameters and keyword arguments can be mixed. Keyword arguments update the dictionary, which is useful when you start from a saved parameter set:
 
 ```python
 params = {"engine": "google", "q": "coffee"}
@@ -98,10 +99,13 @@ Example:
 
 ```python
 results = client.search(
-    {"engine": "google", "q": "coffee"},
+    engine="google",
+    q="coffee",
     timeout=10,
 )
 ```
+
+See [Request Options](request-options.md) for proxy, TLS, certificate, and per-request timeout examples.
 
 ## Response Objects
 

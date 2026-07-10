@@ -20,12 +20,6 @@ authors:
     email: support@serpapi.com
     homepage: https://serpapi.com
 
-funding:
-  name: SerpApi, LLC
-  roles:
-    - Copyright holder
-  homepage: https://serpapi.com
-
 logo:
   light: assets/serpapi-logo.svg
   dark: assets/serpapi-logo-dark.svg
@@ -48,14 +42,16 @@ sections:
   - title: Examples
     dir: docs/examples
 markdown_pages: true
+pre_render:
+  - scripts/build_llms_txt.py
 dark_mode_toggle: true
 
 accent_color:
   light: "#377FEA"
-  dark: "#6937EA"
+  dark: "#38BDF8"
 navbar_color:
   light: "#FFFFFF"
-  dark: "#2F3030"
+  dark: "#111827"
 
 site:
   theme: flatly

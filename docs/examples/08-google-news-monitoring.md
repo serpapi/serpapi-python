@@ -16,12 +16,12 @@ import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 
-results = client.search({
-    "engine": "google_news",
-    "q": "artificial intelligence",
-    "gl": "us",
-    "hl": "en",
-})
+results = client.search(
+    engine="google_news",
+    q="artificial intelligence",
+    gl="us",
+    hl="en",
+)
 
 for item in results.get("news_results", [])[:5]:
     print(item.get("title"))
@@ -34,4 +34,3 @@ for item in results.get("news_results", [])[:5]:
 Start with `news_results`. Save `title`, `link`, `source`, `date`, `snippet`, and `thumbnail` when present. News result shapes can vary by query, so inspect a sample response before deciding your storage schema.
 
 See the [Google News API documentation](https://serpapi.com/google-news-api) and tune your topic in the [SerpApi Playground](https://serpapi.com/playground).
-

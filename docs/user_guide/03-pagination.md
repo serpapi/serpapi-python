@@ -11,11 +11,11 @@ Many SerpApi responses include pagination metadata. SerpApi Python exposes this 
 ## Fetch One More Page
 
 ```python
-results = client.search({
-    "engine": "google",
-    "q": "coffee",
-    "location": "Austin, Texas",
-})
+results = client.search(
+    engine="google",
+    q="coffee",
+    location="Austin, Texas",
+)
 
 next_results = results.next_page()
 
@@ -31,11 +31,11 @@ if next_results:
 Use `yield_pages()` when you want the current page plus following pages:
 
 ```python
-results = client.search({
-    "engine": "google",
-    "q": "coffee",
-    "location": "Austin, Texas",
-})
+results = client.search(
+    engine="google",
+    q="coffee",
+    location="Austin, Texas",
+)
 
 for page in results.yield_pages(max_pages=5):
     for item in page.get("organic_results", []):
@@ -50,12 +50,12 @@ Google Search also supports explicit result offsets:
 
 ```python
 for start in [0, 10, 20]:
-    page = client.search({
-        "engine": "google",
-        "q": "coffee",
-        "location": "Austin, Texas",
-        "start": start,
-    })
+    page = client.search(
+        engine="google",
+        q="coffee",
+        location="Austin, Texas",
+        start=start,
+    )
 
     print("Offset:", start)
     for item in page.get("organic_results", []):
@@ -83,4 +83,3 @@ for page in results.yield_pages(max_pages=3):
 ## Pagination Parameters Vary by Engine
 
 `start` is common for Google Search, but other engines may use different pagination parameters. Check the relevant engine page in the [SerpApi Search API documentation](https://serpapi.com/search-api) or build the request in the [SerpApi Playground](https://serpapi.com/playground).
-

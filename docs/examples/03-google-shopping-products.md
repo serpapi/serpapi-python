@@ -16,13 +16,13 @@ import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 
-results = client.search({
-    "engine": "google_shopping",
-    "q": "espresso machine",
-    "location": "Austin, Texas",
-    "gl": "us",
-    "hl": "en",
-})
+results = client.search(
+    engine="google_shopping",
+    q="espresso machine",
+    location="Austin, Texas",
+    gl="us",
+    hl="en",
+)
 
 for product in results.get("shopping_results", [])[:5]:
     print(product.get("title"))
@@ -35,4 +35,3 @@ for product in results.get("shopping_results", [])[:5]:
 Most shopping workflows use `shopping_results`. Save `title`, `price`, `source`, `rating`, `reviews`, `thumbnail`, and `link` if present. For filtering, sorting, and engine-specific options, check the live docs before hard-coding parameters.
 
 See the [Google Shopping API documentation](https://serpapi.com/google-shopping-api) and experiment in the [SerpApi Playground](https://serpapi.com/playground).
-

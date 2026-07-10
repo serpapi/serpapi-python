@@ -4,6 +4,8 @@ description: "Move from the deprecated google-search-results SDK to the recommen
 guide-section: "Migration"
 ---
 
+# Migrating from google-search-results
+
 SerpApi has two Python libraries that use similar import names. For new projects and active integrations, use the recommended `serpapi` package.
 
 ## Recommended Package
@@ -25,10 +27,7 @@ import serpapi
 YOUR_API_KEY = os.environ["SERPAPI_KEY"]
 
 client = serpapi.Client(api_key=YOUR_API_KEY)
-results = client.search({
-    "engine": "google",
-    "q": "coffee",
-})
+results = client.search(engine="google", q="coffee")
 
 print(results)
 ```
@@ -98,19 +97,19 @@ import os
 import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"])
-results = client.search({
-    "engine": "google",
-    "q": "coffee",
-    "location": "Austin, Texas",
-})
+results = client.search(
+    engine="google",
+    q="coffee",
+    location="Austin, Texas",
+)
 ```
 
-Search parameters are still passed as a dictionary, so most request parameter usage can move over directly. The main change is the client interface.
+Search parameters use the same SerpApi names, so most request parameter usage can move over directly. Prefer passing them as keyword arguments in new code; dictionaries are still accepted when migration code already has parameters in a mapping.
 
 ## Migration Checklist
 
 - Remove `google-search-results` from requirements and dependency files.
 - Install `serpapi` with `pip install serpapi`.
 - Replace `from serpapi import GoogleSearch` with `import serpapi`.
-- Replace `GoogleSearch(params).get_dict()` with `serpapi.Client(api_key=...).search(params)`.
+- Replace `GoogleSearch(params).get_dict()` with `serpapi.Client(api_key=...).search(engine=..., q=..., ...)`.
 - Keep using the [SerpApi Playground](https://serpapi.com/playground) and the [SerpApi API documentation](https://serpapi.com/search-api) to confirm engine parameters.

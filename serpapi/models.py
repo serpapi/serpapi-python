@@ -92,6 +92,10 @@ class SerpResults(UserDict):
         Otherwise, the raw text (as a properly decoded unicode string) is returned.
         """
 
+        content_type = r.headers.get("Content-Type", "").split(";", 1)[0].lower()
+        if content_type in {"text/html", "text/markdown"}:
+            return r.text
+
         try:
             cls = cls(r.json(), client=client)
 

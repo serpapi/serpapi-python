@@ -79,6 +79,26 @@ Documentation is [available on Read the Docs](https://serpapi-python.readthedocs
 
 Change history is [available on GitHub](https://github.com/serpapi/serpapi-python/blob/master/HISTORY.md).
 
+### HTML and Markdown output formats
+
+Searches return JSON as a `SerpResults` object by default. To receive HTML, set `output` to `html`. To receive Markdown, set `output` to `md`:
+
+```python
+html = client.search({
+    "engine": "google",
+    "q": "coffee",
+    "output": "html",
+})
+
+markdown = client.search({
+    "engine": "google",
+    "q": "coffee",
+    "output": "md",
+})
+```
+
+HTML and Markdown responses are returned as plain Python strings.
+
 ## Basic Examples in Python
 
 ### Search Bing

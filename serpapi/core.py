@@ -32,7 +32,7 @@ class Client(HTTPClient):
         return "<SerpApi Client>"
 
     def search(self, params: dict = None, **kwargs):
-        """Fetch a page of results from SerpApi. Returns a :class:`SerpResults <serpapi.client.SerpResults>` object, or unicode text (*e.g.* if ``'output': 'html'`` was passed).
+        """Fetch a page of results from SerpApi. Returns a :class:`SerpResults <serpapi.client.SerpResults>` object for JSON responses, or unicode text for HTML and Markdown responses.
 
         The following three calls are equivalent:
 
@@ -53,7 +53,7 @@ class Client(HTTPClient):
 
         :param q: typically, this is the parameter for the search engine query.
         :param engine: the search engine to use. Defaults to ``google``.
-        :param output: the output format desired (``html`` or ``json``). Defaults to ``json``.
+        :param output: the output format desired (``html``, ``json``, or ``md``). Defaults to ``json``.
         :param api_key: the API Key to use for SerpApi.com.
         :param **: any additional parameters to pass to the API.
 
@@ -81,7 +81,7 @@ class Client(HTTPClient):
 
         :param search_id: the Search ID of the search to retrieve from the archive.
         :param api_key: the API Key to use for SerpApi.com.
-        :param output: the output format desired (``html`` or ``json``). Defaults to ``json``.
+        :param output: the output format desired (``html``, ``json``, or ``md``). Defaults to ``json``.
         :param **: any additional parameters to pass to the API.
 
         **Learn more**: https://serpapi.com/search-archive-api

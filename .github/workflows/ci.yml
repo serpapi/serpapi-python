@@ -36,7 +36,7 @@ jobs:
         API_KEY: ${{ secrets.API_KEY }}
 
     - name: Run example tests
-      if: matrix.python-version == '3.13'
+      if: matrix.python-version == '3.14'
       run: pytest -k "example"
       env:
         API_KEY: ${{ secrets.API_KEY }}

@@ -380,4 +380,4 @@ Bug reports and pull requests are welcome on GitHub. Once dependencies are insta
    ```
    This triggers the [release workflow](.github/workflows/release.yml), which tests, builds, and publishes to PyPI, then smoke-tests the published package.
 
-> **Required secrets:** `PYPI_API_TOKEN` (PyPI upload token) and `API_KEY` (used in smoke-test live search).
+> **Required secret:** `API_KEY` (used in smoke-test live search).

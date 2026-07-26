@@ -1,4 +1,5 @@
 import requests
+from typing import Any, Dict, Optional
 
 from .exceptions import (
     HTTPError,
@@ -14,14 +15,14 @@ class HTTPClient:
     BASE_DOMAIN = "https://serpapi.com"
     USER_AGENT = f"serpapi-python, v{__version__}"
 
-    def __init__(self, *, api_key=None, timeout=None):
+    def __init__(self, *, api_key: Optional[str] = None, timeout: Optional[float] = None) -> None:
         # Used to authenticate requests.
         # TODO: do we want to support the environment variable? Seems like a security risk.
         self.api_key = api_key
         self.timeout = timeout
         self.session = requests.Session()
 
-    def request(self, method, path, params, *, assert_200=True, **kwargs):
+    def request(self, method: str, path: str, params: Dict[str, Any], *, assert_200: bool = True, **kwargs: Any) -> requests.Response:
         # Inject the API Key into the params.
         if "api_key" not in params:
             params["api_key"] = self.api_key
@@ -59,7 +60,7 @@ class HTTPClient:
         return r
 
 
-def raise_for_status(r):
+def raise_for_status(r: requests.Response) -> None:
     """Raise an exception if the status code is not 200."""
     # TODO: put custom behavior in here for various status codes.
 

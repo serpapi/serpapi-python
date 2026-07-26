@@ -1,3 +1,5 @@
+from typing import Any, Dict, Optional, Union
+
 from .http import HTTPClient
 from .exceptions import SearchIDNotProvided
 from .models import SerpResults
@@ -25,13 +27,13 @@ class Client(HTTPClient):
 
     DASHBOARD_URL = "https://serpapi.com/dashboard"
 
-    def __init__(self, *, api_key=None, timeout=None):
+    def __init__(self, *, api_key: Optional[str] = None, timeout: Optional[float] = None) -> None:
         super().__init__(api_key=api_key, timeout=timeout)
 
     def __repr__(self):
         return "<SerpApi Client>"
 
-    def search(self, params: dict = None, **kwargs):
+    def search(self, params: Optional[Dict[str, Any]] = None, **kwargs: Any) -> Union[SerpResults, str]:
         """Fetch a page of results from SerpApi. Returns a :class:`SerpResults <serpapi.client.SerpResults>` object, or unicode text (*e.g.* if ``'output': 'html'`` was passed).
 
         The following three calls are equivalent:
@@ -72,11 +74,11 @@ class Client(HTTPClient):
         if kwargs:
             params.update(kwargs)
 
-        r = self.request("GET", "/search", params=params, **request_kwargs)
+        r = self.request("GET", "/search", params=params, assert_200=True, **request_kwargs)
 
         return SerpResults.from_http_response(r, client=self)
 
-    def search_archive(self, params: dict = None, **kwargs):
+    def search_archive(self, params: Optional[Dict[str, Any]] = None, **kwargs: Any) -> Union[SerpResults, str]:
         """Get a result from the SerpApi Search Archive API.
 
         :param search_id: the Search ID of the search to retrieve from the archive.
@@ -105,10 +107,10 @@ class Client(HTTPClient):
                 f"Please provide 'search_id', found here: { self.DASHBOARD_URL }"
             )
 
-        r = self.request("GET", f"/searches/{ search_id }", params=params, **request_kwargs)
+        r = self.request("GET", f"/searches/{ search_id }", params=params, assert_200=True, **request_kwargs)
         return SerpResults.from_http_response(r, client=self)
 
-    def locations(self, params: dict = None, **kwargs):
+    def locations(self, params: Optional[Dict[str, Any]] = None, **kwargs: Any) -> Dict[str, Any]:
         """Get a list of supported Google locations.
 
 
@@ -139,7 +141,7 @@ class Client(HTTPClient):
         )
         return r.json()
 
-    def account(self, params: dict = None, **kwargs):
+    def account(self, params: Optional[Dict[str, Any]] = None, **kwargs: Any) -> Dict[str, Any]:
         """Get SerpApi account information.
 
         :param api_key: the API Key to use for SerpApi.com.

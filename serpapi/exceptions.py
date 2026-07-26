@@ -22,8 +22,8 @@ class SearchIDNotProvided(ValueError, SerpApiError):
 class HTTPError(requests.exceptions.HTTPError, SerpApiError):
     """HTTP Error."""
 
-    def __init__(self, original_exception):
-        if (isinstance(original_exception, requests.exceptions.HTTPError)):
+    def __init__(self, original_exception: Exception) -> None:
+        if isinstance(original_exception, requests.exceptions.HTTPError):
             http_error_exception: requests.exceptions.HTTPError = original_exception
 
             self.status_code = http_error_exception.response.status_code
@@ -35,7 +35,7 @@ class HTTPError(requests.exceptions.HTTPError, SerpApiError):
             self.status_code = -1
             self.error = None
                 
-        super().__init__(*original_exception.args, response=getattr(original_exception, 'response', None), request=getattr(original_exception, 'request', None))
+        super().__init__(*original_exception.args, response=getattr(original_exception, "response", None), request=getattr(original_exception, "request", None))
 
 
 

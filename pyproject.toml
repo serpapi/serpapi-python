@@ -52,5 +52,8 @@ version = { attr = "serpapi.__version__.__version__" }
 [tool.setuptools.packages.find]
 exclude = ["tests", "tests.*"]
 
+[tool.setuptools.package-data]
+"serpapi" = ["py.typed"]
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]

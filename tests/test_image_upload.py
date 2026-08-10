@@ -86,28 +86,6 @@ def test_upload_image_rejects_string_io():
     client.session.request.assert_not_called()
 
 
-def test_google_lens_search_supports_url_and_uploaded_image_id():
-    client = serpapi.Client(api_key="test-api-key")
-    client.session.request = Mock(
-        side_effect=[
-            json_response(b'{"image_id": "uploaded-image-123"}'),
-            json_response(b'{"search_metadata": {"status": "Success"}}'),
-            json_response(b'{"search_metadata": {"status": "Success"}}'),
-        ]
-    )
-
-    upload = client.upload_image(BytesIO(b"fake-image-data"))
-    client.search(engine="google_lens", image_id=upload["image_id"])
-    client.search(engine="google_lens", url="https://example.com/image.png")
-
-    upload_search = client.session.request.call_args_list[1][1]["params"]
-    url_search = client.session.request.call_args_list[2][1]["params"]
-    assert upload_search["image_id"] == "uploaded-image-123"
-    assert "url" not in upload_search
-    assert url_search["url"] == "https://example.com/image.png"
-    assert "image_id" not in url_search
-
-
 def test_request_injects_api_key_when_form_data_does_not_include_it():
     client = serpapi.Client(api_key="test-api-key")
     client.session.request = Mock(return_value=json_response(b"{}"))

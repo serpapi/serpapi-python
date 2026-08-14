@@ -3,6 +3,12 @@ name: Release
 on:
   push:
     tags: ['v**']
+  workflow_dispatch:
+    inputs:
+      allow_example_test_failures:
+        description: 'Publish even if the live example tests fail (use only when a SerpApi engine is down)'
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -14,9 +20,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
     steps:
       - uses: actions/checkout@v6
+
+      - name: Ensure ref is a tag
+        if: github.ref_type != 'tag'
+        run: |
+          echo "Release must run against a tag, got '${{ github.ref }}'" >&2
+          exit 1
 
       - uses: actions/setup-python@v6
         with:
@@ -31,7 +43,8 @@ jobs:
           API_KEY: ${{ secrets.API_KEY }}
 
       - name: Run example tests
-        if: matrix.python-version == '3.13'
+        if: matrix.python-version == '3.14'
+        continue-on-error: ${{ inputs.allow_example_test_failures == true }}
         run: pytest -k "example"
         env:
           API_KEY: ${{ secrets.API_KEY }}
@@ -62,18 +75,17 @@ jobs:
     name: Publish release
     needs: [build]
     runs-on: ubuntu-latest
+    environment:
+      name: pypi
+      url: https://pypi.org/p/serpapi
     permissions:
       contents: write
-      packages: write
+      id-token: write
     steps:
       - uses: actions/download-artifact@v8
         with:
           name: dist
           path: dist/
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.13"
 
       - name: Create GitHub Release
         env:
@@ -83,14 +95,8 @@ jobs:
           gh release create ${{ github.ref_name }} dist/* --generate-notes \
             || gh release upload ${{ github.ref_name }} dist/* --clobber
 
-      - name: Install twine
-        run: pip install --upgrade pip twine
-
       - name: Publish to PyPI
-        env:
-          TWINE_USERNAME: __token__
-          TWINE_PASSWORD: ${{ secrets.PYPI_API_TOKEN }}
-        run: twine upload dist/*
+        uses: pypa/gh-action-pypi-publish@release/v1
 
   smoke-test:
     name: Smoke test published package

@@ -86,6 +86,7 @@ This part of the documentation covers all the interfaces of :class:`serpapi` Pyt
 
 .. autofunction:: serpapi.search
 .. autofunction:: serpapi.search_archive
+.. autofunction:: serpapi.upload_image
 .. autofunction:: serpapi.locations
 .. autofunction:: serpapi.account
 
@@ -159,6 +160,7 @@ This class also alleviates the need to pass an ``api_key```  along with every se
 
    .. automethod:: Client.search
    .. automethod:: Client.search_archive
+   .. automethod:: Client.upload_image
    .. automethod:: Client.account
    .. automethod:: Client.locations
 

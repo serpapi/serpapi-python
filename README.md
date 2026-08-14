@@ -297,6 +297,38 @@ results = client.search({
 ```
 - API Documentation: [serpapi.com/google-reverse-image](https://serpapi.com/google-reverse-image)
 
+### Search Google Lens by image URL or upload
+
+Google Lens accepts either a publicly accessible image URL or an uploaded
+image. To search by URL, pass the URL directly:
+
+```python
+import os
+import serpapi
+
+client = serpapi.Client(api_key=os.getenv("SERPAPI_KEY"))
+results = client.search({
+    "engine": "google_lens",
+    "url": "https://i.imgur.com/HBrB8p0.png",
+})
+```
+
+To search a local image, upload it first and pass its temporary `image_id` to
+Google Lens:
+
+```python
+upload = client.upload_image("/path/to/image.png")
+results = client.search({
+    "engine": "google_lens",
+    "image_id": upload["image_id"],
+})
+```
+
+Uploaded images can be JPG/JPEG, PNG, or WebP files up to 500 KB. The returned
+`image_id` expires after 10 minutes.
+
+- API Documentation: [Google Lens image uploads](https://serpapi.com/google-lens-upload-an-image), [Image API](https://serpapi.com/image-api)
+
 ### Search Google Events
 ```python
 import os
@@ -400,4 +432,4 @@ Bug reports and pull requests are welcome on GitHub. Once dependencies are insta
    ```
    This triggers the [release workflow](.github/workflows/release.yml), which tests, builds, and publishes to PyPI, then smoke-tests the published package.
 
-> **Required secrets:** `PYPI_API_TOKEN` (PyPI upload token) and `API_KEY` (used in smoke-test live search).
+> **Required secret:** `API_KEY` (used in smoke-test live search).

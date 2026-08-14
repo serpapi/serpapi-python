@@ -1,3 +1,6 @@
+import io
+import os
+
 from .http import HTTPClient
 from .exceptions import SearchIDNotProvided
 from .models import SerpResults
@@ -108,6 +111,53 @@ class Client(HTTPClient):
         r = self.request("GET", f"/searches/{ search_id }", params=params, **request_kwargs)
         return SerpResults.from_http_response(r, client=self)
 
+    def upload_image(self, image, **kwargs):
+        """Upload an image to SerpApi's Image API.
+
+        ``image`` can be a filesystem path or an open binary file object. The
+        returned dictionary contains an ``image_id`` that can be passed to
+        :meth:`search` for engines that accept uploaded images, such as Google
+        Lens.
+
+        :param image: a path or open binary file object containing a JPG/JPEG,
+            PNG, or WebP image no larger than 500 KB.
+        :param api_key: the API Key to use for SerpApi.com.
+        :param **: any additional multipart form fields to pass to the API.
+
+        **Learn more**: https://serpapi.com/image-api
+        """
+        request_kwargs = {}
+        for key in ["timeout", "proxies", "verify", "stream", "cert"]:
+            if key in kwargs:
+                request_kwargs[key] = kwargs.pop(key)
+
+        data = kwargs
+        if "api_key" not in data:
+            data["api_key"] = self.api_key
+
+        image_file = None
+        try:
+            if isinstance(image, (str, os.PathLike)):
+                image_file = open(image, "rb")
+                image = image_file
+            elif isinstance(image, io.TextIOBase):
+                raise TypeError(
+                    "image file must be opened in binary mode, e.g. open(path, 'rb')"
+                )
+
+            r = self.request(
+                "POST",
+                "/image",
+                params={},
+                data=data,
+                files={"image": image},
+                **request_kwargs,
+            )
+            return r.json()
+        finally:
+            if image_file is not None:
+                image_file.close()
+
     def locations(self, params: dict = None, **kwargs):
         """Get a list of supported Google locations.
 
@@ -168,5 +218,6 @@ class Client(HTTPClient):
 _client = Client()
 search = _client.search
 search_archive = _client.search_archive
+upload_image = _client.upload_image
 locations = _client.locations
 account = _client.account

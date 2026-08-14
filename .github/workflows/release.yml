@@ -3,6 +3,12 @@ name: Release
 on:
   push:
     tags: ['v**']
+  workflow_dispatch:
+    inputs:
+      allow_example_test_failures:
+        description: 'Publish even if the live example tests fail (use only when a SerpApi engine is down)'
+        type: boolean
+        default: false
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -18,6 +24,12 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Ensure ref is a tag
+        if: github.ref_type != 'tag'
+        run: |
+          echo "Release must run against a tag, got '${{ github.ref }}'" >&2
+          exit 1
+
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python-version }}
@@ -32,6 +44,7 @@ jobs:
 
       - name: Run example tests
         if: matrix.python-version == '3.14'
+        continue-on-error: ${{ inputs.allow_example_test_failures == true }}
         run: pytest -k "example"
         env:
           API_KEY: ${{ secrets.API_KEY }}

@@ -1,7 +1,7 @@
 # SerpApi Python Library & Package
 [![Package](https://img.shields.io/pypi/v/serpapi?color=green)](https://pypi.org/project/serpapi) [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 
-Integrate search data into your AI workflow, RAG / fine-tuning, or Python application using this official wrapper for [SerpApi](https://serpapi.com). 
+Integrate search data into your AI workflow, RAG/fine-tuning, or Python application using this official wrapper for [SerpApi](https://serpapi.com). 
 
 SerpApi supports Google, Google Maps, Google Shopping, Baidu, Yandex, Yahoo, eBay, App Stores, and [more](https://serpapi.com). 
 
@@ -15,7 +15,7 @@ To install the `serpapi` package, simply run the following command:
 $ pip install serpapi
 ```
 
-Please note that this package is separate from the legacy `serpapi` module, which is available on PyPi as `google-search-results`. This package is maintained by SerpApi, and is the recommended way to access the SerpApi service from Python.
+Please note that this package is separate from the legacy `serpapi` module, which is available on PyPI as `google-search-results`. This package is maintained by SerpApi and is the recommended way to access the SerpApi service from Python.
 
 ## Simple Usage
 
@@ -47,7 +47,7 @@ Environment variables are a secure, safe, and easy way to manage secrets.
 
 ### Error handling
 
-Unsuccessful requests raise `serpapi.HTTPError` or `serpapi.TimeoutError` exceptions. The returned status code will reflect the sort of error that occurred, please refer to [Status and Error Codes Documentation](https://serpapi.com/api-status-and-error-codes) for more details.
+Unsuccessful requests raise `serpapi.HTTPError` or `serpapi.TimeoutError` exceptions. The returned status code will reflect the sort of error that occurred; please refer to [Status and Error Codes Documentation](https://serpapi.com/api-status-and-error-codes) for more details.
 
 ```python
 import os
@@ -66,7 +66,7 @@ except serpapi.HTTPError as e:
         print(e.error) # "Invalid API key. Your API key should be here: https://serpapi.com/manage-api-key"
     elif e.status_code == 400: # Missing required parameter
         pass
-    elif e.status_code == 429: # Exceeds the hourly throughput limit OR account run out of searches
+    elif e.status_code == 429: # Exceeds the hourly throughput limit OR account ran out of searches
         pass
 except serpapi.TimeoutError as e:
     # Handle timeout

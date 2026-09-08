@@ -79,6 +79,22 @@ Documentation is [available on Read the Docs](https://serpapi-python.readthedocs
 
 Change history is [available on GitHub](https://github.com/serpapi/serpapi-python/blob/master/HISTORY.md).
 
+### Markdown output for AI agents
+
+For AI agents and LLM workflows, use `output="md"`. It returns search results with clean headings, links, and tables while using roughly half the tokens of JSON on average.
+
+```python
+markdown = client.search({
+    "engine": "google",
+    "q": "coffee",
+    "output": "md",
+})
+```
+
+Markdown works across SerpApi APIs and is returned as a plain Python string. See [Markdown Output for AI Agents](https://serpapi.com/markdown-output.md) for details.
+
+Raw HTML is also available with `output="html"` and is returned as a plain Python string.
+
 ## Basic Examples in Python
 
 ### Search Bing

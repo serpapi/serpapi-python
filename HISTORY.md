@@ -1,6 +1,13 @@
 Release History
 ===============
 
+1.1.1 (2026-09-08)
+------------------
+
+- Enhancements for SerpApi markdown output (`output=md`) support
+- Enhancements for readthedocs documentation: Added user guide, examples, automated publishing to RTD on release.
+
+
 1.1.0 (2026-08-14)
 ------------------
 

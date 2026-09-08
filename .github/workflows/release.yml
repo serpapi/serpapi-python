@@ -38,14 +38,14 @@ jobs:
         run: pip install -e .[test]
 
       - name: Run tests
-        run: pytest -k "not example"
+        run: pytest --ignore=tests/test_docs_publishing.py -k "not example"
         env:
           API_KEY: ${{ secrets.API_KEY }}
 
-      - name: Run example tests
+      - name: Run engine and documentation examples
         if: matrix.python-version == '3.14'
         continue-on-error: ${{ inputs.allow_example_test_failures == true }}
-        run: pytest -k "example"
+        run: pytest --ignore=tests/test_docs_publishing.py -k "example" --require-docs-key
         env:
           API_KEY: ${{ secrets.API_KEY }}
 
@@ -141,50 +141,3 @@ jobs:
           results = client.search({"engine": "google", "q": "coffee"})
           assert results.get("organic_results"), "No organic results returned"
           print(f"OK: live search returned {len(results['organic_results'])} organic results")
-
-  build-docs:
-    name: Build Great Docs
-    needs: [smoke-test]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.13"
-
-      - name: Install package and documentation dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -e ".[docs]"
-
-      - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-
-      - name: Build documentation
-        run: great-docs build
-
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v5
-        with:
-          path: great-docs/_site
-          include-hidden-files: true
-
-  deploy-docs:
-    name: Deploy GitHub Pages
-    needs: [build-docs]
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v5

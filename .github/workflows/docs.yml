@@ -1,0 +1,127 @@
+name: Documentation
+
+on:
+  push:
+    branches: [master]
+    tags: ['v**']
+  pull_request:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  live-examples:
+    name: Live documentation examples
+    if: >-
+      github.actor != 'dependabot[bot]' &&
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - uses: astral-sh/setup-uv@v7
+
+      - name: Install test dependencies
+        run: |
+          uv venv
+          uv pip install -e '.[test]'
+
+      - name: Run live documentation examples
+        run: >-
+          .venv/bin/python -m pytest tests/test_docs_examples.py
+          --require-docs-key -q --junitxml=docs-example-results.xml
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: docs-example-results
+          path: docs-example-results.xml
+          if-no-files-found: warn
+
+  build:
+    name: Build Sphinx documentation
+    needs: [live-examples]
+    if: >-
+      always() && !cancelled() &&
+      (needs.live-examples.result == 'success' || needs.live-examples.result == 'skipped')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - uses: astral-sh/setup-uv@v7
+
+      - name: Install documentation dependencies
+        run: |
+          uv venv
+          uv pip install -e '.[docs,test]'
+
+      - name: Test documentation publishing
+        run: .venv/bin/python -m pytest tests/test_docs_publishing.py -q
+
+      - name: Check documentation code and test runner without API calls
+        run: >-
+          .venv/bin/python -m pytest tests/test_docs_examples.py
+          tests/test_docs_example_runner.py -k 'not live' -q
+
+      - name: Explain unavailable live checks
+        if: needs.live-examples.result == 'skipped'
+        run: >-
+          echo '::notice::Live docs checks need API_KEY and do not run on fork or Dependabot PRs. Run the reviewed revision with a key before merging.'
+
+      - name: Build HTML documentation
+        run: .venv/bin/sphinx-build -M html docs docs/_build -W --keep-going
+
+      - name: Build EPUB documentation
+        run: .venv/bin/sphinx-build -M epub docs docs/_build -W --keep-going
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: documentation
+          path: docs/_build/
+          if-no-files-found: error
+
+  publish:
+    name: Publish Read the Docs
+    needs: [live-examples, build]
+    if: >-
+      needs.live-examples.result == 'success' &&
+      needs.build.result == 'success' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch') &&
+      (github.ref == 'refs/heads/master' || startsWith(github.ref, 'refs/tags/v'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    environment:
+      name: docs
+      url: https://serpapi-python.readthedocs.io/
+    concurrency:
+      group: readthedocs-publish
+      cancel-in-progress: false
+      queue: max
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Sync versions, publish, and wait for RTD
+        run: python -m scripts.publish_docs
+        env:
+          RTD_API_TOKEN: ${{ secrets.RTD_API_TOKEN }}

@@ -1,25 +1,31 @@
 ---
 title: "SerpApi Python Library & Package"
-description: "Official Python client for SerpApi search data in applications, AI workflows, RAG, and data pipelines."
+description: "Search Google and other engines from Python with the official SerpApi client."
 ---
 
-Integrate search data into your AI workflow, RAG or fine-tuning pipeline, Python application, or data product using the official wrapper for [SerpApi](https://serpapi.com).
+# SerpApi Python Library & Package
+
+`serpapi` is the official Python client for [SerpApi](https://serpapi.com). Use it to search the web and read the results in your Python programs.
 
 SerpApi supports Google, Google Maps, Google Shopping, Bing, DuckDuckGo, Baidu, Yandex, Yahoo, eBay, YouTube, App Stores, Walmart, Home Depot, Naver, and many more engines.
 
-Query a wide range of data at scale, including web search results, local business listings, shopping results, flight schedules, stock market data, job listings, trends, news headlines, AI Overview results, and video search results.
+You can retrieve web search results, local business listings, shopping results, flight schedules, stock market data, job listings, trends, news headlines, AI Overview answers, and video search results.
 
 ## Install
 
-:::{.panel-tabset}
+Run one of these commands in your terminal. Use `pip` to install into your Python environment, or `uv add` if you manage your project with uv.
 
-## pip
+::::{tab-set}
+
+:::{tab-item} pip
 
 ```bash
 pip install serpapi
 ```
 
-## uv
+:::
+
+:::{tab-item} uv
 
 ```bash
 uv add serpapi
@@ -27,27 +33,35 @@ uv add serpapi
 
 :::
 
-Python 3.6 or newer is required by the package.
+::::
+
+The package requires Python 3.6 or newer.
 
 ## First Request
 
-Sign up at [SerpApi](https://serpapi.com/users/sign_up), copy your API key from the [dashboard](https://serpapi.com/manage-api-key), and set it in your shell:
+Sign up at [SerpApi](https://serpapi.com/users/sign_up) and copy your API key from the [dashboard](https://serpapi.com/manage-api-key). Replace `secret_api_key` below with your key, then run the command in your terminal. On Windows, use PowerShell.
 
-:::{.panel-tabset}
+::::{tab-set}
 
-## macOS / Linux
+:::{tab-item} macOS / Linux
 
 ```bash
 export SERPAPI_KEY="secret_api_key"
 ```
 
-## Windows
+:::
+
+:::{tab-item} Windows
 
 ```powershell
 $env:SERPAPI_KEY = "secret_api_key"
 ```
 
 :::
+
+::::
+
+Run this code in a Python script or interpreter started from the same terminal so it can read `SERPAPI_KEY`:
 
 ```python
 import os
@@ -65,69 +79,85 @@ results = client.search(
 print(results["organic_results"][0]["link"])
 ```
 
-The `results` variable contains a `SerpResults` object. It behaves like a standard dictionary and adds convenience helpers for response conversion, pagination, and fetching search archives.
+This prints the link from the first organic result, which is an unpaid search listing. `results["organic_results"]` is a list, and `[0]` selects its first item. See [Getting Started](user_guide/getting-started.md) for setup instructions and an explanation of each parameter.
 
-Request parameters map directly to the SerpApi HTTP API. For the full engine list and engine-specific parameters, use the [SerpApi API documentation](https://serpapi.com/search-api). Use the [SerpApi Playground](https://serpapi.com/playground) to build and test a request before moving it into Python.
+The `results` variable contains a `SerpResults` object. You can read its fields like a Python dictionary, convert it to a plain dictionary, or use its methods to fetch more pages. You can also retrieve saved searches with `client.search_archive()`.
 
-:::{.docs-home-nav}
-
-:::{.docs-home-nav__intro}
+Use the same search parameter names as the [SerpApi API documentation](https://serpapi.com/search-api). The [SerpApi Playground](https://serpapi.com/playground) lets you try a search in your browser and copy its parameters into Python.
 
 ## Documentation Map
 
-Choose the path that matches what you are building. Start with setup and a first request, then move into client behavior, request parameters, pagination, error handling, or engine-specific examples.
+- [Getting Started](user_guide/getting-started.md) covers installation and your first search. [Client Usage](user_guide/client-usage.md) explains how to make requests and read responses.
+- [AI Agents](ai-agents.md) covers search tools, Markdown results, and API references for agents.
+- [Output Formats](user_guide/output-formats.md) explains when to use JSON, Markdown, or HTML.
+- [Migration Guide](user_guide/migrating-from-google-search-results.md) shows how to replace `google-search-results` with this package.
+- [Parameters and Engines](user_guide/parameters-and-engines.md) explains search parameters and how to test them in the [SerpApi Playground](https://serpapi.com/playground).
+- For scripts that collect results, see [pagination](user_guide/pagination.md), [timeouts and errors](user_guide/errors-and-timeouts.md), [request options](user_guide/request-options.md), and [account and locations](user_guide/account-and-locations.md).
+- For searches you retrieve later, selected response fields, and data retention settings, see [Async Search Archive](user_guide/async-search-archive.md), [JSON Restrictor](user_guide/json-restrictor.md), and [Zero Trace](user_guide/zero-trace.md).
+- [Examples](examples/index.md) includes searches for web pages, AI answers, local businesses, products, travel, finance, trends, jobs, media, apps, and research.
 
-- New integrations: read [Getting Started](user-guide/getting-started.md), then [Client Usage](user-guide/client-usage.md).
-- Existing `google-search-results` users: follow the [Migration Guide](user-guide/migrating-from-google-search-results.md).
-- Engine setup: use [Parameters and Engines](user-guide/parameters-and-engines.md) with the [SerpApi Playground](https://serpapi.com/playground).
-- Production workflows: review [pagination](user-guide/pagination.md), [timeouts and errors](user-guide/errors-and-timeouts.md), [request options](user-guide/request-options.md), [account/location helpers](user-guide/account-and-locations.md), [async search archive](user-guide/async-search-archive.md), [JSON Restrictor](user-guide/json-restrictor.md), and [zero trace controls](user-guide/zero-trace.md).
-- [Examples](docs/examples/index.qmd): browse focused recipes grouped by search engines, AI answers, local/maps, shopping, travel, finance, trends, jobs, events, media, apps, and research.
+```{toctree}
+:hidden:
+:maxdepth: 2
+:caption: Basics
 
-<div class="docs-home-actions">
-  <a href="user-guide/getting-started.md">Getting Started</a>
-  <a href="user-guide/client-usage.md">Client Usage</a>
-  <a href="user-guide/migrating-from-google-search-results.md">Migration Guide</a>
-  <a href="docs/examples/index.qmd">Examples</a>
-  <a href="https://serpapi.com/playground">SerpApi Playground</a>
-</div>
+user_guide/getting-started
+user_guide/client-usage
+```
 
-:::
+```{toctree}
+:hidden:
+:maxdepth: 2
+:caption: User Guide
 
-:::{.docs-home-nav__sidebar}
+User Guide Overview <user_guide/index>
+user_guide/parameters-and-engines
+user_guide/output-formats
+user_guide/pagination
+user_guide/errors-and-timeouts
+user_guide/account-and-locations
+```
 
-### User Guide
+```{toctree}
+:hidden:
+:maxdepth: 2
+:caption: Migration
 
-- [Getting Started](user-guide/getting-started.md)
-- [Client Usage](user-guide/client-usage.md)
-- [Parameters and Engines](user-guide/parameters-and-engines.md)
-- [Pagination](user-guide/pagination.md)
-- [Errors and Timeouts](user-guide/errors-and-timeouts.md)
-- [Account and Locations](user-guide/account-and-locations.md)
+user_guide/migrating-from-google-search-results
+```
 
-### Migration
+```{toctree}
+:hidden:
+:maxdepth: 2
+:caption: Advanced Usage
 
-- [Migrating from google-search-results](user-guide/migrating-from-google-search-results.md)
+user_guide/async-search-archive
+user_guide/threading
+user_guide/multiprocessing
+user_guide/zero-trace
+user_guide/json-restrictor
+user_guide/request-options
+```
 
-### Advanced Usage
+```{toctree}
+:hidden:
+:maxdepth: 2
+:caption: AI Agents
 
-- [Async Search Archive](user-guide/async-search-archive.md)
-- [Parallel Requests with Threads](user-guide/threading.md)
-- [Parallel Requests with Multiprocessing](user-guide/multiprocessing.md)
-- [Zero Trace and Cache Controls](user-guide/zero-trace.md)
-- [JSON Restrictor](user-guide/json-restrictor.md)
-- [Request Options](user-guide/request-options.md)
+ai-agents
+```
 
-### Examples
+```{toctree}
+:hidden:
+:maxdepth: 3
 
-- [Examples Overview](docs/examples/index.qmd)
-- Search Engines: [Google](docs/examples/google-across-countries.md), [Bing](docs/examples/bing-search.md), [DuckDuckGo](docs/examples/duckduckgo-search.md), [Baidu](docs/examples/baidu-search.md)
-- AI Answers: [Google AI Overview](docs/examples/google-ai-overview.md)
-- Local and Maps: [Google Maps](docs/examples/google-maps-local-business.md), [Google Local Services](docs/examples/google-local-services.md)
-- Shopping and Marketplaces: [Google Shopping](docs/examples/google-shopping-products.md), [Amazon](docs/examples/amazon-product-search.md), [Walmart](docs/examples/walmart-product-search.md), [eBay](docs/examples/ebay-product-listings.md), [Home Depot](docs/examples/home-depot-product-search.md)
-- Travel and Hospitality: [Google Flights](docs/examples/google-flights-travel.md), [Tripadvisor](docs/examples/tripadvisor-travel-search.md)
-- Finance, Trends, Jobs, and Events: [Google Finance](docs/examples/google-finance-market-data.md), [Google Trends](docs/examples/google-trends-demand.md), [Google Jobs](docs/examples/google-jobs-listings.md), [Google Events](docs/examples/google-events-discovery.md)
-- Media, Apps, and Research: [YouTube](docs/examples/youtube-video-search.md), [Google Images](docs/examples/google-images-search.md), [Google Scholar](docs/examples/google-scholar-research.md), [Google Play](docs/examples/google-play-store-apps.md)
+examples/index
+```
 
-:::
+```{toctree}
+:hidden:
+:maxdepth: 2
+:caption: Reference
 
-:::
+reference
+```

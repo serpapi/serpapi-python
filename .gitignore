@@ -2,7 +2,7 @@
 
 script/
 .coverage
-great-docs/
+docs/_build/
 dist/
 build/
 .pytest_cache/

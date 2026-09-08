@@ -1,2 +1,7 @@
-include README.md HISTORY.md LICENSE
+include README.md CONTRIBUTING.md HISTORY.md LICENSE
+include .readthedocs.yaml
+include scripts/check_docs_revision.py scripts/publish_docs.py
 recursive-include tests *.py
+recursive-include docs *.py *.md *.txt *.css Makefile
+include assets/serpapi-logo.svg assets/serpapi-icon.png
+prune docs/_build

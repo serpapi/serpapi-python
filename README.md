@@ -309,11 +309,10 @@ results = client.search({
 })
 ```
 
-To search a local image, upload it first and pass its temporary `image_id` to
-Google Lens:
+To search a local image, place a file named `image.png` in your working directory, upload it, and pass its temporary `image_id` to Google Lens:
 
 ```python
-upload = client.upload_image("/path/to/image.png")
+upload = client.upload_image("image.png")
 results = client.search({
     "engine": "google_lens",
     "image_id": upload["image_id"],
@@ -324,19 +323,6 @@ Uploaded images can be JPG/JPEG, PNG, or WebP files up to 500 KB. The returned
 `image_id` expires after 10 minutes.
 
 - API Documentation: [Google Lens image uploads](https://serpapi.com/google-lens-upload-an-image), [Image API](https://serpapi.com/image-api)
-
-### Search Google Events
-```python
-import os
-import serpapi
-
-client = serpapi.Client(api_key=os.getenv("API_KEY"))
-results = client.search({
-    'engine': 'google_events',
-    'q': 'Events in Austin',
-})
-```
-- API Documentation: [serpapi.com/google-events-api](https://serpapi.com/google-events-api)
 
 ### Search Google Local Services
 ```python
@@ -416,16 +402,4 @@ MIT License.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub. Once dependencies are installed, you can run the tests with `pytest`.
-
-## Publishing a new release
-
-1. Update the version in `serpapi/__version__.py`.
-2. Push a tag — the release pipeline runs automatically:
-   ```sh
-   git tag v1.2.3
-   git push origin v1.2.3
-   ```
-   This triggers the [release workflow](.github/workflows/release.yml), which tests, builds, and publishes to PyPI, then smoke-tests the published package.
-
-> **Required secret:** `API_KEY` (used in smoke-test live search).
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup, testing, and publishing instructions.

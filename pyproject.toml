@@ -40,6 +40,12 @@ classifiers = [
 [project.optional-dependencies]
 color = ["pygments"]
 test = ["pytest"]
+docs = [
+  "sphinx>=8.2,<9; python_version >= '3.11'",
+  "myst-parser>=4,<5; python_version >= '3.11'",
+  "sphinx-design>=0.6,<1; python_version >= '3.11'",
+  "sphinx-rtd-theme>=3.1,<4; python_version >= '3.11'",
+]
 
 [project.urls]
 Homepage = "https://github.com/serpapi/serpapi-python"
@@ -50,7 +56,10 @@ Documentation = "https://serpapi-python.readthedocs.io/en/latest/"
 version = { attr = "serpapi.__version__.__version__" }
 
 [tool.setuptools.packages.find]
+include = ["serpapi", "serpapi.*"]
 exclude = ["tests", "tests.*"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "serpapi"]
+addopts = "--doctest-modules"
+doctest_optionflags = ["ELLIPSIS", "NORMALIZE_WHITESPACE"]

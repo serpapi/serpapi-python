@@ -31,12 +31,12 @@ jobs:
       run: pip install -e .[test]
 
     - name: Run tests
-      run: pytest -k "not example"
+      run: pytest tests --ignore-glob='tests/test_docs_*.py' -k "not example"
       env:
         API_KEY: ${{ secrets.API_KEY }}
 
     - name: Run example tests
       if: matrix.python-version == '3.14'
-      run: pytest -k "example"
+      run: pytest tests/example_search_*_test.py
       env:
         API_KEY: ${{ secrets.API_KEY }}

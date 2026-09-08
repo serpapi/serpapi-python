@@ -10,13 +10,6 @@ from .exceptions import HTTPError
 class SerpResults(UserDict):
     """A dictionary-like object that represents the results of a SerpApi request.
 
-    .. code-block:: python
-
-        >>> search = serpapi.search(q="Coffee", location="Austin, Texas, United States")
-
-        >>> print(search["search_metadata"].keys())
-        dict_keys(['id', 'status', 'json_endpoint', 'created_at', 'processed_at', 'google_url', 'raw_html_file', 'total_time_taken'])
-
     An instance of this class is returned if the response is a valid JSON object.
     It can be used like a dictionary, but also has some additional methods.
     """
@@ -40,7 +33,10 @@ class SerpResults(UserDict):
 
     def as_dict(self):
         """Returns the data as a standard Python dictionary.
-        This can be useful when using ``json.dumps(search), for example."""
+
+        This can be useful when passing results to libraries that expect a
+        plain ``dict``.
+        """
 
         return self.data.copy()
 
@@ -85,7 +81,7 @@ class SerpResults(UserDict):
     def from_http_response(cls, r, *, client=None):
         """Construct a SerpResults object from an HTTP response.
 
-        :param assert_200: if ``True`` (default), raise an exception if the status code is not 200.
+        :param r: The HTTP response to parse.
         :param client: the Client instance which was used to send this request.
 
         An instance of this class is returned if the response is a valid JSON object.

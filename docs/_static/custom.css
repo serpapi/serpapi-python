@@ -1,0 +1,99 @@
+/* Official palette: https://serpapi.com/media */
+:root {
+    --serpapi-blue: #377fea;
+    --serpapi-purple: #6937ea;
+    --serpapi-dark: #313131;
+    --serpapi-gradient: linear-gradient(47deg, #377fea, #6937ea);
+    --sd-color-primary: var(--serpapi-purple);
+    --sd-color-primary-highlight: var(--serpapi-purple);
+    --sd-color-primary-text: #ffffff;
+    --sd-color-secondary: var(--serpapi-blue);
+    --sd-color-tabs-label-active: var(--serpapi-purple);
+    --sd-color-tabs-label-hover: var(--serpapi-purple);
+    --sd-color-tabs-underline-active: var(--serpapi-blue);
+    --sd-color-tabs-underline-hover: var(--serpapi-blue);
+}
+
+.wy-side-nav-search > a img.logo {
+    width: 210px;
+    height: auto;
+}
+
+.wy-side-nav-search,
+.wy-nav-top {
+    background-color: #2b2145;
+    color: #ffffff;
+    border-bottom: 4px solid var(--serpapi-blue);
+    border-image: var(--serpapi-gradient) 1;
+}
+
+.wy-nav-top a {
+    color: #ffffff;
+}
+
+.wy-side-nav-search input[type="text"] {
+    border-color: var(--serpapi-blue);
+}
+
+.wy-nav-side {
+    background: var(--serpapi-dark);
+}
+
+.wy-menu-vertical header,
+.wy-menu-vertical p.caption {
+    color: #ffffff;
+    height: auto;
+    min-height: 32px;
+    line-height: 1.5;
+    padding-top: 0.4em;
+    padding-bottom: 0.4em;
+    white-space: normal;
+}
+
+.wy-menu-vertical a:hover {
+    background-color: var(--serpapi-purple);
+    color: #ffffff;
+}
+
+.wy-menu-vertical > ul + ul {
+    margin-top: 12px;
+}
+
+.wy-menu-vertical > ul + ul > li > a {
+    font-weight: 700;
+}
+
+.wy-menu-vertical li.current > a,
+.wy-menu-vertical li.current > a:hover {
+    color: var(--serpapi-purple);
+    box-shadow: inset 4px 0 var(--serpapi-blue);
+}
+
+.wy-nav-content {
+    color: var(--serpapi-dark);
+}
+
+/* Purple stays readable for small text on the light content background. */
+.wy-nav-content a:not(.btn),
+.wy-nav-content a:not(.btn):visited,
+.rst-content code.literal,
+.rst-content a code {
+    color: var(--serpapi-purple);
+}
+
+.wy-nav-content a:not(.btn):hover {
+    text-decoration: underline;
+}
+
+html.writer-html5 .rst-content dl[class]:not(.option-list):not(.field-list):not(.footnote):not(.citation):not(.glossary):not(.simple) > dt {
+    color: var(--serpapi-purple);
+    background: rgba(105, 55, 234, 0.06);
+    border-top-color: var(--serpapi-blue);
+}
+
+.wy-nav-content a:focus-visible,
+.wy-menu-vertical a:focus-visible,
+.wy-side-nav-search input[type="text"]:focus-visible {
+    outline: 2px solid var(--serpapi-blue);
+    outline-offset: 2px;
+}

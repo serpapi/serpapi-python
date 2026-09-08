@@ -38,14 +38,14 @@ jobs:
         run: pip install -e .[test]
 
       - name: Run tests
-        run: pytest -k "not example"
+        run: pytest --ignore=tests/test_docs_publishing.py -k "not example"
         env:
           API_KEY: ${{ secrets.API_KEY }}
 
-      - name: Run example tests
+      - name: Run engine and documentation examples
         if: matrix.python-version == '3.14'
         continue-on-error: ${{ inputs.allow_example_test_failures == true }}
-        run: pytest -k "example"
+        run: pytest --ignore=tests/test_docs_publishing.py -k "example" --require-docs-key
         env:
           API_KEY: ${{ secrets.API_KEY }}
 

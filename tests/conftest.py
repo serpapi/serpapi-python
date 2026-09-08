@@ -7,6 +7,21 @@ import serpapi
 os.environ["CI"] = "1"
 
 
+def pytest_addoption(parser):
+    parser.addoption(
+        "--require-docs-key",
+        action="store_true",
+        help="Fail instead of skipping live docs examples when the API key is missing",
+    )
+
+
+def pytest_sessionstart(session):
+    if session.config.getoption("--require-docs-key") and not (
+        os.environ.get("SERPAPI_KEY") or os.environ.get("API_KEY")
+    ):
+        raise pytest.UsageError("Live docs checks require SERPAPI_KEY or API_KEY")
+
+
 @pytest.fixture
 def api_key():
     return os.environ["API_KEY"]

@@ -23,7 +23,9 @@ class HTTPClient:
 
     def request(self, method, path, params, *, assert_200=True, **kwargs):
         # Inject the API Key into the params.
-        if "api_key" not in params:
+        request_data = kwargs.get("data")
+        api_key_in_data = isinstance(request_data, dict) and "api_key" in request_data
+        if "api_key" not in params and not api_key_in_data:
             params["api_key"] = self.api_key
 
         # Build the URL, as needed.

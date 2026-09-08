@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
 
     steps:
     - name: Checkout repository
@@ -36,7 +36,7 @@ jobs:
         API_KEY: ${{ secrets.API_KEY }}
 
     - name: Run example tests
-      if: matrix.python-version == '3.13'
+      if: matrix.python-version == '3.14'
       run: pytest -k "example"
       env:
         API_KEY: ${{ secrets.API_KEY }}

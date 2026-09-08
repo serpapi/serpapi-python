@@ -1,6 +1,14 @@
 Release History
 ===============
 
+1.1.0 (2026-08-14)
+------------------
+
+- Add PyPI trusted publishing. PYPI Key is no longer required for publishing the package.
+- Add image upload support (`/image` API) for Google Lens
+- Release workflow: Add an option to manually trigger the release workflow and skip live tests
+- Add more test cases: Locations API, pagination, etc.
+
 1.0.1 (2026-03-18)
 ------------------
 

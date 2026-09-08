@@ -2,6 +2,7 @@ import io
 import json
 from collections import deque
 from pathlib import Path
+from shlex import quote
 import subprocess
 from types import SimpleNamespace
 from urllib.error import HTTPError
@@ -27,13 +28,19 @@ def ci_environment(**context_changes):
     }
 
 
-def test_revision_guard_accepts_only_the_tested_commit():
-    guard.check_revision(ci_environment(), COMMIT, now=100)
+@pytest.mark.parametrize("shell_quoted", [False, True])
+def test_revision_guard_accepts_only_the_tested_commit(shell_quoted):
+    env = ci_environment()
+    if shell_quoted:
+        env[guard.CONTEXT_VARIABLE] = quote(env[guard.CONTEXT_VARIABLE])
+    guard.check_revision(env, COMMIT, now=100)
     with pytest.raises(RuntimeError, match="different commit"):
-        guard.check_revision(ci_environment(), "b" * 40, now=100)
+        guard.check_revision(env, "b" * 40, now=100)
 
 
-@pytest.mark.parametrize("context", [None, "not json", "null", "[]", "{}"])
+@pytest.mark.parametrize("context", [
+    None, "not json", "null", "[]", "{}", "'unterminated", "'{}' '{}'", quote("not json"),
+])
 def test_revision_guard_rejects_missing_or_malformed_context(context):
     env = ci_environment()
     if context is None:

@@ -1,6 +1,7 @@
 import json
 import os
 import re
+import shlex
 import subprocess
 import sys
 import time
@@ -13,7 +14,11 @@ def check_revision(environ, commit, now=None):
     if environ.get("READTHEDOCS_VERSION_TYPE") == "external":
         return
     try:
-        context = json.loads(environ[CONTEXT_VARIABLE])
+        value = environ[CONTEXT_VARIABLE]
+        # RTD stores custom environment values with shlex.quote.
+        if value.startswith("'"):
+            value, = shlex.split(value)
+        context = json.loads(value)
         expected = context["commit"]
         versions = context["versions"]
         expires = context["expires_at"]

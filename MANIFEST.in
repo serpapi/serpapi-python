@@ -1,2 +1,3 @@
 include README.md HISTORY.md LICENSE
+recursive-include serpapi *.pyi py.typed
 recursive-include tests *.py

@@ -7,7 +7,6 @@ build:
   jobs:
     pre_build:
       - python -m scripts.check_docs_revision
-      - python -m pytest tests/test_docs_examples.py tests/test_docs_example_runner.py -k 'not live' -q
     post_build:
       - python -m scripts.check_docs_revision
 
@@ -26,4 +25,3 @@ python:
       path: .
       extras:
         - docs
-        - test

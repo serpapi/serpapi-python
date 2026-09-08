@@ -52,7 +52,7 @@ In PowerShell, use `$env:API_KEY = $env:SERPAPI_KEY`. Keep real keys out of sour
 To match the test selection in the SDK CI workflow:
 
 ```sh
-python -m pytest --ignore=tests/test_docs_publishing.py -k 'not example' -q
+python -m pytest tests --ignore-glob='tests/test_docs_*.py' -k 'not example' -q
 ```
 
 This includes live account, location, search, and pagination checks. To run every discovered test, including the standalone engine examples and documentation examples:
@@ -61,7 +61,7 @@ This includes live account, location, search, and pagination checks. To run ever
 python -m pytest -q
 ```
 
-Both commands make real SerpApi requests. The full suite can use more searches than a test run limited to the files you changed.
+Both commands make real SerpApi requests. The full suite can use more searches than a test run limited to the files you changed. PR CI also runs the standalone engine examples on Python 3.14. Documentation tests run only in the package and documentation release workflows, on `master` or release tags.
 
 ### Testing documentation examples
 
@@ -146,13 +146,13 @@ The files are written to `dist/`. Documentation sources, this guide, and the log
 
 ## Documentation publishing
 
-The [documentation workflow](.github/workflows/docs.yml) runs the live examples before building HTML and EPUB on pull requests from this repository, pushes to `master`, and release tags. Fork and Dependabot PRs run the checks that need no key and build the docs; their live job is shown as skipped because GitHub does not provide the secret. Run the reviewed revision with a key before merging those PRs.
+The [documentation workflow](.github/workflows/docs.yml) runs the live examples before building HTML and EPUB on pushes to `master`, release tags, and manual runs on either ref. It does not run on pull requests.
 
 After the live examples and documentation build pass, the same workflow publishes to Read the Docs for `master` and `v*` release tags. PR runs never publish. The publishing job uses the `docs` GitHub environment and its `RTD_API_TOKEN` secret. The SerpApi key stays in GitHub as the existing `API_KEY` repository or organization secret.
 
 The workflow syncs RTD versions, activates the requested version if needed, and waits for the build to finish. `latest` tracks `master`. A release tag has its own version and also updates `stable` when RTD identifies it as the highest stable release. RTD still builds the site from the repository using [.readthedocs.yaml](.readthedocs.yaml); it does not receive the HTML artifact from GitHub. Documentation publishing runs independently of the PyPI release workflow.
 
-Before requesting a build, the workflow creates a temporary RTD environment variable named `DOCS_CI_REVISION`. It contains the tested commit, the permitted versions, and an expiration time. RTD checks this record against its checkout before and after the Sphinx build. A missing, expired, or different revision stops publication. RTD runs only offline tests and needs no SerpApi key. The workflow removes the temporary record after publishing, including when a build fails. Publishing jobs run one at a time so they cannot overwrite each other's revision record.
+Before requesting a build, the workflow creates a temporary RTD environment variable named `DOCS_CI_REVISION`. It contains the tested commit, the permitted versions, and an expiration time. RTD checks this record against its checkout before and after the Sphinx build. A missing, expired, or different revision stops publication. RTD needs no SerpApi key. The workflow removes the temporary record after publishing, including when a build fails. Publishing jobs run one at a time so they cannot overwrite each other's revision record.
 
 ### Maintainer setup
 
@@ -160,11 +160,11 @@ Maintainers can configure the existing RTD project and GitHub environment with t
 
 1. In RTD **Settings**, set **Connected repository** to **No connected repository** and keep **Repository URL** set to `https://github.com/serpapi/serpapi-python.git`. Set **Default branch** to `master` and the configuration file path to `.readthedocs.yaml`. The public repository URL lets RTD clone the source without receiving GitHub push events through the GitHub App.
 2. Under RTD **Integrations**, remove incoming GitHub webhook integrations for this project. If an older RTD webhook is also listed in the GitHub repository's **Settings > Webhooks**, disable or remove that webhook. Do not remove integrations for other projects.
-3. Under RTD **Automation Rules**, remove rules that activate new versions or change the default version. The workflow handles release activation. Under **Settings > Pull request builds**, turn off **Build pull requests for this project**. GitHub Actions still checks PRs and saves the built HTML as a workflow artifact.
+3. Under RTD **Automation Rules**, remove rules that activate new versions or change the default version. The workflow handles release activation. Under **Settings > Pull request builds**, turn off **Build pull requests for this project**. GitHub Actions runs the existing SDK and engine example tests on PRs.
 4. Under RTD **Environment Variables**, remove `API_KEY` or `SERPAPI_KEY` if you added either for docs tests. Do not add the RTD API token here. The workflow manages `DOCS_CI_REVISION` automatically.
 5. Keep `latest` active in **Versions** and use it as the default documentation version during this migration. Existing release tags contain their original docs and build configuration. After the first release containing these changes builds successfully, you can choose `stable` as the default version.
 6. Create an RTD API token in your [RTD profile settings](https://app.readthedocs.org/accounts/tokens/), using an account that maintains the `serpapi-python` project. In GitHub, open the repository's **Settings > Environments**, create an environment named `docs`, and add an environment secret named `RTD_API_TOKEN` with that value. Under **Deployment branches and tags**, select **Selected branches and tags** and add a Branch rule for `master` and a Tag rule for `v*`. Leave required reviewers and wait timers disabled if publishing should run without a manual approval.
-7. Merge the changes to `master`. In GitHub **Actions > Documentation**, follow **Live documentation examples**, **Build Sphinx documentation**, and **Publish Read the Docs**. The publishing log links to the RTD build. To retry publishing, run the Documentation workflow on `master` or the intended release tag. A manual run on another branch checks the docs but does not publish.
+7. Merge the changes to `master`. In GitHub **Actions > Documentation**, follow **Live documentation examples**, **Build Sphinx documentation**, and **Publish Read the Docs**. The publishing log links to the RTD build. To retry publishing, run the Documentation workflow on `master` or the intended release tag. A manual run on another branch skips the documentation jobs.
 
 Use GitHub Actions to request builds after this setup. A manual RTD build has no CI revision record and will fail the revision check. If a branch or tag moves between testing and the RTD checkout, rerun the workflow for its current commit. Pushing a `v*` tag also starts the PyPI release workflow, so use an actual package release to test release documentation.
 

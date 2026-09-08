@@ -10,7 +10,7 @@ readme = "README.md"
 license = { text = "MIT" }
 authors = [{ name = "SerpApi", email = "support@serpapi.com" }]
 requires-python = ">=3.6"
-dependencies = ["requests"]
+dependencies = ["requests", "typing_extensions"]
 keywords = [
   "scrape", "serp", "api", "serpapi", "scraping", "json", "search",
   "localized", "rank", "google", "bing", "baidu", "yandex", "yahoo",
@@ -40,6 +40,7 @@ classifiers = [
 [project.optional-dependencies]
 color = ["pygments"]
 test = ["pytest"]
+dev = ["markdownify"]
 
 [project.urls]
 Homepage = "https://github.com/serpapi/serpapi-python"
@@ -51,6 +52,10 @@ version = { attr = "serpapi.__version__.__version__" }
 
 [tool.setuptools.packages.find]
 exclude = ["tests", "tests.*"]
+namespaces = false
+
+[tool.setuptools.package-data]
+serpapi = ["*.pyi", "py.typed"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

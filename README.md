@@ -196,7 +196,7 @@ import serpapi
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
 results = client.search({
     'engine': 'home_depot',
-    'q': 'table',
+    'q': 'chair',
 })
 ```
 - API Documentation: [serpapi.com/home-depot-search-api](https://serpapi.com/home-depot-search-api)
@@ -363,7 +363,7 @@ import serpapi
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
 results = client.search({
     'engine': 'google_jobs',
-    'q': 'coffee',
+    'q': 'software engineer',
 })
 ```
 - API Documentation: [serpapi.com/google-jobs-api](https://serpapi.com/google-jobs-api)

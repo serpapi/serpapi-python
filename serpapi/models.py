@@ -1,10 +1,8 @@
 import json
 
-from pprint import pformat
 from collections import UserDict
 
 from .textui import prettify_json
-from .exceptions import HTTPError
 
 
 class SerpResults(UserDict):
@@ -71,6 +69,8 @@ class SerpResults(UserDict):
         while current_page and current_page_count < max_pages:
             yield current_page
             current_page_count += 1
+            if current_page_count >= max_pages:
+                break
             if current_page.next_page_url:
                 current_page = current_page.next_page()
             else:

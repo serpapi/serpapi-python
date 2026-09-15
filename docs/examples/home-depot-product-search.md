@@ -20,7 +20,7 @@ client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 
 results = client.search(
     engine="home_depot",
-    q="table",
+    q="chair",
 )
 
 for product in results.get("products", [])[:5]:

@@ -7,7 +7,7 @@ def test_search_home_depot(client):
 
   data = client.search({
       'engine': 'home_depot',
-      'q': 'table',
+      'q': 'chair',
   })
   assert data.get('error') is None
   assert data['products']

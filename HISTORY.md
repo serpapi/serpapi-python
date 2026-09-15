@@ -1,12 +1,18 @@
 Release History
 ===============
 
+1.1.2 (2026-09-15)
+------------------
+
+- Fixed a bug in SerpResults.yield_pages to ensure it does not request more pages than specified by max_pages. The bug
+  caused two network requests to be sent when max_pages was set to 1.
+- Enhancements to test parameters and examples
+
 1.1.1 (2026-09-08)
 ------------------
 
 - Enhancements for SerpApi markdown output (`output=md`) support
 - Enhancements for readthedocs documentation: Added user guide, examples, automated publishing to RTD on release.
-
 
 1.1.0 (2026-08-14)
 ------------------
@@ -37,7 +43,7 @@ Release History
 0.1.5 (2023-11-01)
 ------------------
 
-- Python 3.12 support. 
+- Python 3.12 support.
 
 0.1.4 (2023-10-11)
 ------------------
@@ -47,7 +53,7 @@ Release History
 0.1.3 (2023-10-06)
 ------------------
 
-- Replace deprecated serpapi_pagination.next_link with 'next'. 
+- Replace deprecated serpapi_pagination.next_link with 'next'.
 - Improve documentation: how to use the client directly for pagination searches.
 
 0.1.2 (2023-10-03)

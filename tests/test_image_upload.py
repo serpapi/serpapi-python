@@ -1,17 +1,15 @@
 from io import BytesIO, StringIO
 from unittest.mock import Mock
 
+import httpx
 import pytest
-import requests
 
 import serpapi
 
 
 def json_response(data):
-    response = requests.Response()
-    response.status_code = 200
-    response._content = data
-    return response
+    request = httpx.Request("POST", "https://serpapi.com/image")
+    return httpx.Response(200, content=data, request=request)
 
 
 def test_upload_image_path_sends_multipart_request(tmp_path):
@@ -53,7 +51,7 @@ def test_upload_image_accepts_open_binary_file_and_request_options():
 
     assert result == {"image_id": "image-456"}
     assert not image.closed
-    _, request_kwargs = client.session.request.call_args
+    request_kwargs = client.session.request.call_args.kwargs
     assert request_kwargs["params"] == {}
     assert request_kwargs["data"] == {
         "api_key": "request-api-key",
@@ -69,9 +67,10 @@ def test_upload_image_rejects_text_mode_file(tmp_path):
     client = serpapi.Client(api_key="test-api-key")
     client.session.request = Mock()
 
-    with image_path.open("r") as image:
-        with pytest.raises(TypeError, match="opened in binary mode"):
-            client.upload_image(image)
+    with image_path.open("r") as image, pytest.raises(
+        TypeError, match="opened in binary mode"
+    ):
+        client.upload_image(image)
 
     client.session.request.assert_not_called()
 
@@ -92,7 +91,7 @@ def test_request_injects_api_key_when_form_data_does_not_include_it():
 
     client.request("POST", "/example", params={}, data={"field": "value"})
 
-    _, request_kwargs = client.session.request.call_args
+    request_kwargs = client.session.request.call_args.kwargs
     assert request_kwargs["params"] == {"api_key": "test-api-key"}
     assert request_kwargs["data"] == {"field": "value"}
 

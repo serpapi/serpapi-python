@@ -20,7 +20,7 @@ Run one of these commands in your terminal. Use `pip` to install into your Pytho
 :::{tab-item} pip
 
 ```bash
-pip install serpapi
+pip3 install serpapi
 ```
 
 :::
@@ -35,7 +35,7 @@ uv add serpapi
 
 ::::
 
-The package requires Python 3.6 or newer.
+The package requires Python 3.8 or newer.
 
 ## First Request
 
@@ -92,7 +92,7 @@ Use the same search parameter names as the [SerpApi API documentation](https://s
 - [Output Formats](user_guide/output-formats.md) explains when to use JSON, Markdown, or HTML.
 - [Migration Guide](user_guide/migrating-from-google-search-results.md) shows how to replace `google-search-results` with this package.
 - [Parameters and Engines](user_guide/parameters-and-engines.md) explains search parameters and how to test them in the [SerpApi Playground](https://serpapi.com/playground).
-- For scripts that collect results, see [pagination](user_guide/pagination.md), [timeouts and errors](user_guide/errors-and-timeouts.md), [request options](user_guide/request-options.md), and [account and locations](user_guide/account-and-locations.md).
+- For concurrent applications and scripts that collect results, see the [Asyncio Client](user_guide/asyncio.md), [pagination](user_guide/pagination.md), [timeouts and errors](user_guide/errors-and-timeouts.md), [request options](user_guide/request-options.md), and [account and locations](user_guide/account-and-locations.md).
 - For searches you retrieve later, selected response fields, and data retention settings, see [Async Search Archive](user_guide/async-search-archive.md), [JSON Restrictor](user_guide/json-restrictor.md), and [Zero Trace](user_guide/zero-trace.md).
 - [Examples](examples/index.md) includes searches for web pages, AI answers, local businesses, products, travel, finance, trends, jobs, media, apps, and research.
 
@@ -132,6 +132,7 @@ user_guide/migrating-from-google-search-results
 :caption: Advanced Usage
 
 user_guide/async-search-archive
+user_guide/asyncio
 user_guide/threading
 user_guide/multiprocessing
 user_guide/zero-trace

@@ -5,7 +5,7 @@ description: "Use the SerpApi client, module helpers, request options, and respo
 
 # Client Usage
 
-Create a `serpapi.Client` to reuse your API key, timeout, and HTTP connection settings across requests.
+Create a `serpapi.Client` to reuse your API key, timeout, and pooled HTTP connections across requests. For an asyncio application, see [Asyncio Client](asyncio.md).
 
 ## Create a Client
 
@@ -86,14 +86,14 @@ locations = client.locations(q="Austin", limit=3)
 
 ## Request Options
 
-`search()`, `search_archive()`, `account()`, and `locations()` pass these keyword arguments to the underlying `requests` call:
+`search()`, `search_archive()`, `account()`, and `locations()` accept these compatibility options and translate them to HTTPX:
 
 | Option | Use |
 | --- | --- |
 | `timeout` | Set a different timeout, in seconds, for one request. |
 | `proxies` | Send the request through a proxy. |
 | `verify` | Check the server's TLS certificate, or use a custom certificate authority bundle. |
-| `stream` | Set the `requests` streaming option. The client still reads the response before returning results. |
+| `stream` | Accepted for backward compatibility. SDK methods fully read the response before returning results. |
 | `cert` | Authenticate the request with a client certificate. |
 
 For example, set a shorter timeout for this search:

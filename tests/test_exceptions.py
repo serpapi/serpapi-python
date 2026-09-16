@@ -1,17 +1,25 @@
-from unittest.mock import Mock
-import requests
+import httpx
+
 import serpapi
 
 
 def test_http_error():
     """Ensure that an HTTPError has the correct status code and error."""
-    mock_response = Mock()
-    mock_response.status_code = 401
-    mock_response.json.return_value = { "error": "Invalid API key" }
-    
-    requests_error = requests.exceptions.HTTPError(response=mock_response, request=Mock())
-    http_error = serpapi.HTTPError(requests_error)
-        
+    request = httpx.Request("GET", "https://serpapi.com/account.json")
+    response = httpx.Response(
+        401,
+        json={"error": "Invalid API key"},
+        request=request,
+    )
+    original = httpx.HTTPStatusError(
+        "401 Unauthorized",
+        request=request,
+        response=response,
+    )
+    http_error = serpapi.HTTPError(original)
+
     assert http_error.status_code == 401
     assert http_error.error == "Invalid API key"
-    assert http_error.response == mock_response
+    assert http_error.response == response
+    assert http_error.request == request
+    assert isinstance(http_error, httpx.HTTPError)

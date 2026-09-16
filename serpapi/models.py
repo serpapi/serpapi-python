@@ -1,5 +1,4 @@
 import json
-
 from collections import UserDict
 
 from .textui import prettify_json
@@ -64,7 +63,7 @@ class SerpResults(UserDict):
         """
 
         current_page_count = 0
-              
+
         current_page = self
         while current_page and current_page_count < max_pages:
             yield current_page
@@ -75,7 +74,6 @@ class SerpResults(UserDict):
                 current_page = current_page.next_page()
             else:
                 break
-            
 
     @classmethod
     def from_http_response(cls, r, *, client=None):
@@ -93,9 +91,31 @@ class SerpResults(UserDict):
             return r.text
 
         try:
-            cls = cls(r.json(), client=client)
-
-            return cls
+            return cls(r.json(), client=client)
         except ValueError:
             # If the response is not JSON, return the raw text.
             return r.text
+
+
+class AsyncSerpResults(SerpResults):
+    """Search results with asynchronous pagination helpers."""
+
+    async def next_page(self):
+        """Asynchronously return the next page of results, if any."""
+        if self.next_page_url:
+            params = {"api_key": self.client.api_key}
+            response = await self.client.request(
+                "GET", path=self.next_page_url, params=params
+            )
+            return type(self).from_http_response(response, client=self.client)
+
+    async def yield_pages(self, max_pages=1_000):
+        """Yield this result and up to ``max_pages - 1`` additional pages."""
+        current_page_count = 0
+        current_page = self
+        while current_page and current_page_count < max_pages:
+            yield current_page
+            current_page_count += 1
+            if current_page_count >= max_pages or not current_page.next_page_url:
+                break
+            current_page = await current_page.next_page()

@@ -16,7 +16,7 @@ Run one of these commands in your terminal. Use `pip` for an existing Python env
 :::{tab-item} pip
 
 ```bash
-pip install serpapi
+pip3 install serpapi
 ```
 
 :::
@@ -39,7 +39,7 @@ uv pip install serpapi
 
 ::::
 
-The package requires Python 3.6 or newer.
+The package requires Python 3.8 or newer.
 
 Create or sign in to your SerpApi account and copy your API key from the [dashboard](https://serpapi.com/manage-api-key). An API key identifies your account when you make a request. Replace `secret_api_key` below with your key and run the command in your terminal. On Windows, use PowerShell.
 

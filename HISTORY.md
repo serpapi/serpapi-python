@@ -1,6 +1,18 @@
 Release History
 ===============
 
+Unreleased
+----------
+
+- Added `serpapi.AsyncClient` with async search, archive, account, locations,
+  image upload, and pagination support.
+- Migrated the synchronous HTTP transport from Requests to HTTPX while keeping
+  the existing `serpapi.Client` API and request-option compatibility.
+- Added explicit sync and async client lifecycle management, deterministic
+  concurrency tests, asyncio documentation, and a local HTTP benchmark.
+- Updated the minimum supported Python version to 3.8 to match the SDK's CI
+  matrix and HTTPX requirements.
+
 1.1.2 (2026-09-15)
 ------------------
 

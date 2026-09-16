@@ -1,51 +1,55 @@
-import requests
+import httpx
 
 
 class SerpApiError(Exception):
     """Base class for exceptions in this module."""
 
-    pass
-
 
 class APIKeyNotProvided(ValueError, SerpApiError):
     """API key is not provided."""
-
-    pass
 
 
 class SearchIDNotProvided(ValueError, SerpApiError):
     """Search ID is not provided."""
 
-    pass
 
-
-class HTTPError(requests.exceptions.HTTPError, SerpApiError):
-    """HTTP Error."""
+class HTTPError(httpx.HTTPError, SerpApiError):
+    """An unsuccessful HTTP response from SerpApi."""
 
     def __init__(self, original_exception):
-        if (isinstance(original_exception, requests.exceptions.HTTPError)):
-            http_error_exception: requests.exceptions.HTTPError = original_exception
+        self.original_exception = original_exception
+        request = getattr(original_exception, "request", None)
+        self.response = getattr(original_exception, "response", None)
+        self.status_code = (
+            self.response.status_code if self.response is not None else -1
+        )
+        self.error = None
 
-            self.status_code = http_error_exception.response.status_code
+        if self.response is not None:
             try:
-                self.error = http_error_exception.response.json().get("error", None)
-            except requests.exceptions.JSONDecodeError:
-                self.error = None
-        else:
-            self.status_code = -1
-            self.error = None
-                
-        super().__init__(*original_exception.args, response=getattr(original_exception, 'response', None), request=getattr(original_exception, 'request', None))
+                payload = self.response.json()
+                if isinstance(payload, dict):
+                    self.error = payload.get("error")
+            except ValueError:
+                pass
+
+        message = str(original_exception)
+        httpx.HTTPError.__init__(self, message)
+        if request is not None:
+            self.request = request
 
 
-
-class HTTPConnectionError(HTTPError, requests.exceptions.ConnectionError, SerpApiError):
-    """Connection Error."""
-
-    pass
+class HTTPConnectionError(HTTPError):
+    """A network error while connecting to or reading from SerpApi."""
 
 
-class TimeoutError(requests.exceptions.Timeout, SerpApiError):
-    """Timeout Error."""
+class TimeoutError(httpx.TimeoutException, SerpApiError):
+    """A request to SerpApi exceeded its configured timeout."""
 
-    pass
+    def __init__(self, original_exception):
+        self.original_exception = original_exception
+        httpx.TimeoutException.__init__(
+            self,
+            str(original_exception),
+            request=getattr(original_exception, "request", None),
+        )

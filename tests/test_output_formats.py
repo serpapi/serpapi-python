@@ -1,17 +1,19 @@
 from unittest.mock import Mock
 
+import httpx
 import pytest
-import requests
 
 import serpapi
 
 
 def response(content_type, content):
-    response = requests.Response()
-    response.status_code = 200
-    response.headers["Content-Type"] = f"{content_type}; charset=utf-8"
-    response._content = content.encode("utf-8")
-    return response
+    request = httpx.Request("GET", "https://serpapi.com/search")
+    return httpx.Response(
+        200,
+        headers={"Content-Type": f"{content_type}; charset=utf-8"},
+        content=content.encode("utf-8"),
+        request=request,
+    )
 
 
 def test_search_json_returns_serp_results():

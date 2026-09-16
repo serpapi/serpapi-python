@@ -3,24 +3,29 @@ import subprocess
 import sys
 from textwrap import dedent
 
+import httpx
 import pytest
-import requests
 
 from tests.docs_example_support import ROOT, run_page, validate_response
 
-
 MOCK_REQUEST = """
 import json
-import requests
+import httpx
 
 def fake_request(self, **kwargs):
-    response = requests.Response()
-    response.status_code = 200
-    response.headers['Content-Type'] = 'application/json'
-    response._content = json.dumps({'organic_results': [{'title': 'Coffee'}]}).encode()
-    return response
+    request = httpx.Request(kwargs['method'], kwargs['url'])
+    return httpx.Response(
+        200,
+        headers={'Content-Type': 'application/json'},
+        json={'organic_results': [{'title': 'Coffee'}]},
+        request=request,
+    )
 
-requests.Session.request = fake_request
+async def fake_async_request(self, **kwargs):
+    return fake_request(self, **kwargs)
+
+httpx.Client.request = fake_request
+httpx.AsyncClient.request = fake_async_request
 """
 
 
@@ -31,7 +36,9 @@ def markdown_page(tmp_path, code):
 
 
 def test_doc_runner_executes_main_guard_and_spawned_workers(tmp_path):
-    code = MOCK_REQUEST + """
+    code = (
+        MOCK_REQUEST
+        + """
 from concurrent.futures import ProcessPoolExecutor
 import multiprocessing
 
@@ -43,6 +50,7 @@ if __name__ == '__main__':
     with ProcessPoolExecutor(max_workers=2, mp_context=multiprocessing.get_context('spawn')) as pool:
         assert list(pool.map(search_worker, ['one', 'two'])) == ['Coffee', 'Coffee']
 """
+    )
     page = markdown_page(tmp_path, code)
     records = run_page(page, tmp_path / "run", "test-key")
     assert len(records) == 2
@@ -70,16 +78,38 @@ assert results['organic_results'][0]['title'] == 'Coffee'
     assert "test-key" not in (tmp_path / "run" / "example.py").read_text()
 
 
+def test_doc_runner_records_async_client_requests(tmp_path):
+    page = markdown_page(
+        tmp_path,
+        MOCK_REQUEST
+        + """
+import asyncio
+
+async def main():
+    async with serpapi.AsyncClient(api_key='secret_api_key') as async_client:
+        results = await async_client.search(q='coffee')
+        assert results['organic_results'][0]['title'] == 'Coffee'
+
+asyncio.run(main())
+""",
+    )
+    records = run_page(page, tmp_path / "run", "test-key")
+    assert records == [{"path": "/search", "engine": None, "ok": True}]
+
+
 def test_doc_runner_fails_on_caught_api_errors_and_redacts_key(tmp_path):
-    code = MOCK_REQUEST.replace(
-        "{'organic_results': [{'title': 'Coffee'}]}",
-        "{'error': os.environ['SERPAPI_KEY']}",
-    ) + """
+    code = (
+        MOCK_REQUEST.replace(
+            "{'organic_results': [{'title': 'Coffee'}]}",
+            "{'error': os.environ['SERPAPI_KEY']}",
+        )
+        + """
 try:
     client.search(q='coffee')
 except AssertionError:
     pass
 """
+    )
     page = markdown_page(tmp_path, code)
     with pytest.raises(RuntimeError) as failure:
         run_page(page, tmp_path / "run", "private-test-key")
@@ -90,7 +120,9 @@ except AssertionError:
 
 
 def test_doc_runner_rejects_examples_without_requests(tmp_path):
-    page = markdown_page(tmp_path, "if __name__ == 'docs_examples':\n    client.search(q='coffee')")
+    page = markdown_page(
+        tmp_path, "if __name__ == 'docs_examples':\n    client.search(q='coffee')"
+    )
     with pytest.raises(RuntimeError, match="without making a SerpApi request"):
         run_page(page, tmp_path / "run", "test-key")
 
@@ -103,10 +135,13 @@ def test_doc_runner_stops_a_stalled_example(tmp_path):
 
 @pytest.mark.parametrize("output", ["md", "html"])
 def test_doc_response_check_rejects_json_for_text_output(output):
-    response = requests.Response()
-    response.status_code = 200
-    response.headers["Content-Type"] = "application/json"
-    response._content = b'{"organic_results": [{"title": "Coffee"}]}'
+    request = httpx.Request("GET", "https://serpapi.com/search")
+    response = httpx.Response(
+        200,
+        headers={"Content-Type": "application/json"},
+        json={"organic_results": [{"title": "Coffee"}]},
+        request=request,
+    )
     with pytest.raises(AssertionError, match="nonempty string"):
         validate_response(response, "/search", {"output": output})
 
@@ -116,9 +151,20 @@ def test_doc_gate_fails_without_a_key():
     env.pop("SERPAPI_KEY", None)
     env.pop("API_KEY", None)
     result = subprocess.run(
-        [sys.executable, "-m", "pytest", "tests/test_docs_examples.py",
-         "--require-docs-key", "--collect-only", "-q"],
-        cwd=ROOT, env=env, capture_output=True, text=True,
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "tests/test_docs_examples.py",
+            "--require-docs-key",
+            "--collect-only",
+            "-q",
+        ],
+        cwd=ROOT,
+        env=env,
+        capture_output=True,
+        text=True,
+        check=False,
     )
     assert result.returncode != 0
     assert "Live docs checks require SERPAPI_KEY or API_KEY" in result.stderr

@@ -22,6 +22,7 @@ Start with [Getting Started](getting-started.md) to install the package and run 
 ## Advanced Usage
 
 - [Async Search Archive](async-search-archive.md)
+- [Asyncio Client](asyncio.md)
 - [Threading](threading.md)
 - [Multiprocessing](multiprocessing.md)
 - [Zero Trace and Data Retention](zero-trace.md)

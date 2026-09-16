@@ -56,7 +56,7 @@ results = client.search(
 )
 ```
 
-The timeout applies to connecting and waiting for data. A request can take longer than the timeout overall if data continues to arrive. Without a timeout setting, the client can wait indefinitely. See the [Requests timeout documentation](https://requests.readthedocs.io/en/latest/user/quickstart/#timeouts).
+The timeout applies to connecting, reading, writing, and acquiring a pooled connection. Without a timeout setting, the SDK preserves its historical behavior and can wait indefinitely. See the [HTTPX timeout documentation](https://www.python-httpx.org/advanced/timeouts/).
 
 ## Missing Search IDs
 

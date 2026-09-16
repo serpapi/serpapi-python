@@ -9,11 +9,17 @@ Query a vast range of data at scale, including web search results, flight schedu
 
 ## Installation
 
-To install the `serpapi` package, simply run the following command:
+Install the `serpapi` package with pip or add it to a uv project:
 
 ```bash
-$ pip install serpapi
+pip3 install serpapi
 ```
+
+```bash
+uv add serpapi
+```
+
+Python 3.8 or newer is required.
 
 Please note that this package is separate from the legacy `serpapi` module, which is available on PyPi as `google-search-results`. This package is maintained by SerpApi, and is the recommended way to access the SerpApi service from Python.
 
@@ -35,6 +41,37 @@ print(results)
 ```
 
 The `results` variable now contains a `SerpResults` object, which acts just like a standard dictionary, with some convenient functions added on top.
+
+## Async Usage
+
+Use `AsyncClient` in applications built on `asyncio`. Reuse one client so its
+connection pool can serve all concurrent requests:
+
+```python
+import asyncio
+import os
+
+import serpapi
+
+
+async def main():
+    async with serpapi.AsyncClient(
+        api_key=os.environ["SERPAPI_KEY"]
+    ) as client:
+        results = await asyncio.gather(
+            client.search(engine="google", q="coffee"),
+            client.search(engine="google", q="tea"),
+            client.search(engine="google", q="pizza"),
+        )
+        print([result["search_metadata"]["id"] for result in results])
+
+
+asyncio.run(main())
+```
+
+The synchronous `Client` and module-level helpers remain available. See the
+[Asyncio Client guide](https://serpapi-python.readthedocs.io/en/latest/user_guide/asyncio.html)
+for lifecycle, pagination, error-handling, and upload examples.
 
 This example runs a search for "coffee" on Google. It then returns the results as a regular Python Hash.
  See the [playground](https://serpapi.com/playground) to generate your own code.

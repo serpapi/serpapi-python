@@ -1,8 +1,8 @@
 import json
 from unittest.mock import Mock
 
+import httpx
 import pytest
-import requests
 
 import serpapi
 
@@ -21,10 +21,13 @@ def test_yield_pages_does_not_request_unused_pages(
             data["serpapi_pagination"] = {
                 "next": f"https://serpapi.com/search?engine=google&q=Coffee&start={page_number * 10}"
             }
-        response = requests.Response()
-        response.status_code = 200
-        response.headers["Content-Type"] = "application/json"
-        response._content = json.dumps(data).encode("utf-8")
+        request = httpx.Request("GET", "https://serpapi.com/search")
+        response = httpx.Response(
+            200,
+            headers={"Content-Type": "application/json"},
+            content=json.dumps(data).encode("utf-8"),
+            request=request,
+        )
         responses.append(response)
 
     client = serpapi.Client(api_key="test-api-key")

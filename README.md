@@ -17,7 +17,7 @@ $ pip install serpapi
 
 Please note that this package is separate from the legacy `serpapi` module, which is available on PyPi as `google-search-results`. This package is maintained by SerpApi, and is the recommended way to access the SerpApi service from Python.
 
-## Simple Usage
+## Quick start
 
 Let's start by searching for Coffee on Google:
 
@@ -95,7 +95,7 @@ Markdown works across SerpApi APIs and is returned as a plain Python string. See
 
 Raw HTML is also available with `output="html"` and is returned as a plain Python string.
 
-## Basic Examples in Python
+## Basic examples
 
 ### Search Bing
 ```python

@@ -82,7 +82,6 @@ except serpapi.TimeoutError as e:
 ## Features
 
 - **Asynchronous searches** for submitting non-blocking jobs and retrieving completed results from the Search Archive API.
-- **Persistent connections and connection pooling** for reusing HTTP connections across searches.
 - Search results as **Python dictionaries** with `search`, token-efficient **Markdown** with `md`, or raw **search-engine HTML** with `html`.
 - SDK methods for the [Image API](https://serpapi.com/image-api), [Location API](https://serpapi.com/locations-api), [Search Archive API](https://serpapi.com/search-archive-api), and [Account API](https://serpapi.com/account-api).
 - **Configurable HTTP timeouts** established by setting `timeout` in the client.

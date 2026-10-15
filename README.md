@@ -45,6 +45,50 @@ Environment variables are a secure, safe, and easy way to manage secrets.
  Set `export SERPAPI_KEY=<secret_serpapi_key>` in your shell.
  Python accesses these variables from `os.environ["SERPAPI_KEY"]`.
 
+### Extract content from a URL
+
+The [Extract API](https://serpapi.com/extract-api) supports single-page scraping, URL discovery, and crawling. Call `client.extract()` with a parameter dictionary or keyword arguments. It uses `/search` with `engine=extract` automatically.
+
+```python
+import os
+import serpapi
+
+client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=60)
+results = client.extract(url="https://example.com/", include_markdown=True)
+print(results["page_information"]["title"])
+print(results["text_content"]["markdown"])
+
+markdown = client.extract(url="https://example.com/", output="md")
+html = client.extract(url="https://example.com/", output="html")
+```
+
+JSON responses return `SerpResults`. HTML and Markdown responses return strings. `include_markdown=True` adds the page's Markdown to `text_content["markdown"]` in a JSON response. The module-level `serpapi.extract(url=..., api_key=...)` function accepts the same parameters.
+
+To return only the page's Markdown in JSON, combine `include_markdown=True` with `json_restrictor="text_content.markdown"`. This omits all other response sections:
+
+```python
+results = client.extract(
+    url="https://example.com/",
+    include_markdown=True,
+    json_restrictor="text_content.markdown",
+)
+print(results["text_content"]["markdown"])
+```
+
+Use `mode="map"` to discover URLs or `mode="crawl"` to extract multiple pages:
+
+```python
+urls = client.extract(url="https://example.com/", mode="map")
+pages = client.extract(
+    url="https://example.com/", mode="crawl", max_pages=2, max_depth=1
+)
+```
+
+Crawl mode can consume one search credit per successfully extracted page, including the starting page. Set `max_pages` to limit the number of pages.
+
+
+See the [Extract API guide](https://github.com/serpapi/serpapi-python/blob/master/docs/user_guide/extract.md) for response examples and more options.
+
 ### Error handling
 
 Unsuccessful requests raise `serpapi.HTTPError` or `serpapi.TimeoutError` exceptions. The returned status code will reflect the sort of error that occurred, please refer to [Status and Error Codes Documentation](https://serpapi.com/api-status-and-error-codes) for more details.
@@ -267,15 +311,30 @@ results = client.search({
 - API Documentation: [serpapi.com/google-autocomplete-api](https://serpapi.com/google-autocomplete-api)
 
 ### Search Google Immersive Product
+
+Get a current `page_token` from Google Shopping before requesting product details:
+
 ```python
 import os
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
-results = client.search({
-    'engine': 'google_immersive_product',
-    'page_token': 'eyJlaSI6Im5ZVmxaOXVVTDY2X3A4NFBqTnZELUFjIiwicHJvZHVjdGlkIjoiIiwiY2F0YWxvZ2lkIjoiNTE1NDU2NTc1NTc5MzcxMDY3NSIsImhlYWRsaW5lT2ZmZXJEb2NpZCI6IjI1MDkyMjcwMDUzMjk2NzQwODMiLCJpbWFnZURvY2lkIjoiMTYzOTg5MjU0MDcwMDU4MDA1NTQiLCJyZHMiOiJQQ18zNDg4MDE0MTg3ODgxNzc5NjU0fFBST0RfUENfMzQ4ODAxNDE4Nzg4MTc3OTY1NCIsInF1ZXJ5IjoibGcrdHYiLCJncGNpZCI6IjM0ODgwMTQxODc4ODE3Nzk2NTQiLCJtaWQiOiI1NzY0NjI3ODM3Nzc5MTUzMTMiLCJwdnQiOiJoZyIsInV1bGUiOm51bGx9=',
-})
+shopping = client.search(
+    engine="google_shopping",
+    q="lg tv",
+    gl="us",
+    hl="en",
+    no_cache=True,
+)
+page_token = next(
+    product["immersive_product_page_token"]
+    for product in shopping["shopping_results"]
+    if product.get("immersive_product_page_token")
+)
+results = client.search(
+    engine="google_immersive_product",
+    page_token=page_token,
+)
 ```
 - API Documentation: [serpapi.com/google-immersive-product-api](https://serpapi.com/google-immersive-product-api)
 
@@ -287,7 +346,7 @@ import serpapi
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
 results = client.search({
     'engine': 'google_reverse_image',
-    'image_url': 'https://i.imgur.com/5bGzZi7.jpg',
+    'image_url': 'https://i.imgur.com/HBrB8p0.png',
     'max_results': '1',
 })
 ```

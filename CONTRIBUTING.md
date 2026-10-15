@@ -4,7 +4,7 @@ Bug reports and pull requests are welcome on GitHub. Run commands from the repos
 
 ## Development setup
 
-Use Python 3.13 to work on the package and its documentation. The SDK CI also tests Python 3.8 through 3.14. Create a virtual environment and install the package with its test and documentation dependencies:
+The SDK CI tests Python 3.8 through 3.15. Create a virtual environment and install the package with its test and documentation dependencies:
 
 ```sh
 uv venv --python 3.13
@@ -31,10 +31,10 @@ The commands below use `python` from that environment.
 
 ### Checks that need no API key
 
-These tests cover response parsing, image uploads with simulated responses, timeouts, exceptions, documentation syntax, and the example runner:
+These tests cover response parsing, image uploads and extraction with simulated responses, timeouts, exceptions, documentation syntax, and the example runner:
 
 ```sh
-python -m pytest tests/test_output_formats.py tests/test_image_upload.py tests/test_timeout.py tests/test_exceptions.py tests/test_docs_examples.py tests/test_docs_example_runner.py -k 'not live' -q
+python -m pytest tests/test_output_formats.py tests/test_image_upload.py tests/test_extract.py tests/test_timeout.py tests/test_exceptions.py tests/test_docs_examples.py tests/test_docs_example_runner.py -k 'not live' -q
 ```
 
 The file list limits this command to tests that make no external requests. Applying `-k 'not live'` to the entire suite is not enough to run offline: some SDK integration tests do not have `live` in their names.
@@ -61,7 +61,7 @@ This includes live account, location, search, and pagination checks. To run ever
 python -m pytest -q
 ```
 
-Both commands make real SerpApi requests. The full suite can use more searches than a test run limited to the files you changed. PR CI also runs the standalone engine examples on Python 3.14. Documentation tests run in the package and documentation release workflows on release tags, and in manual documentation runs on `master`.
+Both commands make real SerpApi requests. The full suite can use more searches than a test run limited to the files you changed. PR CI also runs the standalone engine examples on Python 3.15. Documentation tests run in the package and documentation release workflows on release tags, and in manual documentation runs on `master`.
 
 ### Testing documentation examples
 

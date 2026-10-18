@@ -39,8 +39,7 @@ class Client(HTTPClient):
 
         **Learn more**: https://serpapi.com/search-api
         """
-        if params is None:
-            params = {}
+        params = dict(params) if params is not None else {}
 
         # These are arguments that should be passed to the underlying requests.request call.
         request_kwargs = {}
@@ -63,8 +62,7 @@ class Client(HTTPClient):
 
         **Learn more**: https://serpapi.com/search-archive-api
         """
-        if params is None:
-            params = {}
+        params = dict(params) if params is not None else {}
 
         # These are arguments that should be passed to the underlying requests.request call.
         request_kwargs = {}
@@ -141,8 +139,7 @@ class Client(HTTPClient):
 
         **Learn more**: https://serpapi.com/locations-api
         """
-        if params is None:
-            params = {}
+        params = dict(params) if params is not None else {}
 
         # These are arguments that should be passed to the underlying requests.request call.
         request_kwargs = {}
@@ -171,8 +168,7 @@ class Client(HTTPClient):
         **Learn more**: https://serpapi.com/account-api
         """
 
-        if params is None:
-            params = {}
+        params = dict(params) if params is not None else {}
 
         # These are arguments that should be passed to the underlying requests.request call.
         request_kwargs = {}

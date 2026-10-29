@@ -1,4 +1,4 @@
-# SerpApi Python Library & Package
+# SerpApi Python Library
 [![Package](https://img.shields.io/pypi/v/serpapi?color=green)](https://pypi.org/project/serpapi) [![serpapi-python](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml/badge.svg)](https://github.com/serpapi/serpapi-python/actions/workflows/ci.yml)
 
 Integrate search data into your AI workflow, RAG / fine-tuning, or Python application using this official [SerpApi Python SDK](https://serpapi.com/integrations/python). 
@@ -85,13 +85,13 @@ except serpapi.TimeoutError as e:
 
 - **Asynchronous searches** for submitting non-blocking jobs and retrieving completed results from the Search Archive API.
 - **Persistent connections and connection pooling** for reusing HTTP connections across searches.
-- Search results as **Python dict** with `search`, token-efficient **Markdown** with `md`, or raw **search-engine HTML** with `html`.
+- Search results as **Python dict** by default, token-efficient **Markdown** with `"output": "md"`, or raw **search-engine HTML** with `"output": "html"`.
 - SDK methods for the [Image API](https://serpapi.com/image-api), [Location API](https://serpapi.com/locations-api), [Search Archive API](https://serpapi.com/search-archive-api), and [Account API](https://serpapi.com/account-api).
 - **Configurable HTTP timeouts** established by setting `timeout` in the client.
 
 ## Response formats
 
-Use `search` and default output (none) for structured results decoded into a `dict`:
+Use `search` without `output` for structured results decoded into a `dict`:
 
 ```python
 results = client.search({
@@ -153,7 +153,7 @@ Everything else is passed with each call:
 
 The client has no default `engine` or `async` setting, so include them in every search. 
 
-### Search asynchronously
+### Asynchronous searches
 
 Use `{"async": True}` to submit searches without waiting for them to complete.
 
@@ -215,7 +215,7 @@ print("done")
 This code batches searches into a [queue](https://en.wikipedia.org/wiki/Queue_(abstract_data_type)).
 Each search can take a few seconds to complete, so by the time the first ID is popped, its results are usually already in the archive. Searches that are still processing are put back in the queue and checked again.
 
-## Basic examples in Python
+## Examples
 
 Here are some examples of our most popular APIs. You can find the full list of supported engines and parameters in our [documentation](https://serpapi.com/search-engine-apis).
 
@@ -376,7 +376,7 @@ pprint(text_blocks)
 
 [See documentation](https://serpapi.com/google-ai-mode-api)
 
-### Search Bing
+### Bing Search
 
 Scrape Bing web search results, including organic results, ads, related searches, and more.
 
@@ -396,7 +396,7 @@ pprint(results)
 
 [See documentation](https://serpapi.com/bing-search-api)
 
-### Search DuckDuckGo
+### DuckDuckGo Search
 
 Scrape DuckDuckGo search results, including organic results, ads, knowledge graphs, and related searches.
 
@@ -416,7 +416,7 @@ pprint(results)
 
 [See documentation](https://serpapi.com/duckduckgo-search-api)
 
-### Search Baidu
+### Baidu Search
 
 Scrape Baidu search results, including organic results, answer boxes, and related searches.
 
@@ -465,6 +465,13 @@ pprint(organic_results)
 Documentation is [available on Read the Docs](https://serpapi-python.readthedocs.io/en/latest/).
 
 Change history is [available on GitHub](https://github.com/serpapi/serpapi-python/blob/master/HISTORY.md).
+
+Browse the [SerpApi documentation](https://serpapi.com/search-api) to find supported APIs and parameters, or use the [Playground](https://serpapi.com/playground) to build a request and generate Python code.
+
+Additional SDK resources:
+
+- [Python SDK integration page](https://serpapi.com/integrations/python)
+- [SerpApi status](https://serpapi.com/api-metrics)
 
 ## License
 

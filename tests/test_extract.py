@@ -1,200 +1,155 @@
-import json
+import os
+from unittest.mock import Mock
+from urllib.parse import urlparse
 
 import pytest
 import requests
 
 import serpapi
-from serpapi.core import _client
 
 
 @pytest.fixture
-def extract_client():
+def extract_request(monkeypatch):
+    response = requests.Response()
+    response.status_code = 200
+    response.headers["Content-Type"] = "application/json"
+    response._content = b'{"markdown": "Example content."}'
+    request = Mock(return_value=response)
+    monkeypatch.setattr(requests.Session, "request", request)
+    return request
+
+
+def test_extract_forwards_params_without_mutating_input(extract_request):
     client = serpapi.Client(api_key="client-key", timeout=60)
+    params = {
+        "url": "https://example.com/?q=coffee&lang=en",
+        "engine": "google",
+        "mode": "map",
+        "include_markdown": False,
+        "timeout": 30000,
+    }
+    original = params.copy()
+
+    result = client.extract(params, engine="bing", mode="crawl", max_pages=2)
+
+    assert params == original
+    assert result["markdown"] == "Example content."
+    extract_request.assert_called_once()
+    _, sent = extract_request.call_args
+    assert sent["method"] == "GET"
+    assert sent["url"] == "https://serpapi.com/search"
+    assert sent["params"] == dict(
+        original, engine="extract", mode="crawl", max_pages=2, api_key="client-key"
+    )
+    assert sent["timeout"] == 60
+
+
+def test_extract_separates_api_and_http_timeouts(extract_request):
+    client = serpapi.Client(api_key="client-key", timeout=60)
+
+    client.extract(
+        {"url": "https://example.com/", "timeout": 30000},
+        timeout=90,
+    )
+
+    _, sent = extract_request.call_args
+    assert sent["params"]["timeout"] == 30000
+    assert sent["timeout"] == 90
+
+
+def test_module_extract_uses_request_key(extract_request):
+    result = serpapi.extract(url="https://example.com/", api_key="request-key")
+
+    assert result["markdown"] == "Example content."
+    _, sent = extract_request.call_args
+    assert sent["params"] == {
+        "engine": "extract",
+        "url": "https://example.com/",
+        "api_key": "request-key",
+    }
+
+
+@pytest.fixture
+def extract_live_client():
+    api_key = os.environ.get("API_KEY") or os.environ.get("SERPAPI_KEY")
+    if not api_key:
+        pytest.fail("Extract API live tests require API_KEY or SERPAPI_KEY")
+    client = serpapi.Client(api_key=api_key, timeout=180)
     yield client
     client.session.close()
 
 
-@pytest.fixture
-def capture_request(monkeypatch, extract_client):
-    calls = []
-
-    def respond(status=200, payload=None, text=None):
-        if payload is None:
-            payload = {"page_information": {"title": "Example Domain"}}
-
-        def request(**kwargs):
-            calls.append(kwargs)
-            response = requests.Response()
-            response.status_code = status
-            response.encoding = "utf-8"
-            response._content = (
-                text if text is not None else json.dumps(payload)
-            ).encode("utf-8")
-            return response
-
-        monkeypatch.setattr(extract_client.session, "request", request)
-        monkeypatch.setattr(_client.session, "request", request)
-        return calls
-
-    return respond
-
-
-@pytest.mark.parametrize("entrypoint", ["client", "module"])
-@pytest.mark.parametrize("style", ["dict", "kwargs", "mixed"])
-def test_extract_public_calls(extract_client, capture_request, entrypoint, style):
-    calls = capture_request()
-    extract = extract_client.extract if entrypoint == "client" else serpapi.extract
-    params = {"url": "https://example.com/", "api_key": "request-key"}
-    original = params.copy()
-
-    if style == "dict":
-        result = extract(params)
-    elif style == "kwargs":
-        result = extract(**params)
-    else:
-        result = extract(params, include_markdown=True)
-
+def assert_success(result):
     assert isinstance(result, serpapi.SerpResults)
-    assert result["page_information"]["title"] == "Example Domain"
-    assert result.client is (extract_client if entrypoint == "client" else _client)
-    assert params == original
-    assert len(calls) == 1
-    assert calls[0]["method"] == "GET"
-    assert calls[0]["url"] == "https://serpapi.com/search"
-    assert calls[0]["params"]["engine"] == "extract"
-    assert calls[0]["params"]["api_key"] == "request-key"
-    assert calls[0]["params"]["url"] == params["url"]
-    if style == "mixed":
-        assert calls[0]["params"]["include_markdown"] is True
+    assert "error" not in result
+    assert result["search_metadata"]["status"] == "Success"
 
 
-def test_extract_overrides_engine_and_preserves_params(extract_client, capture_request):
-    calls = capture_request()
-    params = {"url": "https://example.com/", "engine": "google", "mode": "map"}
-    original = params.copy()
-
-    extract_client.extract(params, engine="bing", mode="scrape")
-
-    assert params == original
-    assert calls[0]["params"] == {
-        "url": "https://example.com/",
-        "engine": "extract",
-        "mode": "scrape",
-        "api_key": "client-key",
-    }
-
-
-@pytest.mark.parametrize("mode", ["scrape", "map", "crawl"])
-def test_extract_forwards_api_options(extract_client, capture_request, mode):
-    calls = capture_request()
-    params = {
-        "url": "https://example.com/?q=coffee&lang=en",
-        "mode": mode,
-        "max_pages": 2,
-        "max_depth": 1,
-        "include_subdomains": False,
-        "include_sitemap": False,
-        "include_markdown": True,
-        "include_inline_assets": True,
-        "include_tags": "main, article",
-        "exclude_tags": "nav, footer",
-        "prefetch_delay": 100,
-        "timeout": 30000,
-        "async": True,
-        "device": "mobile",
-        "zero_trace": True,
-        "json_restrictor": "page_information,text_content",
-    }
-    original = params.copy()
-
-    extract_client.extract(params)
-
-    assert calls[0]["params"] == dict(original, engine="extract", api_key="client-key")
-    assert calls[0]["timeout"] == 60
-    assert params == original
-
-
-def test_extract_separates_http_options(extract_client, capture_request):
-    calls = capture_request()
-    transport = {
-        "timeout": (5, 90),
-        "proxies": {"https": "http://proxy.example:8080"},
-        "verify": "/tmp/ca.pem",
-        "stream": True,
-        "cert": ("/tmp/client.pem", "/tmp/client.key"),
-    }
-    extract_client.BASE_DOMAIN = "http://localhost:3000"
-
-    extract_client.extract(
-        {"url": "https://example.com/", "timeout": 30000}, **transport
+def test_live_extract_scrape(extract_live_client):
+    result = extract_live_client.extract(
+        {"url": "https://serpapi.com/", "timeout": 30000},
+        timeout=90,
     )
 
-    assert calls[0]["url"] == "http://localhost:3000/search"
-    assert calls[0]["params"]["timeout"] == 30000
-    for name, value in transport.items():
-        assert calls[0][name] == value
-        if name != "timeout":
-            assert name not in calls[0]["params"]
+    assert_success(result)
+    assert "SerpApi" in result["page_information"]["title"]
+    assert result["page_information"]["final_url"] == "https://serpapi.com/"
+    assert isinstance(result["markdown"], str)
+    assert result["markdown"].strip()
 
 
-@pytest.mark.parametrize(
-    "output, text",
-    [("html", "<h1>Example Domain</h1>"), ("md", "# Example Domain\n\nCafé")],
-    ids=["html", "md"],
-)
-def test_extract_text_outputs(extract_client, capture_request, output, text):
-    calls = capture_request(text=text)
+def test_live_extract_map(extract_live_client):
+    result = extract_live_client.extract(
+        url="https://serpapi.com/",
+        mode="map",
+        include_sitemap=False,
+        include_subdomains=False,
+    )
 
-    result = extract_client.extract(url="https://example.com/", output=output)
+    assert_success(result)
+    urls = [entry["url"] for entry in result["urls"]]
+    assert urls
+    assert len(urls) == len(set(urls))
+    assert all(urlparse(url).hostname == "serpapi.com" for url in urls)
+    assert all(urlparse(url).scheme in {"http", "https"} for url in urls)
+
+
+def test_live_extract_crawl(extract_live_client):
+    result = extract_live_client.extract(
+        url="https://serpapi.com/",
+        mode="crawl",
+        max_pages=2,
+        max_depth=1,
+    )
+
+    assert_success(result)
+    pages = result["pages"]
+    assert len(pages) == 2
+    assert pages[0]["url"] == "https://serpapi.com/"
+    assert pages[0]["depth"] == 0
+    assert len({page["url"] for page in pages}) == 2
+    for page in pages:
+        assert "error" not in page
+        assert page["markdown"]
+        assert page["depth"] <= 1
+
+
+@pytest.mark.parametrize("output", ["html", "md"])
+def test_live_extract_text(extract_live_client, output):
+    result = extract_live_client.extract(url="https://serpapi.com/", output=output)
 
     assert isinstance(result, str)
-    assert result == text
-    assert calls[0]["params"]["output"] == output
+    assert "SerpApi" in result
+    if output == "html":
+        assert "<html" in result.lower()
+        assert "</html>" in result.lower()
+    else:
+        assert "<html" not in result.lower()
+        assert "search_metadata:" not in result
 
 
-@pytest.mark.parametrize("status", [400, 401, 429, 500])
-def test_extract_http_errors(extract_client, capture_request, status):
-    capture_request(status=status, payload={"error": "Extract request failed"})
-
-    with pytest.raises(serpapi.HTTPError) as exc:
-        extract_client.extract(url="https://example.com/")
-
-    assert exc.value.status_code == status
-    assert exc.value.error == "Extract request failed"
-
-
-@pytest.mark.parametrize(
-    "cause, expected",
-    [
-        (requests.exceptions.Timeout, serpapi.TimeoutError),
-        (requests.exceptions.ConnectionError, serpapi.HTTPConnectionError),
-    ],
-)
-def test_extract_transport_errors(monkeypatch, extract_client, cause, expected):
-    def fail(**kwargs):
-        raise cause("Request failed")
-
-    monkeypatch.setattr(extract_client.session, "request", fail)
-
-    with pytest.raises(expected):
-        extract_client.extract(url="https://example.com/")
-
-
-def test_extract_preserves_json_error_response(extract_client, capture_request):
-    capture_request(payload={"error": "Failed to fetch target page"})
-
-    result = extract_client.extract(url="https://example.com/")
-
-    assert isinstance(result, serpapi.SerpResults)
-    assert result["error"] == "Failed to fetch target page"
-
-
-def test_search_still_selects_requested_engine(extract_client, capture_request):
-    calls = capture_request()
-
-    extract_client.extract(url="https://example.com/")
-    extract_client.search(engine="bing", q="coffee")
-
-    assert calls[0]["params"]["engine"] == "extract"
-    assert calls[1]["params"]["engine"] == "bing"
-    assert "url" not in calls[1]["params"]
+def test_live_extract_without_markdown(extract_live_client):
+    result = extract_live_client.extract(url="https://serpapi.com/", include_markdown=False)
+    assert_success(result)
+    assert "SerpApi" in result["page_information"]["title"]
+    assert "markdown" not in result

@@ -47,45 +47,43 @@ Environment variables are a secure, safe, and easy way to manage secrets.
 
 ### Extract content from a URL
 
-The [Extract API](https://serpapi.com/extract-api) supports single-page scraping, URL discovery, and crawling. Call `client.extract()` with a parameter dictionary or keyword arguments. It uses `/search` with `engine=extract` automatically.
+The [Extract API](https://serpapi.com/extract-api) supports single-page scraping, URL discovery, and crawling. Call `client.extract()` with a parameter dictionary or keyword arguments. The client sets `engine="extract"` automatically.
+
+Set `output="md"` to get the page's main content as a Markdown string:
 
 ```python
 import os
 import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=60)
-results = client.extract(url="https://example.com/", include_markdown=True)
-print(results["page_information"]["title"])
-print(results["text_content"]["markdown"])
-
-markdown = client.extract(url="https://example.com/", output="md")
-html = client.extract(url="https://example.com/", output="html")
+markdown = client.extract(url="https://serpapi.com/", output="md")
+print(markdown)
 ```
 
-JSON responses return `SerpResults`. HTML and Markdown responses return strings. `include_markdown=True` adds the page's Markdown to `text_content["markdown"]` in a JSON response. The module-level `serpapi.extract(url=..., api_key=...)` function accepts the same parameters.
-
-To return only the page's Markdown in JSON, combine `include_markdown=True` with `json_restrictor="text_content.markdown"`. This omits all other response sections:
+JSON is the default output format. It returns a dictionary-like `SerpResults` object with page information, structured data, links, and Markdown:
 
 ```python
-results = client.extract(
-    url="https://example.com/",
-    include_markdown=True,
-    json_restrictor="text_content.markdown",
-)
-print(results["text_content"]["markdown"])
+results = client.extract(url="https://serpapi.com/")
+print(results["page_information"]["title"])
+print(results["markdown"])
+```
+
+Use `output="html"` to get the retrieved HTML as a string:
+
+```python
+html = client.extract(url="https://serpapi.com/", output="html")
 ```
 
 Use `mode="map"` to discover URLs or `mode="crawl"` to extract multiple pages:
 
 ```python
-urls = client.extract(url="https://example.com/", mode="map")
+urls = client.extract(url="https://serpapi.com/", mode="map", include_sitemap=False)
 pages = client.extract(
-    url="https://example.com/", mode="crawl", max_pages=2, max_depth=1
+    url="https://serpapi.com/", mode="crawl", max_pages=2, max_depth=1, timeout=180
 )
 ```
 
 Crawl mode can consume one search credit per successfully extracted page, including the starting page. Set `max_pages` to limit the number of pages.
-
 
 See the [Extract API guide](https://github.com/serpapi/serpapi-python/blob/master/docs/user_guide/extract.md) for response examples and more options.
 
@@ -346,7 +344,7 @@ import serpapi
 client = serpapi.Client(api_key=os.getenv("API_KEY"))
 results = client.search({
     'engine': 'google_reverse_image',
-    'image_url': 'https://i.imgur.com/HBrB8p0.png',
+    'image_url': 'https://upload.wikimedia.org/wikipedia/commons/6/63/Wikipedia-logo.png',
     'max_results': '1',
 })
 ```

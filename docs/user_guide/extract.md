@@ -9,9 +9,9 @@ Use `client.extract()` to read content from a public URL. It supports single-pag
 
 See the [Extract API documentation](https://serpapi.com/extract-api) for all parameters and response fields.
 
-## Get Only the Page Content as JSON
+## Get Page Content as Markdown
 
-Set `include_markdown=True` and `json_restrictor="text_content.markdown"` to get the page's Markdown content in a JSON response. This removes metadata and all other response sections.
+Set `output="md"` to get the page's main content as a Markdown string.
 
 After [setting your API key](getting-started.md#installation), run:
 
@@ -20,59 +20,38 @@ import os
 import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=60)
-results = client.extract(
-    url="https://example.com/",
-    output="json",
-    include_markdown=True,
-    json_restrictor="text_content.markdown",
+markdown = client.extract(
+    url="https://serpapi.com/",
+    output="md",
 )
 
-markdown = results["text_content"]["markdown"]
 print(markdown)
 ```
 
-The response has this structure, with the extracted page content in `markdown`:
+You can pass the returned string to an AI agent or save it to a file.
 
-```json
-{
-  "text_content": {
-    "markdown": "Page content in Markdown..."
-  }
-}
-```
+## Get Structured Data as JSON
 
-The SDK returns a dictionary-like `SerpResults` object. Read `results["text_content"]["markdown"]` to get the plain Markdown string, as shown above. You can pass that string to an AI agent or save it to a file.
-
-See [JSON Restrictor](json-restrictor.md) for other ways to select response fields.
-
-## Get the Full Extract Response
-
-Leave out `json_restrictor` to receive the available extracted sections, such as page information, headings, links, and text content:
+JSON is the default output format. The SDK returns a dictionary-like `SerpResults` object with page information, meta tags, structured data, links, images, and Markdown. The sections returned depend on the target page.
 
 ```python
-results = client.extract(
-    url="https://example.com/",
-    include_markdown=True,
-)
+results = client.extract(url="https://serpapi.com/")
 
 print(results["page_information"]["title"])
-print(results["text_content"]["markdown"])
+print(results["markdown"])
 ```
 
-JSON is the default output format. `include_markdown=True` adds Markdown under `text_content`; the rest of the response remains JSON. The sections returned depend on the target page.
+The `markdown` field contains the page's main content. Set `include_markdown=False` to omit it from the JSON response.
 
 The module-level `serpapi.extract(url=..., api_key=...)` function accepts the same parameters.
 
-## Markdown and HTML Responses
+## Get HTML
 
-Use `output="md"` or `output="html"` to receive a Python string:
+Set `output="html"` to get the retrieved HTML as a string:
 
 ```python
-markdown_response = client.extract(url="https://example.com/", output="md")
-html = client.extract(url="https://example.com/", output="html")
+html = client.extract(url="https://serpapi.com/", output="html")
 ```
-
-For a scraped page, `output="md"` includes search metadata before the page content. Use the [content-only JSON example](#get-only-the-page-content-as-json) when you want the page's Markdown without those extra sections. `output="html"` returns the retrieved HTML.
 
 ## Discover URLs
 
@@ -80,7 +59,7 @@ Set `mode="map"` to discover URLs on a website:
 
 ```python
 results = client.extract(
-    url="https://www.python.org/",
+    url="https://serpapi.com/",
     mode="map",
     include_sitemap=False,
     include_subdomains=False,
@@ -98,7 +77,7 @@ Set `mode="crawl"` to follow links and extract pages:
 
 ```python
 results = client.extract(
-    url="https://www.python.org/",
+    url="https://serpapi.com/",
     mode="crawl",
     max_pages=2,
     max_depth=1,
@@ -107,9 +86,12 @@ results = client.extract(
 
 for page in results["pages"]:
     print(page["url"])
+    print(page["markdown"])
 ```
 
-The starting page has depth `0`. `max_pages` includes the starting page and defaults to `10`. Each successfully extracted page can consume one search credit. Set a page limit for your crawl and allow enough time for the HTTP request to finish. For requests you want to retrieve later, pass `"async": True` in a parameter dictionary and use the [Search Archive](async-search-archive.md).
+Each entry in `results["pages"]` contains the extracted page's data, including its `markdown` field. The starting page has depth `0`. `max_pages` includes the starting page and defaults to `10`. Each successfully extracted page can consume one search credit. Set a page limit for your crawl and allow enough time for the HTTP request to finish.
+
+For requests you want to retrieve later, pass `"async": True` in a parameter dictionary and use the [Search Archive](async-search-archive.md).
 
 ## Timeouts and Content Filters
 
@@ -117,7 +99,7 @@ The `timeout=` keyword sets the SDK's HTTP timeout in seconds. Set it above the 
 
 ```python
 results = client.extract(
-    {"url": "https://example.com/", "timeout": 30000},
+    {"url": "https://serpapi.com/", "timeout": 30000},
     timeout=60,
 )
 ```

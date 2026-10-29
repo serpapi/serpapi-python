@@ -1,3 +1,4 @@
+import json
 import os
 import subprocess
 import sys
@@ -109,6 +110,39 @@ def test_doc_response_check_rejects_json_for_text_output(output):
     response._content = b'{"organic_results": [{"title": "Coffee"}]}'
     with pytest.raises(AssertionError, match="nonempty string"):
         validate_response(response, "/search", {"output": output})
+
+
+@pytest.mark.parametrize(
+    "start, overrides, accepted",
+    [
+        pytest.param(70, {}, True, id="empty-final-page"),
+        pytest.param(0, {}, False, id="empty-first-page"),
+        pytest.param(70, {"search_metadata": {"status": "Error"}}, False,
+                     id="failed-search"),
+        pytest.param(70, {"error": "Failed to fetch results"}, False,
+                     id="different-error"),
+        pytest.param(70, {"serpapi_pagination": {"next": "https://serpapi.com/search?start=80"}},
+                     False, id="not-final-page"),
+    ],
+)
+def test_doc_response_check_handles_empty_google_pagination(start, overrides, accepted):
+    payload = {
+        "search_metadata": {"status": "Success"},
+        "search_information": {"organic_results_state": "Fully empty"},
+        "error": "Google hasn't returned any results for this query.",
+    }
+    payload.update(overrides)
+    response = requests.Response()
+    response.status_code = 200
+    response.headers["Content-Type"] = "application/json"
+    response._content = json.dumps(payload).encode()
+    params = {"engine": "google", "start": str(start)}
+
+    if accepted:
+        validate_response(response, "/search.json", params)
+    else:
+        with pytest.raises(AssertionError):
+            validate_response(response, "/search.json", params)
 
 
 def test_doc_gate_fails_without_a_key():

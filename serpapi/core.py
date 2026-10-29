@@ -71,6 +71,9 @@ class Client(HTTPClient):
         :param kwargs: Additional API parameters or HTTP request options, as in :meth:`search`. The ``timeout`` keyword controls the HTTP client timeout in seconds.
 
         ``mode`` accepts ``scrape`` (default), ``map``, or ``crawl``. ``output`` accepts ``json`` (default), ``html``, or ``md``.
+        JSON includes page content in the top-level ``markdown`` field by default,
+        or in each ``pages`` entry for crawls. Set ``include_markdown=False`` to omit it.
+        For a scraped page, ``output="md"`` returns the page Markdown without search metadata.
 
         Crawl mode can consume one search credit per successfully extracted page. Use ``max_pages`` to limit the number of pages.
         """

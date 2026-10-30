@@ -206,7 +206,7 @@ def test_main_rejects_invalid_ci_environment_before_contacting_rtd(monkeypatch, 
 
 
 @pytest.mark.parametrize("stable_ref", ["v1.2.3", "v2.0.0", None])
-def test_release_discovers_and_activates_tag_then_publishes_matching_stable(rtd, clock, stable_ref):
+def test_release_discovers_and_activates_tag_then_updates_both_aliases_for_stable(rtd, clock, stable_ref):
     tag = {"slug": "v123", "active": False}
     rtd.respond("GET", "versions/?type=tag&verbose_name=v1.2.3", page(), page(tag))
     rtd.respond("PATCH", "versions/v123/", None)
@@ -219,6 +219,8 @@ def test_release_discovers_and_activates_tag_then_publishes_matching_stable(rtd,
     rtd.respond("GET", "versions/stable/", stable)
     rtd.respond("POST", "versions/stable/builds/", {"build": build(11, version="stable")})
     rtd.respond("GET", "builds/11/", build(11, version="stable"))
+    rtd.respond("POST", "versions/latest/builds/", {"build": build(12)})
+    rtd.respond("GET", "builds/12/", build(12))
 
     publisher.publish(rtd.api, "refs/tags/v1.2.3", COMMIT)
 
@@ -226,8 +228,26 @@ def test_release_discovers_and_activates_tag_then_publishes_matching_stable(rtd,
     assert rtd.sent("PATCH", "versions/v123/") == [{"active": True, "hidden": False}]
     assert not rtd.sent("POST", "versions/v123/builds/")
     assert len(rtd.sent("POST", "versions/stable/builds/")) == (stable_ref == "v1.2.3")
+    assert len(rtd.sent("POST", "versions/latest/builds/")) == (stable_ref == "v1.2.3")
     creation, = rtd.sent("POST", "environmentvariables/")
-    assert json.loads(creation["value"])["versions"] == ["v1.2.3", "stable"]
+    assert json.loads(creation["value"])["versions"] == ["v1.2.3", "stable", "latest"]
+    assert rtd.sent("DELETE", "environmentvariables/2/") == [None]
+
+
+def test_release_rejects_latest_if_master_moved_past_tested_tag(rtd):
+    rtd.respond("GET", "versions/?type=tag&verbose_name=v1.2.3",
+                page({"slug": "v123", "active": True}))
+    rtd.respond("POST", "versions/v123/builds/", {"build": build(10, version="v123")})
+    rtd.respond("GET", "builds/10/", build(10, version="v123"))
+    rtd.respond("GET", "versions/stable/", {"slug": "stable", "active": True, "ref": "v1.2.3"})
+    rtd.respond("POST", "versions/stable/builds/", {"build": build(11, version="stable")})
+    rtd.respond("GET", "builds/11/", build(11, version="stable"))
+    rtd.respond("POST", "versions/latest/builds/", {"build": build(12)})
+    rtd.respond("GET", "builds/12/", build(12, commit="b" * 40))
+
+    with pytest.raises(RuntimeError, match="different commit"):
+        publisher.publish(rtd.api, "refs/tags/v1.2.3", COMMIT)
+
     assert rtd.sent("DELETE", "environmentvariables/2/") == [None]
 
 

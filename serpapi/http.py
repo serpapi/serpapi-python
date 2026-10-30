@@ -22,6 +22,9 @@ class HTTPClient:
         self.session = requests.Session()
 
     def request(self, method, path, params, *, assert_200=True, **kwargs):
+        # Keep API key injection local to this request.
+        params = dict(params)
+
         # Inject the API Key into the params.
         request_data = kwargs.get("data")
         api_key_in_data = isinstance(request_data, dict) and "api_key" in request_data

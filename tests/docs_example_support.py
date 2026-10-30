@@ -48,7 +48,18 @@ def validate_response(response, path, params):
         if not isinstance(payload, (dict, list)) or not payload:
             raise AssertionError("Expected a nonempty JSON object or list")
         if isinstance(payload, dict):
-            if payload.get("error"):
+            # Google can report an empty final page as Success with an error message.
+            empty_final_page = (
+                path in {"/search", "/search.json"}
+                and params.get("engine") == "google"
+                and payload.get("search_metadata", {}).get("status") == "Success"
+                and payload.get("search_information", {}).get("organic_results_state") == "Fully empty"
+                and payload.get("error") == "Google hasn't returned any results for this query."
+                and not payload.get("organic_results")
+                and not payload.get("serpapi_pagination", {}).get("next")
+                and int(params.get("start", 0)) > 0
+            )
+            if payload.get("error") and not empty_final_page:
                 raise AssertionError(str(payload["error"]))
             if payload.get("search_metadata", {}).get("status") == "Error":
                 raise AssertionError("Search metadata reports an error")

@@ -1,6 +1,13 @@
 Release History
 ===============
 
+1.2.0 (2026-10-30)
+------------------
+
+- Add Extract API support through `client.extract()` and `serpapi.extract()` for scraping, URL discovery, and crawling.
+- Add Extract API documentation, examples, and tests.
+- Add Python 3.15 to the test matrix.
+
 1.1.2 (2026-09-15)
 ------------------
 

@@ -90,6 +90,7 @@ Use the same search parameter names as the [SerpApi API documentation](https://s
 - [Getting Started](user_guide/getting-started.md) covers installation and your first search. [Client Usage](user_guide/client-usage.md) explains how to make requests and read responses.
 - [AI Agents](ai-agents.md) covers search tools, Markdown results, and API references for agents.
 - [Output Formats](user_guide/output-formats.md) explains when to use JSON, Markdown, or HTML.
+- [Extract API](user_guide/extract.md) covers page content in Markdown or JSON, URL discovery, and crawling.
 - [Migration Guide](user_guide/migrating-from-google-search-results.md) shows how to replace `google-search-results` with this package.
 - [Parameters and Engines](user_guide/parameters-and-engines.md) explains search parameters and how to test them in the [SerpApi Playground](https://serpapi.com/playground).
 - For scripts that collect results, see [pagination](user_guide/pagination.md), [timeouts and errors](user_guide/errors-and-timeouts.md), [request options](user_guide/request-options.md), and [account and locations](user_guide/account-and-locations.md).
@@ -113,6 +114,7 @@ user_guide/client-usage
 User Guide Overview <user_guide/index>
 user_guide/parameters-and-engines
 user_guide/output-formats
+user_guide/extract
 user_guide/pagination
 user_guide/errors-and-timeouts
 user_guide/account-and-locations

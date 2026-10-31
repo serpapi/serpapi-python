@@ -148,10 +148,13 @@ For one additional page, call `next_page()`:
 next_results = results.next_page()
 ```
 
-Use `yield_pages()` in a loop to read the current page and fetch more pages. This example stops after ten pages, or earlier if there is no next page:
+Use `yield_pages()` in a loop to read the current page and fetch more pages. This example reads up to ten pages and stops if a page contains an `error` message:
 
 ```python
 for page_number, page in enumerate(results.yield_pages(max_pages=10), start=1):
+    if "error" in page:
+        print(page["error"])
+        break
     current = page.get("serpapi_pagination", {}).get("current", page_number)
     print(current)
 ```

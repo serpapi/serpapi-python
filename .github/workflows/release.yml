@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12", "3.13", "3.14", "3.15"]
     steps:
       - uses: actions/checkout@v6
 
@@ -43,7 +43,7 @@ jobs:
           API_KEY: ${{ secrets.API_KEY }}
 
       - name: Run engine and documentation examples
-        if: matrix.python-version == '3.14'
+        if: matrix.python-version == '3.15'
         continue-on-error: ${{ inputs.allow_example_test_failures == true }}
         run: pytest --ignore=tests/test_docs_publishing.py -k "example" --require-docs-key
         env:

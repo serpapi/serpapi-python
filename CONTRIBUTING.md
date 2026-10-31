@@ -4,7 +4,7 @@ Bug reports and pull requests are welcome on GitHub. Run commands from the repos
 
 ## Development setup
 
-Use Python 3.13 to work on the package and its documentation. The SDK CI also tests Python 3.8 through 3.14. Create a virtual environment and install the package with its test and documentation dependencies:
+The SDK CI tests Python 3.8 through 3.15. Create a virtual environment and install the package with its test and documentation dependencies:
 
 ```sh
 uv venv --python 3.13
@@ -31,10 +31,10 @@ The commands below use `python` from that environment.
 
 ### Checks that need no API key
 
-These tests cover response parsing, image uploads with simulated responses, timeouts, exceptions, documentation syntax, and the example runner:
+These tests cover response parsing, image uploads and extraction with simulated responses, timeouts, exceptions, documentation syntax, and the example runner:
 
 ```sh
-python -m pytest tests/test_output_formats.py tests/test_image_upload.py tests/test_timeout.py tests/test_exceptions.py tests/test_docs_examples.py tests/test_docs_example_runner.py -k 'not live' -q
+python -m pytest tests/test_output_formats.py tests/test_image_upload.py tests/test_extract.py tests/test_timeout.py tests/test_exceptions.py tests/test_docs_examples.py tests/test_docs_example_runner.py -k 'not live' -q
 ```
 
 The file list limits this command to tests that make no external requests. Applying `-k 'not live'` to the entire suite is not enough to run offline: some SDK integration tests do not have `live` in their names.
@@ -61,7 +61,7 @@ This includes live account, location, search, and pagination checks. To run ever
 python -m pytest -q
 ```
 
-Both commands make real SerpApi requests. The full suite can use more searches than a test run limited to the files you changed. PR CI also runs the standalone engine examples on Python 3.14. Documentation tests run in the package and documentation release workflows on release tags, and in manual documentation runs on `master`.
+Both commands make real SerpApi requests. The full suite can use more searches than a test run limited to the files you changed. PR CI also runs the standalone engine examples on Python 3.15. Documentation tests run in the package and documentation release workflows on release tags, and in manual documentation runs on `master`.
 
 ### Testing documentation examples
 
@@ -150,7 +150,7 @@ The [documentation workflow](.github/workflows/docs.yml) runs the live examples 
 
 After the live examples and documentation build pass, the same workflow publishes to Read the Docs for the selected ref. A manual run on `master` updates `latest` without triggering the package release workflow or changing the package version. The publishing job uses the `docs` GitHub environment and its `RTD_API_TOKEN` secret. The SerpApi key stays in GitHub as the existing `API_KEY` repository or organization secret.
 
-The workflow syncs RTD versions, activates the requested version if needed, and waits for the build to finish. `latest` tracks `master`. A release tag has its own version and also updates `stable` when RTD identifies it as the highest stable release. RTD still builds the site from the repository using [.readthedocs.yaml](.readthedocs.yaml); it does not receive the HTML artifact from GitHub. Documentation publishing runs independently of the PyPI release workflow.
+The workflow syncs RTD versions, activates the requested version if needed, and waits for the build to finish. `latest` tracks `master`. A release tag has its own version and also rebuilds both `stable` and `latest` when RTD identifies it as the highest stable release. Both builds must use the release commit tested by CI. If `master` has advanced beyond that commit, the `latest` build fails the revision check; run the Documentation workflow on `master` to test and publish its current docs. Older releases and prereleases do not update either alias. RTD still builds the site from the repository using [.readthedocs.yaml](.readthedocs.yaml); it does not receive the HTML artifact from GitHub. Documentation publishing runs independently of the PyPI release workflow.
 
 Before requesting a build, the workflow creates a temporary RTD environment variable named `DOCS_CI_REVISION`. It contains the tested commit, the permitted versions, and an expiration time. RTD checks this record against its checkout before and after the Sphinx build. A missing, expired, or different revision stops publication. RTD needs no SerpApi key. The workflow removes the temporary record after publishing, including when a build fails. Publishing jobs run one at a time so they cannot overwrite each other's revision record.
 

@@ -160,7 +160,7 @@ def publish(api, ref, commit):
     clear_context(api)
     previous = api.request("GET", "builds/?limit=1")["results"]
     last_id = previous[0]["id"] if previous else 0
-    versions = ["latest"] if ref == "refs/heads/master" else [ref[len("refs/tags/"):], "stable"]
+    versions = ["latest"] if ref == "refs/heads/master" else [ref[len("refs/tags/"):], "stable", "latest"]
     context = {
         "commit": commit,
         "versions": versions,
@@ -182,6 +182,8 @@ def publish(api, ref, commit):
                 stable = None
             if stable and stable.get("ref") == ref[len("refs/tags/"):]:
                 publish_version(api, stable, commit, after=last_id)
+                latest = api.request("GET", version_path("latest"))
+                publish_version(api, latest, commit, after=last_id)
         print(f"Published documentation for {ref} at {commit}.", flush=True)
     finally:
         api.request("DELETE", f"environmentvariables/{variable['pk']}/")

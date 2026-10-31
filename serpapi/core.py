@@ -55,6 +55,32 @@ class Client(HTTPClient):
 
         return SerpResults.from_http_response(r, client=self)
 
+    def extract(self, params: dict = None, **kwargs):
+        """Extract content from a public URL using the Extract API.
+
+        Accepts a parameter dictionary or keyword arguments, like :meth:`search`.
+        Sets ``engine=extract`` and returns a :class:`SerpResults <serpapi.SerpResults>` object for JSON, or text for HTML and Markdown.
+
+        .. code-block:: python
+
+            results = client.extract(url="https://example.com/")
+            markdown = client.extract(url="https://example.com/", output="md")
+            results = client.extract({"url": "https://example.com/", "timeout": 30000}, timeout=60)
+
+        :param params: Optional mapping of Extract API parameters, including the required ``url``. Put ``timeout`` here to set the API fetch timeout in milliseconds.
+        :param kwargs: Additional API parameters or HTTP request options, as in :meth:`search`. The ``timeout`` keyword controls the HTTP client timeout in seconds.
+
+        ``mode`` accepts ``scrape`` (default), ``map``, or ``crawl``. ``output`` accepts ``json`` (default), ``html``, or ``md``.
+        JSON includes page content in the top-level ``markdown`` field by default,
+        or in each ``pages`` entry for crawls. Set ``include_markdown=False`` to omit it.
+        For a scraped page, ``output="md"`` returns the page Markdown without search metadata.
+
+        Crawl mode can consume one search credit per successfully extracted page. Use ``max_pages`` to limit the number of pages.
+        """
+        params = dict(params) if params is not None else {}
+        kwargs["engine"] = "extract"
+        return self.search(params, **kwargs)
+
     def search_archive(self, params: dict = None, **kwargs):
         """Get a result from the SerpApi Search Archive API.
 
@@ -190,6 +216,7 @@ class Client(HTTPClient):
 # An un-authenticated client instance.
 _client = Client()
 search = _client.search
+extract = _client.extract
 search_archive = _client.search_archive
 upload_image = _client.upload_image
 locations = _client.locations

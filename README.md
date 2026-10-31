@@ -20,6 +20,8 @@ pip install serpapi
 > This package is maintained by SerpApi, and is the recommended way to access the 
 > SerpApi service from Python.
 
+Both packages use `import serpapi`, so install only one in your environment. See the [migration guide](https://serpapi-python.readthedocs.io/en/latest/user_guide/migrating-from-google-search-results.html) when updating code that uses `google-search-results`.
+
 ## Quickstart
 
 [Create a SerpApi account](https://serpapi.com/users/sign_up?plan=free) to get your API key, then store it in an environment variable:
@@ -31,7 +33,7 @@ export SERPAPI_KEY="your_api_key"
 Environment variables keep secrets out of your source code.
 Python accesses these variables from `os.getenv("SERPAPI_KEY")`.
 
-Run a Google search and access the results as a Python `dict`:
+Run a Google search and access the structured results:
 
 ```python
 import os
@@ -48,13 +50,15 @@ results = client.search({
 pprint(results)
 ```
 
-The `results` variable now contains a `SerpResults` object, which acts just like a `dict`, with some convenient functions added on top.
+The `results` variable contains a dict-like `SerpResults` object. Read fields with `results["organic_results"]` or `results.get("organic_results", [])`.
 
 This example runs a search for "coffee" on Google. See the [playground](https://serpapi.com/playground) to generate your own code.
 
+For Windows setup and instructions to save and run the example, see the [getting-started guide](https://serpapi-python.readthedocs.io/en/latest/user_guide/getting-started.html).
+
 ### Error handling
 
-Unsuccessful requests raise `serpapi.HTTPError` or `serpapi.TimeoutError` exceptions. The returned status code will reflect the sort of error that occurred, please refer to [Status and Error Codes Documentation](https://serpapi.com/api-status-and-error-codes) for more details.
+HTTP failures raise `serpapi.HTTPError`. Connection failures raise `serpapi.HTTPConnectionError`, and read timeouts raise `serpapi.TimeoutError`. See the [status and error codes documentation](https://serpapi.com/api-status-and-error-codes) for the meaning of each HTTP status.
 
 ```python
 import os
@@ -69,35 +73,43 @@ try:
         "engine": "google",
         "q": "coffee",
     })
+except serpapi.TimeoutError:
+    raise RuntimeError("The request timed out.") from None
+except serpapi.HTTPConnectionError:
+    raise RuntimeError("Could not connect to SerpApi.") from None
 except serpapi.HTTPError as e:
-    if e.status_code == 401: # Invalid API key
-        print(e.error) # "Invalid API key. Your API key should be here: https://serpapi.com/manage-api-key"
-    elif e.status_code == 400: # Missing required parameter
-        pass
-    elif e.status_code == 429: # Exceeds the hourly throughput limit OR the account has run out of searches
-        pass
-except serpapi.TimeoutError as e:
-    # Handle timeout
-    print(f"The request timed out: {e}")
+    raise RuntimeError(f"HTTP {e.status_code}: {e.error or 'Request failed'}") from None
+
+if "error" in results:
+    raise RuntimeError(results["error"])
 ```
+
+A successful HTTP response can still contain an `error` field, such as when a search returns no results. Check it before reading result fields. See [Errors and Timeouts](https://serpapi-python.readthedocs.io/en/latest/user_guide/errors-and-timeouts.html) for more examples.
 
 ## Features
 
-- **Asynchronous searches** for submitting non-blocking jobs and retrieving completed results from the Search Archive API.
+- **Asynchronous searches** for submitting jobs and retrieving completed results from the Search Archive API.
 - **Persistent connections and connection pooling** for reusing HTTP connections across searches.
-- Search results as **Python dict** by default, token-efficient **Markdown** with `"output": "md"`, or raw **search-engine HTML** with `"output": "html"`.
+- Search results as a dict-like **SerpResults** object by default, token-efficient **Markdown** with `"output": "md"`, or raw **search-engine HTML** with `"output": "html"`.
 - SDK methods for the [Image API](https://serpapi.com/image-api), [Location API](https://serpapi.com/locations-api), [Search Archive API](https://serpapi.com/search-archive-api), and [Account API](https://serpapi.com/account-api).
+- **Content extraction** with `client.extract()` for reading pages, discovering URLs, and crawling websites.
 - **Configurable HTTP timeouts** established by setting `timeout` in the client.
 
 ## Response formats
 
-Use `search` without `output` for structured results decoded into a `dict`:
+Use `search` without `output` for structured results returned as a dict-like `SerpResults` object:
 
 ```python
 results = client.search({
     "engine": "google",
     "q": "coffee"
 })
+```
+
+Use `results.as_dict()` when another library needs a plain `dict`, including before calling `json.dumps()`:
+
+```python
+data = results.as_dict()
 ```
 
 Use `md` output for a token-efficient Markdown string optimized for LLMs and AI agents:
@@ -110,7 +122,7 @@ markdown = client.search({
 })
 ```
 
-Use `html` output when you need the raw search-engine response:
+Use `html` output when you need the raw search-engine response as a string:
 
 ```python
 raw_html = client.search({
@@ -140,7 +152,7 @@ client = serpapi.Client(api_key=os.getenv("SERPAPI_KEY"))
 | Option | Default | Description |
 |--------|---------|-------------|
 | `api_key` | `None` | Your SerpApi API key. Use an environment variable rather than committing it to source control. |
-| `timeout` | `None` | Timeout in seconds for each HTTP request. By default no timeout is set, so a request can wait indefinitely. |
+| `timeout` | `None` | Connection and read timeout in seconds for each HTTP request. By default no timeout is set, so a request can wait indefinitely. |
 
 Everything else is passed with each call:
 
@@ -150,15 +162,11 @@ Everything else is passed with each call:
 | `async` | The dictionary passed to `client.search()` | `{"engine": "google", "q": "coffee", "async": True}` |
 | `output` | The dictionary passed to `client.search()` | `{"engine": "google", "q": "coffee", "output": "md"}` |
 | `search_id`, `output` | Keyword arguments to `client.search_archive()` | `client.search_archive(search_id=search_id, output="md")` |
-
-The client has no default `engine` or `async` setting, so include them in every search. 
+| `url`, `mode`, `output` | A dictionary or keyword arguments to `client.extract()` | `client.extract(url="https://serpapi.com/", output="md")` |
 
 ### Asynchronous searches
 
-Use `{"async": True}` to submit searches without waiting for them to complete.
-
-- **Non-blocking** (`{"async": True}`): a single process can submit many searches and collect the results later from the Search Archive API. The code is more complex because you have to track search IDs and check their status.
-- **Blocking** (`{"async": False}`, the default): each call waits for its results before returning, which keeps the code simple. 
+Searches wait for their results by default (`async` is `false`). Use `{"async": True}` to submit server-side search jobs and collect their results later from the Search Archive API. Each Python SDK call still waits for its HTTP response and cannot be awaited with `asyncio`.
 
 > **Note:** `async` is a reserved keyword in Python 3.7+, so pass it inside the parameters dictionary (`{"async": True}`) rather than as a keyword argument.
 
@@ -173,7 +181,7 @@ from queue import Queue
 import serpapi
 
 company_list = ["meta", "amazon", "apple", "netflix", "google"]
-client = serpapi.Client(api_key=os.getenv("SERPAPI_KEY"))
+client = serpapi.Client(api_key=os.getenv("SERPAPI_KEY"), timeout=30)
 schedule_search = Queue()
 result = None
 
@@ -186,14 +194,20 @@ for company in company_list:
 
 print(f"Last search submitted at: {result['search_metadata']['created_at']}")
 
+deadline = time.monotonic() + 120
 print("wait 10s for all requests to be completed")
 time.sleep(10)
 
 print("wait until all searches are cached or success")
 while not schedule_search.empty():
-    search_id = schedule_search.get()
+    remaining = deadline - time.monotonic()
+    if remaining <= 0:
+        raise TimeoutError("Polling timed out before all searches completed.")
 
-    search_archived = client.search_archive(search_id=search_id)
+    search_id = schedule_search.get()
+    search_archived = client.search_archive(
+        search_id=search_id, timeout=min(30, remaining)
+    )
 
     company = search_archived["search_parameters"]["q"]
     status = search_archived["search_metadata"]["status"]
@@ -215,9 +229,66 @@ print("done")
 This code batches searches into a [queue](https://en.wikipedia.org/wiki/Queue_(abstract_data_type)).
 Each search can take a few seconds to complete, so by the time the first ID is popped, its results are usually already in the archive. Searches that are still processing are put back in the queue and checked again.
 
+The client uses a 30-second HTTP timeout. A separate 120-second polling deadline, checked between requests, stops retries with a `TimeoutError` if searches remain unfinished.
+
 ## Examples
 
 Here are some examples of our most popular APIs. You can find the full list of supported engines and parameters in our [documentation](https://serpapi.com/search-engine-apis).
+
+### Extract API
+
+Read content from a public URL with `client.extract()`. It supports single-page scraping, URL discovery, and crawling, and sets `engine="extract"` automatically.
+
+Set `output="md"` to get the page's main content as a Markdown string for an AI agent or other text processing:
+
+```python
+import os
+
+import serpapi
+
+client = serpapi.Client(api_key=os.getenv("SERPAPI_KEY"), timeout=60)
+markdown = client.extract(url="https://serpapi.com/", output="md")
+print(markdown)
+```
+
+JSON is the default output format. It returns a dict-like `SerpResults` object with page information, structured data, links, and Markdown:
+
+```python
+results = client.extract(url="https://serpapi.com/")
+print(results["page_information"]["title"])
+print(results["markdown"])
+```
+
+Use `output="html"` to get the retrieved HTML as a string:
+
+```python
+html = client.extract(url="https://serpapi.com/", output="html")
+```
+
+Use `mode="map"` to discover URLs. Map mode includes sitemap URLs by default. This example sets `include_sitemap=False` to use only the page's links:
+
+```python
+results = client.extract(url="https://serpapi.com/", mode="map", include_sitemap=False)
+for entry in results["urls"]:
+    print(entry["url"])
+```
+
+Use `mode="crawl"` to follow links and extract multiple pages:
+
+```python
+results = client.extract(
+    url="https://serpapi.com/", mode="crawl", max_pages=2, max_depth=1, timeout=180
+)
+for page in results["pages"]:
+    print(page["url"])
+    print(page["markdown"])
+```
+
+Crawl mode can consume one search credit per successfully extracted page, including the starting page. Set `max_pages` to limit the number of pages.
+
+The `timeout` keyword sets the SDK's HTTP timeout in seconds. To set the Extract API's fetch timeout in milliseconds, put it in the parameter dictionary: `client.extract({"url": "https://serpapi.com/", "timeout": 30000}, timeout=60)`.
+
+[See documentation](https://serpapi.com/extract-api) or the [Python Extract API guide](https://github.com/serpapi/serpapi-python/blob/master/docs/user_guide/extract.md) for more options.
 
 ### Google Shopping
 
@@ -339,18 +410,18 @@ from pprint import pprint
 import serpapi
 
 client = serpapi.Client(api_key=os.getenv("SERPAPI_KEY"))
-outbounding = date.today()
+outbounding = date.today() + timedelta(days=30)
 returning = outbounding + timedelta(weeks=2)
 
 results = client.search({
     "engine": "google_flights",
     "departure_id": "LAX",
     "arrival_id": "AUS",
-    "outbound_date": outbounding,
-    "return_date": returning
+    "outbound_date": outbounding.isoformat(),
+    "return_date": returning.isoformat()
 })
-best_flights = results["best_flights"]
-pprint(best_flights)
+flights = results.get("best_flights") or results.get("other_flights", [])
+pprint(flights)
 ```
 
 [See documentation](https://serpapi.com/google-flights-api)
@@ -471,6 +542,8 @@ Browse the [SerpApi documentation](https://serpapi.com/search-api) to find suppo
 Additional SDK resources:
 
 - [Python SDK integration page](https://serpapi.com/integrations/python)
+- [AI agent guide](https://serpapi-python.readthedocs.io/en/latest/ai-agents.html)
+- [SerpApi llms.txt](https://serpapi.com/llms.txt) for links to each API's Markdown parameter reference
 - [SerpApi status](https://serpapi.com/api-metrics)
 
 ## License

@@ -11,6 +11,7 @@ Start with [Getting Started](getting-started.md) to install the package and run 
 
 - [Parameters and Engines](parameters-and-engines.md)
 - [Output Formats](output-formats.md)
+- [Extract API](extract.md)
 - [Pagination](pagination.md)
 - [Errors and Timeouts](errors-and-timeouts.md)
 - [Account and Locations](account-and-locations.md)

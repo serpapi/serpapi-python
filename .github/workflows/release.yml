@@ -30,12 +30,13 @@ jobs:
           echo "Release must run against a tag, got '${{ github.ref }}'" >&2
           exit 1
 
-      - uses: actions/setup-python@v6
+      - uses: astral-sh/setup-uv@v7
         with:
           python-version: ${{ matrix.python-version }}
+          activate-environment: true
 
       - name: Install dependencies
-        run: pip install -e .[test]
+        run: uv pip install -e '.[test]'
 
       - name: Run tests
         run: pytest --ignore=tests/test_docs_publishing.py -k "not example"

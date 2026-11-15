@@ -3,6 +3,7 @@ import json
 from collections import UserDict
 
 from .textui import prettify_json
+from .utils import _response_json
 
 
 class SerpResults(UserDict):
@@ -93,9 +94,48 @@ class SerpResults(UserDict):
             return r.text
 
         try:
-            cls = cls(r.json(), client=client)
+            cls = cls(_response_json(r), client=client)
 
             return cls
         except ValueError:
             # If the response is not JSON, return the raw text.
             return r.text
+
+
+class AsyncSerpResults(SerpResults):
+    """A dictionary-like object that represents the results of a :class:`AsyncClient <serpapi.AsyncClient>` request.
+
+    It works like :class:`SerpResults <serpapi.SerpResults>`, but :meth:`next_page`
+    is a coroutine and :meth:`yield_pages` is an asynchronous generator.
+    """
+
+    async def next_page(self):
+        """Return the next page of results, if any. Use it with ``await``."""
+
+        if self.next_page_url:
+            # Include support for the API key, as it is not included in the next page URL.
+            params = {"api_key": self.client.api_key}
+
+            r = await self.client.request("GET", path=self.next_page_url, params=params)
+            return AsyncSerpResults.from_http_response(r, client=self.client)
+
+    async def yield_pages(self, max_pages=1_000):
+        """An asynchronous generator that ``yield`` s the next ``n`` pages of search results, if any.
+
+        Use it with ``async for``.
+
+        :param max_pages: limit the number of pages yielded to ``n``.
+        """
+
+        current_page_count = 0
+
+        current_page = self
+        while current_page and current_page_count < max_pages:
+            yield current_page
+            current_page_count += 1
+            if current_page_count >= max_pages:
+                break
+            if current_page.next_page_url:
+                current_page = await current_page.next_page()
+            else:
+                break

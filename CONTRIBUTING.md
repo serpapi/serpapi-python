@@ -31,13 +31,15 @@ The commands below use `python` from that environment.
 
 ### Checks that need no API key
 
-These tests cover response parsing, image uploads and extraction with simulated responses, timeouts, exceptions, documentation syntax, and the example runner:
+These tests cover response parsing, image uploads and extraction with simulated responses, timeouts, exceptions, the async client, documentation syntax, and the example runner:
 
 ```sh
-python -m pytest tests/test_output_formats.py tests/test_image_upload.py tests/test_extract.py tests/test_timeout.py tests/test_exceptions.py tests/test_docs_examples.py tests/test_docs_example_runner.py -k 'not live' -q
+python -m pytest tests/test_output_formats.py tests/test_image_upload.py tests/test_extract.py tests/test_timeout.py tests/test_exceptions.py tests/test_async_client.py tests/test_docs_examples.py tests/test_docs_example_runner.py -k 'not live' -q
 ```
 
 The file list limits this command to tests that make no external requests. Applying `-k 'not live'` to the entire suite is not enough to run offline: some SDK integration tests do not have `live` in their names.
+
+The async client tests need Python 3.11 or newer, where the `test` extra installs httpx2. On older versions, pytest skips them.
 
 ### SDK integration tests
 
@@ -67,7 +69,7 @@ Both commands make real SerpApi requests. The full suite can use more searches t
 
 The tests discover Python code blocks in the README and all Markdown pages under `docs/`. They run each page as a separate script against SerpApi, including the multiprocessing example's worker processes. The Lens upload examples use the repository's PNG icon as `image.png`. Each page has a five-minute limit, and HTTP errors or JSON responses containing an `error` fail the check even if the example catches the exception.
 
-With `SERPAPI_KEY` or `API_KEY` set in your environment, run:
+With `SERPAPI_KEY` or `API_KEY` set in your environment, run the following command with Python 3.11 or newer, because the README and the async client guide use `serpapi.AsyncClient`:
 
 ```sh
 python -m pytest tests/test_docs_examples.py --require-docs-key -q

@@ -39,7 +39,7 @@ uv pip install serpapi
 
 ::::
 
-The package requires Python 3.6 or newer.
+The package requires Python 3.6 or newer. To send requests with `asyncio` and `await`, install the `async` extra on Python 3.11 or newer, as described in [Async Client](async-client.md#installation).
 
 Create or sign in to your SerpApi account and copy your API key from the [dashboard](https://serpapi.com/manage-api-key). An API key identifies your account when you make a request. Replace `secret_api_key` below with your key and run the command in your terminal. On Windows, use PowerShell.
 
@@ -133,4 +133,5 @@ results = client.search(engine="google", q="coffee")
 
 - Read [Client Usage](client-usage.md) for response helpers, request options, and archive helpers.
 - Read [Pagination](pagination.md) when collecting more than one page of results.
+- Read [Async Client](async-client.md) if your program uses `asyncio`.
 - Try [Google Across Countries](../examples/google-across-countries.md) to compare results from different countries.

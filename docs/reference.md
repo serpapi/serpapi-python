@@ -6,3 +6,7 @@ Look up the arguments, return values, and exceptions for the functions and class
 .. automodule:: serpapi
    :member-order: groupwise
 ```
+
+```{eval-rst}
+.. automethod:: serpapi.AsyncClient.aclose
+```

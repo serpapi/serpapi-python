@@ -472,12 +472,45 @@ async def test_aclose_finishes_closing_sessions_when_caller_is_cancelled(
         with pytest.raises(asyncio.CancelledError):
             await close_caller
 
+        # The close carries on in the background, without another aclose() call.
+        background_close = client._close_task
         allow_close.set()
-        await client.aclose()
+        await background_close
+
         assert all(session.is_closed for session in sessions)
+        assert client._close_task is None
+        assert not client._option_sessions
     finally:
         allow_close.set()
         await client.aclose()
+
+
+async def test_aclose_can_be_retried_after_the_background_close_fails(server, monkeypatch):
+    client = serpapi.AsyncClient(api_key="test-api-key")
+    close_started = asyncio.Event()
+    allow_close = asyncio.Event()
+    original_aclose = client.session.aclose
+
+    async def failing_close():
+        close_started.set()
+        await allow_close.wait()
+        raise OSError("close failed")
+
+    monkeypatch.setattr(client.session, "aclose", failing_close)
+    close_caller = asyncio.create_task(client.aclose())
+    await close_started.wait()
+    close_caller.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await close_caller
+
+    background_close = client._close_task
+    allow_close.set()
+    await asyncio.wait({background_close})
+
+    monkeypatch.setattr(client.session, "aclose", original_aclose)
+    await client.aclose()
+
+    assert client.session.is_closed
 
 
 async def test_closed_client_does_not_create_new_sessions(async_client):

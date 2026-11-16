@@ -231,21 +231,17 @@ class AsyncHTTPClient:
 
         self._closed = True
         if self._close_task is None:
+            # Close in a task, so that the sessions still close if the caller is cancelled.
             self._close_task = asyncio.create_task(self._close_sessions())
+            self._close_task.add_done_callback(self._after_close)
 
-        close_task = self._close_task
-        try:
-            await asyncio.shield(close_task)
-        except asyncio.CancelledError:
-            if close_task.done():
-                self._close_task = None
-            raise
-        except Exception:
-            self._close_task = None
-            raise
-        else:
+        await asyncio.shield(self._close_task)
+
+    def _after_close(self, close_task):
+        self._close_task = None
+        # Reading the exception also stops asyncio reporting it as never retrieved.
+        if not close_task.cancelled() and close_task.exception() is None:
             self._option_sessions.clear()
-            self._close_task = None
 
     async def _close_sessions(self):
         sessions = [self.session, *self._option_sessions.values()]

@@ -273,7 +273,7 @@ class AsyncClient(AsyncHTTPClient):
         parameters as :meth:`Client.search <serpapi.Client.search>`.
 
         :param params: Optional mapping of SerpApi search parameters such as ``engine``, ``q``, ``location``, and ``output``.
-        :param kwargs: Additional SerpApi parameters or request options. ``timeout``, ``proxies``, ``verify``, ``stream``, and ``cert`` are passed to the underlying HTTP request.
+        :param kwargs: Additional SerpApi parameters or request options. ``timeout``, ``proxies``, ``verify``, and ``cert`` are applied to the underlying HTTP request. ``stream`` is accepted but ignored.
 
         **Learn more**: https://serpapi.com/search-api
         """
@@ -306,7 +306,7 @@ class AsyncClient(AsyncHTTPClient):
         """Get a result from the SerpApi Search Archive API. Use it with ``await``.
 
         :param params: Archive parameters. Must include ``search_id``. ``output`` accepts ``json`` (default), ``html``, or ``md``.
-        :param kwargs: Additional archive parameters or request options. ``timeout``, ``proxies``, ``verify``, ``stream``, and ``cert`` are passed to the underlying HTTP request.
+        :param kwargs: Additional archive parameters or request options. ``timeout``, ``proxies``, ``verify``, and ``cert`` are applied to the underlying HTTP request. ``stream`` is accepted but ignored.
 
         **Learn more**: https://serpapi.com/search-archive-api
         """
@@ -378,7 +378,7 @@ class AsyncClient(AsyncHTTPClient):
         """Get a list of supported Google locations. Use it with ``await``.
 
         :param params: Location API parameters such as ``q`` and ``limit``.
-        :param kwargs: Additional location parameters or request options. ``timeout``, ``proxies``, ``verify``, ``stream``, and ``cert`` are passed to the underlying HTTP request.
+        :param kwargs: Additional location parameters or request options. ``timeout``, ``proxies``, ``verify``, and ``cert`` are applied to the underlying HTTP request. ``stream`` is accepted but ignored.
 
         **Learn more**: https://serpapi.com/locations-api
         """
@@ -403,7 +403,7 @@ class AsyncClient(AsyncHTTPClient):
         """Get SerpApi account information. Use it with ``await``.
 
         :param params: Account API parameters.
-        :param kwargs: Additional account parameters or request options. ``timeout``, ``proxies``, ``verify``, ``stream``, and ``cert`` are passed to the underlying HTTP request.
+        :param kwargs: Additional account parameters or request options. ``timeout``, ``proxies``, ``verify``, and ``cert`` are applied to the underlying HTTP request. ``stream`` is accepted but ignored.
 
         **Learn more**: https://serpapi.com/account-api
         """

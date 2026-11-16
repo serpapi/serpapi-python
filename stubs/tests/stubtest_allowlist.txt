@@ -1,0 +1,2 @@
+# Typing-only module: TypedDicts for SerpApi parameters exist only in the stubs.
+serpapi.engine_params

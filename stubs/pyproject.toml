@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "serpapi-stubs"
+dynamic = ["version"]
+description = "Type stubs for the official SerpApi Python client (serpapi)."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "SerpApi", email = "support@serpapi.com" }]
+requires-python = ">=3.6"
+dependencies = ["types-requests"]
+keywords = ["serpapi", "stubs", "typing", "mypy", "pyright"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Typing :: Stubs Only",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[project.urls]
+Homepage = "https://github.com/serpapi/serpapi-python/tree/master/stubs"
+Source = "https://github.com/serpapi/serpapi-python"
+Documentation = "https://serpapi-python.readthedocs.io/en/latest/"
+
+[tool.setuptools]
+packages = ["serpapi-stubs"]
+include-package-data = false
+
+[tool.setuptools.package-data]
+"serpapi-stubs" = ["*.pyi"]
+
+[tool.setuptools.dynamic]
+version = { file = "VERSION" }
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.mypy]
+files = ["tests/typecheck"]
+strict = true
+warn_unused_ignores = true
+
+[tool.pyright]
+include = ["tests/typecheck"]
+typeCheckingMode = "strict"
+enableTypeIgnoreComments = true
+reportUnnecessaryTypeIgnoreComment = "error"

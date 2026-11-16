@@ -1,0 +1,61 @@
+name: serpapi-stubs
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "serpapi/**"
+      - "stubs/**"
+      - ".github/workflows/stubs*.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "serpapi/**"
+      - "stubs/**"
+      - ".github/workflows/stubs*.yml"
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check stubs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install tools
+        run: pip install build pytest "mypy==2.4.1" "pyright==1.1.414"
+
+      - name: Check generated stubs are current
+        run: python stubs/tools/generate_stubs.py --check
+
+      - name: Test stub tooling
+        working-directory: stubs
+        run: python -m pytest
+
+      - name: Build stub distribution
+        working-directory: stubs
+        run: |
+          python tools/release_version.py --offline
+          python -m build
+
+      - name: Install SDK and stubs
+        run: pip install . stubs/dist/*.whl
+
+      - name: Compare stubs with the runtime SDK
+        working-directory: stubs
+        run: python -m mypy.stubtest serpapi --allowlist tests/stubtest_allowlist.txt
+
+      - name: Type-check usage samples with mypy
+        working-directory: stubs
+        run: mypy
+
+      - name: Type-check usage samples with pyright
+        working-directory: stubs
+        run: pyright

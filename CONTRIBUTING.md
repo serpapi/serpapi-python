@@ -170,14 +170,58 @@ Use GitHub Actions to request builds after this setup. A manual RTD build has no
 
 See the [RTD build API](https://docs.readthedocs.com/platform/stable/api/v3.html#build-triggering), [Git integration settings](https://docs.readthedocs.com/platform/stable/reference/git-integration.html), and [GitHub environment settings](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/manage-environments) for the platform setup details.
 
+## Type stubs
+
+The `stubs/` directory builds `serpapi-stubs`, a separate PyPI distribution that users install with `pip install "serpapi[typing]"`. The SDK wheel and source distribution do not include it. See [stubs/README.md](stubs/README.md) for the layout and the commands that refresh and regenerate the stubs.
+
+The [stubs workflow](.github/workflows/stubs.yml) runs on pull requests that change `serpapi/` or `stubs/`. To run the same checks locally, install the stubs into your development environment and type-check the samples:
+
+```sh
+cd stubs
+python tools/generate_stubs.py --check
+python -m pytest
+python tools/release_version.py --offline
+uv build --clear
+uv pip install mypy pyright --reinstall-package serpapi-stubs dist/*.whl
+python -m mypy.stubtest serpapi --allowlist tests/stubtest_allowlist.txt
+mypy
+pyright
+```
+
+`release_version.py` writes the ignored `VERSION` file that the build reads. Stub versions are computed in CI, so never set them by hand. Stubtest fails when a public SDK function or class changes without a matching stub change, so update the handwritten stubs in `stubs/serpapi-stubs/` together with the SDK.
+
+### Stub releases
+
+Stubs are published in two ways:
+
+- **With an SDK release.** The release workflow publishes `serpapi-stubs` `<version>.<YYYYMMDD>` before it publishes the SDK, so `serpapi[typing]` resolves as soon as the SDK is available.
+- **Between SDK releases.** When a push to `master` changes the shipped stub files, the [stub release workflow](.github/workflows/stubs-release.yml) publishes a new version for the current SDK release. It skips publishing if `serpapi/__version__.py` names a version that has not been tagged or if `serpapi/` changed since that tag. Those stubs ship with the next SDK release instead.
+
+The [refresh workflow](.github/workflows/stubs-refresh.yml) runs every Monday. It fetches the engine metadata, regenerates the stubs, and opens or updates a pull request from `bot/refresh-serpapi-stubs` when anything changed. If a later run finds that the stubs match `master` again, it closes that pull request. A manual run also refreshes from `master`, whichever branch it is started on. Review the diff before merging: merging usually publishes a stub release.
+
+GitHub can refuse a push that carries workflow-file changes from `master` into an existing branch. The workflow avoids that by recreating a leftover refresh branch, but it cannot do so while the refresh pull request is open. If a run fails to push for that reason, merge or close the pull request and run the workflow again.
+
+If a stub release breaks valid code, yank it on PyPI and merge a fix. The SDK-tag workflow publishes a stub series only once, so rerunning an old SDK tag cannot supersede a newer stub-only release with the tag's older stub files. For an upload collision between simultaneous stub releases, choose **Re-run all jobs** on the stub-only release workflow. It computes the next available date suffix, whereas **Re-run failed jobs** reuses the colliding version.
+
+The stub version scheme currently supports final numeric SDK versions only, such as `1.2.3`. Prerelease, post-release, and development SDK versions cannot be published with the `serpapi-stubs` date suffix or the `serpapi[typing]` exact-series pin.
+
+If a stub fix is needed after `serpapi/` has changed for an unreleased SDK version, the automatic workflow correctly skips it. To hotfix the released SDK, create a compatibility branch from its tag, bring over only the corrected `stubs/` content and the current `stubs.yml` and `stubs-release.yml` workflows, and keep `serpapi/` unchanged from the tag. Push it as `stubs/hotfix-<sdk-version>` and manually run **Release serpapi-stubs** on that branch; the workflow only runs from `master` or from the hotfix branch named after the SDK version it contains. Add `stubs/hotfix-*` as an allowed branch for the `pypi-stubs` environment before dispatching.
+
+### Stub maintainer setup
+
+1. On PyPI, add a [pending trusted publisher](https://docs.pypi.org/trusted-publishers/creating-a-project-through-oidc/) for the `serpapi-stubs` project with owner `serpapi`, repository `serpapi-python`, workflow `stubs-release.yml`, and environment `pypi-stubs`. After the first upload creates the project, add a second trusted publisher with workflow `release.yml` and the same environment under the project's **Publishing** settings.
+2. In GitHub **Settings > Environments**, create an environment named `pypi-stubs`. Under **Deployment branches and tags**, add Branch rules for `master` and `stubs/hotfix-*`, and a Tag rule for `v*`.
+3. In **Settings > Actions > General**, enable **Allow GitHub Actions to create and approve pull requests** so the refresh workflow can open its pull request. Pull requests opened with the default `GITHUB_TOKEN` do not start other workflows. To run the stub checks on them automatically, add a repository secret named `STUBS_REFRESH_TOKEN` containing a fine-grained token with **Contents** and **Pull requests** write access to this repository.
+4. After merging these changes, the stub release workflow publishes the first `serpapi-stubs` release for the current SDK version. If it ran before the setup was complete, run **Release serpapi-stubs** manually on `master`.
+
 ## Publishing a new release
 
-1. Update the version in `serpapi/__version__.py`.
+1. Update the version in `serpapi/__version__.py` and the `serpapi-stubs` pin of the `typing` extra in `pyproject.toml` to match, for example `serpapi-stubs==1.2.3.*`. `tests/test_typing_extra.py` fails if they differ.
 2. Push a tag for that version. The release pipeline runs automatically:
    ```sh
    git tag v1.2.3
    git push origin v1.2.3
    ```
-   This triggers the [release workflow](.github/workflows/release.yml), which tests, builds, and publishes to PyPI, then smoke-tests the published package.
+   This triggers the [release workflow](.github/workflows/release.yml), which tests and builds the SDK and stubs, publishes `serpapi-stubs` and then `serpapi` to PyPI, and smoke-tests the published package. If the stub checks or upload fail, the SDK is not published. The workflow also fails before publishing anything if the tag is not `v` followed by the version in `serpapi/__version__.py`.
 
 > **Required secret:** `API_KEY` (used by the live documentation examples and the published-package smoke test).

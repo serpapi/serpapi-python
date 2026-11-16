@@ -1,0 +1,95 @@
+name: Refresh serpapi-stubs
+
+# Regenerates the engine snapshot and stubs from the SerpApi playground and opens (or updates) a PR.
+# The PR is closed again if a later run finds that the stubs match the default branch.
+# Pull requests opened with GITHUB_TOKEN do not trigger other workflows, so set the
+# STUBS_REFRESH_TOKEN secret (fine-grained PAT or GitHub App token) to run checks on the PR.
+on:
+  schedule:
+    - cron: "17 4 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: serpapi-stubs-refresh
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  BRANCH: bot/refresh-serpapi-stubs
+
+jobs:
+  refresh:
+    name: Refresh stubs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+          token: ${{ secrets.STUBS_REFRESH_TOKEN || github.token }}
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Fetch engine metadata
+        run: python stubs/tools/fetch_engines.py
+
+      - name: Regenerate stubs
+        run: python stubs/tools/generate_stubs.py
+
+      - name: Open or update pull request
+        env:
+          GH_TOKEN: ${{ secrets.STUBS_REFRESH_TOKEN || github.token }}
+        run: |
+          # Ignore fork PRs that happen to use the same branch name.
+          open_pr=$(gh pr list --head "$BRANCH" --state open --json number,isCrossRepository \
+            --jq '[.[] | select(.isCrossRepository | not)][0].number // empty')
+
+          if [ -z "$(git status --porcelain -- stubs/)" ]; then
+            echo "Stubs are up to date."
+            if [ -n "$open_pr" ]; then
+              gh pr close "$open_pr" --delete-branch \
+                --comment "Closing this refresh PR because the generated stubs now match the default branch."
+            fi
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git add stubs/
+          git commit -m "Refresh serpapi-stubs from the SerpApi playground"
+
+          if [ -z "$open_pr" ]; then
+            # Without an open PR the remote branch is left over from a merged or closed one. Updating it
+            # would carry every change made to the default branch since then, and GitHub can refuse a
+            # push that changes workflow files that way, so start from a fresh branch.
+            git push --quiet origin --delete "$BRANCH" 2>/dev/null || true
+          fi
+
+          # Do not rewrite the refresh branch (or rerun its checks) when it already has these stubs.
+          if git fetch --quiet --depth=1 origin "$BRANCH" 2>/dev/null \
+            && [ "$(git rev-parse 'HEAD^{tree}')" = "$(git rev-parse 'FETCH_HEAD^{tree}')" ]; then
+            echo "origin/$BRANCH already has these stubs."
+          else
+            git push --force origin "$BRANCH"
+          fi
+
+          {
+            echo "Automated weekly refresh of \`stubs/data/engines.json\` and the generated stubs."
+            echo
+            echo "Merging this PR publishes a new \`serpapi-stubs\` release when \`serpapi/\` is unchanged since the latest SDK tag; otherwise the stubs ship with the next SDK release."
+            echo
+            echo '```'
+            git --no-pager diff --stat HEAD~1 HEAD
+            echo '```'
+          } > "$RUNNER_TEMP/body.md"
+          if [ -n "$open_pr" ]; then
+            gh pr edit "$open_pr" --body-file "$RUNNER_TEMP/body.md"
+          else
+            gh pr create --base "${{ github.event.repository.default_branch }}" --head "$BRANCH" \
+              --title "Refresh serpapi-stubs" --body-file "$RUNNER_TEMP/body.md"
+          fi

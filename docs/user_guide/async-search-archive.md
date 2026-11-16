@@ -11,14 +11,11 @@ Create a client as shown in the [client usage guide](client-usage.md#create-a-cl
 
 ## Submit an async search
 
-`async` is a reserved word in Python. Put it in a dictionary and use `**` to pass that dictionary's entries as keyword arguments:
+`async` is a reserved word in Python. Pass it in the parameter dictionary:
 
 ```python
 submitted = client.search(
-    engine="google",
-    q="coffee",
-    location="Austin, Texas",
-    **{"async": True},
+    {"engine": "google", "q": "coffee", "location": "Austin, Texas", "async": True},
     timeout=30,
 )
 

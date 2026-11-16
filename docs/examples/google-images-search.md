@@ -18,11 +18,7 @@ import serpapi
 
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 
-results = client.search(
-    engine="google_images",
-    tbm="isch",
-    q="coffee",
-)
+results = client.search({"engine": "google_images", "tbm": "isch", "q": "coffee"})
 
 for image in results.get("images_results", [])[:5]:
     print(image.get("title"))

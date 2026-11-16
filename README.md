@@ -17,6 +17,18 @@ To install the `serpapi` package, simply run the following command inside your P
 pip install serpapi
 ```
 
+To add engine-specific type hints for mypy, pyright, and IDEs, install the `typing` extra. It installs [`serpapi-stubs`](https://github.com/serpapi/serpapi-python/tree/master/stubs), a typing-only package versioned with the SDK:
+
+```bash
+pip install "serpapi[typing]"
+```
+
+SDK 1.2.0 was released before the `typing` extra. To use the stubs with it, install them directly:
+
+```bash
+pip install "serpapi-stubs==1.2.0.*"
+```
+
 ## Quickstart
 
 [Create a SerpApi account](https://serpapi.com/users/sign_up?plan=free) to get your API key, then store it in an environment variable:

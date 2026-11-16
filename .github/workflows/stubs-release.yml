@@ -1,0 +1,108 @@
+name: Release serpapi-stubs
+
+# Publishes stub-only fixes for the current SDK release. Stub changes made alongside unreleased SDK
+# changes are published by release.yml with the next SDK release instead.
+on:
+  push:
+    branches: [master]
+    paths:
+      - "stubs/serpapi-stubs/**"
+      - "stubs/pyproject.toml"
+      - "stubs/MANIFEST.in"
+      - "stubs/LICENSE"
+      - "stubs/README.md"
+  workflow_dispatch:
+
+concurrency:
+  group: serpapi-stubs-release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    name: Check SDK is released
+    runs-on: ubuntu-latest
+    outputs:
+      release: ${{ steps.guard.outputs.release }}
+    steps:
+      # A manual run from a release tag would otherwise republish that tag's older stubs.
+      - name: Require a branch
+        if: github.ref_type != 'branch'
+        run: |
+          echo "::error::Run this workflow from a branch, not from the ${GITHUB_REF_NAME} tag."
+          exit 1
+
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - id: guard
+        name: Require a release branch and an unchanged, tagged SDK
+        env:
+          DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+        run: |
+          version=$(python3 stubs/tools/release_version.py --sdk-version)
+          # A manual run from any other branch would publish stubs that were never merged.
+          if [ "$GITHUB_REF_NAME" != "$DEFAULT_BRANCH" ] && [ "$GITHUB_REF_NAME" != "stubs/hotfix-$version" ]; then
+            echo "::error::Release stubs from $DEFAULT_BRANCH or stubs/hotfix-$version, not from $GITHUB_REF_NAME."
+            exit 1
+          fi
+          tag="v$version"
+          if ! git rev-parse --verify --quiet "refs/tags/$tag" >/dev/null; then
+            echo "::notice::$tag is not tagged yet; these stubs will ship with the SDK release."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          elif ! git diff --quiet "$tag" HEAD -- serpapi/; then
+            echo "::notice::serpapi/ changed since $tag; these stubs will ship with the next SDK release."
+            echo "release=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "release=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  check:
+    needs: [guard]
+    if: needs.guard.outputs.release == 'true'
+    uses: ./.github/workflows/stubs.yml
+
+  build:
+    name: Build serpapi-stubs
+    needs: [check]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Build sdist and wheel
+        working-directory: stubs
+        run: |
+          pip install build
+          python tools/release_version.py
+          python -m build
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: stubs-dist
+          path: stubs/dist/
+          if-no-files-found: error
+
+  publish:
+    name: Publish serpapi-stubs
+    needs: [build]
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi-stubs
+      url: https://pypi.org/p/serpapi-stubs
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: stubs-dist
+          path: dist/
+
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1

@@ -490,11 +490,12 @@ async def test_aclose_can_be_retried_after_the_background_close_fails(server, mo
     close_started = asyncio.Event()
     allow_close = asyncio.Event()
     original_aclose = client.session.aclose
+    close_error = OSError("close failed")
 
     async def failing_close():
         close_started.set()
         await allow_close.wait()
-        raise OSError("close failed")
+        raise close_error
 
     monkeypatch.setattr(client.session, "aclose", failing_close)
     close_caller = asyncio.create_task(client.aclose())
@@ -504,8 +505,20 @@ async def test_aclose_can_be_retried_after_the_background_close_fails(server, mo
         await close_caller
 
     background_close = client._close_task
-    allow_close.set()
-    await asyncio.wait({background_close})
+    loop = asyncio.get_running_loop()
+    original_exception_handler = loop.call_exception_handler
+
+    def handle_expected_close_error(context):
+        if context.get("future") is background_close and context.get("exception") is close_error:
+            return
+        original_exception_handler(context)
+
+    # Python 3.14 also reports the expected failure through the cancelled shield.
+    with monkeypatch.context() as patch:
+        patch.setattr(loop, "call_exception_handler", handle_expected_close_error)
+        allow_close.set()
+        with pytest.raises(OSError, match="close failed"):
+            await background_close
 
     monkeypatch.setattr(client.session, "aclose", original_aclose)
     await client.aclose()

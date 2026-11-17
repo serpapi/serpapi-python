@@ -29,7 +29,7 @@ NUMERIC_PARAM_NAMES = frozenset({"limit", "num", "offset", "page", "start"})
 BOOLEAN_PARAM_NAMES = frozenset({"async", "include_filters", "no_cache", "zero_trace"})
 RESERVED_KEYWORD_NAMES = frozenset({"params", "self"})
 # Playground "required" flags are often conditional (for example, google_lens `url` can be replaced by
-# `image_id`), so only parameters the API cannot work without are required.
+# `image_id`), so the snapshot does not keep them; only parameters the API cannot work without are required.
 REQUIRED_PARAMS = {"extract": frozenset({"url"})}
 # SerpApi runs Google when `engine` is omitted, so only Google calls may leave it out.
 DEFAULT_ENGINE = "google"
@@ -89,7 +89,8 @@ def literal(values: list[Any]) -> str:
 
 
 def param_type(name: str, metadata: dict[str, Any]) -> str:
-    if name == "api_key":
+    # `value_type` is the fetcher's verdict, and it overrides the playground's widget type.
+    if name == "api_key" or metadata.get("value_type") == "string":
         return "str"
     if name in BOOLEAN_PARAM_NAMES or metadata.get("type") == "checkbox":
         return "_Flag"
@@ -237,7 +238,12 @@ def mapping_overloads(function: str, receiver: str | None, json_type: str, text_
 
 
 def fallback_overload(function: str, receiver: str | None, params_type: str) -> list[str]:
-    return overload(function, receiver, [f"params: {params_type}", "**kwargs: Any"], FALLBACK_RETURN)
+    params = f"params: {params_type}"
+    # An `output` keyword overrides the mapping, so a literal value determines the result type.
+    lines = overload(function, receiver, [params, "*", f"output: {TEXT_OUTPUT}", "**kwargs: Any"], "str")
+    lines.extend(overload(function, receiver, [params, "*", f"output: {JSON_OUTPUT}", "**kwargs: Any"], "SerpResults"))
+    lines.extend(overload(function, receiver, [params, "**kwargs: Any"], FALLBACK_RETURN))
+    return lines
 
 
 def search_overloads(engines: list[Engine], receiver: str | None) -> list[str]:
@@ -337,7 +343,9 @@ def write(outputs: dict[str, str], output_dir: Path = OUTPUT_DIR) -> list[Path]:
         if path.exists() and path.read_text(encoding="utf-8") == outputs[name]:
             continue
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(outputs[name], encoding="utf-8", newline="\n")
+        # Path.write_text() only accepts `newline` from Python 3.10.
+        with open(path, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(outputs[name])
         written.append(path)
     return written
 

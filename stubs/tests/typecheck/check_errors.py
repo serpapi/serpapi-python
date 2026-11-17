@@ -14,6 +14,8 @@ client.search(engine="google", q="coffee", locaton="Austin")  # type: ignore
 client.search(engine="gogle", q="coffee")  # type: ignore
 client.search(search_query="coffee")  # type: ignore
 client.search(engine="google", q="coffee", device="watch")  # type: ignore
+# A Python bool is sent as "False", which SerpApi ignores here; the parameter takes "true" or "false".
+client.search(engine="yandex", text="coffee", fix_typo=False)  # type: ignore
 client.search(engine="google", q="coffee", output="xml")  # type: ignore
 client.search(engine="google", q="coffee", timeout="30")  # type: ignore
 serpapi.extract()  # type: ignore
@@ -25,7 +27,7 @@ serpapi.upload_image(123)  # type: ignore
 client.search(MappingProxyType({"engine": "google", "q": "coffee"}))  # type: ignore
 client.search_archive(MappingProxyType({"search_id": "abc"}))  # type: ignore
 
-# Untyped dict literals fall back to Mapping[str, Any]; annotate them with a TypedDict for key checking.
+# Untyped dict literals match the fallback overload unchecked; annotate them with a TypedDict for key checking.
 typo: "GoogleJsonSearchParams" = {"engine": "google", "qq": "coffee"}  # type: ignore
 bad_output: "GoogleJsonSearchParams" = {"engine": "google", "q": "coffee", "output": "md"}  # type: ignore
 no_url: "ExtractJsonParams" = {"timeout": 30000}  # type: ignore

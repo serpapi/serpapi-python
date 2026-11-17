@@ -6,12 +6,16 @@ on:
     paths:
       - "serpapi/**"
       - "stubs/**"
+      - "pyproject.toml"
+      - "LICENSE"
       - ".github/workflows/stubs*.yml"
   pull_request:
     branches: [master]
     paths:
       - "serpapi/**"
       - "stubs/**"
+      - "pyproject.toml"
+      - "LICENSE"
       - ".github/workflows/stubs*.yml"
   workflow_call:
 

@@ -107,12 +107,47 @@ def test_series_check(tmp_path, monkeypatch, tag, existing, exit_code, github_ou
     output.touch()
     monkeypatch.setenv("GITHUB_OUTPUT", str(output))
     monkeypatch.setattr(release_version, "read_sdk_version", lambda: "1.2.0")
-    monkeypatch.setattr(release_version, "published_versions", lambda: existing)
+    monkeypatch.setattr(
+        release_version, "urlopen", respond_with({"releases": {version: [{"yanked": False}] for version in existing}})
+    )
 
     assert release_version.main(["--series-check", tag]) == exit_code
     assert output.read_text() == github_output
 
 
+@pytest.mark.parametrize(
+    ("files", "publish"),
+    [
+        ([], True),
+        ([{"yanked": True}], True),
+        ([{"yanked": False}], False),
+        ([{"yanked": True}, {"yanked": False}], False),
+        ([{}], False),
+    ],
+)
+def test_series_requires_available_files_but_reserves_every_version(tmp_path, monkeypatch, files, publish):
+    version = "1.2.0.20260102"
+    output = tmp_path / "github_output"
+    monkeypatch.setenv("GITHUB_OUTPUT", str(output))
+    monkeypatch.setattr(
+        release_version, "urlopen",
+        respond_with({"releases": {version: files, "1.1.0.20260102": [{"yanked": False}]}}),
+    )
+
+    assert release_version.series_check("v1.2.0", "1.2.0") == 0
+    assert output.read_text() == f"publish={str(publish).lower()}\n"
+    assert release_version.next_version("1.2.0", DAY, release_version.published_versions()) == version + ".1"
+
+
 def test_sdk_version_flag_prints_the_sdk_version(capsys):
     assert release_version.main(["--sdk-version"]) == 0
     assert capsys.readouterr().out == release_version.read_sdk_version() + "\n"
+
+
+def test_non_final_sdk_version_fails_with_a_message(monkeypatch, capsys):
+    def non_final():
+        raise ValueError("SDK version '1.3.0rc1' is not a final X.Y.Z release")
+
+    monkeypatch.setattr(release_version, "read_sdk_version", non_final)
+    assert release_version.main(["--series-check", "v1.3.0rc1"]) == 1
+    assert "not a final X.Y.Z release" in capsys.readouterr().err

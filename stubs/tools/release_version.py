@@ -50,7 +50,7 @@ def has_published_series(sdk_version: str, existing: Iterable[str]) -> bool:
     return any(version.startswith(prefix) for version in existing)
 
 
-def published_versions(url: str = PYPI_JSON_URL) -> set[str]:
+def published_versions(url: str = PYPI_JSON_URL, *, available_only: bool = False) -> set[str]:
     request = Request(url, headers={"Accept": "application/json"})
     try:
         with urlopen(request, timeout=30) as response:
@@ -59,21 +59,26 @@ def published_versions(url: str = PYPI_JSON_URL) -> set[str]:
         if error.code == 404:
             return set()
         raise
-    return set(payload["releases"])
+    releases = payload["releases"]
+    if available_only:
+        return {
+            version for version, files in releases.items()
+            if any(not file.get("yanked", False) for file in files)
+        }
+    return set(releases)
 
 
 def parse_date(value: str) -> datetime.date:
     return datetime.datetime.strptime(value, "%Y%m%d").date()
 
 
-def series_check(tag: str) -> int:
+def series_check(tag: str, sdk_version: str) -> int:
     """For an SDK release tag: verify it names the SDK version and report whether its stubs still need publishing."""
-    sdk_version = read_sdk_version()
     if tag != f"v{sdk_version}":
         print(f"Release tag {tag!r} does not match SDK version tag 'v{sdk_version}'", file=sys.stderr)
         return 1
-    # A stub-only release may already have published this series; an SDK tag must not supersede it.
-    publish = not has_published_series(sdk_version, published_versions())
+    # Preserve an installable series, but allow recovery when all its files were yanked or deleted.
+    publish = not has_published_series(sdk_version, published_versions(available_only=True))
     print(f"{'Publishing' if publish else 'Skipping'} stubs for SDK {sdk_version}")
     github_output = os.environ.get("GITHUB_OUTPUT")
     if github_output:
@@ -98,14 +103,19 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(sys.argv[1:] if argv is None else argv)
+    try:
+        sdk_version = read_sdk_version()
+    except ValueError as error:
+        print(error, file=sys.stderr)
+        return 1
     if args.sdk_version:
-        print(read_sdk_version())
+        print(sdk_version)
         return 0
     if args.series_check is not None:
-        return series_check(args.series_check)
+        return series_check(args.series_check, sdk_version)
     date = args.date or datetime.datetime.now(datetime.timezone.utc).date()
     existing = set() if args.offline else published_versions()
-    version = next_version(read_sdk_version(), date, existing)
+    version = next_version(sdk_version, date, existing)
     args.output.write_text(version + "\n", encoding="utf-8")
     print(version)
     return 0

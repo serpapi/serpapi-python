@@ -96,26 +96,7 @@ jobs:
     name: Build stub distribution
     needs: [test, stubs-check, stubs-series]
     if: needs.stubs-series.outputs.publish == 'true'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.13"
-
-      - name: Build sdist and wheel
-        working-directory: stubs
-        run: |
-          pip install build
-          python tools/release_version.py
-          python -m build
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: stubs-dist
-          path: stubs/dist/
-          if-no-files-found: error
+    uses: ./.github/workflows/stubs-build.yml
 
   # Stubs are published first so that `serpapi[typing]` resolves as soon as the SDK is available.
   publish-stubs:
@@ -142,7 +123,7 @@ jobs:
           path: dist/
 
       - id: final-check
-        name: Do not supersede an existing stub series
+        name: Do not supersede an installable stub series
         run: python stubs/tools/release_version.py --series-check "$GITHUB_REF_NAME"
 
       - name: Publish to PyPI

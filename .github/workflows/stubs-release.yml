@@ -16,6 +16,7 @@ on:
 concurrency:
   group: serpapi-stubs-release
   cancel-in-progress: false
+  queue: max
 
 permissions:
   contents: read
@@ -51,7 +52,7 @@ jobs:
           fi
           tag="v$version"
           if ! git rev-parse --verify --quiet "refs/tags/$tag" >/dev/null; then
-            echo "::notice::$tag is not tagged yet; these stubs will ship with the SDK release."
+            echo "::notice::$tag is not tagged yet; include these stubs in the SDK release or rerun this workflow after tagging."
             echo "release=false" >> "$GITHUB_OUTPUT"
           elif ! git diff --quiet "$tag" HEAD -- serpapi/; then
             echo "::notice::serpapi/ changed since $tag; these stubs will ship with the next SDK release."
@@ -68,26 +69,7 @@ jobs:
   build:
     name: Build serpapi-stubs
     needs: [check]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version: "3.13"
-
-      - name: Build sdist and wheel
-        working-directory: stubs
-        run: |
-          pip install build
-          python tools/release_version.py
-          python -m build
-
-      - uses: actions/upload-artifact@v7
-        with:
-          name: stubs-dist
-          path: stubs/dist/
-          if-no-files-found: error
+    uses: ./.github/workflows/stubs-build.yml
 
   publish:
     name: Publish serpapi-stubs
@@ -97,12 +79,46 @@ jobs:
       name: pypi-stubs
       url: https://pypi.org/p/serpapi-stubs
     permissions:
+      contents: read
       id-token: write
     steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      # Re-running an older run would publish that commit's stubs under a newer version. This runs in the
+      # publishing job because "Re-run failed jobs" keeps the outputs of the jobs that already passed.
+      - id: current
+        name: Do not supersede newer stubs for the same SDK
+        run: |
+          git fetch --quiet origin "refs/heads/$GITHUB_REF_NAME"
+          if ! git merge-base --is-ancestor HEAD FETCH_HEAD; then
+            echo "::notice::$GITHUB_REF_NAME no longer contains this commit; skipping the replaced run."
+            echo "publish=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          # Only a newer shipped-stub change for this SDK can replace this release. Look through history,
+          # because the branch tip may already target an unreleased SDK. Keep these paths with on.push.paths.
+          stub_paths=(
+            stubs/serpapi-stubs stubs/pyproject.toml stubs/MANIFEST.in stubs/LICENSE stubs/README.md
+          )
+          commits=$(git rev-list --first-parent HEAD..FETCH_HEAD -- "${stub_paths[@]}")
+          for commit in $commits; do
+            if git diff --quiet HEAD "$commit" -- serpapi/; then
+              echo "::notice::Newer compatible stub change $commit supersedes this run; use that commit's run to release."
+              echo "publish=false" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+          done
+          echo "publish=true" >> "$GITHUB_OUTPUT"
+
       - uses: actions/download-artifact@v8
+        if: steps.current.outputs.publish == 'true'
         with:
           name: stubs-dist
           path: dist/
 
       - name: Publish to PyPI
+        if: steps.current.outputs.publish == 'true'
         uses: pypa/gh-action-pypi-publish@release/v1

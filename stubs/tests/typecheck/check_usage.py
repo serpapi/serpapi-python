@@ -9,7 +9,14 @@ import serpapi
 from serpapi import Client, SerpResults
 
 if TYPE_CHECKING:
-    from serpapi.engine_params import GoogleJsonSearchParams, SearchArchiveParams, SearchParams
+    from serpapi.engine_params import (
+        ExtractTextParams,
+        GoogleJsonSearchParams,
+        GoogleTextSearchParams,
+        SearchArchiveParams,
+        SearchArchiveTextParams,
+        SearchParams,
+    )
 
 client = Client(api_key="secret", timeout=20)
 
@@ -23,16 +30,18 @@ assert_type(client.search(engine="home_depot", q="chair", store_id=2118), SerpRe
 assert_type(client.search(engine="google_lens", image_id="abc", hl="en"), SerpResults)
 assert_type(client.search(engine="google", q="coffee", timeout=(3.0, 30.0), verify=False), SerpResults)
 assert_type(client.search(engine="google", q="coffee", proxies=None, cert=None, verify=None, stream=None), SerpResults)
+assert_type(client.search(engine="google", q="coffee", proxies={"https": None}), SerpResults)
+assert_type(client.search(engine="ebay", _nkw="coffee", _blrs="spell_auto_correct"), SerpResults)
 assert_type(client.search(engine="google_maps", q="coffee", min_rating=4.5), SerpResults)
 assert_type(client.search(engine="doordash", q="coffee", min_rating=4.5), SerpResults)
 assert_type(client.search(engine="amazon", k="coffee", language="en_US"), SerpResults)
 assert_type(client.search(engine="naver", query="coffee", page=2, start=21), SerpResults)
+assert_type(client.search(engine="yandex", text="coffee", sort_mode="date"), SerpResults)
 assert_type(client.search({"engine": "google", "q": "coffee", "async": True}), SerpResults)
 client.search({"engine": "google_images", "tbm": "isch", "q": "coffee"})
 client.search({"engine": "google_play", "q": "kite", "store": "apps", "max_results": "2"})
 assert_type(client.search({"engine": "google", "q": "coffee", "output": "md"}), str)
 assert_type(client.search({"engine": "google_translate", "text": "hi", "from": "en"}), SerpResults)
-assert_type(client.search({"engine": "google", "q": "coffee", "async": True}), SerpResults)
 assert_type(serpapi.search(engine="google", q="coffee", output="md"), str)
 
 def runtime_engine(name: str) -> None:
@@ -41,6 +50,21 @@ def runtime_engine(name: str) -> None:
 params: Dict[str, Any] = {"engine": "google", "q": "coffee"}
 assert_type(client.search(params), Union[SerpResults, Any])
 assert_type(client.search(params, start=10), Union[SerpResults, Any])
+# An `output` keyword overrides the mapping, so the result type is known even for an untyped dict.
+assert_type(client.search(params, output="md"), str)
+assert_type(client.extract({"url": "https://example.com"}, output="html"), str)
+assert_type(client.search(params, output="json"), SerpResults)
+assert_type(client.extract(params, output="json"), SerpResults)
+assert_type(client.search_archive(params, output="json"), SerpResults)
+
+
+def json_overrides_text(
+    search: "GoogleTextSearchParams", extract: "ExtractTextParams", archive: "SearchArchiveTextParams"
+) -> None:
+    assert_type(client.search(search, output="json"), SerpResults)
+    assert_type(client.extract(extract, output="json"), SerpResults)
+    assert_type(client.search_archive(archive, output="json"), SerpResults)
+    assert_type(serpapi.search(search, output="json"), SerpResults)
 
 typed: "GoogleJsonSearchParams" = {"engine": "google", "q": "coffee", "device": "mobile"}
 assert_type(client.search(typed), SerpResults)

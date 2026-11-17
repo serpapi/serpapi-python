@@ -3042,7 +3042,7 @@ class Client(HTTPClient):
         output: Literal["html", "md"],
         LH_ItemCondition: _Scalar = ...,
         LH_PrefLoc: _Number = ...,
-        _blrs: _Flag = ...,
+        _blrs: str = ...,
         _dmd: _Number = ...,
         _ipg: _Number = ...,
         _nkw: _Scalar = ...,
@@ -3077,7 +3077,7 @@ class Client(HTTPClient):
         engine: Literal["ebay"],
         LH_ItemCondition: _Scalar = ...,
         LH_PrefLoc: _Number = ...,
-        _blrs: _Flag = ...,
+        _blrs: str = ...,
         _dmd: _Number = ...,
         _ipg: _Number = ...,
         _nkw: _Scalar = ...,
@@ -11832,7 +11832,7 @@ class Client(HTTPClient):
         p: _Number = ...,
         period: Literal["all", "day", "last_two_weeks", "month"] = ...,
         proxies: _Proxies = ...,
-        sort_mode: Literal["relevance", "time"] = ...,
+        sort_mode: str = ...,
         stream: Optional[bool] = ...,
         text: _Scalar = ...,
         timeout: _Timeout = ...,
@@ -11859,7 +11859,7 @@ class Client(HTTPClient):
         p: _Number = ...,
         period: Literal["all", "day", "last_two_weeks", "month"] = ...,
         proxies: _Proxies = ...,
-        sort_mode: Literal["relevance", "time"] = ...,
+        sort_mode: str = ...,
         stream: Optional[bool] = ...,
         text: _Scalar = ...,
         timeout: _Timeout = ...,
@@ -12623,6 +12623,22 @@ class Client(HTTPClient):
     def search(
         self,
         params: Union[SearchParams, MutableMapping[str, Any]],
+        *,
+        output: Literal["html", "md"],
+        **kwargs: Any,
+    ) -> str: ...
+    @overload
+    def search(
+        self,
+        params: Union[SearchParams, MutableMapping[str, Any]],
+        *,
+        output: Literal["json"],
+        **kwargs: Any,
+    ) -> SerpResults: ...
+    @overload
+    def search(
+        self,
+        params: Union[SearchParams, MutableMapping[str, Any]],
         **kwargs: Any,
     ) -> Union[SerpResults, Any]: ...
     @overload
@@ -12705,6 +12721,22 @@ class Client(HTTPClient):
     def extract(
         self,
         params: Mapping[str, Any],
+        *,
+        output: Literal["html", "md"],
+        **kwargs: Any,
+    ) -> str: ...
+    @overload
+    def extract(
+        self,
+        params: Mapping[str, Any],
+        *,
+        output: Literal["json"],
+        **kwargs: Any,
+    ) -> SerpResults: ...
+    @overload
+    def extract(
+        self,
+        params: Mapping[str, Any],
         **kwargs: Any,
     ) -> Union[SerpResults, Any]: ...
     @overload
@@ -12756,6 +12788,22 @@ class Client(HTTPClient):
         stream: Optional[bool] = ...,
         timeout: _Timeout = ...,
         verify: _Verify = ...,
+    ) -> SerpResults: ...
+    @overload
+    def search_archive(
+        self,
+        params: Union[SearchArchiveParams, MutableMapping[str, Any]],
+        *,
+        output: Literal["html", "md"],
+        **kwargs: Any,
+    ) -> str: ...
+    @overload
+    def search_archive(
+        self,
+        params: Union[SearchArchiveParams, MutableMapping[str, Any]],
+        *,
+        output: Literal["json"],
+        **kwargs: Any,
     ) -> SerpResults: ...
     @overload
     def search_archive(
@@ -15307,7 +15355,7 @@ def search(
     output: Literal["html", "md"],
     LH_ItemCondition: _Scalar = ...,
     LH_PrefLoc: _Number = ...,
-    _blrs: _Flag = ...,
+    _blrs: str = ...,
     _dmd: _Number = ...,
     _ipg: _Number = ...,
     _nkw: _Scalar = ...,
@@ -15341,7 +15389,7 @@ def search(
     engine: Literal["ebay"],
     LH_ItemCondition: _Scalar = ...,
     LH_PrefLoc: _Number = ...,
-    _blrs: _Flag = ...,
+    _blrs: str = ...,
     _dmd: _Number = ...,
     _ipg: _Number = ...,
     _nkw: _Scalar = ...,
@@ -23631,7 +23679,7 @@ def search(
     p: _Number = ...,
     period: Literal["all", "day", "last_two_weeks", "month"] = ...,
     proxies: _Proxies = ...,
-    sort_mode: Literal["relevance", "time"] = ...,
+    sort_mode: str = ...,
     stream: Optional[bool] = ...,
     text: _Scalar = ...,
     timeout: _Timeout = ...,
@@ -23657,7 +23705,7 @@ def search(
     p: _Number = ...,
     period: Literal["all", "day", "last_two_weeks", "month"] = ...,
     proxies: _Proxies = ...,
-    sort_mode: Literal["relevance", "time"] = ...,
+    sort_mode: str = ...,
     stream: Optional[bool] = ...,
     text: _Scalar = ...,
     timeout: _Timeout = ...,
@@ -24380,6 +24428,20 @@ def search(
 @overload
 def search(
     params: Union[SearchParams, MutableMapping[str, Any]],
+    *,
+    output: Literal["html", "md"],
+    **kwargs: Any,
+) -> str: ...
+@overload
+def search(
+    params: Union[SearchParams, MutableMapping[str, Any]],
+    *,
+    output: Literal["json"],
+    **kwargs: Any,
+) -> SerpResults: ...
+@overload
+def search(
+    params: Union[SearchParams, MutableMapping[str, Any]],
     **kwargs: Any,
 ) -> Union[SerpResults, Any]: ...
 @overload
@@ -24457,6 +24519,20 @@ def extract(
 @overload
 def extract(
     params: Mapping[str, Any],
+    *,
+    output: Literal["html", "md"],
+    **kwargs: Any,
+) -> str: ...
+@overload
+def extract(
+    params: Mapping[str, Any],
+    *,
+    output: Literal["json"],
+    **kwargs: Any,
+) -> SerpResults: ...
+@overload
+def extract(
+    params: Mapping[str, Any],
     **kwargs: Any,
 ) -> Union[SerpResults, Any]: ...
 @overload
@@ -24504,6 +24580,20 @@ def search_archive(
     stream: Optional[bool] = ...,
     timeout: _Timeout = ...,
     verify: _Verify = ...,
+) -> SerpResults: ...
+@overload
+def search_archive(
+    params: Union[SearchArchiveParams, MutableMapping[str, Any]],
+    *,
+    output: Literal["html", "md"],
+    **kwargs: Any,
+) -> str: ...
+@overload
+def search_archive(
+    params: Union[SearchArchiveParams, MutableMapping[str, Any]],
+    *,
+    output: Literal["json"],
+    **kwargs: Any,
 ) -> SerpResults: ...
 @overload
 def search_archive(

@@ -44,9 +44,28 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.STUBS_REFRESH_TOKEN || github.token }}
         run: |
+          bot="github-actions[bot]"
+
           # Ignore fork PRs that happen to use the same branch name.
           open_pr=$(gh pr list --head "$BRANCH" --state open --json number,isCrossRepository \
             --jq '[.[] | select(.isCrossRepository | not)][0].number // empty')
+
+          # A maintainer may have pushed fixes to the open refresh branch. Never discard those. An open pull
+          # request always has its branch, so a failed fetch is an error and has to stop the run.
+          branch_tip=""
+          human_commits=false
+          if [ -n "$open_pr" ]; then
+            git fetch --quiet --depth=1 origin "$BRANCH"
+            branch_tip=$(git rev-parse FETCH_HEAD)
+            if [ "$(git log -1 --format='%an/%cn' "$branch_tip")" != "$bot/$bot" ]; then
+              human_commits=true
+            fi
+          fi
+
+          if [ "$human_commits" = true ]; then
+            echo "::warning::origin/$BRANCH has commits that this workflow did not make, so pull request #$open_pr was left unchanged."
+            exit 0
+          fi
 
           if [ -z "$(git status --porcelain -- stubs/)" ]; then
             echo "Stubs are up to date."
@@ -57,24 +76,26 @@ jobs:
             exit 0
           fi
 
-          git config user.name "github-actions[bot]"
+          git config user.name "$bot"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git switch -C "$BRANCH"
           git add stubs/
           git commit -m "Refresh serpapi-stubs from the SerpApi playground"
 
-          if [ -z "$open_pr" ]; then
+          if [ -n "$open_pr" ]; then
+            # Leave the branch and its checks alone when it already has these stubs, whatever else changed
+            # on the default branch.
+            if [ "$(git rev-parse 'HEAD:stubs')" = "$(git rev-parse "$branch_tip:stubs")" ]; then
+              echo "Pull request #$open_pr already has these stubs."
+              exit 0
+            fi
+            # The lease rejects the push if the branch changed after it was fetched above.
+            git push --force-with-lease="$BRANCH:$branch_tip" origin "$BRANCH"
+          else
             # Without an open PR the remote branch is left over from a merged or closed one. Updating it
             # would carry every change made to the default branch since then, and GitHub can refuse a
             # push that changes workflow files that way, so start from a fresh branch.
             git push --quiet origin --delete "$BRANCH" 2>/dev/null || true
-          fi
-
-          # Do not rewrite the refresh branch (or rerun its checks) when it already has these stubs.
-          if git fetch --quiet --depth=1 origin "$BRANCH" 2>/dev/null \
-            && [ "$(git rev-parse 'HEAD^{tree}')" = "$(git rev-parse 'FETCH_HEAD^{tree}')" ]; then
-            echo "origin/$BRANCH already has these stubs."
-          else
             git push --force origin "$BRANCH"
           fi
 

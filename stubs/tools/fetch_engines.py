@@ -25,6 +25,10 @@ MAX_LITERAL_OPTIONS = 80
 # Playground parameter types whose options are the complete list of accepted values.
 CLOSED_CHOICE_TYPES = frozenset({"select", "dropdown", "device"})
 DOCUMENTED_VALUE = re.compile(r"<code>(.*?)</code>", re.DOTALL)
+# A value in a documented list of choices: `<code>value</code> - label`.
+LISTED_VALUE = re.compile(r"<code>([\w.\-]+)</code>\s+[-–—]\s")
+# Checkboxes that send a value instead of a flag: eBay's `_blrs` takes `spell_auto_correct`.
+VALUE_CHECKBOXES = frozenset({("ebay", "_blrs")})
 TIMEOUT_SECONDS = 60
 USER_AGENT = "serpapi-stubs-refresh (+https://github.com/serpapi/serpapi-python)"
 
@@ -73,17 +77,22 @@ def _is_closed_choice(metadata: dict[str, Any], values: list[str]) -> bool:
     """Whether the options are the only accepted values, so a Literal type does not reject valid calls."""
     if metadata.get("type") not in CLOSED_CHOICE_TYPES:
         return False
-    # Some options are documented in another case than the option list (e.g. Bing's `mkt`, `cc`), which
-    # means the API does not match case-sensitively.
     description = metadata.get("html")
-    documented = DOCUMENTED_VALUE.findall(description) if isinstance(description, str) else []
+    if not isinstance(description, str):
+        return True
+    # Decode entities first, so that `&mdash;` separators and escaped values compare as displayed.
+    description = html.unescape(description)
     accepted = set(values)
     folded = {value.casefold() for value in values}
-    for token in documented:
-        value = html.unescape(token).strip()
+    # Some options are documented in another case than the option list (e.g. Bing's `mkt`, `cc`), which
+    # means the API does not match case-sensitively.
+    for token in DOCUMENTED_VALUE.findall(description):
+        value = token.strip()
         if value not in accepted and value.casefold() in folded:
             return False
-    return True
+    # A listed value that the options lack means the option list is wrong or incomplete (Yandex's
+    # `sort_mode` offers `time` where the API takes `date`).
+    return all(value.casefold() in folded for value in LISTED_VALUE.findall(description))
 
 
 def normalize_param(name: str, metadata: Any, engine: str | None = None) -> dict[str, Any]:
@@ -93,8 +102,8 @@ def normalize_param(name: str, metadata: Any, engine: str | None = None) -> dict
     param_type = metadata.get("type")
     if isinstance(param_type, str) and param_type:
         param["type"] = param_type
-    if metadata.get("required") is True:
-        param["required"] = True
+    if (engine, name) in VALUE_CHECKBOXES:
+        param["value_type"] = "string"
     options = metadata.get("options")
     if isinstance(options, list) and options:
         values = []

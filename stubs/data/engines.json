@@ -11,9 +11,7 @@
         "value_type": "string"
       },
       "amenities": {},
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "bathrooms": {
         "type": "number"
@@ -103,9 +101,7 @@
           "ZAR"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "guest_favorite": {
         "type": "checkbox"
       },
@@ -179,9 +175,7 @@
           "amazon.com.mx"
         ]
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "dc": {
         "type": "checkbox"
@@ -197,9 +191,7 @@
         ]
       },
       "emi": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "k": {},
       "language": {
@@ -362,17 +354,11 @@
           "amazon.com.mx"
         ]
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
-      "k": {
-        "required": true
-      },
+      "k": {},
       "no_cache": {
         "type": "checkbox"
       },
@@ -390,16 +376,12 @@
           "amazon.com"
         ]
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "dc": {
         "type": "checkbox"
       },
-      "delivery_zip": {
-        "required": true
-      },
+      "delivery_zip": {},
       "device": {
         "type": "device",
         "options": [
@@ -408,9 +390,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "k": {},
       "language": {
@@ -479,12 +459,8 @@
           "amazon.com.mx"
         ]
       },
-      "api_key": {
-        "required": true
-      },
-      "asin": {
-        "required": true
-      },
+      "api_key": {},
+      "asin": {},
       "async": {},
       "delivery_city": {},
       "delivery_zip": {},
@@ -496,9 +472,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "language": {
         "type": "select",
@@ -579,9 +553,7 @@
           "amazon.com.mx"
         ]
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -591,9 +563,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "include_products": {
         "type": "checkbox"
       },
@@ -641,15 +611,11 @@
         "type": "checkbox"
       },
       "output": {},
-      "promotion_id": {
-        "required": true
-      },
+      "promotion_id": {},
       "zero_trace": {}
     },
     "apple_app_store": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "category_id": {
         "type": "select",
@@ -670,9 +636,7 @@
       "disallow_explicit": {
         "type": "checkbox"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "lang": {
         "type": "select",
@@ -731,20 +695,14 @@
           "developer"
         ]
       },
-      "term": {
-        "required": true
-      },
+      "term": {},
       "zero_trace": {}
     },
     "apple_maps": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "center": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "locale": {
         "type": "select",
@@ -812,9 +770,7 @@
         "type": "number"
       },
       "output": {},
-      "query": {
-        "required": true
-      },
+      "query": {},
       "sort": {
         "type": "select",
         "options": [
@@ -828,13 +784,9 @@
       "zero_trace": {}
     },
     "apple_maps_places": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "locale": {
         "type": "select",
@@ -891,9 +843,7 @@
           "zh-TW"
         ]
       },
-      "muid": {
-        "required": true
-      },
+      "muid": {},
       "no_cache": {
         "type": "checkbox"
       },
@@ -901,25 +851,19 @@
       "zero_trace": {}
     },
     "apple_product": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "country": {
         "type": "select",
         "value_type": "string"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "product_id": {
-        "required": true
-      },
+      "product_id": {},
       "type": {
         "type": "select",
         "options": [
@@ -929,17 +873,13 @@
       "zero_trace": {}
     },
     "apple_reviews": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "country": {
         "type": "select",
         "value_type": "string"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -948,9 +888,7 @@
       "page": {
         "type": "number"
       },
-      "product_id": {
-        "required": true
-      },
+      "product_id": {},
       "sort": {
         "type": "select",
         "options": [
@@ -963,13 +901,9 @@
       "zero_trace": {}
     },
     "autozone": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "facet": {},
       "include_filters": {
         "type": "checkbox"
@@ -991,9 +925,7 @@
       "ps": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "sort": {
         "type": "select",
         "options": [
@@ -1022,21 +954,15 @@
       "zero_trace": {}
     },
     "autozone_product": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "product_id": {
-        "required": true
-      },
+      "product_id": {},
       "store_id": {},
       "vehicle_engine": {},
       "vehicle_make": {},
@@ -1055,9 +981,7 @@
       "zero_trace": {}
     },
     "baidu": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "bs": {},
       "ct": {
@@ -1072,9 +996,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "f": {},
       "gpc": {},
       "json_restrictor": {},
@@ -1086,9 +1008,7 @@
       "pn": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "q5": {},
       "q6": {},
       "rn": {
@@ -1097,17 +1017,13 @@
       "zero_trace": {}
     },
     "baidu_maps": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "c": {
         "type": "select",
         "value_type": "number"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "lat": {
         "type": "number"
@@ -1122,23 +1038,17 @@
       "page": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "baidu_news": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "ct": {
         "type": "select",
         "value_type": "number"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "medium": {
         "type": "select",
@@ -1151,9 +1061,7 @@
       "pn": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "rn": {
         "type": "number"
       },
@@ -1164,9 +1072,7 @@
       "zero_trace": {}
     },
     "bing": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "cc": {
         "type": "select",
@@ -1180,9 +1086,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filters": {},
       "first": {
         "type": "number"
@@ -1205,9 +1109,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safeSearch": {
         "type": "select",
         "value_type": "string"
@@ -1215,13 +1117,9 @@
       "zero_trace": {}
     },
     "bing_copilot": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "lat": {
         "type": "number"
@@ -1236,9 +1134,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "bing_images": {
@@ -1251,9 +1147,7 @@
           "lt525600"
         ]
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "aspect": {
         "type": "select",
         "options": [
@@ -1297,9 +1191,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "face": {
         "type": "select",
         "options": [
@@ -1351,9 +1243,7 @@
           "shopping"
         ]
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safeSearch": {
         "type": "select",
         "options": [
@@ -1365,17 +1255,13 @@
       "zero_trace": {}
     },
     "bing_maps": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "count": {
         "type": "number"
       },
       "cp": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "first": {
         "type": "number"
       },
@@ -1385,9 +1271,7 @@
       },
       "output": {},
       "place_id": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "setlang": {
         "type": "select",
         "options": [
@@ -1446,9 +1330,7 @@
       "zero_trace": {}
     },
     "bing_news": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "cc": {
         "type": "select",
@@ -1465,9 +1347,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "first": {
         "type": "number"
       },
@@ -1480,9 +1360,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "qft": {
         "type": "select",
         "options": [
@@ -1500,27 +1378,19 @@
       "zero_trace": {}
     },
     "bing_product": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "product_token": {
-        "required": true
-      },
+      "product_token": {},
       "zero_trace": {}
     },
     "bing_reverse_image": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "cab": {
         "type": "number"
@@ -1537,12 +1407,8 @@
       "count": {
         "type": "number"
       },
-      "engine": {
-        "required": true
-      },
-      "image_url": {
-        "required": true
-      },
+      "engine": {},
+      "image_url": {},
       "json_restrictor": {},
       "mkt": {
         "type": "select",
@@ -1556,9 +1422,7 @@
       "zero_trace": {}
     },
     "bing_shopping": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "cc": {
         "type": "select",
@@ -1575,9 +1439,7 @@
       "efirst": {
         "type": "number"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filters": {},
       "json_restrictor": {},
       "mkt": {
@@ -1588,15 +1450,11 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "bing_videos": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "cc": {
         "type": "select",
@@ -1619,9 +1477,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "first": {
         "type": "number"
       },
@@ -1649,9 +1505,7 @@
           "paid"
         ]
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "resolution": {
         "type": "select",
         "options": [
@@ -1739,9 +1593,7 @@
       "adults": {
         "type": "number"
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "check_in_date": {},
       "check_out_date": {},
@@ -1761,9 +1613,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "flex_window": {
         "type": "select",
         "value_type": "number"
@@ -1841,9 +1691,7 @@
       },
       "output": {},
       "property_types": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "rating": {
         "type": "select",
         "value_type": "number"
@@ -1872,9 +1720,7 @@
       "zero_trace": {}
     },
     "brave": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "country": {
         "type": "select",
@@ -1920,9 +1766,7 @@
           "us"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "language": {
         "type": "select",
@@ -1988,9 +1832,7 @@
         "type": "number"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe_search": {
         "type": "select",
         "options": [
@@ -2006,9 +1848,7 @@
       "zero_trace": {}
     },
     "brave_ai_mode": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "country": {
         "type": "select",
@@ -2053,9 +1893,7 @@
           "us"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "language": {
         "type": "select",
@@ -2118,9 +1956,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safeSearch": {
         "type": "select",
         "options": [
@@ -2140,9 +1976,7 @@
       "zero_trace": {}
     },
     "brave_images": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "country": {
         "type": "select",
@@ -2187,17 +2021,13 @@
           "us"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe_search": {
         "type": "select",
         "options": [
@@ -2212,9 +2042,7 @@
       "zero_trace": {}
     },
     "brave_videos": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "country": {
         "type": "select",
@@ -2268,9 +2096,7 @@
           "past_year"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -2279,9 +2105,7 @@
       "page": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe_search": {
         "type": "select",
         "options": [
@@ -2296,19 +2120,13 @@
       "zero_trace": {}
     },
     "doordash": {
-      "address": {
-        "required": true
-      },
-      "api_key": {
-        "required": true
-      },
+      "address": {},
+      "api_key": {},
       "async": {},
       "deals": {
         "type": "checkbox"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "fastest": {
         "type": "checkbox"
       },
@@ -2327,9 +2145,7 @@
       "pickup": {
         "type": "checkbox"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "store_type": {
         "type": "select",
         "options": [
@@ -2345,13 +2161,9 @@
       "zero_trace": {}
     },
     "duck_ai": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "model": {
         "type": "select",
@@ -2369,21 +2181,15 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "subsequent_request_token": {},
       "zero_trace": {}
     },
     "duckduckgo": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "df": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "kl": {
         "type": "select",
@@ -2461,9 +2267,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "value_type": "number"
@@ -2477,14 +2281,10 @@
       "zero_trace": {}
     },
     "duckduckgo_light": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "df": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "kl": {
         "type": "select",
@@ -2560,20 +2360,14 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "duckduckgo_maps": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "bbox": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "lat": {
         "type": "number"
@@ -2585,9 +2379,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "strict_bbox": {
         "type": "select",
         "value_type": "number"
@@ -2595,14 +2387,10 @@
       "zero_trace": {}
     },
     "duckduckgo_news": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "df": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "kl": {
         "type": "select",
@@ -2680,9 +2468,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "value_type": "number"
@@ -2693,13 +2479,9 @@
       "zero_trace": {}
     },
     "duckduckgo_shopping": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filters": {},
       "json_restrictor": {},
       "kl": {
@@ -2758,9 +2540,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "sort_by": {
         "type": "select",
         "value_type": "number"
@@ -2774,7 +2554,8 @@
         "value_type": "number"
       },
       "_blrs": {
-        "type": "checkbox"
+        "type": "checkbox",
+        "value_type": "string"
       },
       "_dmd": {
         "type": "select",
@@ -2784,9 +2565,7 @@
         "type": "select",
         "value_type": "number"
       },
-      "_nkw": {
-        "required": true
-      },
+      "_nkw": {},
       "_pgn": {
         "type": "number"
       },
@@ -2810,9 +2589,7 @@
       "_udlo": {
         "type": "number"
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "buying_format": {
         "type": "select",
@@ -2844,9 +2621,7 @@
           "ebay.com"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -2857,9 +2632,7 @@
       "zero_trace": {}
     },
     "ebay_product": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "ebay_domain": {
         "type": "select",
@@ -2882,9 +2655,7 @@
           "ebay.com"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "lang": {
         "type": "select",
@@ -2898,9 +2669,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "product_id": {
-        "required": true
-      },
+      "product_id": {},
       "shipping_country": {
         "type": "select",
         "value_type": "string"
@@ -2920,9 +2689,7 @@
         "type": "select",
         "value_type": "number"
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "buying_format": {
         "type": "select",
@@ -2949,9 +2716,7 @@
           "ebay.com"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "free_shipping": {
         "type": "checkbox"
       },
@@ -2960,12 +2725,9 @@
         "type": "checkbox"
       },
       "output": {},
-      "seller_id": {
-        "required": true
-      },
+      "seller_id": {},
       "type": {
         "type": "select",
-        "required": true,
         "options": [
           "user",
           "store"
@@ -2974,9 +2736,7 @@
       "zero_trace": {}
     },
     "eventbrite": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "category": {
         "type": "select",
@@ -3017,9 +2777,7 @@
         ]
       },
       "end_date": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "event_type": {
         "type": "select",
         "options": [
@@ -3077,9 +2835,7 @@
       "zero_trace": {}
     },
     "extract": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -3089,9 +2845,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "exclude_tags": {},
       "include_markdown": {
         "type": "checkbox"
@@ -3128,15 +2882,11 @@
       "timeout": {
         "type": "number"
       },
-      "url": {
-        "required": true
-      },
+      "url": {},
       "zero_trace": {}
     },
     "facebook_marketplace": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "availability": {
         "type": "select",
@@ -3179,9 +2929,7 @@
           "shipping"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "lat": {
         "type": "number"
@@ -3220,37 +2968,27 @@
       "zero_trace": {}
     },
     "facebook_profile": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "profile_id": {
-        "required": true
-      },
+      "profile_id": {},
       "zero_trace": {}
     },
     "flightradar24": {
       "aircraft_type": {},
       "airline": {},
       "airport": {},
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "arrival_id": {},
       "async": {},
       "callsign": {},
       "departure_id": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "flight_number": {},
       "json_restrictor": {},
       "map_bounds": {},
@@ -3262,13 +3000,9 @@
       "zero_trace": {}
     },
     "glassdoor_companies": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "location": {},
       "min_rating": {
@@ -3286,9 +3020,7 @@
       "zero_trace": {}
     },
     "glassdoor_jobs": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "date_posted": {
         "type": "select",
@@ -3298,9 +3030,7 @@
         "type": "checkbox"
       },
       "employer_id": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "job_type": {
         "type": "select",
         "options": [
@@ -3347,20 +3077,14 @@
       "zero_trace": {}
     },
     "glassdoor_reviews": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "current_employees": {
         "type": "checkbox"
       },
-      "employer_id": {
-        "required": true
-      },
+      "employer_id": {},
       "employment_status": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "job_title": {},
       "json_restrictor": {},
       "language": {
@@ -3404,9 +3128,7 @@
       "zero_trace": {}
     },
     "google": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_dt": {},
       "as_epq": {},
       "as_eq": {},
@@ -3473,9 +3195,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "radius": {
         "type": "number"
       },
@@ -3512,13 +3232,9 @@
       "zero_trace": {}
     },
     "google_about_this_result": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -3542,9 +3258,7 @@
       "zero_trace": {}
     },
     "google_ads": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -3554,17 +3268,14 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hl": {
         "type": "select",
         "value_type": "string"
       },
       "json_restrictor": {},
       "location": {
-        "type": "location",
-        "required": true
+        "type": "location"
       },
       "nfpr": {
         "type": "checkbox"
@@ -3573,9 +3284,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -3587,9 +3296,7 @@
     },
     "google_ads_transparency_center": {
       "advertiser_id": {},
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "creative_format": {
         "type": "dropdown",
@@ -3600,9 +3307,7 @@
         ]
       },
       "end_date": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "get_advertiser": {
         "type": "checkbox"
       },
@@ -3637,19 +3342,11 @@
       "zero_trace": {}
     },
     "google_ads_transparency_center_ad_details": {
-      "advertiser_id": {
-        "required": true
-      },
-      "api_key": {
-        "required": true
-      },
+      "advertiser_id": {},
+      "api_key": {},
       "async": {},
-      "creative_id": {
-        "required": true
-      },
-      "engine": {
-        "required": true
-      },
+      "creative_id": {},
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -3662,9 +3359,7 @@
       "zero_trace": {}
     },
     "google_ai_mode": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "continuable": {
         "type": "checkbox"
@@ -3677,9 +3372,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -3697,35 +3390,25 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "subsequent_request_token": {},
       "uule": {},
       "zero_trace": {}
     },
     "google_ai_overview": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "page_token": {
-        "required": true
-      },
+      "page_token": {},
       "zero_trace": {}
     },
     "google_autocomplete": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "client": {
         "type": "select",
@@ -3742,9 +3425,7 @@
         ]
       },
       "cp": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -3758,15 +3439,11 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "google_books": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -3785,9 +3462,7 @@
         ]
       },
       "end_date": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -3808,9 +3483,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "start": {
         "type": "number"
       },
@@ -3826,16 +3499,10 @@
       "zero_trace": {}
     },
     "google_event_details": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
-      "event_token": {
-        "required": true
-      },
+      "engine": {},
+      "event_token": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -3861,13 +3528,9 @@
       "zero_trace": {}
     },
     "google_events": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "location": {
         "type": "location"
@@ -3876,20 +3539,14 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "uule": {},
       "zero_trace": {}
     },
     "google_finance": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hl": {
         "type": "select",
         "value_type": "string"
@@ -3899,9 +3556,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "window": {
         "type": "dropdown",
         "options": [
@@ -3918,13 +3573,9 @@
       "zero_trace": {}
     },
     "google_finance_autocomplete": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -3938,19 +3589,13 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "google_finance_markets": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -3966,7 +3611,6 @@
       "output": {},
       "trend": {
         "type": "select",
-        "required": true,
         "options": [
           "indexes"
         ]
@@ -3977,9 +3621,7 @@
       "adults": {
         "type": "number"
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "arrival_id": {},
       "async": {},
       "bags": {
@@ -4074,9 +3716,7 @@
         "type": "select",
         "value_type": "number"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "exclude_airlines": {},
       "exclude_basic": {
         "type": "checkbox"
@@ -4137,13 +3777,9 @@
       "zero_trace": {}
     },
     "google_flights_autocomplete": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "exclude_regions": {
         "type": "checkbox"
       },
@@ -4160,21 +3796,15 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "google_flights_calendar": {
       "adults": {
         "type": "number"
       },
-      "api_key": {
-        "required": true
-      },
-      "arrival_id": {
-        "required": true
-      },
+      "api_key": {},
+      "arrival_id": {},
       "async": {},
       "children": {
         "type": "number"
@@ -4257,12 +3887,8 @@
       },
       "date_range_end": {},
       "date_range_start": {},
-      "departure_id": {
-        "required": true
-      },
-      "engine": {
-        "required": true
-      },
+      "departure_id": {},
+      "engine": {},
       "fixed_outbound_date": {
         "type": "checkbox"
       },
@@ -4302,9 +3928,7 @@
       "adults": {
         "type": "number"
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "children": {
         "type": "number"
@@ -4386,9 +4010,7 @@
         ]
       },
       "departure_id": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "exclude_airlines": {},
       "gl": {
         "type": "select",
@@ -4439,9 +4061,7 @@
       "zero_trace": {}
     },
     "google_forums": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -4452,9 +4072,7 @@
         ]
       },
       "end_date": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filter": {
         "type": "checkbox"
       },
@@ -4492,9 +4110,7 @@
       "period_value": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "start": {
         "type": "number"
       },
@@ -4504,21 +4120,15 @@
       "zero_trace": {}
     },
     "google_gemini": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "subsequent_request_token": {},
       "zero_trace": {}
     },
@@ -4527,9 +4137,7 @@
         "type": "number"
       },
       "amenities": {},
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "bathrooms": {
         "type": "number"
@@ -4538,12 +4146,8 @@
         "type": "number"
       },
       "brands": {},
-      "check_in_date": {
-        "required": true
-      },
-      "check_out_date": {
-        "required": true
-      },
+      "check_in_date": {},
+      "check_out_date": {},
       "children": {
         "type": "number"
       },
@@ -4627,9 +4231,7 @@
       "eco_certified": {
         "type": "checkbox"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "free_cancellation": {
         "type": "checkbox"
       },
@@ -4656,9 +4258,7 @@
       "output": {},
       "property_token": {},
       "property_types": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "rating": {
         "type": "select",
         "value_type": "number"
@@ -4676,9 +4276,7 @@
       "zero_trace": {}
     },
     "google_hotels_autocomplete": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "currency": {
         "type": "select",
@@ -4756,9 +4354,7 @@
           "VND"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -4772,37 +4368,27 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "google_hotels_photos": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "next_page_token": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "property_token": {
-        "required": true
-      },
+      "property_token": {},
       "zero_trace": {}
     },
     "google_hotels_price_calendar": {
       "adults": {
         "type": "number"
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "children": {
         "type": "number"
@@ -4884,12 +4470,8 @@
           "VND"
         ]
       },
-      "end_date": {
-        "required": true
-      },
-      "engine": {
-        "required": true
-      },
+      "end_date": {},
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -4903,23 +4485,15 @@
         "type": "checkbox"
       },
       "output": {},
-      "property_token": {
-        "required": true
-      },
-      "start_date": {
-        "required": true
-      },
+      "property_token": {},
+      "start_date": {},
       "zero_trace": {}
     },
     "google_hotels_reviews": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "category_token": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hl": {
         "type": "select",
         "value_type": "string"
@@ -4930,9 +4504,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "property_token": {
-        "required": true
-      },
+      "property_token": {},
       "sort_by": {
         "type": "select",
         "value_type": "number"
@@ -4943,9 +4515,7 @@
       "zero_trace": {}
     },
     "google_images": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_dt": {},
       "as_epq": {},
       "as_eq": {},
@@ -4969,9 +4539,7 @@
         ]
       },
       "end_date": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filter": {
         "type": "checkbox"
       },
@@ -5087,9 +4655,7 @@
       "period_value": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -5103,9 +4669,7 @@
       "zero_trace": {}
     },
     "google_images_light": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_dt": {},
       "as_epq": {},
       "as_eq": {},
@@ -5128,9 +4692,7 @@
         ]
       },
       "end_date": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filter": {
         "type": "checkbox"
       },
@@ -5243,9 +4805,7 @@
       "period_value": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -5262,13 +4822,9 @@
       "zero_trace": {}
     },
     "google_images_related_content": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -5283,19 +4839,13 @@
       },
       "output": {},
       "q": {},
-      "related_content_id": {
-        "required": true
-      },
+      "related_content_id": {},
       "zero_trace": {}
     },
     "google_immersive_product": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "more_stores": {
         "type": "checkbox"
@@ -5305,20 +4855,14 @@
         "type": "checkbox"
       },
       "output": {},
-      "page_token": {
-        "required": true
-      },
+      "page_token": {},
       "zero_trace": {}
     },
     "google_jobs": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "chips": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -5346,35 +4890,25 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "uds": {},
       "uule": {},
       "zero_trace": {}
     },
     "google_jobs_listing": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "google_lens": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "auto_crop": {
         "type": "checkbox"
@@ -5383,9 +4917,7 @@
         "type": "select",
         "value_type": "string"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hl": {
         "type": "select",
         "value_type": "string"
@@ -5408,22 +4940,17 @@
       },
       "type": {
         "type": "select",
-        "required": true,
         "options": [
           "all",
           "exact_matches",
           "visual_matches"
         ]
       },
-      "url": {
-        "required": true
-      },
+      "url": {},
       "zero_trace": {}
     },
     "google_light": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_dt": {},
       "as_epq": {},
       "as_eq": {},
@@ -5444,9 +4971,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filter": {
         "type": "checkbox"
       },
@@ -5474,9 +4999,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -5491,9 +5014,7 @@
       "zero_trace": {}
     },
     "google_local": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -5503,9 +5024,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -5527,9 +5046,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "start": {
         "type": "number"
       },
@@ -5538,9 +5055,7 @@
       "zero_trace": {}
     },
     "google_local_services": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "bid": {
         "type": "number"
@@ -5549,12 +5064,9 @@
         "type": "number"
       },
       "data_cid": {
-        "type": "number",
-        "required": true
+        "type": "number"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hl": {
         "type": "select",
         "value_type": "string"
@@ -5573,21 +5085,16 @@
       },
       "q": {
         "type": "select",
-        "required": true,
         "value_type": "string"
       },
       "zero_trace": {}
     },
     "google_maps": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "data": {},
       "data_cid": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -5661,7 +5168,6 @@
       },
       "type": {
         "type": "select",
-        "required": true,
         "options": [
           "search",
           "place"
@@ -5673,14 +5179,10 @@
       "zero_trace": {}
     },
     "google_maps_autocomplete": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "cp": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -5690,29 +5192,19 @@
         "value_type": "string"
       },
       "json_restrictor": {},
-      "ll": {
-        "required": true
-      },
+      "ll": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "google_maps_contributor_reviews": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "contributor_id": {
-        "required": true
-      },
-      "engine": {
-        "required": true
-      },
+      "contributor_id": {},
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -5732,9 +5224,7 @@
       "zero_trace": {}
     },
     "google_maps_directions": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "avoid": {},
       "distance_unit": {
@@ -5744,9 +5234,7 @@
       "end_addr": {},
       "end_coords": {},
       "end_data_id": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -5776,16 +5264,10 @@
       "zero_trace": {}
     },
     "google_maps_photo_meta": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "data_id": {
-        "required": true
-      },
-      "engine": {
-        "required": true
-      },
+      "data_id": {},
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -5794,17 +5276,11 @@
       "zero_trace": {}
     },
     "google_maps_photos": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "category_id": {},
-      "data_id": {
-        "required": true
-      },
-      "engine": {
-        "required": true
-      },
+      "data_id": {},
+      "engine": {},
       "hl": {
         "type": "select",
         "value_type": "string"
@@ -5818,16 +5294,10 @@
       "zero_trace": {}
     },
     "google_maps_posts": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "data_id": {
-        "required": true
-      },
-      "engine": {
-        "required": true
-      },
+      "data_id": {},
+      "engine": {},
       "json_restrictor": {},
       "next_page_token": {},
       "no_cache": {
@@ -5837,14 +5307,10 @@
       "zero_trace": {}
     },
     "google_maps_reviews": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "data_id": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hl": {
         "type": "select",
         "value_type": "string"
@@ -5871,13 +5337,9 @@
       "zero_trace": {}
     },
     "google_news": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -5904,9 +5366,7 @@
       "zero_trace": {}
     },
     "google_news_light": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_dt": {},
       "as_epq": {},
       "as_eq": {},
@@ -5927,9 +5387,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filter": {
         "type": "checkbox"
       },
@@ -5957,9 +5415,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -5975,9 +5431,7 @@
     },
     "google_patents": {
       "after": {},
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "assignee": {},
       "async": {},
       "before": {},
@@ -5994,9 +5448,7 @@
           "language"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "inventor": {},
       "json_restrictor": {},
       "language": {},
@@ -6048,21 +5500,15 @@
       "zero_trace": {}
     },
     "google_patents_details": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "patent_id": {
-        "required": true
-      },
+      "patent_id": {},
       "zero_trace": {}
     },
     "google_play": {
@@ -6074,9 +5520,7 @@
           "AGE_RANGE3"
         ]
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "apps_category": {
         "type": "select",
         "options": [
@@ -6119,9 +5563,7 @@
       },
       "async": {},
       "chart": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -6161,18 +5603,14 @@
           "AGE_RANGE3"
         ]
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "books_category": {
         "type": "select",
         "value_type": "string"
       },
       "chart": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -6197,14 +5635,10 @@
       "zero_trace": {}
     },
     "google_play_games": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "chart": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "games_category": {
         "type": "select",
         "options": [
@@ -6267,14 +5701,10 @@
           "AGE_RANGE3"
         ]
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "chart": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -6302,13 +5732,9 @@
       "all_reviews": {
         "type": "checkbox"
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -6337,9 +5763,7 @@
           "car"
         ]
       },
-      "product_id": {
-        "required": true
-      },
+      "product_id": {},
       "rating": {
         "type": "select",
         "value_type": "number"
@@ -6351,7 +5775,6 @@
       },
       "store": {
         "type": "select",
-        "required": true,
         "options": [
           "apps",
           "movies",
@@ -6363,13 +5786,9 @@
       "zero_trace": {}
     },
     "google_product": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "options": [
@@ -6466,17 +5885,11 @@
       "zero_trace": {}
     },
     "google_related_questions": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
-      "next_page_token": {
-        "required": true
-      },
+      "next_page_token": {},
       "no_cache": {
         "type": "checkbox"
       },
@@ -6484,9 +5897,7 @@
       "zero_trace": {}
     },
     "google_reverse_image": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -6496,9 +5907,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -6511,9 +5920,7 @@
         "type": "select",
         "value_type": "string"
       },
-      "image_url": {
-        "required": true
-      },
+      "image_url": {},
       "json_restrictor": {},
       "location": {
         "type": "location"
@@ -6539,9 +5946,7 @@
       "zero_trace": {}
     },
     "google_scholar": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_rr": {
         "type": "checkbox"
       },
@@ -6558,9 +5963,7 @@
       "async": {},
       "cites": {},
       "cluster": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filter": {
         "type": "checkbox"
       },
@@ -6577,9 +5980,7 @@
         "type": "number"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -6597,17 +5998,11 @@
       "zero_trace": {}
     },
     "google_scholar_author": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "author_id": {
-        "required": true
-      },
+      "author_id": {},
       "citation_id": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hl": {
         "type": "select",
         "value_type": "string"
@@ -6640,16 +6035,10 @@
       "zero_trace": {}
     },
     "google_scholar_case_law": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "case_id": {
-        "required": true
-      },
-      "engine": {
-        "required": true
-      },
+      "case_id": {},
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -6658,13 +6047,9 @@
       "zero_trace": {}
     },
     "google_scholar_cite": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hl": {
         "type": "select",
         "value_type": "string"
@@ -6674,15 +6059,11 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "google_shopping": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_dt": {},
       "as_epq": {},
       "as_eq": {},
@@ -6703,9 +6084,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "free_shipping": {
         "type": "checkbox"
       },
@@ -6813,9 +6192,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -6838,13 +6215,9 @@
       "zero_trace": {}
     },
     "google_shopping_filters": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "options": [
@@ -6940,17 +6313,13 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "shoprs": {},
       "uule": {},
       "zero_trace": {}
     },
     "google_shopping_light": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -6960,9 +6329,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "free_shipping": {
         "type": "checkbox"
       },
@@ -7070,9 +6437,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -7095,9 +6460,7 @@
       "zero_trace": {}
     },
     "google_short_videos": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_dt": {},
       "as_epq": {},
       "as_eq": {},
@@ -7118,9 +6481,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filter": {
         "type": "checkbox"
       },
@@ -7148,9 +6509,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -7166,13 +6525,9 @@
       "zero_trace": {}
     },
     "google_sports": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -7182,9 +6537,7 @@
         "value_type": "string"
       },
       "json_restrictor": {},
-      "kgmid": {
-        "required": true
-      },
+      "kgmid": {},
       "moa": {},
       "mob": {},
       "mpd": {},
@@ -7195,7 +6548,6 @@
       "season_kgmid": {},
       "sp": {
         "type": "select",
-        "required": true,
         "options": [
           "ft",
           "bs",
@@ -7220,7 +6572,6 @@
       },
       "type": {
         "type": "select",
-        "required": true,
         "options": [
           "game",
           "league",
@@ -7230,16 +6581,11 @@
       "zero_trace": {}
     },
     "google_translate": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "from": {
         "type": "select",
-        "required": true,
         "value_type": "string"
       },
       "json_restrictor": {},
@@ -7247,12 +6593,9 @@
         "type": "checkbox"
       },
       "output": {},
-      "text": {
-        "required": true
-      },
+      "text": {},
       "to": {
         "type": "select",
-        "required": true,
         "value_type": "string"
       },
       "zero_trace": {}
@@ -7261,9 +6604,7 @@
       "adults": {
         "type": "number"
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "arrival_area_id": {},
       "arrival_id": {},
       "async": {},
@@ -7349,12 +6690,8 @@
           "VND"
         ]
       },
-      "departure_id": {
-        "required": true
-      },
-      "engine": {
-        "required": true
-      },
+      "departure_id": {},
+      "engine": {},
       "exclude_airlines": {},
       "gl": {
         "type": "select",
@@ -7412,9 +6749,7 @@
       "zero_trace": {}
     },
     "google_trends": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "cat": {
         "type": "select",
@@ -7434,9 +6769,7 @@
         ]
       },
       "date": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "geo": {},
       "gprop": {
         "type": "select",
@@ -7460,9 +6793,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "region": {
         "type": "select",
         "options": [
@@ -7478,13 +6809,9 @@
       "zero_trace": {}
     },
     "google_trends_autocomplete": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hl": {
         "type": "select",
         "value_type": "string"
@@ -7494,33 +6821,23 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "zero_trace": {}
     },
     "google_trends_news": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "page_token": {
-        "required": true
-      },
+      "page_token": {},
       "zero_trace": {}
     },
     "google_trends_trending_now": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "cat": {
         "type": "select",
@@ -7539,12 +6856,9 @@
         "value_type": "number"
       },
       "date": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "frequency": {
         "type": "select",
-        "required": true,
         "options": [
           "daily",
           "realtime"
@@ -7552,7 +6866,6 @@
       },
       "geo": {
         "type": "select",
-        "required": true,
         "value_type": "number"
       },
       "hl": {
@@ -7574,9 +6887,7 @@
       "zero_trace": {}
     },
     "google_videos": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_dt": {},
       "as_epq": {},
       "as_eq": {},
@@ -7597,9 +6908,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filter": {
         "type": "checkbox"
       },
@@ -7627,9 +6936,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -7645,9 +6952,7 @@
       "zero_trace": {}
     },
     "google_videos_light": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_dt": {},
       "as_epq": {},
       "as_eq": {},
@@ -7668,9 +6973,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filter": {
         "type": "checkbox"
       },
@@ -7698,9 +7001,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "safe": {
         "type": "select",
         "options": [
@@ -7716,9 +7017,7 @@
       "zero_trace": {}
     },
     "home_depot": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "country": {
         "type": "select",
@@ -7728,9 +7027,7 @@
         ]
       },
       "delivery_zip": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "filter": {},
       "hd_filter_tokens": {},
       "hd_sort": {
@@ -7760,9 +7057,7 @@
       "ps": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "sort": {
         "type": "select",
         "options": [
@@ -7780,14 +7075,10 @@
       "zero_trace": {}
     },
     "home_depot_product": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "delivery_zip": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -7799,22 +7090,16 @@
       "zero_trace": {}
     },
     "home_depot_product_reviews": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
       "pagesize": {},
-      "product_id": {
-        "required": true
-      },
+      "product_id": {},
       "rating": {},
       "sort_by": {
         "type": "select",
@@ -7835,13 +7120,9 @@
       "zero_trace": {}
     },
     "indeed_jobs": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "fromage": {
         "type": "select",
         "value_type": "number"
@@ -7862,9 +7143,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "radius": {
         "type": "select",
         "value_type": "number"
@@ -7878,17 +7157,11 @@
       "zero_trace": {}
     },
     "instagram_popular": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
-      "keyword": {
-        "required": true
-      },
+      "keyword": {},
       "next_page_token": {},
       "no_cache": {
         "type": "checkbox"
@@ -7897,22 +7170,16 @@
       "zero_trace": {}
     },
     "instagram_profile": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "next_page_token": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "profile_id": {
-        "required": true
-      },
+      "profile_id": {},
       "zero_trace": {}
     },
     "meta_ad_library": {
@@ -7934,9 +7201,7 @@
           "financial_products_and_services_ads"
         ]
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "content_languages": {},
       "country": {
@@ -7944,9 +7209,7 @@
         "value_type": "string"
       },
       "end_date": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "media_type": {
         "type": "select",
@@ -7986,13 +7249,9 @@
       "zero_trace": {}
     },
     "napa": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -8001,9 +7260,7 @@
       "page": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "sort": {
         "type": "select",
         "options": [
@@ -8019,9 +7276,7 @@
       "zero_trace": {}
     },
     "naver": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -8031,9 +7286,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -8044,9 +7297,7 @@
       "output": {},
       "page": {},
       "period": {},
-      "query": {
-        "required": true
-      },
+      "query": {},
       "sort_by": {
         "type": "select",
         "value_type": "number"
@@ -8065,31 +7316,23 @@
       "zero_trace": {}
     },
     "naver_ai_mode": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "continuable": {
         "type": "checkbox"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "query": {
-        "required": true
-      },
+      "query": {},
       "subsequent_request_token": {},
       "zero_trace": {}
     },
     "naver_ai_overview": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -8099,9 +7342,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -8115,9 +7356,7 @@
       "adults": {
         "type": "number"
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "bookable": {
         "type": "checkbox"
@@ -8131,9 +7370,7 @@
       "coupon": {
         "type": "checkbox"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "naver_pay": {
         "type": "checkbox"
@@ -8151,9 +7388,7 @@
       "page": {
         "type": "number"
       },
-      "query": {
-        "required": true
-      },
+      "query": {},
       "sort_by": {
         "type": "select",
         "options": [
@@ -8166,13 +7401,9 @@
       "zero_trace": {}
     },
     "open_table_reviews": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -8203,19 +7434,13 @@
       "page": {
         "type": "number"
       },
-      "rid": {
-        "required": true
-      },
+      "rid": {},
       "zero_trace": {}
     },
     "pinterest": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "less_ai": {
         "type": "checkbox"
@@ -8225,9 +7450,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "type": {
         "type": "select",
         "options": [
@@ -8241,15 +7464,11 @@
       "zero_trace": {}
     },
     "search_index": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "as_yhi": {},
       "as_ylo": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -8283,9 +7502,7 @@
           "home_depot"
         ]
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "radius": {
         "type": "number"
       },
@@ -8312,15 +7529,11 @@
       "zero_trace": {}
     },
     "target": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "category_id": {},
       "delivery_zip": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "facet": {},
       "include_filters": {
         "type": "checkbox"
@@ -8339,9 +7552,7 @@
       "page": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "sort": {
         "type": "select",
         "options": [
@@ -8361,13 +7572,9 @@
       "zero_trace": {}
     },
     "tiktok_discover": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -8380,9 +7587,7 @@
         "type": "number"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "session_token": {},
       "start": {
         "type": "number"
@@ -8390,18 +7595,14 @@
       "zero_trace": {}
     },
     "tiktok_shop": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "category_id": {},
       "color_id": {},
       "deals": {
         "type": "checkbox"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "max_price": {
         "type": "number"
@@ -8416,9 +7617,7 @@
       "page": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "rating": {
         "type": "select",
         "value_type": "number"
@@ -8434,17 +7633,13 @@
       "zero_trace": {}
     },
     "trader_joes": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "category_id": {
         "type": "number"
       },
       "characteristics": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "new_products": {
         "type": "checkbox"
@@ -8456,9 +7651,7 @@
       "page": {
         "type": "number"
       },
-      "q": {
-        "required": true
-      },
+      "q": {},
       "sort_by": {
         "type": "select",
         "options": [
@@ -8474,32 +7667,22 @@
       "zero_trace": {}
     },
     "trader_joes_product": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "product_id": {
-        "required": true
-      },
+      "product_id": {},
       "store_id": {},
       "zero_trace": {}
     },
     "tripadvisor": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "lat": {
         "type": "number"
@@ -8517,9 +7700,7 @@
         "type": "number"
       },
       "output": {},
-      "q": {
-        "required": true
-      },
+      "q": {},
       "ssrc": {
         "type": "select",
         "options": [
@@ -8589,21 +7770,15 @@
       "zero_trace": {}
     },
     "tripadvisor_place": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "place_id": {
-        "required": true
-      },
+      "place_id": {},
       "tripadvisor_domain": {
         "type": "select",
         "options": [
@@ -8661,13 +7836,9 @@
       "zero_trace": {}
     },
     "tripadvisor_reviews": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "language": {
         "type": "select",
@@ -8708,9 +7879,7 @@
       },
       "offset": {},
       "output": {},
-      "place_id": {
-        "required": true
-      },
+      "place_id": {},
       "rating": {},
       "sort_by": {
         "type": "select",
@@ -8779,9 +7948,7 @@
       "zero_trace": {}
     },
     "walmart": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "cat_id": {},
       "device": {
@@ -8792,9 +7959,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "facet": {},
       "include_filters": {
         "type": "checkbox"
@@ -8816,9 +7981,7 @@
       "page": {
         "type": "number"
       },
-      "query": {
-        "required": true
-      },
+      "query": {},
       "soft_sort": {
         "type": "checkbox"
       },
@@ -8846,9 +8009,7 @@
       "zero_trace": {}
     },
     "walmart_product": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -8858,28 +8019,20 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "product_id": {
-        "required": true
-      },
+      "product_id": {},
       "store_id": {},
       "zero_trace": {}
     },
     "walmart_product_reviews": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
@@ -8888,9 +8041,7 @@
       "page": {
         "type": "number"
       },
-      "product_id": {
-        "required": true
-      },
+      "product_id": {},
       "rating": {
         "type": "select",
         "value_type": "number"
@@ -8909,37 +8060,23 @@
       "zero_trace": {}
     },
     "walmart_product_sellers": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "product_id": {
-        "required": true
-      },
-      "store_id": {
-        "required": true
-      },
+      "product_id": {},
+      "store_id": {},
       "zero_trace": {}
     },
     "walmart_seller": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "catalog_seller_id": {
-        "required": true
-      },
-      "engine": {
-        "required": true
-      },
+      "catalog_seller_id": {},
+      "engine": {},
       "facet": {},
       "include_filters": {
         "type": "checkbox"
@@ -8966,9 +8103,7 @@
       "zero_trace": {}
     },
     "yahoo": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "b": {
         "type": "number"
@@ -8982,18 +8117,14 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "fr2": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "p": {
-        "required": true
-      },
+      "p": {},
       "vc": {
         "type": "select",
         "value_type": "string"
@@ -9096,9 +8227,7 @@
       "zero_trace": {}
     },
     "yahoo_images": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "b": {
         "type": "number"
@@ -9111,9 +8240,7 @@
           "mobile"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "imga": {
         "type": "select",
         "options": [
@@ -9193,9 +8320,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "p": {
-        "required": true
-      },
+      "p": {},
       "yahoo_domain": {
         "type": "select",
         "options": [
@@ -9228,14 +8353,10 @@
       "zero_trace": {}
     },
     "yahoo_shopping": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "category_attr_values": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "limit": {},
       "max_price": {},
@@ -9252,9 +8373,7 @@
         ]
       },
       "output": {},
-      "p": {
-        "required": true
-      },
+      "p": {},
       "page": {},
       "sort_by": {
         "type": "select",
@@ -9269,13 +8388,9 @@
       "zero_trace": {}
     },
     "yahoo_trends": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "full_video_links": {
         "type": "checkbox"
       },
@@ -9288,9 +8403,7 @@
       "zero_trace": {}
     },
     "yahoo_videos": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "b": {
         "type": "number"
@@ -9311,17 +8424,13 @@
           "long"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "no_cache": {
         "type": "checkbox"
       },
       "output": {},
-      "p": {
-        "required": true
-      },
+      "p": {},
       "vage": {
         "type": "select",
         "options": [
@@ -9394,13 +8503,9 @@
       "zero_trace": {}
     },
     "yandex": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "family_mode": {
         "type": "select",
         "value_type": "number"
@@ -9449,14 +8554,9 @@
       },
       "sort_mode": {
         "type": "select",
-        "options": [
-          "relevance",
-          "time"
-        ]
+        "value_type": "string"
       },
-      "text": {
-        "required": true
-      },
+      "text": {},
       "yandex_domain": {
         "type": "select",
         "options": [
@@ -9471,9 +8571,7 @@
       "zero_trace": {}
     },
     "yandex_images": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "color": {
         "type": "select",
@@ -9495,9 +8593,7 @@
       "crop_id": {
         "type": "number"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "family_mode": {
         "type": "select",
         "value_type": "number"
@@ -9550,9 +8646,7 @@
           "similar"
         ]
       },
-      "text": {
-        "required": true
-      },
+      "text": {},
       "url": {},
       "width": {
         "type": "number"
@@ -9571,9 +8665,7 @@
       "zero_trace": {}
     },
     "yandex_videos": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "device": {
         "type": "device",
@@ -9591,9 +8683,7 @@
           "long"
         ]
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hd": {
         "type": "checkbox"
       },
@@ -9605,9 +8695,7 @@
       "p": {
         "type": "number"
       },
-      "text": {
-        "required": true
-      },
+      "text": {},
       "within": {
         "type": "select",
         "value_type": "number"
@@ -9626,17 +8714,11 @@
       "zero_trace": {}
     },
     "yelp": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "find_desc": {},
-      "find_loc": {
-        "required": true
-      },
+      "find_loc": {},
       "json_restrictor": {},
       "next_page_token": {},
       "no_cache": {
@@ -9703,16 +8785,12 @@
       "zero_trace": {}
     },
     "yelp_place": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "business_alert": {
         "type": "checkbox"
       },
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "full_menu": {
         "type": "checkbox"
       },
@@ -9722,9 +8800,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "place_id": {
-        "required": true
-      },
+      "place_id": {},
       "yelp_domain": {
         "type": "select",
         "options": [
@@ -9774,13 +8850,9 @@
       "zero_trace": {}
     },
     "yelp_reviews": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "hl": {
         "type": "select",
         "options": [
@@ -9818,9 +8890,7 @@
         "type": "number"
       },
       "output": {},
-      "place_id": {
-        "required": true
-      },
+      "place_id": {},
       "q": {},
       "rating": {},
       "sortby": {
@@ -9886,13 +8956,9 @@
       "zero_trace": {}
     },
     "youtube": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -9906,9 +8972,7 @@
         "type": "checkbox"
       },
       "output": {},
-      "search_query": {
-        "required": true
-      },
+      "search_query": {},
       "sp": {},
       "zero_trace": {}
     },
@@ -9916,14 +8980,10 @@
       "about": {
         "type": "checkbox"
       },
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "channel_id": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -10045,13 +9105,9 @@
       "zero_trace": {}
     },
     "youtube_video": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "gl": {
         "type": "select",
         "value_type": "string"
@@ -10070,13 +9126,9 @@
       "zero_trace": {}
     },
     "youtube_video_transcript": {
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "json_restrictor": {},
       "language_code": {
         "type": "select",
@@ -10093,9 +9145,7 @@
           "asr"
         ]
       },
-      "v": {
-        "required": true
-      },
+      "v": {},
       "zero_trace": {}
     },
     "zillow": {
@@ -10108,16 +9158,12 @@
         ]
       },
       "amenities": {},
-      "api_key": {
-        "required": true
-      },
+      "api_key": {},
       "async": {},
       "basement": {},
       "baths": {},
       "beds": {},
-      "engine": {
-        "required": true
-      },
+      "engine": {},
       "has_garage": {
         "type": "checkbox"
       },

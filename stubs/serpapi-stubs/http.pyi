@@ -4,7 +4,8 @@ import requests
 from typing_extensions import TypeAlias
 
 _Timeout: TypeAlias = Union[None, float, Tuple[Optional[float], Optional[float]]]
-_Proxies: TypeAlias = Union[None, Mapping[str, str]]
+# requests removes a proxy whose value is None, which is how one request opts out of a configured proxy.
+_Proxies: TypeAlias = Union[None, Mapping[str, Optional[str]]]
 _Verify: TypeAlias = Union[None, bool, str]
 _Cert: TypeAlias = Union[None, str, Tuple[str, str]]
 

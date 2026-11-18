@@ -19,10 +19,7 @@ import serpapi
 client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 
 results = client.search(
-    engine="google_play",
-    q="kite",
-    store="apps",
-    max_results="2",
+    {"engine": "google_play", "q": "kite", "store": "apps", "max_results": "2"}
 )
 
 for app in results.get("organic_results", [])[:5]:

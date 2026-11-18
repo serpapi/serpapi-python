@@ -21,14 +21,14 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v6
 
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v6
+    - name: Set up uv with Python ${{ matrix.python-version }}
+      uses: astral-sh/setup-uv@v7
       with:
         python-version: ${{ matrix.python-version }}
-
+        activate-environment: true
 
     - name: Install dependencies
-      run: pip install -e .[test]
+      run: uv pip install -e '.[test]'
 
     - name: Run tests
       run: pytest tests --ignore-glob='tests/test_docs_*.py' -k "not example"

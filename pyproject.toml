@@ -41,6 +41,7 @@ classifiers = [
 [project.optional-dependencies]
 color = ["pygments"]
 test = ["pytest"]
+typing = ["serpapi-stubs==1.2.0.*"]
 docs = [
   "sphinx>=8.2,<9; python_version >= '3.11'",
   "myst-parser>=4,<5; python_version >= '3.11'",

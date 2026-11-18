@@ -1,0 +1,3 @@
+from typing import Optional
+
+def api_key_from_environment() -> Optional[str]: ...

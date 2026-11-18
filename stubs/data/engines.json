@@ -1,0 +1,9248 @@
+{
+  "source": "https://serpapi.com/playground",
+  "engines": {
+    "airbnb": {
+      "accessibility_features": {},
+      "adults": {
+        "type": "number"
+      },
+      "airbnb_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "amenities": {},
+      "api_key": {},
+      "async": {},
+      "bathrooms": {
+        "type": "number"
+      },
+      "bedrooms": {
+        "type": "number"
+      },
+      "beds": {
+        "type": "number"
+      },
+      "check_in_date": {},
+      "check_out_date": {},
+      "children": {
+        "type": "number"
+      },
+      "currency": {
+        "type": "select",
+        "options": [
+          "AED",
+          "ARS",
+          "AUD",
+          "AWG",
+          "BAM",
+          "BBD",
+          "BGN",
+          "BHD",
+          "BND",
+          "BRL",
+          "BTN",
+          "BZD",
+          "CAD",
+          "CHF",
+          "CLP",
+          "CNY",
+          "COP",
+          "CRC",
+          "CZK",
+          "DKK",
+          "EGP",
+          "EUR",
+          "FJD",
+          "GBP",
+          "GHS",
+          "GTQ",
+          "GYD",
+          "HKD",
+          "HNL",
+          "HRK",
+          "HUF",
+          "IDR",
+          "ILS",
+          "INR",
+          "JMD",
+          "JOD",
+          "JPY",
+          "KES",
+          "KRW",
+          "KZT",
+          "LAK",
+          "LKR",
+          "MAD",
+          "MOP",
+          "MXN",
+          "MYR",
+          "NOK",
+          "NZD",
+          "OMR",
+          "PEN",
+          "PGK",
+          "PHP",
+          "PLN",
+          "QAR",
+          "RON",
+          "RUB",
+          "SAR",
+          "SEK",
+          "SGD",
+          "THB",
+          "TRY",
+          "TTD",
+          "TWD",
+          "UAH",
+          "UGX",
+          "USD",
+          "UYU",
+          "VND",
+          "ZAR"
+        ]
+      },
+      "engine": {},
+      "guest_favorite": {
+        "type": "checkbox"
+      },
+      "host_languages": {},
+      "infants": {
+        "type": "number"
+      },
+      "instant_book": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "luxe": {
+        "type": "checkbox"
+      },
+      "map_bounds": {},
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "pets": {
+        "type": "number"
+      },
+      "property_types": {},
+      "q": {},
+      "room_type": {
+        "type": "select",
+        "options": [
+          "entire_home",
+          "private_room"
+        ]
+      },
+      "self_check_in": {
+        "type": "checkbox"
+      },
+      "zero_trace": {}
+    },
+    "amazon": {
+      "amazon_domain": {
+        "type": "select",
+        "options": [
+          "amazon.com.au",
+          "amazon.com.be",
+          "amazon.com.br",
+          "amazon.ca",
+          "amazon.cn",
+          "amazon.eg",
+          "amazon.fr",
+          "amazon.de",
+          "amazon.in",
+          "amazon.it",
+          "amazon.co.jp",
+          "amazon.nl",
+          "amazon.pl",
+          "amazon.sa",
+          "amazon.sg",
+          "amazon.es",
+          "amazon.se",
+          "amazon.com.tr",
+          "amazon.ae",
+          "amazon.co.uk",
+          "amazon.com",
+          "amazon.com.mx"
+        ]
+      },
+      "api_key": {},
+      "async": {},
+      "dc": {
+        "type": "checkbox"
+      },
+      "delivery_city": {},
+      "delivery_zip": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "emi": {},
+      "engine": {},
+      "json_restrictor": {},
+      "k": {},
+      "language": {
+        "type": "select",
+        "options": [
+          "en_AU",
+          "nl_BE",
+          "fr_BE",
+          "en_GB",
+          "pt_BR",
+          "en_CA",
+          "fr_CA",
+          "zh_CN",
+          "ar_AE",
+          "en_AE",
+          "fr_FR",
+          "de_DE",
+          "cs_CZ",
+          "nl_NL",
+          "pl_PL",
+          "tr_TR",
+          "da_DK",
+          "en_IN",
+          "hi_IN",
+          "ta_IN",
+          "te_IN",
+          "kn_IN",
+          "ml_IN",
+          "bn_IN",
+          "mr_IN",
+          "it_IT",
+          "ja_JP",
+          "en_US",
+          "en_SG",
+          "es_ES",
+          "pt_PT",
+          "sv_SE",
+          "es_US",
+          "es_MX"
+        ]
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "node": {},
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "rh": {},
+      "s": {
+        "type": "select",
+        "options": [
+          "relevanceblender",
+          "price-asc-rank",
+          "price-desc-rank",
+          "review-rank",
+          "date-desc-rank",
+          "exact-aware-popularity-rank"
+        ]
+      },
+      "shipping_location": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "zero_trace": {}
+    },
+    "amazon_autocomplete": {
+      "amazon_department": {
+        "type": "select",
+        "options": [
+          "aps",
+          "alexa-skills",
+          "vehicles",
+          "amazon-devices",
+          "amazonfresh",
+          "amazon-global-store",
+          "bazaar",
+          "amazon-one-medical",
+          "amazon-pharmacy",
+          "warehouse-deals",
+          "appliances",
+          "mobile-apps",
+          "arts-crafts",
+          "audible",
+          "automotive",
+          "baby-products",
+          "beauty",
+          "stripbooks",
+          "popular",
+          "mobile",
+          "fashion",
+          "fashion-womens",
+          "fashion-mens",
+          "fashion-girls",
+          "fashion-boys",
+          "fashion-baby",
+          "collectibles",
+          "computers",
+          "financial",
+          "digital-music",
+          "electronics",
+          "lawngarden",
+          "gift-cards",
+          "grocery",
+          "handmade",
+          "hpc",
+          "local-services",
+          "garden",
+          "industrial",
+          "prime-exclusive",
+          "digital-text",
+          "fashion-luggage",
+          "luxury",
+          "magazines",
+          "movies-tv",
+          "mi",
+          "office-products",
+          "pets",
+          "luxury-beauty",
+          "instant-video",
+          "samedaystore",
+          "smart-home",
+          "software",
+          "sporting",
+          "specialty-aps-sns",
+          "subscribe-with-amazon",
+          "tools",
+          "toys-and-games",
+          "under-ten-dollars",
+          "videogames",
+          "vons",
+          "wholefoods"
+        ]
+      },
+      "amazon_domain": {
+        "type": "select",
+        "options": [
+          "amazon.com.au",
+          "amazon.com.be",
+          "amazon.com.br",
+          "amazon.ca",
+          "amazon.cn",
+          "amazon.eg",
+          "amazon.fr",
+          "amazon.de",
+          "amazon.in",
+          "amazon.it",
+          "amazon.co.jp",
+          "amazon.nl",
+          "amazon.pl",
+          "amazon.sa",
+          "amazon.sg",
+          "amazon.es",
+          "amazon.se",
+          "amazon.com.tr",
+          "amazon.ae",
+          "amazon.co.uk",
+          "amazon.com",
+          "amazon.com.mx"
+        ]
+      },
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "k": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "amazon_fresh": {
+      "amazon_domain": {
+        "type": "select",
+        "options": [
+          "amazon.it",
+          "amazon.co.jp",
+          "amazon.es",
+          "amazon.co.uk",
+          "amazon.com"
+        ]
+      },
+      "api_key": {},
+      "async": {},
+      "dc": {
+        "type": "checkbox"
+      },
+      "delivery_zip": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "k": {},
+      "language": {
+        "type": "select",
+        "options": [
+          "it_IT",
+          "en_GB",
+          "ja_JP",
+          "en_US",
+          "zh_CN",
+          "es_ES",
+          "pt_PT",
+          "es_US"
+        ]
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "node": {},
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "rh": {},
+      "s": {
+        "type": "select",
+        "options": [
+          "relevanceblender",
+          "price-asc-rank",
+          "price-desc-rank",
+          "review-rank",
+          "date-desc-rank",
+          "exact-aware-popularity-rank"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "amazon_product": {
+      "all_related_products": {
+        "type": "checkbox"
+      },
+      "amazon_domain": {
+        "type": "select",
+        "options": [
+          "amazon.com.au",
+          "amazon.com.be",
+          "amazon.com.br",
+          "amazon.ca",
+          "amazon.cn",
+          "amazon.eg",
+          "amazon.fr",
+          "amazon.de",
+          "amazon.in",
+          "amazon.it",
+          "amazon.co.jp",
+          "amazon.nl",
+          "amazon.pl",
+          "amazon.sa",
+          "amazon.sg",
+          "amazon.es",
+          "amazon.se",
+          "amazon.com.tr",
+          "amazon.ae",
+          "amazon.co.uk",
+          "amazon.com",
+          "amazon.com.mx"
+        ]
+      },
+      "api_key": {},
+      "asin": {},
+      "async": {},
+      "delivery_city": {},
+      "delivery_zip": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "language": {
+        "type": "select",
+        "options": [
+          "en_AU",
+          "nl_BE",
+          "fr_BE",
+          "en_GB",
+          "pt_BR",
+          "en_CA",
+          "fr_CA",
+          "zh_CN",
+          "ar_AE",
+          "en_AE",
+          "fr_FR",
+          "de_DE",
+          "cs_CZ",
+          "nl_NL",
+          "pl_PL",
+          "tr_TR",
+          "da_DK",
+          "en_IN",
+          "hi_IN",
+          "ta_IN",
+          "te_IN",
+          "kn_IN",
+          "ml_IN",
+          "bn_IN",
+          "mr_IN",
+          "it_IT",
+          "ja_JP",
+          "en_US",
+          "en_SG",
+          "es_ES",
+          "pt_PT",
+          "sv_SE",
+          "es_US",
+          "es_MX"
+        ]
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "other_sellers": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "shipping_location": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "zero_trace": {}
+    },
+    "amazon_promotion": {
+      "amazon_domain": {
+        "type": "select",
+        "options": [
+          "amazon.com.au",
+          "amazon.com.be",
+          "amazon.com.br",
+          "amazon.ca",
+          "amazon.eg",
+          "amazon.fr",
+          "amazon.de",
+          "amazon.in",
+          "amazon.it",
+          "amazon.co.jp",
+          "amazon.nl",
+          "amazon.pl",
+          "amazon.sa",
+          "amazon.sg",
+          "amazon.es",
+          "amazon.se",
+          "amazon.com.tr",
+          "amazon.ae",
+          "amazon.co.uk",
+          "amazon.com",
+          "amazon.com.mx"
+        ]
+      },
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "include_products": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "language": {
+        "type": "select",
+        "options": [
+          "en_AU",
+          "nl_BE",
+          "fr_BE",
+          "en_GB",
+          "pt_BR",
+          "en_CA",
+          "fr_CA",
+          "ar_AE",
+          "en_AE",
+          "fr_FR",
+          "de_DE",
+          "cs_CZ",
+          "nl_NL",
+          "pl_PL",
+          "tr_TR",
+          "da_DK",
+          "en_IN",
+          "hi_IN",
+          "ta_IN",
+          "te_IN",
+          "kn_IN",
+          "ml_IN",
+          "bn_IN",
+          "mr_IN",
+          "it_IT",
+          "ja_JP",
+          "en_US",
+          "zh_CN",
+          "en_SG",
+          "es_ES",
+          "pt_PT",
+          "sv_SE",
+          "es_US",
+          "es_MX"
+        ]
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "promotion_id": {},
+      "zero_trace": {}
+    },
+    "apple_app_store": {
+      "api_key": {},
+      "async": {},
+      "category_id": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "country": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "disallow_explicit": {
+        "type": "checkbox"
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "lang": {
+        "type": "select",
+        "options": [
+          "pt-br",
+          "it-it",
+          "hi-in",
+          "ca-es",
+          "es-es",
+          "zh-tw",
+          "th-th",
+          "da-dk",
+          "fi-fi",
+          "en-gb",
+          "nl-nl",
+          "pl-pl",
+          "ro-ro",
+          "zh-cn",
+          "no-no",
+          "pt-pt",
+          "de-ch",
+          "uk-ua",
+          "en-us",
+          "vi-vi",
+          "sv-se",
+          "en-ca",
+          "fr-fr",
+          "sk-sk",
+          "zh-hk",
+          "hr-hr",
+          "en-au",
+          "ko-kr",
+          "tr-tr",
+          "el-gr",
+          "ms-my",
+          "id-id",
+          "cs-cz",
+          "hu-hu",
+          "fr-ca",
+          "es-mx",
+          "de-de",
+          "ru-ru",
+          "ja-jp"
+        ]
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "property": {
+        "type": "select",
+        "options": [
+          "developer"
+        ]
+      },
+      "term": {},
+      "zero_trace": {}
+    },
+    "apple_maps": {
+      "api_key": {},
+      "async": {},
+      "center": {},
+      "engine": {},
+      "json_restrictor": {},
+      "locale": {
+        "type": "select",
+        "options": [
+          "ar-SA",
+          "bn-BD",
+          "ca-ES",
+          "cs-CZ",
+          "da-DK",
+          "de-DE",
+          "el-GR",
+          "en-AU",
+          "en-GB",
+          "en-US",
+          "es-ES",
+          "es-MX",
+          "fi-FI",
+          "fr-CA",
+          "fr-FR",
+          "gu-IN",
+          "he-IL",
+          "hi-IN",
+          "hr-HR",
+          "hu-HU",
+          "id-ID",
+          "it-IT",
+          "ja-JP",
+          "kn-IN",
+          "ko-KR",
+          "ml-IN",
+          "mr-IN",
+          "ms-MY",
+          "nb-NO",
+          "nl-NL",
+          "or-IN",
+          "pa-IN",
+          "pl-PL",
+          "pt-BR",
+          "pt-PT",
+          "ro-RO",
+          "ru-RU",
+          "sk-SK",
+          "sl-SI",
+          "sv-SE",
+          "ta-IN",
+          "te-IN",
+          "th-TH",
+          "tr-TR",
+          "uk-UA",
+          "ur-PK",
+          "vi-VN",
+          "zh-CN",
+          "zh-HK",
+          "zh-TW"
+        ]
+      },
+      "location": {
+        "type": "location"
+      },
+      "multi_select_options": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "open_at": {
+        "type": "number"
+      },
+      "output": {},
+      "query": {},
+      "sort": {
+        "type": "select",
+        "options": [
+          "default",
+          "distance",
+          "ratings"
+        ]
+      },
+      "span": {},
+      "toggles": {},
+      "zero_trace": {}
+    },
+    "apple_maps_places": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "locale": {
+        "type": "select",
+        "options": [
+          "ar-SA",
+          "bn-BD",
+          "ca-ES",
+          "cs-CZ",
+          "da-DK",
+          "de-DE",
+          "el-GR",
+          "en-AU",
+          "en-GB",
+          "en-US",
+          "es-ES",
+          "es-MX",
+          "fi-FI",
+          "fr-CA",
+          "fr-FR",
+          "gu-IN",
+          "he-IL",
+          "hi-IN",
+          "hr-HR",
+          "hu-HU",
+          "id-ID",
+          "it-IT",
+          "ja-JP",
+          "kn-IN",
+          "ko-KR",
+          "ml-IN",
+          "mr-IN",
+          "ms-MY",
+          "nb-NO",
+          "nl-NL",
+          "or-IN",
+          "pa-IN",
+          "pl-PL",
+          "pt-BR",
+          "pt-PT",
+          "ro-RO",
+          "ru-RU",
+          "sk-SK",
+          "sl-SI",
+          "sv-SE",
+          "ta-IN",
+          "te-IN",
+          "th-TH",
+          "tr-TR",
+          "uk-UA",
+          "ur-PK",
+          "vi-VN",
+          "zh-CN",
+          "zh-HK",
+          "zh-TW"
+        ]
+      },
+      "muid": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "apple_product": {
+      "api_key": {},
+      "async": {},
+      "country": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "product_id": {},
+      "type": {
+        "type": "select",
+        "options": [
+          "app"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "apple_reviews": {
+      "api_key": {},
+      "async": {},
+      "country": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "product_id": {},
+      "sort": {
+        "type": "select",
+        "options": [
+          "mostrecent",
+          "mosthelpful",
+          "mostfavorable",
+          "mostcritical"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "autozone": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "facet": {},
+      "include_filters": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "ps": {
+        "type": "number"
+      },
+      "q": {},
+      "sort": {
+        "type": "select",
+        "options": [
+          "featured",
+          "price_low",
+          "price_high",
+          "recently_added",
+          "rating_high",
+          "best_seller"
+        ]
+      },
+      "store_id": {},
+      "vehicle_engine": {},
+      "vehicle_make": {},
+      "vehicle_model": {},
+      "vehicle_submodel": {},
+      "vehicle_type": {
+        "type": "select",
+        "options": [
+          "car_truck",
+          "motorcycle",
+          "recreational"
+        ]
+      },
+      "vehicle_year": {},
+      "zero_trace": {}
+    },
+    "autozone_product": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "product_id": {},
+      "store_id": {},
+      "vehicle_engine": {},
+      "vehicle_make": {},
+      "vehicle_model": {},
+      "vehicle_submodel": {},
+      "vehicle_token": {},
+      "vehicle_type": {
+        "type": "select",
+        "options": [
+          "car_truck",
+          "motorcycle",
+          "recreational"
+        ]
+      },
+      "vehicle_year": {},
+      "zero_trace": {}
+    },
+    "baidu": {
+      "api_key": {},
+      "async": {},
+      "bs": {},
+      "ct": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "f": {},
+      "gpc": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "oq": {},
+      "output": {},
+      "pn": {
+        "type": "number"
+      },
+      "q": {},
+      "q5": {},
+      "q6": {},
+      "rn": {
+        "type": "number"
+      },
+      "zero_trace": {}
+    },
+    "baidu_maps": {
+      "api_key": {},
+      "async": {},
+      "c": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "lat": {
+        "type": "number"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "q": {},
+      "zero_trace": {}
+    },
+    "baidu_news": {
+      "api_key": {},
+      "async": {},
+      "ct": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "medium": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "pn": {
+        "type": "number"
+      },
+      "q": {},
+      "rn": {
+        "type": "number"
+      },
+      "rtt": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "zero_trace": {}
+    },
+    "bing": {
+      "api_key": {},
+      "async": {},
+      "cc": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "filters": {},
+      "first": {
+        "type": "number"
+      },
+      "json_restrictor": {},
+      "lat": {
+        "type": "number"
+      },
+      "location": {
+        "type": "location"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "mkt": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safeSearch": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "zero_trace": {}
+    },
+    "bing_copilot": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "lat": {
+        "type": "number"
+      },
+      "location": {
+        "type": "location"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "bing_images": {
+      "age": {
+        "type": "select",
+        "options": [
+          "lt1440",
+          "lt10080",
+          "lt43200",
+          "lt525600"
+        ]
+      },
+      "api_key": {},
+      "aspect": {
+        "type": "select",
+        "options": [
+          "square",
+          "wide",
+          "tall"
+        ]
+      },
+      "async": {},
+      "cc": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "color2": {
+        "type": "select",
+        "options": [
+          "color",
+          "bw",
+          "FGcls_RED",
+          "FGcls_ORANGE",
+          "FGcls_YELLOW",
+          "FGcls_GREEN",
+          "FGcls_TEAL",
+          "FGcls_BLUE",
+          "FGcls_PURPLE",
+          "FGcls_PINK",
+          "FGcls_BROWN",
+          "FGcls_BLACK",
+          "FGcls_GRAY",
+          "FGcls_WHITE"
+        ]
+      },
+      "count": {
+        "type": "number"
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "face": {
+        "type": "select",
+        "options": [
+          "face",
+          "portrait"
+        ]
+      },
+      "first": {
+        "type": "number"
+      },
+      "imagesize": {
+        "type": "select",
+        "options": [
+          "small",
+          "medium",
+          "large",
+          "wallpaper"
+        ]
+      },
+      "json_restrictor": {},
+      "license": {
+        "type": "select",
+        "options": [
+          "Type-Any",
+          "L1",
+          "L2_L3_L4_L5_L6_L7",
+          "L2_L3_L4",
+          "L2_L3_L5_L6",
+          "L2_L3"
+        ]
+      },
+      "mkt": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "photo": {
+        "type": "select",
+        "options": [
+          "photo",
+          "clipart",
+          "linedrawing",
+          "animatedgif",
+          "animatedgifhttps",
+          "transparent",
+          "shopping"
+        ]
+      },
+      "q": {},
+      "safeSearch": {
+        "type": "select",
+        "options": [
+          "strict",
+          "moderate",
+          "off"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "bing_maps": {
+      "api_key": {},
+      "async": {},
+      "count": {
+        "type": "number"
+      },
+      "cp": {},
+      "engine": {},
+      "first": {
+        "type": "number"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "place_id": {},
+      "q": {},
+      "setlang": {
+        "type": "select",
+        "options": [
+          "ar",
+          "eu",
+          "bn",
+          "bg",
+          "ca",
+          "zh-hans",
+          "zh-hant",
+          "hr",
+          "cs",
+          "da",
+          "nl",
+          "en",
+          "en-gb",
+          "et",
+          "fi",
+          "fr",
+          "gl",
+          "de",
+          "gu",
+          "he",
+          "hi",
+          "hu",
+          "is",
+          "it",
+          "jp",
+          "kn",
+          "ko",
+          "lv",
+          "lt",
+          "ms",
+          "ml",
+          "mr",
+          "nb",
+          "pl",
+          "pt-br",
+          "pt-pt",
+          "pa",
+          "ro",
+          "ru",
+          "sr",
+          "sk",
+          "sl",
+          "es",
+          "sv",
+          "ta",
+          "te",
+          "th",
+          "tr",
+          "uk",
+          "vi"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "bing_news": {
+      "api_key": {},
+      "async": {},
+      "cc": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "count": {
+        "type": "number"
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "first": {
+        "type": "number"
+      },
+      "json_restrictor": {},
+      "mkt": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "qft": {
+        "type": "select",
+        "options": [
+          "interval=\"4\"",
+          "interval=\"7\"",
+          "interval=\"8\"",
+          "interval=\"9\"",
+          "sortbydate=\"1\""
+        ]
+      },
+      "safeSearch": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "zero_trace": {}
+    },
+    "bing_product": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "product_token": {},
+      "zero_trace": {}
+    },
+    "bing_reverse_image": {
+      "api_key": {},
+      "async": {},
+      "cab": {
+        "type": "number"
+      },
+      "cal": {
+        "type": "number"
+      },
+      "car": {
+        "type": "number"
+      },
+      "cat": {
+        "type": "number"
+      },
+      "count": {
+        "type": "number"
+      },
+      "engine": {},
+      "image_url": {},
+      "json_restrictor": {},
+      "mkt": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "bing_shopping": {
+      "api_key": {},
+      "async": {},
+      "cc": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "efirst": {
+        "type": "number"
+      },
+      "engine": {},
+      "filters": {},
+      "json_restrictor": {},
+      "mkt": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "bing_videos": {
+      "api_key": {},
+      "async": {},
+      "cc": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "date": {
+        "type": "select",
+        "options": [
+          "lt1440",
+          "lt10080",
+          "lt43200",
+          "lt525600"
+        ]
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "first": {
+        "type": "number"
+      },
+      "json_restrictor": {},
+      "length": {
+        "type": "select",
+        "options": [
+          "short",
+          "medium",
+          "long"
+        ]
+      },
+      "mkt": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "price": {
+        "type": "select",
+        "options": [
+          "free",
+          "paid"
+        ]
+      },
+      "q": {},
+      "resolution": {
+        "type": "select",
+        "options": [
+          "lowerthan_360p",
+          "360p",
+          "480p",
+          "720p",
+          "1080p"
+        ]
+      },
+      "setlang": {
+        "type": "select",
+        "options": [
+          "ar",
+          "eu",
+          "bn",
+          "bg",
+          "ca",
+          "zh-hans",
+          "zh-hant",
+          "hr",
+          "cs",
+          "da",
+          "nl",
+          "en",
+          "en-gb",
+          "et",
+          "fi",
+          "fr",
+          "gl",
+          "de",
+          "gu",
+          "he",
+          "hi",
+          "hu",
+          "is",
+          "it",
+          "jp",
+          "kn",
+          "ko",
+          "lv",
+          "lt",
+          "ms",
+          "ml",
+          "mr",
+          "nb",
+          "pl",
+          "pt-br",
+          "pt-pt",
+          "pa",
+          "ro",
+          "ru",
+          "sr",
+          "sk",
+          "sl",
+          "es",
+          "sv",
+          "ta",
+          "te",
+          "th",
+          "tr",
+          "uk",
+          "vi"
+        ]
+      },
+      "source_site": {
+        "type": "select",
+        "options": [
+          "dailymotion.com",
+          "vimeo.com",
+          "metacafe.com",
+          "hulu.com",
+          "vevo.com",
+          "myspace.com",
+          "mtv.com",
+          "cbsnews.com",
+          "foxnews.com",
+          "cnn.com",
+          "msn.com"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "booking": {
+      "adults": {
+        "type": "number"
+      },
+      "api_key": {},
+      "async": {},
+      "check_in_date": {},
+      "check_out_date": {},
+      "children": {
+        "type": "number"
+      },
+      "children_ages": {},
+      "currency": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "flex_window": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "free_cancellation": {
+        "type": "checkbox"
+      },
+      "hl": {
+        "type": "select",
+        "options": [
+          "en-us",
+          "en-gb",
+          "ar",
+          "bg",
+          "ca",
+          "zh-cn",
+          "zh-tw",
+          "hr",
+          "cs",
+          "da",
+          "nl",
+          "et",
+          "fi",
+          "fr",
+          "de",
+          "el",
+          "he",
+          "hi",
+          "hu",
+          "is",
+          "id",
+          "it",
+          "ja",
+          "ko",
+          "lv",
+          "lt",
+          "ms",
+          "no",
+          "pl",
+          "pt-br",
+          "pt-pt",
+          "ro",
+          "ru",
+          "sr",
+          "sk",
+          "sl",
+          "es",
+          "es-ar",
+          "es-mx",
+          "sv",
+          "tl",
+          "th",
+          "tr",
+          "uk",
+          "vi"
+        ]
+      },
+      "hotel_class": {},
+      "json_restrictor": {},
+      "limit": {
+        "type": "number"
+      },
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "nflt": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "offset": {
+        "type": "number"
+      },
+      "output": {},
+      "property_types": {},
+      "q": {},
+      "rating": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "rooms": {
+        "type": "number"
+      },
+      "session_token": {},
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "popularity",
+          "upsort_bh",
+          "price",
+          "price_from_high_to_low",
+          "review_score_and_price",
+          "bayesian_review_score",
+          "class",
+          "class_asc",
+          "class_and_price",
+          "distance_from_search",
+          "closest_beach_distance_v2",
+          "closest_ski_lift_distance"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "brave": {
+      "api_key": {},
+      "async": {},
+      "country": {
+        "type": "select",
+        "options": [
+          "all",
+          "ar",
+          "au",
+          "at",
+          "be",
+          "br",
+          "ca",
+          "cl",
+          "cn",
+          "dk",
+          "fi",
+          "fr",
+          "de",
+          "gr",
+          "hk",
+          "in",
+          "id",
+          "it",
+          "jp",
+          "kr",
+          "my",
+          "mx",
+          "nl",
+          "nz",
+          "no",
+          "pl",
+          "pt",
+          "ph",
+          "ru",
+          "sa",
+          "sg",
+          "za",
+          "es",
+          "se",
+          "ch",
+          "tw",
+          "tr",
+          "gb",
+          "us"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "language": {
+        "type": "select",
+        "options": [
+          "az",
+          "bg",
+          "br",
+          "ca",
+          "cs",
+          "cy",
+          "da",
+          "de",
+          "el",
+          "en",
+          "es",
+          "et",
+          "eu",
+          "fi",
+          "fr",
+          "gl",
+          "hr",
+          "hu",
+          "id",
+          "it",
+          "ja",
+          "ka",
+          "ko",
+          "lt",
+          "lv",
+          "ms",
+          "nb",
+          "nl",
+          "pl",
+          "pt",
+          "ro",
+          "ru",
+          "sk",
+          "sl",
+          "sq",
+          "sr",
+          "sv",
+          "sw",
+          "th",
+          "tr",
+          "uk",
+          "vi",
+          "zh"
+        ]
+      },
+      "lat": {
+        "type": "number"
+      },
+      "location": {
+        "type": "location"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "offset": {
+        "type": "number"
+      },
+      "output": {},
+      "q": {},
+      "safe_search": {
+        "type": "select",
+        "options": [
+          "off",
+          "moderate",
+          "strict"
+        ]
+      },
+      "spellcheck": {
+        "type": "checkbox"
+      },
+      "tf": {},
+      "zero_trace": {}
+    },
+    "brave_ai_mode": {
+      "api_key": {},
+      "async": {},
+      "country": {
+        "type": "select",
+        "options": [
+          "ar",
+          "au",
+          "at",
+          "be",
+          "br",
+          "ca",
+          "cl",
+          "cn",
+          "dk",
+          "fi",
+          "fr",
+          "de",
+          "gr",
+          "hk",
+          "in",
+          "id",
+          "it",
+          "jp",
+          "kr",
+          "my",
+          "mx",
+          "nl",
+          "nz",
+          "no",
+          "pl",
+          "pt",
+          "ph",
+          "ru",
+          "sa",
+          "sg",
+          "za",
+          "es",
+          "se",
+          "ch",
+          "tw",
+          "tr",
+          "gb",
+          "us"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "language": {
+        "type": "select",
+        "options": [
+          "az",
+          "bg",
+          "br",
+          "ca",
+          "cs",
+          "cy",
+          "da",
+          "de",
+          "el",
+          "en",
+          "es",
+          "et",
+          "eu",
+          "fi",
+          "fr",
+          "gl",
+          "hr",
+          "hu",
+          "id",
+          "it",
+          "ja",
+          "ka",
+          "ko",
+          "lt",
+          "lv",
+          "ms",
+          "nb",
+          "nl",
+          "pl",
+          "pt",
+          "ro",
+          "ru",
+          "sk",
+          "sl",
+          "sq",
+          "sr",
+          "sv",
+          "sw",
+          "th",
+          "tr",
+          "uk",
+          "vi",
+          "zh"
+        ]
+      },
+      "lat": {
+        "type": "number"
+      },
+      "location": {
+        "type": "location"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safeSearch": {
+        "type": "select",
+        "options": [
+          "off",
+          "moderate",
+          "strict"
+        ]
+      },
+      "subsequent_request_token": {},
+      "units_of_measurement": {
+        "type": "select",
+        "options": [
+          "metric",
+          "us"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "brave_images": {
+      "api_key": {},
+      "async": {},
+      "country": {
+        "type": "select",
+        "options": [
+          "ar",
+          "au",
+          "at",
+          "be",
+          "br",
+          "ca",
+          "cl",
+          "cn",
+          "dk",
+          "fi",
+          "fr",
+          "de",
+          "gr",
+          "hk",
+          "in",
+          "id",
+          "it",
+          "jp",
+          "kr",
+          "my",
+          "mx",
+          "nl",
+          "nz",
+          "no",
+          "pl",
+          "pt",
+          "ph",
+          "ru",
+          "sa",
+          "sg",
+          "za",
+          "es",
+          "se",
+          "ch",
+          "tw",
+          "tr",
+          "gb",
+          "us"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe_search": {
+        "type": "select",
+        "options": [
+          "off",
+          "moderate",
+          "strict"
+        ]
+      },
+      "spelling": {
+        "type": "checkbox"
+      },
+      "zero_trace": {}
+    },
+    "brave_videos": {
+      "api_key": {},
+      "async": {},
+      "country": {
+        "type": "select",
+        "options": [
+          "ar",
+          "au",
+          "at",
+          "be",
+          "br",
+          "ca",
+          "cl",
+          "cn",
+          "dk",
+          "fi",
+          "fr",
+          "de",
+          "gr",
+          "hk",
+          "in",
+          "id",
+          "it",
+          "jp",
+          "kr",
+          "my",
+          "mx",
+          "nl",
+          "nz",
+          "no",
+          "pl",
+          "pt",
+          "ph",
+          "ru",
+          "sa",
+          "sg",
+          "za",
+          "es",
+          "se",
+          "ch",
+          "tw",
+          "tr",
+          "gb",
+          "us"
+        ]
+      },
+      "date": {
+        "type": "select",
+        "options": [
+          "past_day",
+          "past_week",
+          "past_month",
+          "past_year"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "q": {},
+      "safe_search": {
+        "type": "select",
+        "options": [
+          "off",
+          "moderate",
+          "strict"
+        ]
+      },
+      "spelling": {
+        "type": "checkbox"
+      },
+      "zero_trace": {}
+    },
+    "doordash": {
+      "address": {},
+      "api_key": {},
+      "async": {},
+      "deals": {
+        "type": "checkbox"
+      },
+      "engine": {},
+      "fastest": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "min_rating": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "pickup": {
+        "type": "checkbox"
+      },
+      "q": {},
+      "store_type": {
+        "type": "select",
+        "options": [
+          "all",
+          "restaurant",
+          "grocery",
+          "retail",
+          "pets",
+          "alcohol",
+          "flowers"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "duck_ai": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "model": {
+        "type": "select",
+        "options": [
+          "gpt-5.6-luna",
+          "gpt-6-luna",
+          "gpt-5.4-mini",
+          "claude-haiku-4-5",
+          "mistral-small-2603",
+          "tinfoil/gpt-oss-120b",
+          "tinfoil/gemma4-31b"
+        ]
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "subsequent_request_token": {},
+      "zero_trace": {}
+    },
+    "duckduckgo": {
+      "api_key": {},
+      "async": {},
+      "df": {},
+      "engine": {},
+      "json_restrictor": {},
+      "kl": {
+        "type": "select",
+        "options": [
+          "ar-es",
+          "au-en",
+          "at-de",
+          "be-fr",
+          "be-nl",
+          "br-pt",
+          "bg-bg",
+          "ca-en",
+          "ca-fr",
+          "ct-ca",
+          "cl-es",
+          "cn-zh",
+          "co-es",
+          "hr-hr",
+          "cz-cs",
+          "dk-da",
+          "ee-et",
+          "fi-fi",
+          "fr-fr",
+          "de-de",
+          "gr-el",
+          "hk-tzh",
+          "hu-hu",
+          "is-is",
+          "in-en",
+          "id-en",
+          "ie-en",
+          "il-en",
+          "it-it",
+          "jp-jp",
+          "kr-kr",
+          "lv-lv",
+          "lt-lt",
+          "my-en",
+          "mx-es",
+          "nl-nl",
+          "nz-en",
+          "no-no",
+          "pk-en",
+          "pe-es",
+          "ph-en",
+          "pl-pl",
+          "pt-pt",
+          "ro-ro",
+          "ru-ru",
+          "xa-ar",
+          "sg-en",
+          "sk-sk",
+          "sl-sl",
+          "za-en",
+          "es-ca",
+          "es-es",
+          "se-sv",
+          "ch-de",
+          "ch-fr",
+          "tw-tzh",
+          "th-en",
+          "tr-tr",
+          "us-en",
+          "us-es",
+          "ua-uk",
+          "uk-en",
+          "vn-en",
+          "wt-wt"
+        ]
+      },
+      "m": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "search_assist": {
+        "type": "checkbox"
+      },
+      "start": {
+        "type": "number"
+      },
+      "zero_trace": {}
+    },
+    "duckduckgo_light": {
+      "api_key": {},
+      "async": {},
+      "df": {},
+      "engine": {},
+      "json_restrictor": {},
+      "kl": {
+        "type": "select",
+        "options": [
+          "ar-es",
+          "au-en",
+          "at-de",
+          "be-fr",
+          "be-nl",
+          "br-pt",
+          "bg-bg",
+          "ca-en",
+          "ca-fr",
+          "ct-ca",
+          "cl-es",
+          "cn-zh",
+          "co-es",
+          "hr-hr",
+          "cz-cs",
+          "dk-da",
+          "ee-et",
+          "fi-fi",
+          "fr-fr",
+          "de-de",
+          "gr-el",
+          "hk-tzh",
+          "hu-hu",
+          "is-is",
+          "in-en",
+          "id-en",
+          "ie-en",
+          "il-en",
+          "it-it",
+          "jp-jp",
+          "kr-kr",
+          "lv-lv",
+          "lt-lt",
+          "my-en",
+          "mx-es",
+          "nl-nl",
+          "nz-en",
+          "no-no",
+          "pk-en",
+          "pe-es",
+          "ph-en",
+          "pl-pl",
+          "pt-pt",
+          "ro-ro",
+          "ru-ru",
+          "xa-ar",
+          "sg-en",
+          "sk-sk",
+          "sl-sl",
+          "za-en",
+          "es-ca",
+          "es-es",
+          "se-sv",
+          "ch-de",
+          "ch-fr",
+          "tw-tzh",
+          "th-en",
+          "tr-tr",
+          "us-en",
+          "us-es",
+          "ua-uk",
+          "uk-en",
+          "vn-en",
+          "wt-wt"
+        ]
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "duckduckgo_maps": {
+      "api_key": {},
+      "async": {},
+      "bbox": {},
+      "engine": {},
+      "json_restrictor": {},
+      "lat": {
+        "type": "number"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "strict_bbox": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "zero_trace": {}
+    },
+    "duckduckgo_news": {
+      "api_key": {},
+      "async": {},
+      "df": {},
+      "engine": {},
+      "json_restrictor": {},
+      "kl": {
+        "type": "select",
+        "options": [
+          "ar-es",
+          "au-en",
+          "at-de",
+          "be-fr",
+          "be-nl",
+          "br-pt",
+          "bg-bg",
+          "ca-en",
+          "ca-fr",
+          "ct-ca",
+          "cl-es",
+          "cn-zh",
+          "co-es",
+          "hr-hr",
+          "cz-cs",
+          "dk-da",
+          "ee-et",
+          "fi-fi",
+          "fr-fr",
+          "de-de",
+          "gr-el",
+          "hk-tzh",
+          "hu-hu",
+          "is-is",
+          "in-en",
+          "id-en",
+          "ie-en",
+          "il-en",
+          "it-it",
+          "jp-jp",
+          "kr-kr",
+          "lv-lv",
+          "lt-lt",
+          "my-en",
+          "mx-es",
+          "nl-nl",
+          "nz-en",
+          "no-no",
+          "pk-en",
+          "pe-es",
+          "ph-en",
+          "pl-pl",
+          "pt-pt",
+          "ro-ro",
+          "ru-ru",
+          "xa-ar",
+          "sg-en",
+          "sk-sk",
+          "sl-sl",
+          "za-en",
+          "es-ca",
+          "es-es",
+          "se-sv",
+          "ch-de",
+          "ch-fr",
+          "tw-tzh",
+          "th-en",
+          "tr-tr",
+          "us-en",
+          "us-es",
+          "ua-uk",
+          "uk-en",
+          "vn-en",
+          "wt-wt"
+        ]
+      },
+      "m": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "start": {
+        "type": "number"
+      },
+      "zero_trace": {}
+    },
+    "duckduckgo_shopping": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "filters": {},
+      "json_restrictor": {},
+      "kl": {
+        "type": "select",
+        "options": [
+          "ar-es",
+          "au-en",
+          "at-de",
+          "be-fr",
+          "be-nl",
+          "br-pt",
+          "bg-bg",
+          "ca-en",
+          "ca-fr",
+          "cl-es",
+          "co-es",
+          "hr-hr",
+          "cz-cs",
+          "dk-da",
+          "ee-et",
+          "fi-fi",
+          "fr-fr",
+          "de-de",
+          "gr-el",
+          "hu-hu",
+          "is-is",
+          "in-en",
+          "ie-en",
+          "it-it",
+          "jp-jp",
+          "kr-kr",
+          "lv-lv",
+          "lt-lt",
+          "mx-es",
+          "nl-nl",
+          "no-no",
+          "pe-es",
+          "pl-pl",
+          "pt-pt",
+          "ro-ro",
+          "sk-sk",
+          "sl-sl",
+          "za-en",
+          "es-es",
+          "se-sv",
+          "ch-de",
+          "ch-fr",
+          "tr-tr",
+          "us-en",
+          "us-es",
+          "uk-en"
+        ]
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "sort_by": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "zero_trace": {}
+    },
+    "ebay": {
+      "LH_ItemCondition": {},
+      "LH_PrefLoc": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "_blrs": {
+        "type": "checkbox",
+        "value_type": "string"
+      },
+      "_dmd": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "_ipg": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "_nkw": {},
+      "_pgn": {
+        "type": "number"
+      },
+      "_salic": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "_sasl": {},
+      "_saslop": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "_sop": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "_stpos": {},
+      "_udhi": {
+        "type": "number"
+      },
+      "_udlo": {
+        "type": "number"
+      },
+      "api_key": {},
+      "async": {},
+      "buying_format": {
+        "type": "select",
+        "options": [
+          "Auction",
+          "BIN",
+          "BO"
+        ]
+      },
+      "category_id": {},
+      "ebay_domain": {
+        "type": "select",
+        "options": [
+          "ebay.com.au",
+          "ebay.at",
+          "ebay.ca",
+          "ebay.fr",
+          "ebay.de",
+          "ebay.com.hk",
+          "ebay.ie",
+          "ebay.it",
+          "ebay.com.my",
+          "ebay.nl",
+          "ebay.pl",
+          "ebay.com.sg",
+          "ebay.es",
+          "ebay.ch",
+          "ebay.co.uk",
+          "ebay.com"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "popular_filters": {},
+      "show_only": {},
+      "zero_trace": {}
+    },
+    "ebay_product": {
+      "api_key": {},
+      "async": {},
+      "ebay_domain": {
+        "type": "select",
+        "options": [
+          "ebay.com.au",
+          "ebay.at",
+          "ebay.ca",
+          "ebay.fr",
+          "ebay.de",
+          "ebay.com.hk",
+          "ebay.ie",
+          "ebay.it",
+          "ebay.com.my",
+          "ebay.nl",
+          "ebay.pl",
+          "ebay.com.sg",
+          "ebay.es",
+          "ebay.ch",
+          "ebay.co.uk",
+          "ebay.com"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "lang": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "locale": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "product_id": {},
+      "shipping_country": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "zero_trace": {}
+    },
+    "ebay_seller": {
+      "LH_ItemCondition": {},
+      "_ipg": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "_pgn": {
+        "type": "number"
+      },
+      "_sop": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "api_key": {},
+      "async": {},
+      "buying_format": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "ebay_domain": {
+        "type": "select",
+        "options": [
+          "ebay.com.au",
+          "ebay.at",
+          "ebay.ca",
+          "ebay.fr",
+          "ebay.de",
+          "ebay.com.hk",
+          "ebay.ie",
+          "ebay.it",
+          "ebay.com.my",
+          "ebay.nl",
+          "ebay.pl",
+          "ebay.com.sg",
+          "ebay.es",
+          "ebay.ch",
+          "ebay.co.uk",
+          "ebay.com"
+        ]
+      },
+      "engine": {},
+      "free_shipping": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "seller_id": {},
+      "type": {
+        "type": "select",
+        "options": [
+          "user",
+          "store"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "eventbrite": {
+      "api_key": {},
+      "async": {},
+      "category": {
+        "type": "select",
+        "options": [
+          "business_and_professional",
+          "science_and_technology",
+          "music",
+          "film_media_and_entertainment",
+          "performing_and_visual_arts",
+          "fashion_and_beauty",
+          "health_and_wellness",
+          "sports_and_fitness",
+          "travel_and_outdoor",
+          "food_and_drink",
+          "charity_and_causes",
+          "government_and_politics",
+          "community_and_culture",
+          "religion_and_spirituality",
+          "family_and_education",
+          "seasonal_and_holiday",
+          "home_and_lifestyle",
+          "auto_boat_and_air",
+          "hobbies_and_special_interest",
+          "school_activities",
+          "other"
+        ]
+      },
+      "date": {
+        "type": "select",
+        "options": [
+          "today",
+          "tomorrow",
+          "this_weekend",
+          "this_week",
+          "next_week",
+          "this_month",
+          "next_month"
+        ]
+      },
+      "end_date": {},
+      "engine": {},
+      "event_type": {
+        "type": "select",
+        "options": [
+          "conference",
+          "seminar",
+          "tradeshow",
+          "convention",
+          "festival",
+          "concert",
+          "screening",
+          "dinner",
+          "class",
+          "meeting",
+          "party",
+          "rally",
+          "tournament",
+          "game",
+          "race",
+          "tour",
+          "attraction",
+          "camp",
+          "appearance",
+          "other"
+        ]
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "online": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "price": {
+        "type": "select",
+        "options": [
+          "free",
+          "paid"
+        ]
+      },
+      "q": {},
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "date"
+        ]
+      },
+      "start_date": {},
+      "zero_trace": {}
+    },
+    "extract": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "exclude_tags": {},
+      "include_markdown": {
+        "type": "checkbox"
+      },
+      "include_sitemap": {
+        "type": "checkbox"
+      },
+      "include_subdomains": {
+        "type": "checkbox"
+      },
+      "include_tags": {},
+      "json_restrictor": {},
+      "max_depth": {
+        "type": "number"
+      },
+      "max_pages": {
+        "type": "number"
+      },
+      "mode": {
+        "type": "select",
+        "options": [
+          "scrape",
+          "map",
+          "crawl"
+        ]
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "prefetch_delay": {
+        "type": "number"
+      },
+      "timeout": {
+        "type": "number"
+      },
+      "url": {},
+      "zero_trace": {}
+    },
+    "facebook_marketplace": {
+      "api_key": {},
+      "async": {},
+      "availability": {
+        "type": "select",
+        "options": [
+          "available",
+          "sold"
+        ]
+      },
+      "category": {
+        "type": "select",
+        "options": [
+          "apparel",
+          "classifieds",
+          "electronics",
+          "entertainment",
+          "family",
+          "free",
+          "garden",
+          "hobbies",
+          "home",
+          "home-improvements",
+          "instruments",
+          "office-supplies",
+          "pets",
+          "propertyrentals",
+          "sports",
+          "toys",
+          "vehicles"
+        ]
+      },
+      "condition": {},
+      "days_since_listed": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "delivery_method": {
+        "type": "select",
+        "options": [
+          "local_pick_up",
+          "shipping"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "lat": {
+        "type": "number"
+      },
+      "location": {
+        "type": "location"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "radius": {
+        "type": "number"
+      },
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "best_match",
+          "distance_ascend",
+          "creation_time_descend",
+          "price_ascend",
+          "price_descend"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "facebook_profile": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "profile_id": {},
+      "zero_trace": {}
+    },
+    "flightradar24": {
+      "aircraft_type": {},
+      "airline": {},
+      "airport": {},
+      "api_key": {},
+      "arrival_id": {},
+      "async": {},
+      "callsign": {},
+      "departure_id": {},
+      "engine": {},
+      "flight_number": {},
+      "json_restrictor": {},
+      "map_bounds": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "registration": {},
+      "zero_trace": {}
+    },
+    "glassdoor_companies": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "location": {},
+      "min_rating": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "q": {},
+      "zero_trace": {}
+    },
+    "glassdoor_jobs": {
+      "api_key": {},
+      "async": {},
+      "date_posted": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "easy_apply": {
+        "type": "checkbox"
+      },
+      "employer_id": {},
+      "engine": {},
+      "job_type": {
+        "type": "select",
+        "options": [
+          "full_time",
+          "part_time",
+          "contract"
+        ]
+      },
+      "json_restrictor": {},
+      "location": {},
+      "max_salary": {
+        "type": "number"
+      },
+      "min_rating": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "min_salary": {
+        "type": "number"
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "radius": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "remote": {
+        "type": "checkbox"
+      },
+      "seniority_level": {
+        "type": "select",
+        "options": [
+          "internship",
+          "entry_level",
+          "mid_senior_level",
+          "director",
+          "executive"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "glassdoor_reviews": {
+      "api_key": {},
+      "async": {},
+      "current_employees": {
+        "type": "checkbox"
+      },
+      "employer_id": {},
+      "employment_status": {},
+      "engine": {},
+      "job_title": {},
+      "json_restrictor": {},
+      "language": {
+        "type": "select",
+        "options": [
+          "en",
+          "fr",
+          "de",
+          "es",
+          "pt",
+          "it",
+          "nl"
+        ]
+      },
+      "location": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "q": {},
+      "rating": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "most_relevant",
+          "newest",
+          "oldest",
+          "highest_rating",
+          "lowest_rating"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google": {
+      "api_key": {},
+      "as_dt": {},
+      "as_epq": {},
+      "as_eq": {},
+      "as_lq": {},
+      "as_nhi": {},
+      "as_nlo": {},
+      "as_oq": {},
+      "as_q": {},
+      "as_qdr": {},
+      "as_rq": {},
+      "as_sitesearch": {},
+      "async": {},
+      "color_scheme": {
+        "type": "select",
+        "options": [
+          "light",
+          "dark"
+        ]
+      },
+      "cr": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "filter": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "ibp": {},
+      "json_restrictor": {},
+      "kgmid": {},
+      "lat": {
+        "type": "number"
+      },
+      "location": {
+        "type": "location"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "lr": {},
+      "lsig": {},
+      "ludocid": {},
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "radius": {
+        "type": "number"
+      },
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "si": {},
+      "start": {
+        "type": "number"
+      },
+      "tbm": {
+        "type": "select",
+        "options": [
+          "isch",
+          "lcl",
+          "nws",
+          "shop",
+          "vid",
+          "pts",
+          "bks"
+        ]
+      },
+      "tbs": {},
+      "udm": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "uds": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_about_this_result": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "ilps": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "req_token": {},
+      "zero_trace": {}
+    },
+    "google_ads": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google_ads_transparency_center": {
+      "advertiser_id": {},
+      "api_key": {},
+      "async": {},
+      "creative_format": {
+        "type": "dropdown",
+        "options": [
+          "text",
+          "image",
+          "video"
+        ]
+      },
+      "end_date": {},
+      "engine": {},
+      "get_advertiser": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "platform": {
+        "type": "select",
+        "options": [
+          "PLAY",
+          "MAPS",
+          "SEARCH",
+          "SHOPPING",
+          "YOUTUBE"
+        ]
+      },
+      "political_ads": {
+        "type": "checkbox"
+      },
+      "region": {
+        "type": "dropdown",
+        "value_type": "number"
+      },
+      "start_date": {},
+      "text": {},
+      "zero_trace": {}
+    },
+    "google_ads_transparency_center_ad_details": {
+      "advertiser_id": {},
+      "api_key": {},
+      "async": {},
+      "creative_id": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "region": {
+        "type": "dropdown",
+        "value_type": "number"
+      },
+      "zero_trace": {}
+    },
+    "google_ai_mode": {
+      "api_key": {},
+      "async": {},
+      "continuable": {
+        "type": "checkbox"
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "image_url": {},
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "subsequent_request_token": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_ai_overview": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page_token": {},
+      "zero_trace": {}
+    },
+    "google_autocomplete": {
+      "api_key": {},
+      "async": {},
+      "client": {
+        "type": "select",
+        "options": [
+          "chrome",
+          "chrome-omni",
+          "gws-wiz",
+          "safari",
+          "firefox",
+          "psy-ab",
+          "toolbar",
+          "youtube",
+          "gws-wiz-local"
+        ]
+      },
+      "cp": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "google_books": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "document_type": {
+        "type": "select",
+        "options": [
+          "books",
+          "magazines",
+          "newspapers"
+        ]
+      },
+      "end_date": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "start": {
+        "type": "number"
+      },
+      "start_date": {},
+      "tbs": {},
+      "view": {
+        "type": "select",
+        "options": [
+          "preview",
+          "full"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google_event_details": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "event_token": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "nearby_places": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "search_results": {
+        "type": "checkbox"
+      },
+      "similar_events": {
+        "type": "checkbox"
+      },
+      "zero_trace": {}
+    },
+    "google_events": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_finance": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "window": {
+        "type": "dropdown",
+        "options": [
+          "1D",
+          "5D",
+          "1M",
+          "6M",
+          "YTD",
+          "1Y",
+          "5Y",
+          "MAX"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google_finance_autocomplete": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "google_finance_markets": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "trend": {
+        "type": "select",
+        "options": [
+          "indexes"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google_flights": {
+      "adults": {
+        "type": "number"
+      },
+      "api_key": {},
+      "arrival_id": {},
+      "async": {},
+      "bags": {
+        "type": "number"
+      },
+      "booking_token": {},
+      "children": {
+        "type": "number"
+      },
+      "currency": {
+        "type": "select",
+        "options": [
+          "ALL",
+          "DZD",
+          "ARS",
+          "AMD",
+          "AWG",
+          "AUD",
+          "AZN",
+          "BSD",
+          "BHD",
+          "BYN",
+          "BMD",
+          "BAM",
+          "BRL",
+          "GBP",
+          "BGN",
+          "XPF",
+          "CAD",
+          "CLP",
+          "CNY",
+          "COP",
+          "CRC",
+          "CUP",
+          "CZK",
+          "DKK",
+          "DOP",
+          "EGP",
+          "EUR",
+          "GEL",
+          "HKD",
+          "HUF",
+          "ISK",
+          "INR",
+          "IDR",
+          "IRR",
+          "ILS",
+          "JMD",
+          "JPY",
+          "JOD",
+          "KZT",
+          "KWD",
+          "LBP",
+          "MKD",
+          "MYR",
+          "MXN",
+          "MDL",
+          "MAD",
+          "TWD",
+          "NZD",
+          "NOK",
+          "OMR",
+          "PKR",
+          "PAB",
+          "PEN",
+          "PHP",
+          "PLN",
+          "QAR",
+          "RON",
+          "RUB",
+          "SAR",
+          "RSD",
+          "SGD",
+          "ZAR",
+          "KRW",
+          "SEK",
+          "CHF",
+          "THB",
+          "TRY",
+          "USD",
+          "UAH",
+          "AED",
+          "VND"
+        ]
+      },
+      "deep_search": {
+        "type": "checkbox"
+      },
+      "departure_id": {},
+      "departure_token": {},
+      "emissions": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "engine": {},
+      "exclude_airlines": {},
+      "exclude_basic": {
+        "type": "checkbox"
+      },
+      "exclude_conns": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "include_airlines": {},
+      "infants_in_seat": {
+        "type": "number"
+      },
+      "infants_on_lap": {
+        "type": "number"
+      },
+      "json_restrictor": {},
+      "layover_duration": {},
+      "max_duration": {
+        "type": "number"
+      },
+      "max_price": {
+        "type": "number"
+      },
+      "multi_city_json": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "outbound_date": {},
+      "outbound_times": {},
+      "output": {},
+      "return_date": {},
+      "return_times": {},
+      "selected_flights_json": {},
+      "show_hidden": {
+        "type": "checkbox"
+      },
+      "sort_by": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "stops": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "travel_class": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "type": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "zero_trace": {}
+    },
+    "google_flights_autocomplete": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "exclude_regions": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "google_flights_calendar": {
+      "adults": {
+        "type": "number"
+      },
+      "api_key": {},
+      "arrival_id": {},
+      "async": {},
+      "children": {
+        "type": "number"
+      },
+      "currency": {
+        "type": "select",
+        "options": [
+          "ALL",
+          "DZD",
+          "ARS",
+          "AMD",
+          "AWG",
+          "AUD",
+          "AZN",
+          "BSD",
+          "BHD",
+          "BYN",
+          "BMD",
+          "BAM",
+          "BRL",
+          "GBP",
+          "BGN",
+          "XPF",
+          "CAD",
+          "CLP",
+          "CNY",
+          "COP",
+          "CRC",
+          "CUP",
+          "CZK",
+          "DKK",
+          "DOP",
+          "EGP",
+          "EUR",
+          "GEL",
+          "HKD",
+          "HUF",
+          "ISK",
+          "INR",
+          "IDR",
+          "IRR",
+          "ILS",
+          "JMD",
+          "JPY",
+          "JOD",
+          "KZT",
+          "KWD",
+          "LBP",
+          "MKD",
+          "MYR",
+          "MXN",
+          "MDL",
+          "MAD",
+          "TWD",
+          "NZD",
+          "NOK",
+          "OMR",
+          "PKR",
+          "PAB",
+          "PEN",
+          "PHP",
+          "PLN",
+          "QAR",
+          "RON",
+          "RUB",
+          "SAR",
+          "RSD",
+          "SGD",
+          "ZAR",
+          "KRW",
+          "SEK",
+          "CHF",
+          "THB",
+          "TRY",
+          "USD",
+          "UAH",
+          "AED",
+          "VND"
+        ]
+      },
+      "date_range_end": {},
+      "date_range_start": {},
+      "departure_id": {},
+      "engine": {},
+      "fixed_outbound_date": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "infants_in_seat": {
+        "type": "number"
+      },
+      "infants_on_lap": {
+        "type": "number"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "round_trip_days": {
+        "type": "number"
+      },
+      "travel_class": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "type": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "zero_trace": {}
+    },
+    "google_flights_deals": {
+      "adults": {
+        "type": "number"
+      },
+      "api_key": {},
+      "async": {},
+      "children": {
+        "type": "number"
+      },
+      "currency": {
+        "type": "select",
+        "options": [
+          "ALL",
+          "DZD",
+          "ARS",
+          "AMD",
+          "AWG",
+          "AUD",
+          "AZN",
+          "BSD",
+          "BHD",
+          "BYN",
+          "BMD",
+          "BAM",
+          "BRL",
+          "GBP",
+          "BGN",
+          "XPF",
+          "CAD",
+          "CLP",
+          "CNY",
+          "COP",
+          "CRC",
+          "CUP",
+          "CZK",
+          "DKK",
+          "DOP",
+          "EGP",
+          "EUR",
+          "GEL",
+          "HKD",
+          "HUF",
+          "ISK",
+          "INR",
+          "IDR",
+          "IRR",
+          "ILS",
+          "JMD",
+          "JPY",
+          "JOD",
+          "KZT",
+          "KWD",
+          "LBP",
+          "MKD",
+          "MYR",
+          "MXN",
+          "MDL",
+          "MAD",
+          "TWD",
+          "NZD",
+          "NOK",
+          "OMR",
+          "PKR",
+          "PAB",
+          "PEN",
+          "PHP",
+          "PLN",
+          "QAR",
+          "RON",
+          "RUB",
+          "SAR",
+          "RSD",
+          "SGD",
+          "ZAR",
+          "KRW",
+          "SEK",
+          "CHF",
+          "THB",
+          "TRY",
+          "USD",
+          "UAH",
+          "AED",
+          "VND"
+        ]
+      },
+      "departure_id": {},
+      "engine": {},
+      "exclude_airlines": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "include_airlines": {},
+      "infants_in_seat": {
+        "type": "number"
+      },
+      "infants_on_lap": {
+        "type": "number"
+      },
+      "json_restrictor": {},
+      "max_duration": {
+        "type": "number"
+      },
+      "max_price": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "outbound_date": {},
+      "output": {},
+      "query": {},
+      "return_date": {},
+      "stops": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "travel_class": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "travel_duration": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "trip_length": {},
+      "type": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "zero_trace": {}
+    },
+    "google_forums": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "end_date": {},
+      "engine": {},
+      "filter": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "period_unit": {
+        "type": "select",
+        "options": [
+          "s",
+          "n",
+          "h",
+          "d",
+          "w",
+          "m",
+          "y"
+        ]
+      },
+      "period_value": {
+        "type": "number"
+      },
+      "q": {},
+      "start": {
+        "type": "number"
+      },
+      "start_date": {},
+      "tbs": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_gemini": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "subsequent_request_token": {},
+      "zero_trace": {}
+    },
+    "google_hotels": {
+      "adults": {
+        "type": "number"
+      },
+      "amenities": {},
+      "api_key": {},
+      "async": {},
+      "bathrooms": {
+        "type": "number"
+      },
+      "bedrooms": {
+        "type": "number"
+      },
+      "brands": {},
+      "check_in_date": {},
+      "check_out_date": {},
+      "children": {
+        "type": "number"
+      },
+      "children_ages": {},
+      "currency": {
+        "type": "select",
+        "options": [
+          "ALL",
+          "DZD",
+          "ARS",
+          "AMD",
+          "AWG",
+          "AUD",
+          "AZN",
+          "BSD",
+          "BHD",
+          "BYN",
+          "BMD",
+          "BAM",
+          "BRL",
+          "GBP",
+          "BGN",
+          "XPF",
+          "CAD",
+          "CLP",
+          "CNY",
+          "COP",
+          "CRC",
+          "CUP",
+          "CZK",
+          "DKK",
+          "DOP",
+          "EGP",
+          "EUR",
+          "GEL",
+          "HKD",
+          "HUF",
+          "ISK",
+          "INR",
+          "IDR",
+          "IRR",
+          "ILS",
+          "JMD",
+          "JPY",
+          "JOD",
+          "KZT",
+          "KWD",
+          "LBP",
+          "MKD",
+          "MYR",
+          "MXN",
+          "MDL",
+          "MAD",
+          "TWD",
+          "NZD",
+          "NOK",
+          "OMR",
+          "PKR",
+          "PAB",
+          "PEN",
+          "PHP",
+          "PLN",
+          "QAR",
+          "RON",
+          "RUB",
+          "SAR",
+          "RSD",
+          "SGD",
+          "ZAR",
+          "KRW",
+          "SEK",
+          "CHF",
+          "THB",
+          "TRY",
+          "USD",
+          "UAH",
+          "AED",
+          "VND"
+        ]
+      },
+      "eco_certified": {
+        "type": "checkbox"
+      },
+      "engine": {},
+      "free_cancellation": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hotel_class": {},
+      "json_restrictor": {},
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "property_token": {},
+      "property_types": {},
+      "q": {},
+      "rating": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "sort_by": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "special_offers": {
+        "type": "checkbox"
+      },
+      "vacation_rentals": {
+        "type": "checkbox"
+      },
+      "zero_trace": {}
+    },
+    "google_hotels_autocomplete": {
+      "api_key": {},
+      "async": {},
+      "currency": {
+        "type": "select",
+        "options": [
+          "ALL",
+          "DZD",
+          "ARS",
+          "AMD",
+          "AWG",
+          "AUD",
+          "AZN",
+          "BSD",
+          "BHD",
+          "BYN",
+          "BMD",
+          "BAM",
+          "BRL",
+          "GBP",
+          "BGN",
+          "XPF",
+          "CAD",
+          "CLP",
+          "CNY",
+          "COP",
+          "CRC",
+          "CUP",
+          "CZK",
+          "DKK",
+          "DOP",
+          "EGP",
+          "EUR",
+          "GEL",
+          "HKD",
+          "HUF",
+          "ISK",
+          "INR",
+          "IDR",
+          "IRR",
+          "ILS",
+          "JMD",
+          "JPY",
+          "JOD",
+          "KZT",
+          "KWD",
+          "LBP",
+          "MKD",
+          "MYR",
+          "MXN",
+          "MDL",
+          "MAD",
+          "TWD",
+          "NZD",
+          "NOK",
+          "OMR",
+          "PKR",
+          "PAB",
+          "PEN",
+          "PHP",
+          "PLN",
+          "QAR",
+          "RON",
+          "RUB",
+          "SAR",
+          "RSD",
+          "SGD",
+          "ZAR",
+          "KRW",
+          "SEK",
+          "CHF",
+          "THB",
+          "TRY",
+          "USD",
+          "UAH",
+          "AED",
+          "VND"
+        ]
+      },
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "google_hotels_photos": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "property_token": {},
+      "zero_trace": {}
+    },
+    "google_hotels_price_calendar": {
+      "adults": {
+        "type": "number"
+      },
+      "api_key": {},
+      "async": {},
+      "children": {
+        "type": "number"
+      },
+      "children_ages": {},
+      "currency": {
+        "type": "select",
+        "options": [
+          "ALL",
+          "DZD",
+          "ARS",
+          "AMD",
+          "AWG",
+          "AUD",
+          "AZN",
+          "BSD",
+          "BHD",
+          "BYN",
+          "BMD",
+          "BAM",
+          "BRL",
+          "GBP",
+          "BGN",
+          "XPF",
+          "CAD",
+          "CLP",
+          "CNY",
+          "COP",
+          "CRC",
+          "CUP",
+          "CZK",
+          "DKK",
+          "DOP",
+          "EGP",
+          "EUR",
+          "GEL",
+          "HKD",
+          "HUF",
+          "ISK",
+          "INR",
+          "IDR",
+          "IRR",
+          "ILS",
+          "JMD",
+          "JPY",
+          "JOD",
+          "KZT",
+          "KWD",
+          "LBP",
+          "MKD",
+          "MYR",
+          "MXN",
+          "MDL",
+          "MAD",
+          "TWD",
+          "NZD",
+          "NOK",
+          "OMR",
+          "PKR",
+          "PAB",
+          "PEN",
+          "PHP",
+          "PLN",
+          "QAR",
+          "RON",
+          "RUB",
+          "SAR",
+          "RSD",
+          "SGD",
+          "ZAR",
+          "KRW",
+          "SEK",
+          "CHF",
+          "THB",
+          "TRY",
+          "USD",
+          "UAH",
+          "AED",
+          "VND"
+        ]
+      },
+      "end_date": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "property_token": {},
+      "start_date": {},
+      "zero_trace": {}
+    },
+    "google_hotels_reviews": {
+      "api_key": {},
+      "async": {},
+      "category_token": {},
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "property_token": {},
+      "sort_by": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "source_number": {
+        "type": "number"
+      },
+      "zero_trace": {}
+    },
+    "google_images": {
+      "api_key": {},
+      "as_dt": {},
+      "as_epq": {},
+      "as_eq": {},
+      "as_lq": {},
+      "as_nhi": {},
+      "as_nlo": {},
+      "as_oq": {},
+      "as_q": {},
+      "as_qdr": {},
+      "as_rq": {},
+      "as_sitesearch": {},
+      "async": {},
+      "chips": {},
+      "cr": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "end_date": {},
+      "engine": {},
+      "filter": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "ijn": {
+        "type": "number"
+      },
+      "image_color": {
+        "type": "select",
+        "options": [
+          "bw",
+          "trans",
+          "red",
+          "orange",
+          "yellow",
+          "green",
+          "teal",
+          "blue",
+          "purple",
+          "pink",
+          "white",
+          "gray",
+          "black",
+          "brown"
+        ]
+      },
+      "image_type": {
+        "type": "select",
+        "options": [
+          "face",
+          "photo",
+          "clipart",
+          "lineart",
+          "animated"
+        ]
+      },
+      "imgar": {
+        "type": "select",
+        "options": [
+          "s",
+          "t",
+          "w",
+          "xw"
+        ]
+      },
+      "imgsz": {
+        "type": "select",
+        "options": [
+          "l",
+          "m",
+          "i",
+          "qsvga",
+          "vga",
+          "svga",
+          "xga",
+          "2mp",
+          "4mp",
+          "6mp",
+          "8mp",
+          "10mp",
+          "12mp",
+          "15mp",
+          "20mp",
+          "40mp",
+          "70mp"
+        ]
+      },
+      "json_restrictor": {},
+      "licenses": {
+        "type": "select",
+        "options": [
+          "f",
+          "fc",
+          "fm",
+          "fmc",
+          "cl",
+          "ol"
+        ]
+      },
+      "location": {
+        "type": "location"
+      },
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "period_unit": {
+        "type": "select",
+        "options": [
+          "s",
+          "n",
+          "h",
+          "d",
+          "w",
+          "m",
+          "y"
+        ]
+      },
+      "period_value": {
+        "type": "number"
+      },
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "start_date": {},
+      "tbs": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_images_light": {
+      "api_key": {},
+      "as_dt": {},
+      "as_epq": {},
+      "as_eq": {},
+      "as_lq": {},
+      "as_nhi": {},
+      "as_nlo": {},
+      "as_oq": {},
+      "as_q": {},
+      "as_qdr": {},
+      "as_rq": {},
+      "as_sitesearch": {},
+      "async": {},
+      "cr": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "end_date": {},
+      "engine": {},
+      "filter": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "image_color": {
+        "type": "select",
+        "options": [
+          "bw",
+          "trans",
+          "red",
+          "orange",
+          "yellow",
+          "green",
+          "teal",
+          "blue",
+          "purple",
+          "pink",
+          "white",
+          "gray",
+          "black",
+          "brown"
+        ]
+      },
+      "image_type": {
+        "type": "select",
+        "options": [
+          "face",
+          "photo",
+          "clipart",
+          "lineart",
+          "animated"
+        ]
+      },
+      "imgar": {
+        "type": "select",
+        "options": [
+          "s",
+          "t",
+          "w",
+          "xw"
+        ]
+      },
+      "imgsz": {
+        "type": "select",
+        "options": [
+          "l",
+          "m",
+          "i",
+          "qsvga",
+          "vga",
+          "svga",
+          "xga",
+          "2mp",
+          "4mp",
+          "6mp",
+          "8mp",
+          "10mp",
+          "12mp",
+          "15mp",
+          "20mp",
+          "40mp",
+          "70mp"
+        ]
+      },
+      "json_restrictor": {},
+      "licenses": {
+        "type": "select",
+        "options": [
+          "f",
+          "fc",
+          "fm",
+          "fmc",
+          "cl",
+          "ol"
+        ]
+      },
+      "location": {
+        "type": "location"
+      },
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "period_unit": {
+        "type": "select",
+        "options": [
+          "s",
+          "n",
+          "h",
+          "d",
+          "w",
+          "m",
+          "y"
+        ]
+      },
+      "period_value": {
+        "type": "number"
+      },
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "start_date": {},
+      "tbs": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_images_related_content": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "related_content_id": {},
+      "zero_trace": {}
+    },
+    "google_immersive_product": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "more_stores": {
+        "type": "checkbox"
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page_token": {},
+      "zero_trace": {}
+    },
+    "google_jobs": {
+      "api_key": {},
+      "async": {},
+      "chips": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "lrad": {
+        "type": "number"
+      },
+      "ltype": {
+        "type": "checkbox"
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "uds": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_jobs_listing": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "google_lens": {
+      "api_key": {},
+      "async": {},
+      "auto_crop": {
+        "type": "checkbox"
+      },
+      "country": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "image_id": {
+        "type": "image"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "type": {
+        "type": "select",
+        "options": [
+          "all",
+          "exact_matches",
+          "visual_matches"
+        ]
+      },
+      "url": {},
+      "zero_trace": {}
+    },
+    "google_light": {
+      "api_key": {},
+      "as_dt": {},
+      "as_epq": {},
+      "as_eq": {},
+      "as_lq": {},
+      "as_nhi": {},
+      "as_nlo": {},
+      "as_oq": {},
+      "as_q": {},
+      "as_qdr": {},
+      "as_rq": {},
+      "as_sitesearch": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "filter": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "lr": {},
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_local": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "ludocid": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "start": {
+        "type": "number"
+      },
+      "tbs": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_local_services": {
+      "api_key": {},
+      "async": {},
+      "bid": {
+        "type": "number"
+      },
+      "cid": {
+        "type": "number"
+      },
+      "data_cid": {
+        "type": "number"
+      },
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "job_type": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "pid": {
+        "type": "number"
+      },
+      "q": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "zero_trace": {}
+    },
+    "google_maps": {
+      "api_key": {},
+      "async": {},
+      "data": {},
+      "data_cid": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "lat": {
+        "type": "number"
+      },
+      "ll": {},
+      "location": {
+        "type": "location"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "m": {
+        "type": "number"
+      },
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "min_rating": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "nearby": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "open_at_hour": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "open_on_day": {
+        "type": "select",
+        "options": [
+          "mon",
+          "tue",
+          "wed",
+          "thu",
+          "fri",
+          "sat",
+          "sun"
+        ]
+      },
+      "open_state": {
+        "type": "select",
+        "options": [
+          "now",
+          "24h"
+        ]
+      },
+      "output": {},
+      "place_id": {},
+      "q": {},
+      "start": {
+        "type": "number"
+      },
+      "type": {
+        "type": "select",
+        "options": [
+          "search",
+          "place"
+        ]
+      },
+      "z": {
+        "type": "number"
+      },
+      "zero_trace": {}
+    },
+    "google_maps_autocomplete": {
+      "api_key": {},
+      "async": {},
+      "cp": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "ll": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "google_maps_contributor_reviews": {
+      "api_key": {},
+      "async": {},
+      "contributor_id": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "google_maps_directions": {
+      "api_key": {},
+      "async": {},
+      "avoid": {},
+      "distance_unit": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "end_addr": {},
+      "end_coords": {},
+      "end_data_id": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "prefer": {},
+      "route": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "start_addr": {},
+      "start_coords": {},
+      "start_data_id": {},
+      "time": {},
+      "travel_mode": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "zero_trace": {}
+    },
+    "google_maps_photo_meta": {
+      "api_key": {},
+      "async": {},
+      "data_id": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "google_maps_photos": {
+      "api_key": {},
+      "async": {},
+      "category_id": {},
+      "data_id": {},
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "google_maps_posts": {
+      "api_key": {},
+      "async": {},
+      "data_id": {},
+      "engine": {},
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "google_maps_reviews": {
+      "api_key": {},
+      "async": {},
+      "data_id": {},
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {},
+      "output": {},
+      "place_id": {},
+      "query": {},
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "qualityScore",
+          "newestFirst",
+          "ratingHigh",
+          "ratingLow"
+        ]
+      },
+      "topic_id": {},
+      "zero_trace": {}
+    },
+    "google_news": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "kgmid": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "publication_token": {},
+      "q": {},
+      "section_token": {},
+      "so": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "story_token": {},
+      "topic_token": {},
+      "zero_trace": {}
+    },
+    "google_news_light": {
+      "api_key": {},
+      "as_dt": {},
+      "as_epq": {},
+      "as_eq": {},
+      "as_lq": {},
+      "as_nhi": {},
+      "as_nlo": {},
+      "as_oq": {},
+      "as_q": {},
+      "as_qdr": {},
+      "as_rq": {},
+      "as_sitesearch": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "filter": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "lr": {},
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_patents": {
+      "after": {},
+      "api_key": {},
+      "assignee": {},
+      "async": {},
+      "before": {},
+      "clustered": {
+        "type": "select",
+        "options": [
+          "true"
+        ]
+      },
+      "country": {},
+      "dups": {
+        "type": "select",
+        "options": [
+          "language"
+        ]
+      },
+      "engine": {},
+      "inventor": {},
+      "json_restrictor": {},
+      "language": {},
+      "litigation": {
+        "type": "select",
+        "options": [
+          "YES",
+          "NO"
+        ]
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "patents": {
+        "type": "checkbox"
+      },
+      "q": {},
+      "scholar": {
+        "type": "checkbox"
+      },
+      "sort": {
+        "type": "select",
+        "options": [
+          "new",
+          "old"
+        ]
+      },
+      "status": {
+        "type": "select",
+        "options": [
+          "GRANT",
+          "APPLICATION"
+        ]
+      },
+      "type": {
+        "type": "select",
+        "options": [
+          "PATENT",
+          "DESIGN"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google_patents_details": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "patent_id": {},
+      "zero_trace": {}
+    },
+    "google_play": {
+      "age": {
+        "type": "select",
+        "options": [
+          "AGE_RANGE1",
+          "AGE_RANGE2",
+          "AGE_RANGE3"
+        ]
+      },
+      "api_key": {},
+      "apps_category": {
+        "type": "select",
+        "options": [
+          "ART_AND_DESIGN",
+          "AUTO_AND_VEHICLES",
+          "BEAUTY",
+          "BOOKS_AND_REFERENCE",
+          "BUSINESS",
+          "COMICS",
+          "COMMUNICATION",
+          "DATING",
+          "EDUCATION",
+          "ENTERTAINMENT",
+          "EVENTS",
+          "FINANCE",
+          "FOOD_AND_DRINK",
+          "HEALTH_AND_FITNESS",
+          "HOUSE_AND_HOME",
+          "LIBRARIES_AND_DEMO",
+          "LIFESTYLE",
+          "MAPS_AND_NAVIGATION",
+          "MEDICAL",
+          "MUSIC_AND_AUDIO",
+          "NEWS_AND_MAGAZINES",
+          "PARENTING",
+          "PERSONALIZATION",
+          "PHOTOGRAPHY",
+          "PRODUCTIVITY",
+          "SHOPPING",
+          "SOCIAL",
+          "SPORTS",
+          "TOOLS",
+          "TRAVEL_AND_LOCAL",
+          "VIDEO_PLAYERS",
+          "ANDROID_WEAR",
+          "WATCH_FACE",
+          "WEATHER",
+          "FAMILY"
+        ]
+      },
+      "async": {},
+      "chart": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "section_page_token": {},
+      "see_more_token": {},
+      "store_device": {
+        "type": "select",
+        "options": [
+          "phone",
+          "tablet",
+          "tv",
+          "chromebook",
+          "watch",
+          "car"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google_play_books": {
+      "age": {
+        "type": "select",
+        "options": [
+          "AGE_RANGE1",
+          "AGE_RANGE2",
+          "AGE_RANGE3"
+        ]
+      },
+      "api_key": {},
+      "async": {},
+      "books_category": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "chart": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "price": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "q": {},
+      "section_page_token": {},
+      "see_more_token": {},
+      "zero_trace": {}
+    },
+    "google_play_games": {
+      "api_key": {},
+      "async": {},
+      "chart": {},
+      "engine": {},
+      "games_category": {
+        "type": "select",
+        "options": [
+          "GAME",
+          "GAME_ACTION",
+          "GAME_ADVENTURE",
+          "GAME_ARCADE",
+          "GAME_BOARD",
+          "GAME_CARD",
+          "GAME_CASINO",
+          "GAME_CASUAL",
+          "GAME_EDUCATIONAL",
+          "GAME_MUSIC",
+          "GAME_PUZZLE",
+          "GAME_RACING",
+          "GAME_ROLE_PLAYING",
+          "GAME_SIMULATION",
+          "GAME_SPORTS",
+          "GAME_STRATEGY",
+          "GAME_TRIVIA",
+          "GAME_WORD"
+        ]
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "section_page_token": {},
+      "see_more_token": {},
+      "store_device": {
+        "type": "select",
+        "options": [
+          "phone",
+          "windows",
+          "tablet",
+          "tv",
+          "chromebook",
+          "watch"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google_play_movies": {
+      "age": {
+        "type": "select",
+        "options": [
+          "AGE_RANGE1",
+          "AGE_RANGE2",
+          "AGE_RANGE3"
+        ]
+      },
+      "api_key": {},
+      "async": {},
+      "chart": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "movies_category": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "section_page_token": {},
+      "see_more_token": {},
+      "zero_trace": {}
+    },
+    "google_play_product": {
+      "all_reviews": {
+        "type": "checkbox"
+      },
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "platform": {
+        "type": "select",
+        "options": [
+          "phone",
+          "tablet",
+          "watch",
+          "chromebook",
+          "tv",
+          "car"
+        ]
+      },
+      "product_id": {},
+      "rating": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "season_id": {},
+      "sort_by": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "store": {
+        "type": "select",
+        "options": [
+          "apps",
+          "movies",
+          "tv",
+          "books",
+          "audiobooks"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google_product": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "options": [
+          "ai",
+          "ar",
+          "aw",
+          "au",
+          "at",
+          "be",
+          "bm",
+          "br",
+          "io",
+          "ca",
+          "ky",
+          "cl",
+          "cx",
+          "cc",
+          "co",
+          "cz",
+          "dk",
+          "fk",
+          "fi",
+          "fr",
+          "gf",
+          "pf",
+          "tf",
+          "de",
+          "gr",
+          "gp",
+          "hm",
+          "hk",
+          "hu",
+          "in",
+          "id",
+          "ie",
+          "il",
+          "it",
+          "jp",
+          "kr",
+          "my",
+          "mq",
+          "yt",
+          "mx",
+          "ms",
+          "nl",
+          "nc",
+          "nz",
+          "nf",
+          "no",
+          "ph",
+          "pl",
+          "pt",
+          "re",
+          "ro",
+          "ru",
+          "pm",
+          "sa",
+          "sg",
+          "sk",
+          "za",
+          "gs",
+          "es",
+          "se",
+          "ch",
+          "tw",
+          "th",
+          "tk",
+          "tr",
+          "tc",
+          "ua",
+          "ae",
+          "uk",
+          "gb",
+          "us",
+          "vn",
+          "vg",
+          "wf"
+        ]
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "offer_view": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page_token": {},
+      "product_id": {},
+      "zero_trace": {}
+    },
+    "google_related_questions": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "google_reverse_image": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "image_url": {},
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "lr": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "tbs": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_scholar": {
+      "api_key": {},
+      "as_rr": {
+        "type": "checkbox"
+      },
+      "as_sdt": {},
+      "as_vis": {
+        "type": "checkbox"
+      },
+      "as_yhi": {
+        "type": "number"
+      },
+      "as_ylo": {
+        "type": "number"
+      },
+      "async": {},
+      "cites": {},
+      "cluster": {},
+      "engine": {},
+      "filter": {
+        "type": "checkbox"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "lr": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "scisbd": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "start": {
+        "type": "number"
+      },
+      "zero_trace": {}
+    },
+    "google_scholar_author": {
+      "api_key": {},
+      "async": {},
+      "author_id": {},
+      "citation_id": {},
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "sort": {
+        "type": "select",
+        "options": [
+          "title",
+          "pubdate"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "view_op": {
+        "type": "select",
+        "options": [
+          "view_citation",
+          "list_colleagues"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google_scholar_case_law": {
+      "api_key": {},
+      "async": {},
+      "case_id": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "google_scholar_cite": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "google_shopping": {
+      "api_key": {},
+      "as_dt": {},
+      "as_epq": {},
+      "as_eq": {},
+      "as_lq": {},
+      "as_nhi": {},
+      "as_nlo": {},
+      "as_oq": {},
+      "as_q": {},
+      "as_qdr": {},
+      "as_rq": {},
+      "as_sitesearch": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "free_shipping": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "options": [
+          "ai",
+          "ar",
+          "aw",
+          "au",
+          "at",
+          "be",
+          "bm",
+          "br",
+          "io",
+          "ca",
+          "ky",
+          "cl",
+          "cx",
+          "cc",
+          "co",
+          "cz",
+          "dk",
+          "fk",
+          "fi",
+          "fr",
+          "gf",
+          "pf",
+          "tf",
+          "de",
+          "gr",
+          "gp",
+          "hm",
+          "hk",
+          "hu",
+          "in",
+          "id",
+          "ie",
+          "il",
+          "it",
+          "jp",
+          "kr",
+          "my",
+          "mq",
+          "yt",
+          "mx",
+          "ms",
+          "nl",
+          "nc",
+          "nz",
+          "nf",
+          "no",
+          "ph",
+          "pl",
+          "pt",
+          "re",
+          "ro",
+          "ru",
+          "pm",
+          "sa",
+          "sg",
+          "sk",
+          "za",
+          "gs",
+          "es",
+          "se",
+          "ch",
+          "tw",
+          "th",
+          "tk",
+          "tr",
+          "tc",
+          "ua",
+          "ae",
+          "uk",
+          "gb",
+          "us",
+          "vn",
+          "vg",
+          "wf"
+        ]
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "on_sale": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "shoprs": {},
+      "small_business": {
+        "type": "checkbox"
+      },
+      "sort_by": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "start": {
+        "type": "number"
+      },
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_shopping_filters": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "options": [
+          "ai",
+          "ar",
+          "aw",
+          "au",
+          "at",
+          "be",
+          "bm",
+          "br",
+          "io",
+          "ca",
+          "ky",
+          "cl",
+          "cx",
+          "cc",
+          "co",
+          "cz",
+          "dk",
+          "fk",
+          "fi",
+          "fr",
+          "gf",
+          "pf",
+          "tf",
+          "de",
+          "gr",
+          "gp",
+          "hm",
+          "hk",
+          "hu",
+          "in",
+          "id",
+          "ie",
+          "il",
+          "it",
+          "jp",
+          "kr",
+          "my",
+          "mq",
+          "yt",
+          "mx",
+          "ms",
+          "nl",
+          "nc",
+          "nz",
+          "nf",
+          "no",
+          "ph",
+          "pl",
+          "pt",
+          "re",
+          "ro",
+          "ru",
+          "pm",
+          "sa",
+          "sg",
+          "sk",
+          "za",
+          "gs",
+          "es",
+          "se",
+          "ch",
+          "tw",
+          "th",
+          "tk",
+          "tr",
+          "tc",
+          "ua",
+          "ae",
+          "uk",
+          "gb",
+          "us",
+          "vn",
+          "vg",
+          "wf"
+        ]
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "shoprs": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_shopping_light": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "free_shipping": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "options": [
+          "ai",
+          "ar",
+          "aw",
+          "au",
+          "at",
+          "be",
+          "bm",
+          "br",
+          "io",
+          "ca",
+          "ky",
+          "cl",
+          "cx",
+          "cc",
+          "co",
+          "cz",
+          "dk",
+          "fk",
+          "fi",
+          "fr",
+          "gf",
+          "pf",
+          "tf",
+          "de",
+          "gr",
+          "gp",
+          "hm",
+          "hk",
+          "hu",
+          "in",
+          "id",
+          "ie",
+          "il",
+          "it",
+          "jp",
+          "kr",
+          "my",
+          "mq",
+          "yt",
+          "mx",
+          "ms",
+          "nl",
+          "nc",
+          "nz",
+          "nf",
+          "no",
+          "ph",
+          "pl",
+          "pt",
+          "re",
+          "ro",
+          "ru",
+          "pm",
+          "sa",
+          "sg",
+          "sk",
+          "za",
+          "gs",
+          "es",
+          "se",
+          "ch",
+          "tw",
+          "th",
+          "tk",
+          "tr",
+          "tc",
+          "ua",
+          "ae",
+          "uk",
+          "gb",
+          "us",
+          "vn",
+          "vg",
+          "wf"
+        ]
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "on_sale": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "shoprs": {},
+      "small_business": {
+        "type": "checkbox"
+      },
+      "sort_by": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "start": {
+        "type": "number"
+      },
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_short_videos": {
+      "api_key": {},
+      "as_dt": {},
+      "as_epq": {},
+      "as_eq": {},
+      "as_lq": {},
+      "as_nhi": {},
+      "as_nlo": {},
+      "as_oq": {},
+      "as_q": {},
+      "as_qdr": {},
+      "as_rq": {},
+      "as_sitesearch": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "filter": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "lr": {},
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "tbs": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_sports": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "kgmid": {},
+      "moa": {},
+      "mob": {},
+      "mpd": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "season_kgmid": {},
+      "sp": {
+        "type": "select",
+        "options": [
+          "ft",
+          "bs",
+          "bb",
+          "cr",
+          "af",
+          "ih",
+          "rg"
+        ]
+      },
+      "tab": {
+        "type": "select",
+        "options": [
+          "gm",
+          "sn",
+          "pl",
+          "br",
+          "st",
+          "rn",
+          "ov"
+        ]
+      },
+      "type": {
+        "type": "select",
+        "options": [
+          "game",
+          "league",
+          "team"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "google_translate": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "from": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "text": {},
+      "to": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "zero_trace": {}
+    },
+    "google_travel_explore": {
+      "adults": {
+        "type": "number"
+      },
+      "api_key": {},
+      "arrival_area_id": {},
+      "arrival_id": {},
+      "async": {},
+      "bags": {
+        "type": "number"
+      },
+      "children": {
+        "type": "number"
+      },
+      "currency": {
+        "type": "select",
+        "options": [
+          "ALL",
+          "DZD",
+          "ARS",
+          "AMD",
+          "AWG",
+          "AUD",
+          "AZN",
+          "BSD",
+          "BHD",
+          "BYN",
+          "BMD",
+          "BAM",
+          "BRL",
+          "GBP",
+          "BGN",
+          "XPF",
+          "CAD",
+          "CLP",
+          "CNY",
+          "COP",
+          "CRC",
+          "CUP",
+          "CZK",
+          "DKK",
+          "DOP",
+          "EGP",
+          "EUR",
+          "GEL",
+          "HKD",
+          "HUF",
+          "ISK",
+          "INR",
+          "IDR",
+          "IRR",
+          "ILS",
+          "JMD",
+          "JPY",
+          "JOD",
+          "KZT",
+          "KWD",
+          "LBP",
+          "MKD",
+          "MYR",
+          "MXN",
+          "MDL",
+          "MAD",
+          "TWD",
+          "NZD",
+          "NOK",
+          "OMR",
+          "PKR",
+          "PAB",
+          "PEN",
+          "PHP",
+          "PLN",
+          "QAR",
+          "RON",
+          "RUB",
+          "SAR",
+          "RSD",
+          "SGD",
+          "ZAR",
+          "KRW",
+          "SEK",
+          "CHF",
+          "THB",
+          "TRY",
+          "USD",
+          "UAH",
+          "AED",
+          "VND"
+        ]
+      },
+      "departure_id": {},
+      "engine": {},
+      "exclude_airlines": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "include_airlines": {},
+      "infants_in_seat": {
+        "type": "number"
+      },
+      "infants_on_lap": {
+        "type": "number"
+      },
+      "interest": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "json_restrictor": {},
+      "max_duration": {
+        "type": "number"
+      },
+      "max_price": {
+        "type": "number"
+      },
+      "month": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "outbound_date": {},
+      "output": {},
+      "return_date": {},
+      "stops": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "travel_class": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "travel_duration": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "travel_mode": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "type": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "zero_trace": {}
+    },
+    "google_trends": {
+      "api_key": {},
+      "async": {},
+      "cat": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "csv": {
+        "type": "checkbox"
+      },
+      "data_type": {
+        "type": "select",
+        "options": [
+          "TIMESERIES",
+          "GEO_MAP",
+          "GEO_MAP_0",
+          "RELATED_TOPICS",
+          "RELATED_QUERIES"
+        ]
+      },
+      "date": {},
+      "engine": {},
+      "geo": {},
+      "gprop": {
+        "type": "select",
+        "options": [
+          "",
+          "images",
+          "news",
+          "froogle",
+          "youtube"
+        ]
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "include_low_search_volume": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "region": {
+        "type": "select",
+        "options": [
+          "COUNTRY",
+          "REGION",
+          "DMA",
+          "CITY"
+        ]
+      },
+      "tz": {
+        "type": "number"
+      },
+      "zero_trace": {}
+    },
+    "google_trends_autocomplete": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "zero_trace": {}
+    },
+    "google_trends_news": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page_token": {},
+      "zero_trace": {}
+    },
+    "google_trends_trending_now": {
+      "api_key": {},
+      "async": {},
+      "cat": {
+        "type": "select",
+        "options": [
+          "all",
+          "b",
+          "e",
+          "m",
+          "t",
+          "s",
+          "h"
+        ]
+      },
+      "category_id": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "date": {},
+      "engine": {},
+      "frequency": {
+        "type": "select",
+        "options": [
+          "daily",
+          "realtime"
+        ]
+      },
+      "geo": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hours": {
+        "type": "number"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "only_active": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "google_videos": {
+      "api_key": {},
+      "as_dt": {},
+      "as_epq": {},
+      "as_eq": {},
+      "as_lq": {},
+      "as_nhi": {},
+      "as_nlo": {},
+      "as_oq": {},
+      "as_q": {},
+      "as_qdr": {},
+      "as_rq": {},
+      "as_sitesearch": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "filter": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "lr": {},
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "tbs": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "google_videos_light": {
+      "api_key": {},
+      "as_dt": {},
+      "as_epq": {},
+      "as_eq": {},
+      "as_lq": {},
+      "as_nhi": {},
+      "as_nlo": {},
+      "as_oq": {},
+      "as_q": {},
+      "as_qdr": {},
+      "as_rq": {},
+      "as_sitesearch": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "filter": {
+        "type": "checkbox"
+      },
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "google_domain": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "location": {
+        "type": "location"
+      },
+      "lr": {},
+      "nfpr": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "tbs": {},
+      "uule": {},
+      "zero_trace": {}
+    },
+    "home_depot": {
+      "api_key": {},
+      "async": {},
+      "country": {
+        "type": "select",
+        "options": [
+          "us",
+          "ca"
+        ]
+      },
+      "delivery_zip": {},
+      "engine": {},
+      "filter": {},
+      "hd_filter_tokens": {},
+      "hd_sort": {
+        "type": "select",
+        "options": [
+          "top_sellers",
+          "price_low_to_high",
+          "price_high_to_low",
+          "top_rated",
+          "best_match"
+        ]
+      },
+      "json_restrictor": {},
+      "lowerbound": {
+        "type": "number"
+      },
+      "minmax": {},
+      "nao": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "pagesize": {},
+      "ps": {
+        "type": "number"
+      },
+      "q": {},
+      "sort": {
+        "type": "select",
+        "options": [
+          "price-asc",
+          "price-desc",
+          "reviewAvgRating",
+          "relevance"
+        ]
+      },
+      "store": {},
+      "store_id": {},
+      "upperbound": {
+        "type": "number"
+      },
+      "zero_trace": {}
+    },
+    "home_depot_product": {
+      "api_key": {},
+      "async": {},
+      "delivery_zip": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "product_id": {},
+      "store_id": {},
+      "store_sku": {},
+      "zero_trace": {}
+    },
+    "home_depot_product_reviews": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "pagesize": {},
+      "product_id": {},
+      "rating": {},
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "photoreview",
+          "mosthelpfull",
+          "oldest",
+          "newest",
+          "highestrating",
+          "lowestrating"
+        ]
+      },
+      "start": {},
+      "term": {},
+      "verified_purchases": {
+        "type": "checkbox"
+      },
+      "zero_trace": {}
+    },
+    "indeed_jobs": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "fromage": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "json_restrictor": {},
+      "jt": {
+        "type": "select",
+        "options": [
+          "fulltime",
+          "parttime",
+          "contract",
+          "temporary",
+          "internship"
+        ]
+      },
+      "l": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "radius": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "sort": {
+        "type": "select",
+        "options": [
+          "date"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "instagram_popular": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "keyword": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "instagram_profile": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "profile_id": {},
+      "zero_trace": {}
+    },
+    "meta_ad_library": {
+      "active_status": {
+        "type": "select",
+        "options": [
+          "active",
+          "inactive",
+          "all"
+        ]
+      },
+      "ad_type": {
+        "type": "select",
+        "options": [
+          "all",
+          "political_and_issue_ads",
+          "housing_ads",
+          "employment_ads",
+          "financial_products_and_services_ads"
+        ]
+      },
+      "api_key": {},
+      "async": {},
+      "content_languages": {},
+      "country": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "end_date": {},
+      "engine": {},
+      "json_restrictor": {},
+      "media_type": {
+        "type": "select",
+        "options": [
+          "all",
+          "image",
+          "meme",
+          "image_and_meme",
+          "video",
+          "none"
+        ]
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page_id": {},
+      "publisher_platforms": {},
+      "q": {},
+      "search_type": {
+        "type": "select",
+        "options": [
+          "keyword_unordered",
+          "keyword_exact_phrase"
+        ]
+      },
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "most_recent",
+          "impressions_high_to_low",
+          "impressions_low_to_high"
+        ]
+      },
+      "start_date": {},
+      "zero_trace": {}
+    },
+    "napa": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "q": {},
+      "sort": {
+        "type": "select",
+        "options": [
+          "relevance",
+          "price_low_to_high",
+          "price_high_to_low",
+          "product_description",
+          "line_abbreviation",
+          "part_number"
+        ]
+      },
+      "store_id": {},
+      "zero_trace": {}
+    },
+    "naver": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "page": {},
+      "period": {},
+      "query": {},
+      "sort_by": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "start": {},
+      "where": {
+        "type": "select",
+        "options": [
+          "nexearch",
+          "web",
+          "news",
+          "video",
+          "image"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "naver_ai_mode": {
+      "api_key": {},
+      "async": {},
+      "continuable": {
+        "type": "checkbox"
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "query": {},
+      "subsequent_request_token": {},
+      "zero_trace": {}
+    },
+    "naver_ai_overview": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page_token": {},
+      "query": {},
+      "zero_trace": {}
+    },
+    "naver_maps": {
+      "adults": {
+        "type": "number"
+      },
+      "api_key": {},
+      "async": {},
+      "bookable": {
+        "type": "checkbox"
+      },
+      "center": {},
+      "check_in_date": {},
+      "check_out_date": {},
+      "children": {
+        "type": "number"
+      },
+      "coupon": {
+        "type": "checkbox"
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "naver_pay": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "open_state": {
+        "type": "select",
+        "options": [
+          "now"
+        ]
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "query": {},
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "distance"
+        ]
+      },
+      "wheelchair_accessible": {
+        "type": "checkbox"
+      },
+      "zero_trace": {}
+    },
+    "open_table_reviews": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "open_table_domain": {
+        "type": "select",
+        "options": [
+          "opentable.com",
+          "opentable.jp",
+          "opentable.de",
+          "opentable.es",
+          "opentable.ca",
+          "opentable.hk",
+          "opentable.ie",
+          "opentable.sg",
+          "opentable.nl",
+          "opentable.com.mx",
+          "opentable.co.uk",
+          "opentable.com.au",
+          "opentable.ae",
+          "opentable.co.th",
+          "opentable.it",
+          "opentable.com.tw",
+          "opentable.fr"
+        ]
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "rid": {},
+      "zero_trace": {}
+    },
+    "pinterest": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "less_ai": {
+        "type": "checkbox"
+      },
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "q": {},
+      "type": {
+        "type": "select",
+        "options": [
+          "pins",
+          "videos",
+          "boards",
+          "profiles",
+          "products"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "search_index": {
+      "api_key": {},
+      "as_yhi": {},
+      "as_ylo": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "ll": {},
+      "mode": {
+        "type": "select",
+        "options": [
+          "deep"
+        ]
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "product_source": {
+        "type": "select",
+        "options": [
+          "google",
+          "amazon",
+          "walmart",
+          "ebay",
+          "home_depot"
+        ]
+      },
+      "q": {},
+      "radius": {
+        "type": "number"
+      },
+      "safe": {
+        "type": "select",
+        "options": [
+          "active",
+          "off"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "type": {
+        "type": "select",
+        "options": [
+          "web",
+          "place",
+          "product",
+          "video",
+          "publication"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "target": {
+      "api_key": {},
+      "async": {},
+      "category_id": {},
+      "delivery_zip": {},
+      "engine": {},
+      "facet": {},
+      "include_filters": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "q": {},
+      "sort": {
+        "type": "select",
+        "options": [
+          "relevance",
+          "featured",
+          "price_low",
+          "price_high",
+          "rating_high",
+          "best_seller",
+          "newest"
+        ]
+      },
+      "spelling": {
+        "type": "checkbox"
+      },
+      "store_id": {},
+      "zero_trace": {}
+    },
+    "tiktok_discover": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "q": {},
+      "session_token": {},
+      "start": {
+        "type": "number"
+      },
+      "zero_trace": {}
+    },
+    "tiktok_shop": {
+      "api_key": {},
+      "async": {},
+      "category_id": {},
+      "color_id": {},
+      "deals": {
+        "type": "checkbox"
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "q": {},
+      "rating": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "sort": {
+        "type": "select",
+        "options": [
+          "relevance",
+          "best_seller",
+          "newest"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "trader_joes": {
+      "api_key": {},
+      "async": {},
+      "category_id": {
+        "type": "number"
+      },
+      "characteristics": {},
+      "engine": {},
+      "json_restrictor": {},
+      "new_products": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "q": {},
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "price_low_to_high",
+          "price_high_to_low",
+          "popularity"
+        ]
+      },
+      "store_id": {
+        "type": "number"
+      },
+      "tags": {},
+      "zero_trace": {}
+    },
+    "trader_joes_product": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "product_id": {},
+      "store_id": {},
+      "zero_trace": {}
+    },
+    "tripadvisor": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "lat": {
+        "type": "number"
+      },
+      "limit": {
+        "type": "number"
+      },
+      "lon": {
+        "type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "offset": {
+        "type": "number"
+      },
+      "output": {},
+      "q": {},
+      "ssrc": {
+        "type": "select",
+        "options": [
+          "a",
+          "r",
+          "A",
+          "h",
+          "g",
+          "v",
+          "f"
+        ]
+      },
+      "tripadvisor_domain": {
+        "type": "select",
+        "options": [
+          "www.tripadvisor.com",
+          "ar.tripadvisor.com",
+          "www.tripadvisor.com.ar",
+          "www.tripadvisor.com.au",
+          "www.tripadvisor.at",
+          "www.tripadvisor.be",
+          "fr.tripadvisor.be",
+          "www.tripadvisor.com.br",
+          "www.tripadvisor.ca",
+          "fr.tripadvisor.ca",
+          "www.tripadvisor.cl",
+          "cn.tripadvisor.com",
+          "www.tripadvisor.co",
+          "www.tripadvisor.com.pe",
+          "www.tripadvisor.dk",
+          "www.tripadvisor.com.eg",
+          "www.tripadvisor.fr",
+          "www.tripadvisor.de",
+          "www.tripadvisor.com.gr",
+          "www.tripadvisor.com.hk",
+          "en.tripadvisor.com.hk",
+          "www.tripadvisor.in",
+          "www.tripadvisor.co.id",
+          "www.tripadvisor.ie",
+          "www.tripadvisor.co.il",
+          "www.tripadvisor.it",
+          "www.tripadvisor.jp",
+          "www.tripadvisor.co.kr",
+          "www.tripadvisor.com.my",
+          "www.tripadvisor.com.mx",
+          "www.tripadvisor.nl",
+          "www.tripadvisor.co.nz",
+          "no.tripadvisor.com",
+          "www.tripadvisor.com.ph",
+          "www.tripadvisor.pt",
+          "www.tripadvisor.ru",
+          "www.tripadvisor.com.sg",
+          "www.tripadvisor.co.za",
+          "www.tripadvisor.es",
+          "www.tripadvisor.se",
+          "fr.tripadvisor.ch",
+          "www.tripadvisor.ch",
+          "it.tripadvisor.ch",
+          "www.tripadvisor.com.tw",
+          "th.tripadvisor.com",
+          "www.tripadvisor.com.tr",
+          "www.tripadvisor.co.uk",
+          "www.tripadvisor.com.ve",
+          "www.tripadvisor.com.vn"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "tripadvisor_place": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "place_id": {},
+      "tripadvisor_domain": {
+        "type": "select",
+        "options": [
+          "www.tripadvisor.com",
+          "ar.tripadvisor.com",
+          "www.tripadvisor.com.ar",
+          "www.tripadvisor.com.au",
+          "www.tripadvisor.at",
+          "www.tripadvisor.be",
+          "fr.tripadvisor.be",
+          "www.tripadvisor.com.br",
+          "www.tripadvisor.ca",
+          "fr.tripadvisor.ca",
+          "www.tripadvisor.cl",
+          "cn.tripadvisor.com",
+          "www.tripadvisor.co",
+          "www.tripadvisor.com.pe",
+          "www.tripadvisor.dk",
+          "www.tripadvisor.com.eg",
+          "www.tripadvisor.fr",
+          "www.tripadvisor.de",
+          "www.tripadvisor.com.gr",
+          "www.tripadvisor.com.hk",
+          "en.tripadvisor.com.hk",
+          "www.tripadvisor.in",
+          "www.tripadvisor.co.id",
+          "www.tripadvisor.ie",
+          "www.tripadvisor.co.il",
+          "www.tripadvisor.it",
+          "www.tripadvisor.jp",
+          "www.tripadvisor.co.kr",
+          "www.tripadvisor.com.my",
+          "www.tripadvisor.com.mx",
+          "www.tripadvisor.nl",
+          "www.tripadvisor.co.nz",
+          "no.tripadvisor.com",
+          "www.tripadvisor.com.ph",
+          "www.tripadvisor.pt",
+          "www.tripadvisor.ru",
+          "www.tripadvisor.com.sg",
+          "www.tripadvisor.co.za",
+          "www.tripadvisor.es",
+          "www.tripadvisor.se",
+          "fr.tripadvisor.ch",
+          "www.tripadvisor.ch",
+          "it.tripadvisor.ch",
+          "www.tripadvisor.com.tw",
+          "th.tripadvisor.com",
+          "www.tripadvisor.com.tr",
+          "www.tripadvisor.co.uk",
+          "www.tripadvisor.com.ve",
+          "www.tripadvisor.com.vn"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "tripadvisor_reviews": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "language": {
+        "type": "select",
+        "options": [
+          "ar",
+          "cs",
+          "da",
+          "de",
+          "el",
+          "en",
+          "es",
+          "fi",
+          "fr",
+          "he",
+          "hu",
+          "id",
+          "it",
+          "ja",
+          "ko",
+          "nb",
+          "nl",
+          "pl",
+          "pt",
+          "ru",
+          "sk",
+          "sr",
+          "sv",
+          "th",
+          "tr",
+          "vi",
+          "zh"
+        ]
+      },
+      "limit": {},
+      "month": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "offset": {},
+      "output": {},
+      "place_id": {},
+      "rating": {},
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "most_recent",
+          "detailed_review"
+        ]
+      },
+      "tripadvisor_domain": {
+        "type": "select",
+        "options": [
+          "www.tripadvisor.com",
+          "ar.tripadvisor.com",
+          "www.tripadvisor.com.ar",
+          "www.tripadvisor.com.au",
+          "www.tripadvisor.at",
+          "www.tripadvisor.be",
+          "fr.tripadvisor.be",
+          "www.tripadvisor.com.br",
+          "www.tripadvisor.ca",
+          "fr.tripadvisor.ca",
+          "www.tripadvisor.cl",
+          "cn.tripadvisor.com",
+          "www.tripadvisor.co",
+          "www.tripadvisor.com.pe",
+          "www.tripadvisor.dk",
+          "www.tripadvisor.com.eg",
+          "www.tripadvisor.fr",
+          "www.tripadvisor.de",
+          "www.tripadvisor.com.gr",
+          "www.tripadvisor.com.hk",
+          "en.tripadvisor.com.hk",
+          "www.tripadvisor.in",
+          "www.tripadvisor.co.id",
+          "www.tripadvisor.ie",
+          "www.tripadvisor.co.il",
+          "www.tripadvisor.it",
+          "www.tripadvisor.jp",
+          "www.tripadvisor.co.kr",
+          "www.tripadvisor.com.my",
+          "www.tripadvisor.com.mx",
+          "www.tripadvisor.nl",
+          "www.tripadvisor.co.nz",
+          "no.tripadvisor.com",
+          "www.tripadvisor.com.ph",
+          "www.tripadvisor.pt",
+          "www.tripadvisor.ru",
+          "www.tripadvisor.com.sg",
+          "www.tripadvisor.co.za",
+          "www.tripadvisor.es",
+          "www.tripadvisor.se",
+          "fr.tripadvisor.ch",
+          "www.tripadvisor.ch",
+          "it.tripadvisor.ch",
+          "www.tripadvisor.com.tw",
+          "th.tripadvisor.com",
+          "www.tripadvisor.com.tr",
+          "www.tripadvisor.co.uk",
+          "www.tripadvisor.com.ve",
+          "www.tripadvisor.com.vn"
+        ]
+      },
+      "type_of_visit": {
+        "value_type": "string"
+      },
+      "zero_trace": {}
+    },
+    "walmart": {
+      "api_key": {},
+      "async": {},
+      "cat_id": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "facet": {},
+      "include_filters": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "max_price": {
+        "type": "number"
+      },
+      "min_price": {
+        "type": "number"
+      },
+      "nd_en": {
+        "type": "checkbox"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "query": {},
+      "soft_sort": {
+        "type": "checkbox"
+      },
+      "sort": {
+        "type": "select",
+        "options": [
+          "price_low",
+          "price_high",
+          "best_seller",
+          "best_match",
+          "rating_high"
+        ]
+      },
+      "spelling": {
+        "type": "checkbox"
+      },
+      "store_id": {},
+      "walmart_domain": {
+        "type": "select",
+        "options": [
+          "walmart.com",
+          "walmart.com.mx"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "walmart_product": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "product_id": {},
+      "store_id": {},
+      "zero_trace": {}
+    },
+    "walmart_product_reviews": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "product_id": {},
+      "rating": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "sort": {
+        "type": "select",
+        "options": [
+          "relevancy",
+          "helpful",
+          "submission-desc",
+          "submission-asc",
+          "rating-desc",
+          "rating-asc"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "walmart_product_sellers": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "product_id": {},
+      "store_id": {},
+      "zero_trace": {}
+    },
+    "walmart_seller": {
+      "api_key": {},
+      "async": {},
+      "catalog_seller_id": {},
+      "engine": {},
+      "facet": {},
+      "include_filters": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "sort": {
+        "type": "select",
+        "options": [
+          "best_match",
+          "price_low",
+          "price_high",
+          "best_seller",
+          "rating_high",
+          "new"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "yahoo": {
+      "api_key": {},
+      "async": {},
+      "b": {
+        "type": "number"
+      },
+      "d": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "fr2": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "p": {},
+      "vc": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "vf": {
+        "type": "select",
+        "options": [
+          "html",
+          "pdf",
+          "xls",
+          "ppt",
+          "doc",
+          "txt"
+        ]
+      },
+      "vl": {
+        "type": "select",
+        "options": [
+          "lang_ar",
+          "lang_bg",
+          "lang_zh_chs",
+          "lang_zh_cht",
+          "lang_hr",
+          "lang_cs",
+          "lang_da",
+          "lang_nl",
+          "lang_en",
+          "lang_et",
+          "lang_fi",
+          "lang_fr",
+          "lang_de",
+          "lang_el",
+          "lang_he",
+          "lang_hu",
+          "lang_it",
+          "lang_ja",
+          "lang_ko",
+          "lang_lv",
+          "lang_lt",
+          "lang_no",
+          "lang_pl",
+          "lang_pt",
+          "lang_ro",
+          "lang_ru",
+          "lang_sk",
+          "lang_sl",
+          "lang_es",
+          "lang_sv",
+          "lang_th",
+          "lang_tr"
+        ]
+      },
+      "vm": {
+        "type": "select",
+        "options": [
+          "r",
+          "i",
+          "p"
+        ]
+      },
+      "vs": {},
+      "yahoo_domain": {
+        "type": "select",
+        "options": [
+          "espanol",
+          "be",
+          "fr",
+          "br",
+          "ca",
+          "de",
+          "es",
+          "in",
+          "id",
+          "ie",
+          "it",
+          "malaysia",
+          "nl",
+          "no",
+          "at",
+          "ph",
+          "pl",
+          "qc",
+          "ro",
+          "ch",
+          "sg",
+          "za",
+          "fi",
+          "se",
+          "tr",
+          "uk",
+          "vn",
+          "gr",
+          "ru",
+          "ua",
+          "il",
+          "hk",
+          "tw"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "yahoo_images": {
+      "api_key": {},
+      "async": {},
+      "b": {
+        "type": "number"
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "engine": {},
+      "imga": {
+        "type": "select",
+        "options": [
+          "square",
+          "wide",
+          "tall"
+        ]
+      },
+      "imgc": {
+        "type": "select",
+        "options": [
+          "color",
+          "bw",
+          "red",
+          "orange",
+          "yellow",
+          "green",
+          "teal",
+          "blue",
+          "purple",
+          "pink",
+          "brown",
+          "black",
+          "gray",
+          "white"
+        ]
+      },
+      "imgf": {
+        "type": "select",
+        "options": [
+          "face",
+          "portrait",
+          "nonportrait"
+        ]
+      },
+      "imgl": {
+        "type": "select",
+        "options": [
+          "cc",
+          "pd",
+          "fsu",
+          "fsuc",
+          "fmsu",
+          "fmsuc"
+        ]
+      },
+      "imgsz": {
+        "type": "select",
+        "options": [
+          "small",
+          "medium",
+          "large",
+          "wallpaper"
+        ]
+      },
+      "imgt": {
+        "type": "select",
+        "options": [
+          "day",
+          "week",
+          "month",
+          "year"
+        ]
+      },
+      "imgty": {
+        "type": "select",
+        "options": [
+          "photo",
+          "clipart",
+          "linedrawing",
+          "gif",
+          "transparent"
+        ]
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "p": {},
+      "yahoo_domain": {
+        "type": "select",
+        "options": [
+          "espanol",
+          "fr",
+          "br",
+          "ca",
+          "de",
+          "es",
+          "in",
+          "id",
+          "it",
+          "malaysia",
+          "nl",
+          "no",
+          "at",
+          "ph",
+          "qc",
+          "ch",
+          "sg",
+          "fi",
+          "se",
+          "uk",
+          "vn",
+          "ru",
+          "hk",
+          "tw"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "yahoo_shopping": {
+      "api_key": {},
+      "async": {},
+      "category_attr_values": {},
+      "engine": {},
+      "json_restrictor": {},
+      "limit": {},
+      "max_price": {},
+      "merchants": {},
+      "min_price": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "order_by": {
+        "type": "select",
+        "options": [
+          "ASC",
+          "DESC"
+        ]
+      },
+      "output": {},
+      "p": {},
+      "page": {},
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "price",
+          "relevancy",
+          "popularity",
+          "discountPercentage"
+        ]
+      },
+      "start": {},
+      "zero_trace": {}
+    },
+    "yahoo_trends": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "full_video_links": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "zero_trace": {}
+    },
+    "yahoo_videos": {
+      "api_key": {},
+      "async": {},
+      "b": {
+        "type": "number"
+      },
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "durs": {
+        "type": "select",
+        "options": [
+          "short",
+          "medium",
+          "long"
+        ]
+      },
+      "engine": {},
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "p": {},
+      "vage": {
+        "type": "select",
+        "options": [
+          "day",
+          "week",
+          "month",
+          "year"
+        ]
+      },
+      "vres": {
+        "type": "select",
+        "options": [
+          "360p",
+          "480p",
+          "720p",
+          "1080p"
+        ]
+      },
+      "vsite": {
+        "type": "select",
+        "options": [
+          "youtube",
+          "dailymotion",
+          "vimeo",
+          "mtv",
+          "cbsnews",
+          "foxnews",
+          "cnn",
+          "msn"
+        ]
+      },
+      "yahoo_domain": {
+        "type": "select",
+        "options": [
+          "espanol",
+          "be",
+          "fr",
+          "br",
+          "ca",
+          "de",
+          "es",
+          "in",
+          "id",
+          "ie",
+          "it",
+          "malaysia",
+          "nl",
+          "no",
+          "at",
+          "ph",
+          "pl",
+          "qc",
+          "ro",
+          "ch",
+          "sg",
+          "za",
+          "fi",
+          "se",
+          "tr",
+          "uk",
+          "vn",
+          "gr",
+          "ru",
+          "ua",
+          "il",
+          "hk",
+          "tw"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "yandex": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "family_mode": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "fix_typo": {
+        "type": "select",
+        "options": [
+          "false",
+          "true"
+        ]
+      },
+      "groups_on_page": {
+        "type": "number"
+      },
+      "json_restrictor": {},
+      "lang": {
+        "type": "select",
+        "options": [
+          "ru",
+          "en",
+          "be",
+          "kk",
+          "tr",
+          "uk"
+        ]
+      },
+      "lr": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "p": {
+        "type": "number"
+      },
+      "period": {
+        "type": "select",
+        "options": [
+          "all",
+          "day",
+          "last_two_weeks",
+          "month"
+        ]
+      },
+      "sort_mode": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "text": {},
+      "yandex_domain": {
+        "type": "select",
+        "options": [
+          "yandex.com",
+          "yandex.ru",
+          "yandex.by",
+          "yandex.kz",
+          "yandex.uz",
+          "yandex.com.tr"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "yandex_images": {
+      "api_key": {},
+      "async": {},
+      "color": {
+        "type": "select",
+        "options": [
+          "color",
+          "gray",
+          "red",
+          "orange",
+          "yellow",
+          "cyan",
+          "green",
+          "blue",
+          "violet",
+          "white",
+          "black"
+        ]
+      },
+      "crop": {},
+      "crop_id": {
+        "type": "number"
+      },
+      "engine": {},
+      "family_mode": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "file_type": {
+        "type": "select",
+        "options": [
+          "jpg",
+          "png",
+          "gifan"
+        ]
+      },
+      "height": {
+        "type": "number"
+      },
+      "image_type": {
+        "type": "select",
+        "options": [
+          "photo",
+          "clipart",
+          "lineart",
+          "face",
+          "demotivator"
+        ]
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "orientation": {
+        "type": "select",
+        "options": [
+          "horizontal",
+          "vertical",
+          "square"
+        ]
+      },
+      "output": {},
+      "p": {
+        "type": "number"
+      },
+      "recent": {
+        "type": "checkbox"
+      },
+      "site": {},
+      "tab": {
+        "type": "select",
+        "options": [
+          "about",
+          "similar"
+        ]
+      },
+      "text": {},
+      "url": {},
+      "width": {
+        "type": "number"
+      },
+      "yandex_domain": {
+        "type": "select",
+        "options": [
+          "yandex.com",
+          "yandex.ru",
+          "yandex.by",
+          "yandex.kz",
+          "yandex.uz",
+          "yandex.com.tr"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "yandex_videos": {
+      "api_key": {},
+      "async": {},
+      "device": {
+        "type": "device",
+        "options": [
+          "desktop",
+          "tablet",
+          "mobile"
+        ]
+      },
+      "duration": {
+        "type": "select",
+        "options": [
+          "short",
+          "medium",
+          "long"
+        ]
+      },
+      "engine": {},
+      "hd": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "p": {
+        "type": "number"
+      },
+      "text": {},
+      "within": {
+        "type": "select",
+        "value_type": "number"
+      },
+      "yandex_domain": {
+        "type": "select",
+        "options": [
+          "yandex.com",
+          "yandex.ru",
+          "yandex.by",
+          "yandex.kz",
+          "yandex.uz",
+          "yandex.com.tr"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "yelp": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "find_desc": {},
+      "find_loc": {},
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "sortby": {
+        "type": "select",
+        "options": [
+          "recommended",
+          "rating",
+          "review_count"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "yelp_domain": {
+        "type": "select",
+        "options": [
+          "ms.yelp.my",
+          "www.yelp.cz",
+          "www.yelp.dk",
+          "www.yelp.de",
+          "www.yelp.at",
+          "de.yelp.ch",
+          "www.yelp.com.au",
+          "en.yelp.be",
+          "www.yelp.ca",
+          "en.yelp.com.hk",
+          "en.yelp.my",
+          "www.yelp.co.nz",
+          "en.yelp.com.ph",
+          "www.yelp.ie",
+          "www.yelp.com.sg",
+          "en.yelp.ch",
+          "www.yelp.co.uk",
+          "www.yelp.com",
+          "www.yelp.com.ar",
+          "www.yelp.cl",
+          "www.yelp.es",
+          "www.yelp.com.mx",
+          "fil.yelp.com.ph",
+          "fr.yelp.be",
+          "fr.yelp.ca",
+          "www.yelp.fr",
+          "fr.yelp.ch",
+          "www.yelp.it",
+          "it.yelp.ch",
+          "nl.yelp.be",
+          "www.yelp.nl",
+          "www.yelp.no",
+          "www.yelp.pl",
+          "www.yelp.com.br",
+          "www.yelp.pt",
+          "fi.yelp.fi",
+          "sv.yelp.fi",
+          "www.yelp.com.tr",
+          "www.yelp.co.jp",
+          "zh.yelp.com.hk",
+          "www.yelp.com.tw"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "yelp_place": {
+      "api_key": {},
+      "async": {},
+      "business_alert": {
+        "type": "checkbox"
+      },
+      "engine": {},
+      "full_menu": {
+        "type": "checkbox"
+      },
+      "json_restrictor": {},
+      "menu_name": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "place_id": {},
+      "yelp_domain": {
+        "type": "select",
+        "options": [
+          "ms.yelp.my",
+          "www.yelp.cz",
+          "www.yelp.dk",
+          "www.yelp.de",
+          "www.yelp.at",
+          "de.yelp.ch",
+          "www.yelp.com.au",
+          "en.yelp.be",
+          "www.yelp.ca",
+          "en.yelp.com.hk",
+          "en.yelp.my",
+          "www.yelp.co.nz",
+          "en.yelp.com.ph",
+          "www.yelp.ie",
+          "www.yelp.com.sg",
+          "en.yelp.ch",
+          "www.yelp.co.uk",
+          "www.yelp.com",
+          "www.yelp.com.ar",
+          "www.yelp.cl",
+          "www.yelp.es",
+          "www.yelp.com.mx",
+          "fil.yelp.com.ph",
+          "fr.yelp.be",
+          "fr.yelp.ca",
+          "www.yelp.fr",
+          "fr.yelp.ch",
+          "www.yelp.it",
+          "it.yelp.ch",
+          "nl.yelp.be",
+          "www.yelp.nl",
+          "www.yelp.no",
+          "www.yelp.pl",
+          "www.yelp.com.br",
+          "www.yelp.pt",
+          "fi.yelp.fi",
+          "sv.yelp.fi",
+          "www.yelp.com.tr",
+          "www.yelp.co.jp",
+          "zh.yelp.com.hk",
+          "www.yelp.com.tw"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "yelp_reviews": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "hl": {
+        "type": "select",
+        "options": [
+          "ms",
+          "cs",
+          "da",
+          "de",
+          "en",
+          "es",
+          "fil",
+          "fr",
+          "it",
+          "nl",
+          "nb",
+          "pl",
+          "pt",
+          "fi",
+          "sv",
+          "tr",
+          "ja",
+          "zh"
+        ]
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "not_recommended": {
+        "type": "checkbox"
+      },
+      "not_recommended_start": {
+        "type": "number"
+      },
+      "num": {
+        "type": "number"
+      },
+      "output": {},
+      "place_id": {},
+      "q": {},
+      "rating": {},
+      "sortby": {
+        "type": "select",
+        "options": [
+          "relevance_desc",
+          "date_desc",
+          "date_asc",
+          "rating_desc",
+          "rating_asc",
+          "elites_desc"
+        ]
+      },
+      "start": {
+        "type": "number"
+      },
+      "yelp_domain": {
+        "type": "select",
+        "options": [
+          "ms.yelp.my",
+          "www.yelp.cz",
+          "www.yelp.dk",
+          "www.yelp.de",
+          "www.yelp.at",
+          "de.yelp.ch",
+          "www.yelp.com.au",
+          "en.yelp.be",
+          "www.yelp.ca",
+          "en.yelp.com.hk",
+          "en.yelp.my",
+          "www.yelp.co.nz",
+          "en.yelp.com.ph",
+          "www.yelp.ie",
+          "www.yelp.com.sg",
+          "en.yelp.ch",
+          "www.yelp.co.uk",
+          "www.yelp.com",
+          "www.yelp.com.ar",
+          "www.yelp.cl",
+          "www.yelp.es",
+          "www.yelp.com.mx",
+          "fil.yelp.com.ph",
+          "fr.yelp.be",
+          "fr.yelp.ca",
+          "www.yelp.fr",
+          "fr.yelp.ch",
+          "www.yelp.it",
+          "it.yelp.ch",
+          "nl.yelp.be",
+          "www.yelp.nl",
+          "www.yelp.no",
+          "www.yelp.pl",
+          "www.yelp.com.br",
+          "www.yelp.pt",
+          "fi.yelp.fi",
+          "sv.yelp.fi",
+          "www.yelp.com.tr",
+          "www.yelp.co.jp",
+          "zh.yelp.com.hk",
+          "www.yelp.com.tw"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "youtube": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "search_query": {},
+      "sp": {},
+      "zero_trace": {}
+    },
+    "youtube_channel": {
+      "about": {
+        "type": "checkbox"
+      },
+      "api_key": {},
+      "async": {},
+      "channel_id": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "options": [
+          "af",
+          "am",
+          "ar",
+          "az",
+          "be",
+          "bg",
+          "bn",
+          "bs",
+          "ca",
+          "cs",
+          "da",
+          "de",
+          "el",
+          "en",
+          "es",
+          "es-419",
+          "et",
+          "eu",
+          "fa",
+          "fi",
+          "fr",
+          "gl",
+          "gu",
+          "he",
+          "hi",
+          "hr",
+          "hu",
+          "hy",
+          "id",
+          "is",
+          "it",
+          "iw",
+          "ja",
+          "ka",
+          "kk",
+          "km",
+          "kn",
+          "ko",
+          "ky",
+          "lo",
+          "lt",
+          "lv",
+          "mk",
+          "ml",
+          "mn",
+          "mo",
+          "mr",
+          "ms",
+          "my",
+          "ne",
+          "nl",
+          "no",
+          "or",
+          "pa",
+          "pl",
+          "pt",
+          "pt-br",
+          "pt-pt",
+          "ro",
+          "ru",
+          "sh",
+          "si",
+          "sk",
+          "sl",
+          "sq",
+          "sr",
+          "sv",
+          "sw",
+          "ta",
+          "te",
+          "th",
+          "tl",
+          "tr",
+          "uk",
+          "ur",
+          "uz",
+          "vi",
+          "zh-cn",
+          "zh-tw",
+          "zu"
+        ]
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "search_query": {},
+      "sort": {
+        "type": "select",
+        "options": [
+          "latest",
+          "popular",
+          "oldest",
+          "dd",
+          "lad"
+        ]
+      },
+      "tab": {
+        "type": "select",
+        "options": [
+          "home",
+          "videos",
+          "shorts",
+          "streams",
+          "podcasts",
+          "playlists",
+          "posts"
+        ]
+      },
+      "zero_trace": {}
+    },
+    "youtube_video": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "gl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "hl": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "json_restrictor": {},
+      "next_page_token": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "v": {},
+      "zero_trace": {}
+    },
+    "youtube_video_transcript": {
+      "api_key": {},
+      "async": {},
+      "engine": {},
+      "json_restrictor": {},
+      "language_code": {
+        "type": "select",
+        "value_type": "string"
+      },
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "title": {},
+      "type": {
+        "type": "select",
+        "options": [
+          "asr"
+        ]
+      },
+      "v": {},
+      "zero_trace": {}
+    },
+    "zillow": {
+      "age_55_plus": {
+        "type": "select",
+        "options": [
+          "include",
+          "exclude",
+          "only"
+        ]
+      },
+      "amenities": {},
+      "api_key": {},
+      "async": {},
+      "basement": {},
+      "baths": {},
+      "beds": {},
+      "engine": {},
+      "has_garage": {
+        "type": "checkbox"
+      },
+      "hide_no_date_listings": {
+        "type": "checkbox"
+      },
+      "hoa_max": {
+        "type": "number"
+      },
+      "home_type": {},
+      "json_restrictor": {},
+      "keywords": {},
+      "listing_features": {},
+      "listing_status": {},
+      "listing_type": {},
+      "lot_size": {},
+      "map_bounds": {},
+      "move_in_date": {},
+      "no_cache": {
+        "type": "checkbox"
+      },
+      "output": {},
+      "page": {
+        "type": "number"
+      },
+      "parking_spots": {
+        "type": "number"
+      },
+      "pets": {},
+      "price": {},
+      "price_reduction": {
+        "type": "checkbox"
+      },
+      "region_id": {},
+      "short_term_lease": {
+        "type": "checkbox"
+      },
+      "single_story": {
+        "type": "checkbox"
+      },
+      "sort_by": {
+        "type": "select",
+        "options": [
+          "globalrelevanceex",
+          "featured",
+          "priced",
+          "pricea",
+          "paymentd",
+          "paymenta",
+          "days",
+          "beds",
+          "baths",
+          "size",
+          "lot",
+          "priorityscore"
+        ]
+      },
+      "space": {
+        "type": "select",
+        "options": [
+          "any",
+          "entire_place",
+          "room"
+        ]
+      },
+      "sqft": {},
+      "status_type": {
+        "type": "select",
+        "options": [
+          "sale",
+          "rent",
+          "sold"
+        ]
+      },
+      "time_on_zillow": {},
+      "tours": {},
+      "view": {},
+      "year_built": {},
+      "zero_trace": {}
+    }
+  }
+}

@@ -17,6 +17,7 @@ client.search(engine="google", q="coffee", device="watch")  # type: ignore
 # A Python bool is sent as "False", which SerpApi ignores here; the parameter takes "true" or "false".
 client.search(engine="yandex", text="coffee", fix_typo=False)  # type: ignore
 client.search(engine="google", q="coffee", output="xml")  # type: ignore
+client.search(engine="bing", q="coffee", output="json_with_pixel_position")  # type: ignore
 client.search(engine="google", q="coffee", timeout="30")  # type: ignore
 client.search(engine="google", q="coffee", proxies=MappingProxyType({"https": "http://proxy:8080"}))  # type: ignore
 serpapi.extract()  # type: ignore

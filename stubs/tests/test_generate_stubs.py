@@ -134,13 +134,37 @@ def test_only_extract_accepts_read_only_mappings(snapshot):
     assert "def locations(params: Optional[MutableMapping[str, Any]] = None" in core
 
 
-@pytest.mark.parametrize("function", ["search", "extract", "search_archive"])
-def test_output_keyword_decides_the_fallback_return_type(snapshot, function):
+@pytest.mark.parametrize(
+    ("function", "json_values"),
+    [
+        ("search", 'Literal["json", "json_with_pixel_position"]'),
+        ("extract", 'Literal["json"]'),
+        ("search_archive", 'Literal["json", "json_with_pixel_position"]'),
+    ],
+)
+def test_output_keyword_decides_the_fallback_return_type(snapshot, function, json_values):
     # Both literal-output overloads must precede the catch-all.
     text, json_output, catch_all = fallbacks(generate_stubs.render(snapshot)["core.pyi"], function)
     assert 'output: Literal["html", "md"],' in text[0] and text[1] == "str"
-    assert 'output: Literal["json"],' in json_output[0] and json_output[1] == "SerpResults"
+    assert f"output: {json_values}," in json_output[0] and json_output[1] == "SerpResults"
     assert "output:" not in catch_all[0] and catch_all[1] == "Union[SerpResults, Any]"
+
+
+def test_pixel_position_output_is_limited_to_the_apis_that_document_it(snapshot):
+    outputs = generate_stubs.render(snapshot)
+    pixel = 'Literal["json", "json_with_pixel_position"]'
+
+    def typed_dict(name):
+        return outputs["engine_params.pyi"].split(f"{name} = TypedDict(")[1].split("\n)\n")[0]
+
+    assert f'"output": NotRequired[{pixel}]' in typed_dict("GoogleJsonSearchParams")
+    assert f'"output": NotRequired[{pixel}]' in typed_dict("SearchArchiveJsonParams")
+    assert '"output": NotRequired[Literal["json"]]' in typed_dict("NaverJsonSearchParams")
+    assert '"output": NotRequired[Literal["json"]]' in typed_dict("ExtractJsonParams")
+    # A keyword call selects the same values as the engine's TypedDict.
+    keyword_calls = [call.split(") ->")[0] for call in outputs["core.pyi"].split("def search(")[1:] if "params: None" in call]
+    assert any('engine: Literal["google"]' in call and f"output: {pixel} = ..." in call for call in keyword_calls)
+    assert not any('engine: Literal["naver"]' in call and "json_with_pixel_position" in call for call in keyword_calls)
 
 
 def test_google_can_omit_engine(snapshot):

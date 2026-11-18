@@ -57,6 +57,12 @@ def test_extract_props_requires_parameters():
         ("sort_mode", {"type": "select", "options": ["relevance", "time"], "html": "<code>relevance</code> - by relevance<br><code>date</code> - by date."}, None, {"type": "select", "value_type": "string"}),
         ("tbm", {"type": "select", "options": ["isch", "vid"], "html": "<code>(no selection)</code> - regular search<br><code>isch</code> - images"}, None, {"type": "select", "options": ["isch", "vid"]}),
         ("sort_mode", {"type": "select", "options": ["relevance", "time"], "html": "<code>relevance</code>&nbsp;&mdash; by relevance<br><code>date</code> &ndash; by date."}, None, {"type": "select", "value_type": "string"}),
+        # An example list that mixes options with another value shows that the option list is incomplete.
+        ("sort", {"type": "select", "options": ["price_low", "price_high"], "html": "Sorting. (e.g. <code>price_low</code>, <code>price_high</code>, <code>new</code>)."}, None, {"type": "select", "value_type": "string"}),
+        ("hl", {"type": "select", "options": ["en", "es-419"], "html": "A language code (e.g., <code>en</code> for English), optionally followed by a region code (e.g., <code>en-gb</code> for British English, or <code>es-419</code>)."}, None, {"type": "select", "value_type": "string"}),
+        # Examples that are all options, or that belong to another parameter, keep the closed list.
+        ("event_type", {"type": "select", "options": ["concert", "class"], "html": "The type of the events (e.g., <code>concert</code>). With category, both must match (e.g., <code>music</code> concerts)."}, None, {"type": "select", "options": ["concert", "class"]}),
+        ("currency", {"type": "select", "options": ["USD", "EUR"], "html": "Defaults to the domain's currency (e.g., <code>USD</code> for <code>airbnb.com</code>, or <code>EUR</code> for <code>airbnb.fr</code>)."}, None, {"type": "select", "options": ["USD", "EUR"]}),
         # eBay's `_blrs` checkbox sends a value, not a flag.
         ("_blrs", {"type": "checkbox"}, "ebay", {"type": "checkbox", "value_type": "string"}),
     ],

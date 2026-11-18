@@ -34,6 +34,10 @@ REQUIRED_PARAMS = {"extract": frozenset({"url"})}
 # SerpApi runs Google when `engine` is omitted, so only Google calls may leave it out.
 DEFAULT_ENGINE = "google"
 JSON_OUTPUT = 'Literal["json"]'
+# Pixel Position also returns JSON. SerpApi documents it for these engines and for the Search Archive, but
+# the Playground does not list it: https://serpapi.com/pixel-position-api
+PIXEL_POSITION_OUTPUT = 'Literal["json", "json_with_pixel_position"]'
+PIXEL_POSITION_ENGINES = frozenset({"google", "google_ads"})
 TEXT_OUTPUT = 'Literal["html", "md"]'
 FALLBACK_RETURN = "Union[SerpResults, Any]"
 # search(), search_archive(), locations() and account() write the API key and keyword parameters into the
@@ -74,6 +78,10 @@ class Engine:
     @property
     def search_params(self) -> str:
         return f"{self.class_prefix}SearchParams"
+
+    @property
+    def json_output(self) -> str:
+        return PIXEL_POSITION_OUTPUT if self.name in PIXEL_POSITION_ENGINES else JSON_OUTPUT
 
 
 def class_prefix(engine: str) -> str:
@@ -147,8 +155,8 @@ def typed_dict(name: str, params: list[Param]) -> list[str]:
     return lines
 
 
-def with_output(params: list[Param], *, text: bool) -> list[Param]:
-    output = Param("output", TEXT_OUTPUT, True) if text else Param("output", JSON_OUTPUT, False)
+def with_output(params: list[Param], *, text: bool, json_output: str = JSON_OUTPUT) -> list[Param]:
+    output = Param("output", TEXT_OUTPUT, True) if text else Param("output", json_output, False)
     return sorted([*params, output], key=lambda param: param.name)
 
 
@@ -169,7 +177,7 @@ def build_engine_params_stub(engines: list[Engine]) -> str:
     ]
     for engine in engines:
         params = engine_dict_params(engine, engine_required=engine.engine_required)
-        lines.extend(typed_dict(engine.json_params, with_output(params, text=False)))
+        lines.extend(typed_dict(engine.json_params, with_output(params, text=False, json_output=engine.json_output)))
         lines.extend(typed_dict(engine.text_params, with_output(params, text=True)))
         lines.append(f"{engine.search_params}: TypeAlias = Union[{engine.json_params}, {engine.text_params}]")
         lines.append("")
@@ -182,7 +190,7 @@ def build_engine_params_stub(engines: list[Engine]) -> str:
     lines.append("")
 
     archive = list(ARCHIVE_PARAMS)
-    lines.extend(typed_dict("SearchArchiveJsonParams", with_output(archive, text=False)))
+    lines.extend(typed_dict("SearchArchiveJsonParams", with_output(archive, text=False, json_output=PIXEL_POSITION_OUTPUT)))
     lines.extend(typed_dict("SearchArchiveTextParams", with_output(archive, text=True)))
     lines.append("SearchArchiveParams: TypeAlias = Union[SearchArchiveJsonParams, SearchArchiveTextParams]")
     lines.append("")
@@ -197,7 +205,7 @@ def request_option_params() -> list[Param]:
     return [Param(name, typ, False) for name, typ in REQUEST_OPTIONS]
 
 
-def keyword_params(params: list[Param], *, text: bool) -> list[Param] | None:
+def keyword_params(params: list[Param], *, text: bool, json_output: str = JSON_OUTPUT) -> list[Param] | None:
     if any(param.required and not is_keyword_argument(param.name) for param in params):
         return None
     usable = [
@@ -205,7 +213,7 @@ def keyword_params(params: list[Param], *, text: bool) -> list[Param] | None:
         for param in params
         if is_keyword_argument(param.name) and param.name not in REQUEST_OPTION_NAMES
     ]
-    usable = with_output(usable, text=text) + request_option_params()
+    usable = with_output(usable, text=text, json_output=json_output) + request_option_params()
     return sorted(usable, key=lambda param: (not param.required, param.name))
 
 
@@ -218,10 +226,12 @@ def overload(function: str, receiver: str | None, params: list[str], return_type
     return lines
 
 
-def keyword_overloads(function: str, receiver: str | None, params: list[Param]) -> list[str]:
+def keyword_overloads(
+    function: str, receiver: str | None, params: list[Param], json_output: str = JSON_OUTPUT
+) -> list[str]:
     lines: list[str] = []
     for text, return_type in ((True, "str"), (False, "SerpResults")):
-        kw_params = keyword_params(params, text=text)
+        kw_params = keyword_params(params, text=text, json_output=json_output)
         if kw_params is None:
             continue
         rendered = ["params: None = None", "*"]
@@ -237,11 +247,13 @@ def mapping_overloads(function: str, receiver: str | None, json_type: str, text_
     return lines
 
 
-def fallback_overload(function: str, receiver: str | None, params_type: str) -> list[str]:
+def fallback_overload(
+    function: str, receiver: str | None, params_type: str, json_output: str = JSON_OUTPUT
+) -> list[str]:
     params = f"params: {params_type}"
     # An `output` keyword overrides the mapping, so a literal value determines the result type.
     lines = overload(function, receiver, [params, "*", f"output: {TEXT_OUTPUT}", "**kwargs: Any"], "str")
-    lines.extend(overload(function, receiver, [params, "*", f"output: {JSON_OUTPUT}", "**kwargs: Any"], "SerpResults"))
+    lines.extend(overload(function, receiver, [params, "*", f"output: {json_output}", "**kwargs: Any"], "SerpResults"))
     lines.extend(overload(function, receiver, [params, "**kwargs: Any"], FALLBACK_RETURN))
     return lines
 
@@ -250,10 +262,13 @@ def search_overloads(engines: list[Engine], receiver: str | None) -> list[str]:
     lines: list[str] = []
     for engine in engines:
         lines.extend(mapping_overloads("search", receiver, engine.json_params, engine.text_params))
-        lines.extend(keyword_overloads("search", receiver, [*engine.params, Param("engine", literal([engine.name]), True)]))
+        named = [*engine.params, Param("engine", literal([engine.name]), True)]
+        lines.extend(keyword_overloads("search", receiver, named, engine.json_output))
         if not engine.engine_required:
-            lines.extend(keyword_overloads("search", receiver, list(engine.params)))
-    lines.extend(fallback_overload("search", receiver, f"Union[SearchParams, {MUTABLE_PARAMS}]"))
+            lines.extend(keyword_overloads("search", receiver, list(engine.params), engine.json_output))
+    # The engine in an untyped mapping is unknown, so the fallback takes every JSON output value.
+    params_type = f"Union[SearchParams, {MUTABLE_PARAMS}]"
+    lines.extend(fallback_overload("search", receiver, params_type, PIXEL_POSITION_OUTPUT))
     return lines
 
 
@@ -266,8 +281,9 @@ def extract_overloads(extract: Engine, receiver: str | None) -> list[str]:
 
 def archive_overloads(receiver: str | None) -> list[str]:
     lines = mapping_overloads("search_archive", receiver, "SearchArchiveJsonParams", "SearchArchiveTextParams")
-    lines.extend(keyword_overloads("search_archive", receiver, list(ARCHIVE_PARAMS)))
-    lines.extend(fallback_overload("search_archive", receiver, f"Union[SearchArchiveParams, {MUTABLE_PARAMS}]"))
+    lines.extend(keyword_overloads("search_archive", receiver, list(ARCHIVE_PARAMS), PIXEL_POSITION_OUTPUT))
+    params_type = f"Union[SearchArchiveParams, {MUTABLE_PARAMS}]"
+    lines.extend(fallback_overload("search_archive", receiver, params_type, PIXEL_POSITION_OUTPUT))
     return lines
 
 

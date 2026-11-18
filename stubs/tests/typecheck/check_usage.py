@@ -47,6 +47,14 @@ client.search({"engine": "google_play", "q": "kite", "store": "apps", "max_resul
 assert_type(client.search({"engine": "google", "q": "coffee", "output": "md"}), str)
 assert_type(client.search({"engine": "google_translate", "text": "hi", "from": "en"}), SerpResults)
 assert_type(serpapi.search(engine="google", q="coffee", output="md"), str)
+# Pixel Position is documented for Google, Google Ads, and the Search Archive.
+assert_type(client.search(engine="google", q="coffee", output="json_with_pixel_position"), SerpResults)
+assert_type(client.search(engine="google_ads", q="coffee", output="json_with_pixel_position"), SerpResults)
+assert_type(client.search({"engine": "google", "q": "coffee", "output": "json_with_pixel_position"}), SerpResults)
+assert_type(client.search_archive(search_id="abc", output="json_with_pixel_position"), SerpResults)
+# Documented values that the Playground's option list leaves out.
+assert_type(client.search(engine="walmart", query="coffee", sort="new"), SerpResults)
+assert_type(client.search(engine="youtube_channel", channel_id="abc", hl="en-gb"), SerpResults)
 
 def runtime_engine(name: str) -> None:
     assert_type(client.search({"engine": name, "q": "coffee"}), Union[SerpResults, Any])

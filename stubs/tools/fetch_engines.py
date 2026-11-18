@@ -27,6 +27,11 @@ CLOSED_CHOICE_TYPES = frozenset({"select", "dropdown", "device"})
 DOCUMENTED_VALUE = re.compile(r"<code>(.*?)</code>", re.DOTALL)
 # A value in a documented list of choices: `<code>value</code> - label`.
 LISTED_VALUE = re.compile(r"<code>([\w.\-]+)</code>\s+[-–—]\s")
+# A parenthesised list of example values: `(e.g. <code>a</code>, <code>b</code>)`.
+EXAMPLE_LIST = re.compile(r"\(e\.g\.([^)]*)\)", re.IGNORECASE)
+# A value in such a list. `for <code>...</code>` says what an example applies to and is not a value:
+# `<code>USD</code> for <code>airbnb.com</code>`.
+EXAMPLE_VALUE = re.compile(r"(?<!for )<code>(.*?)</code>", re.DOTALL)
 # Checkboxes that send a value instead of a flag: eBay's `_blrs` takes `spell_auto_correct`.
 VALUE_CHECKBOXES = frozenset({("ebay", "_blrs")})
 TIMEOUT_SECONDS = 60
@@ -92,7 +97,15 @@ def _is_closed_choice(metadata: dict[str, Any], values: list[str]) -> bool:
             return False
     # A listed value that the options lack means the option list is wrong or incomplete (Yandex's
     # `sort_mode` offers `time` where the API takes `date`).
-    return all(value.casefold() in folded for value in LISTED_VALUE.findall(description))
+    if not all(value.casefold() in folded for value in LISTED_VALUE.findall(description)):
+        return False
+    # So does an example list that mixes options with other values (Walmart's `sort` documents `new`).
+    # Examples that name no option at all usually belong to another parameter.
+    for examples in EXAMPLE_LIST.findall(description):
+        known = [token.strip().casefold() in folded for token in EXAMPLE_VALUE.findall(examples)]
+        if any(known) and not all(known):
+            return False
+    return True
 
 
 def normalize_param(name: str, metadata: Any, engine: str | None = None) -> dict[str, Any]:

@@ -1,11 +1,13 @@
-from typing import Any, Mapping, MutableMapping, Optional, Tuple, Union
+from typing import Any, MutableMapping, Optional, Tuple, Union
 
 import requests
 from typing_extensions import TypeAlias
 
 _Timeout: TypeAlias = Union[None, float, Tuple[Optional[float], Optional[float]]]
-# requests removes a proxy whose value is None, which is how one request opts out of a configured proxy.
-_Proxies: TypeAlias = Union[None, Mapping[str, Optional[str]]]
+# requests mutates proxies when merging the environment; None opts out of a configured proxy.
+_Proxies: TypeAlias = Union[
+    None, MutableMapping[str, str], MutableMapping[str, None], MutableMapping[str, Optional[str]]
+]
 _Verify: TypeAlias = Union[None, bool, str]
 _Cert: TypeAlias = Union[None, str, Tuple[str, str]]
 

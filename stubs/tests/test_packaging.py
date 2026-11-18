@@ -45,7 +45,8 @@ def git_repo(tmp_path):
 
 
 @pytest.mark.parametrize("maintainer, regenerated", [(True, False), (True, True), (False, False)])
-def test_refresh_preserves_maintainer_prs(tmp_path, git_repo, maintainer, regenerated):
+@pytest.mark.parametrize("bot_followup", [False, True])
+def test_refresh_preserves_maintainer_prs(tmp_path, git_repo, maintainer, regenerated, bot_followup):
     workflow = (STUBS_ROOT.parent / ".github" / "workflows" / "stubs-refresh.yml").read_text(encoding="utf-8")
     script = textwrap.dedent(workflow.rsplit("        run: |\n", 1)[1])
     script = script.replace("${{ github.event.repository.default_branch }}", "master")
@@ -62,6 +63,10 @@ def test_refresh_preserves_maintainer_prs(tmp_path, git_repo, maintainer, regene
         env["GIT_AUTHOR_NAME"] = env["GIT_COMMITTER_NAME"] = "Maintainer"
     stub.write_text("reviewed correction\n", encoding="utf-8")
     git("commit", "--quiet", "-am", "Correct stubs")
+    if bot_followup:
+        env["GIT_AUTHOR_NAME"] = env["GIT_COMMITTER_NAME"] = "github-actions[bot]"
+        stub.write_text("reviewed correction\nbot followup\n", encoding="utf-8")
+        git("commit", "--quiet", "-am", "Bot followup")
     tip = git("rev-parse", "HEAD")
     git("switch", "--quiet", "master")
     git("remote", "add", "origin", str(repo))
@@ -89,24 +94,33 @@ gh() {
 
 
 @pytest.mark.parametrize(
-    ("changes", "publish"),
+    ("changes", "run_lookup", "publish"),
     [
-        ([], True),
-        ([(None, "unreleased")], True),
-        ([("future", "unreleased")], True),
-        ([("corrected", None)], False),
-        ([("corrected", None), ("future", "unreleased")], False),
-        ([("corrected", None), ("original", "unreleased")], False),
+        ([], "missing", True),
+        ([(None, "unreleased")], "missing", True),
+        ([("future", "unreleased")], "missing", True),
+        ([("corrected", None)], "found", False),
+        ([("corrected", None), ("future", "unreleased")], "found", False),
+        ([("corrected", None), ("original", "unreleased")], "found", False),
+        ([("corrected", None)], "missing", True),
+        ([("corrected", None), ("future", "unreleased")], "missing", True),
+        ([("corrected", None)], "error", None),
+        ([("corrected", None), (None, None)], "tip", False),
+        ([(None, None)], "tip", True),
     ],
 )
 @pytest.mark.parametrize("branch", ["master", "stubs/hotfix-1.2.0"])
-def test_release_only_skips_for_newer_compatible_stubs(tmp_path, git_repo, changes, publish, branch):
+def test_release_only_skips_for_newer_compatible_stubs(tmp_path, git_repo, changes, run_lookup, publish, branch):
     workflow = (STUBS_ROOT.parent / ".github" / "workflows" / "stubs-release.yml").read_text(encoding="utf-8")
     step = workflow.split("      - id: current\n", 1)[1]
     script = textwrap.dedent(step.split("        run: |\n", 1)[1].split("\n      - uses:", 1)[0])
     repo, env, git = git_repo
     output = tmp_path / "github_output"
-    env.update(GITHUB_REF_NAME=branch, GITHUB_OUTPUT=str(output))
+    calls = tmp_path / "gh-calls"
+    env.update(
+        GITHUB_REF_NAME=branch, GITHUB_OUTPUT=str(output), GITHUB_REPOSITORY="example/repo",
+        RELEASE_RUN=run_lookup, GH_CALLS=str(calls),
+    )
     if branch != "master":
         git("switch", "--quiet", "-c", branch)
     (repo / "serpapi").mkdir()
@@ -123,12 +137,41 @@ def test_release_only_skips_for_newer_compatible_stubs(tmp_path, git_repo, chang
             stub.write_text(new_stub + "\n", encoding="utf-8")
         if new_sdk is not None:
             sdk.write_text(new_sdk + "\n", encoding="utf-8")
+        if new_stub is None and new_sdk is None:
+            (repo / "CONTRIBUTING.md").write_text("Documentation follow-up\n", encoding="utf-8")
+            git("add", "CONTRIBUTING.md")
         git("commit", "--quiet", "-am", "Next change")
+    env["RUN_HEAD"] = git("rev-parse", "HEAD")
     git("remote", "add", "origin", str(repo))
     git("switch", "--quiet", "--detach", running_commit)
 
+    gh = """
+gh() {
+  printf '%s\\n' "$*" >> "$GH_CALLS"
+  case "$RELEASE_RUN" in
+    found) printf 'https://github.com/example/repo/actions/runs/42\\n' ;;
+    tip)
+      for arg in "$@"; do
+        if [ "$arg" = "head_sha=$RUN_HEAD" ]; then
+          printf 'https://github.com/example/repo/actions/runs/42\\n'
+        fi
+      done
+      ;;
+    error) printf 'run lookup failed\\n' >&2; return 1 ;;
+  esac
+}
+"""
     result = subprocess.run(
-        ["bash", "-e", "-c", script], cwd=repo, env=env, capture_output=True, text=True
+        ["bash", "-e", "-c", gh + script], cwd=repo, env=env, capture_output=True, text=True
     )
+    if run_lookup == "error":
+        assert result.returncode != 0
+        assert "run lookup failed" in result.stderr
+        assert not output.exists()
+        return
     assert result.returncode == 0, result.stderr
     assert output.read_text(encoding="utf-8") == f"publish={str(publish).lower()}\n"
+    if not publish:
+        assert "https://github.com/example/repo/actions/runs/42" in result.stdout
+    if calls.exists():
+        assert f"branch={branch}" in calls.read_text(encoding="utf-8")

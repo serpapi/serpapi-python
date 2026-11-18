@@ -79,6 +79,7 @@ jobs:
       name: pypi-stubs
       url: https://pypi.org/p/serpapi-stubs
     permissions:
+      actions: read
       contents: read
       id-token: write
     steps:
@@ -90,6 +91,8 @@ jobs:
       # publishing job because "Re-run failed jobs" keeps the outputs of the jobs that already passed.
       - id: current
         name: Do not supersede newer stubs for the same SDK
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git fetch --quiet origin "refs/heads/$GITHUB_REF_NAME"
           if ! git merge-base --is-ancestor HEAD FETCH_HEAD; then
@@ -98,17 +101,26 @@ jobs:
             exit 0
           fi
 
-          # Only a newer shipped-stub change for this SDK can replace this release. Look through history,
+          # Only a newer shipped-stub snapshot for this SDK can replace this release. Look through history,
           # because the branch tip may already target an unreleased SDK. Keep these paths with on.push.paths.
           stub_paths=(
             stubs/serpapi-stubs stubs/pyproject.toml stubs/MANIFEST.in stubs/LICENSE stubs/README.md
           )
-          commits=$(git rev-list --first-parent HEAD..FETCH_HEAD -- "${stub_paths[@]}")
+          commits=$(git rev-list --first-parent HEAD..FETCH_HEAD)
           for commit in $commits; do
-            if git diff --quiet HEAD "$commit" -- serpapi/; then
-              echo "::notice::Newer compatible stub change $commit supersedes this run; use that commit's run to release."
-              echo "publish=false" >> "$GITHUB_OUTPUT"
-              exit 0
+            if git diff --quiet HEAD "$commit" -- serpapi/ &&
+               ! git diff --quiet HEAD "$commit" -- "${stub_paths[@]}"; then
+              # A push head can carry earlier stub changes without itself changing a shipped file.
+              replacement_run=$(gh api --method GET \
+                "repos/$GITHUB_REPOSITORY/actions/workflows/stubs-release.yml/runs" \
+                -f head_sha="$commit" -f branch="$GITHUB_REF_NAME" -f per_page=1 \
+                --jq '.workflow_runs[0].html_url // empty')
+              if [ -n "$replacement_run" ]; then
+                echo "::notice::Newer compatible stub snapshot $commit supersedes this run; use $replacement_run to release."
+                echo "publish=false" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
+              echo "::notice::Newer compatible stub snapshot $commit has no release run; it does not supersede this run."
             fi
           done
           echo "publish=true" >> "$GITHUB_OUTPUT"

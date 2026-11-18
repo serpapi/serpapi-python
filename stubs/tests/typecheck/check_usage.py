@@ -31,6 +31,10 @@ assert_type(client.search(engine="google_lens", image_id="abc", hl="en"), SerpRe
 assert_type(client.search(engine="google", q="coffee", timeout=(3.0, 30.0), verify=False), SerpResults)
 assert_type(client.search(engine="google", q="coffee", proxies=None, cert=None, verify=None, stream=None), SerpResults)
 assert_type(client.search(engine="google", q="coffee", proxies={"https": None}), SerpResults)
+proxy_urls: Dict[str, str] = {"https": "http://proxy:8080"}
+optional_proxy_urls: Dict[str, Union[str, None]] = {"https": None}
+assert_type(client.search(engine="google", q="coffee", proxies=proxy_urls), SerpResults)
+assert_type(client.search(engine="google", q="coffee", proxies=optional_proxy_urls), SerpResults)
 assert_type(client.search(engine="ebay", _nkw="coffee", _blrs="spell_auto_correct"), SerpResults)
 assert_type(client.search(engine="google_maps", q="coffee", min_rating=4.5), SerpResults)
 assert_type(client.search(engine="doordash", q="coffee", min_rating=4.5), SerpResults)

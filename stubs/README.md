@@ -54,6 +54,7 @@ Notes:
 
 - `async` and `from` are Python keywords, so pass them in the params dict: `client.search({"engine": "google", "q": "coffee", "async": True})`.
 - In keyword calls, `timeout` is the HTTP request timeout. Pass Extract's API `timeout` parameter in the params dict.
+- `proxies` accepts a mutable mapping such as `dict`, not a read-only `Mapping`: Requests updates it when merging environment proxies. A `None` value disables that configured proxy.
 - Keyword calls need literal `engine` and `output` values so the checker can select the engine's overload. A `str` variable, or `**` unpacking of a `Dict[str, str]`, is rejected. When either value is computed at runtime, pass a params dict, or type the value as `Literal` or `Final`.
 - A `dict` variable that is not annotated with a parameter type gives a `SerpResults | Any` result, because the checker cannot see its `output` value. Pass `output="md"` or `output="html"` as a keyword to get `str`, or `output="json"` to get `SerpResults`. The keyword overrides any `output` in the mapping.
 - `search()`, `search_archive()`, `locations()`, and `account()` write the API key into the mapping they receive, so pass a `dict` or a `serpapi.engine_params` type. A read-only `Mapping` or your own `TypedDict` is rejected; pass `dict(params)` instead. `extract()` copies its mapping and accepts any `Mapping`.
@@ -61,7 +62,7 @@ Notes:
 
 Engine parameters come from the [SerpApi Playground](https://serpapi.com/playground). Parameters that SerpApi has not documented there are reported as errors. Use a `# type: ignore` comment or an untyped `dict` if you need one. Parameters that the Playground gives no type accept `str`, `int`, or `float`, because the SDK sends numbers as text.
 
-The Playground sometimes uses UI-specific values rather than the API values (for example, Amazon language choices combine a domain and locale). The stubs normalize those choices to the API's documented locale codes. A parameter is typed as a closed set of options only when the Playground presents it as a single-choice list that agrees with its documentation. Parameters that document case-insensitive values (such as Bing's `mkt`, `cc`, and `safeSearch`), comma-separated values (such as Tripadvisor Reviews' `type_of_visit`), or a value missing from the list (such as Yandex's `sort_mode`) are typed `str`. When an engine parameter is not present in the Playground, pass a mapping to `search()`; mapping calls remain compatible with runtime-supported parameters without weakening keyword checks.
+The Playground sometimes uses UI-specific values rather than the API values (for example, Amazon language choices combine a domain and locale). The stubs normalize those choices to the API's documented locale codes. A parameter is typed as a closed set of options only when the Playground presents it as a single-choice list that agrees with its documentation. Parameters that document case-insensitive values (such as `mkt`, `cc`, and `safeSearch` for `bing` and `bing_news`), comma-separated values (such as Tripadvisor Reviews' `type_of_visit`), or a value missing from the list (such as Yandex's `sort_mode`) are typed `str`. These checks apply per engine: `bing_images` documents only lowercase `safeSearch` choices, so its type remains `Literal["strict", "moderate", "off"]`. When an engine parameter is not present in the Playground, pass a mapping to `search()`; mapping calls remain compatible with runtime-supported parameters without weakening keyword checks.
 
 ## Versions
 
@@ -80,6 +81,8 @@ pip install "serpapi[typing]" "serpapi-stubs==1.2.0.20260715"
 A stub release that breaks valid code is yanked from PyPI and fixed in a newer release.
 
 ## Development
+
+Building this distribution from source requires Python 3.9 or newer for `setuptools>=77`. Installing a published wheel does not require the build backend. Use Python 3.13 for development checks, matching CI.
 
 The stubs are built from the [`stubs/`](https://github.com/serpapi/serpapi-python/tree/master/stubs) directory of the SDK repository:
 

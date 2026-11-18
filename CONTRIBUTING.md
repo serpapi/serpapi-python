@@ -174,7 +174,7 @@ See the [RTD build API](https://docs.readthedocs.com/platform/stable/api/v3.html
 
 The `stubs/` directory builds `serpapi-stubs`, a separate PyPI distribution that users install with `pip install "serpapi[typing]"`. The SDK wheel and source distribution do not include it. See [stubs/README.md](stubs/README.md) for the layout and the commands that refresh and regenerate the stubs.
 
-The [stubs workflow](.github/workflows/stubs.yml) runs on pull requests that change `serpapi/` or `stubs/`. To run the same checks locally, install the stubs into your development environment and type-check the samples:
+The [stubs workflow](.github/workflows/stubs.yml) runs on pull requests that change `serpapi/` or `stubs/`. To run the same checks locally, use Python 3.13 as in CI, install the stubs into your development environment, and type-check the samples:
 
 ```sh
 cd stubs
@@ -205,7 +205,7 @@ GitHub can refuse a push that carries workflow-file changes from `master` into a
 
 If a stub release breaks valid code, yank it on PyPI and merge a fix. The SDK-tag workflow does not supersede a series with any non-yanked files. If the series has only yanked releases or no files left, it publishes a replacement before the SDK. Yanked and file-less versions still reserve their version numbers. For an upload collision between simultaneous stub releases, choose **Re-run all jobs** on the latest compatible run of the stub-only release workflow. It computes the next available date suffix, whereas **Re-run failed jobs** reuses the colliding version.
 
-The stub-only workflow queues up to 100 pending runs across release branches, rather than letting a hotfix or manual dispatch replace an already pending release. Before uploading, it checks the branch's first-parent history: a newer shipped-stub change for the same SDK supersedes an older run, but a change targeting an unreleased SDK does not suppress the last compatible release. A run whose commit was removed from the branch is also skipped. After a cancellation or a full queue, rerun all jobs on the newest compatible run, not an older superseded one.
+The stub-only workflow queues up to 100 pending runs across release branches, rather than letting a hotfix or manual dispatch replace an already pending release. Before uploading, it checks every commit in the branch's first-parent history: a newer commit with different shipped stubs for the same SDK supersedes an older run only when that commit has a run of this workflow on the same branch. The head of a multi-commit push can carry an earlier stub fix even if its own change is documentation-only. An intermediate commit with no release run does not suppress the pending release, nor does a change targeting an unreleased SDK. Run-lookup errors fail the publishing job rather than assuming a replacement exists. A run whose commit was removed from the branch is also skipped. After a cancellation or a full queue, rerun all jobs on the newest compatible run, not an older superseded one.
 
 Release tags publish only the files in the tagged commit. If a stub change was skipped while waiting for a tag but landed after that commit, manually run **Release serpapi-stubs** on `master` once the tag exists, provided `serpapi/` still matches it. If SDK development has moved on, use the hotfix procedure below instead.
 

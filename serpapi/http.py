@@ -1,8 +1,10 @@
 import asyncio
 import logging
 import os
-import re
 import ssl
+from contextlib import contextmanager
+from urllib.parse import unquote_plus, urlsplit
+from weakref import ref
 
 import requests
 
@@ -90,21 +92,59 @@ def _import_httpx2():
 
 
 class _ApiKeyLogFilter(logging.Filter):
-    _API_KEY_IN_URL = re.compile(r"(?i)([?&]api_key=)[^&\s\"']*")
+    def __init__(self):
+        # Only the async extra (Python 3.11+) needs contextvars.
+        from contextvars import ContextVar
+
+        super().__init__()
+        self.active_request = ContextVar("serpapi_log_request", default=None)
+
+    @contextmanager
+    def for_request(self, request):
+        token = self.active_request.set(ref(request))
+        try:
+            yield
+        finally:
+            self.active_request.reset(token)
 
     def filter(self, record):
-        message = record.getMessage()
-        redacted = self._API_KEY_IN_URL.sub(r"\1<redacted>", message)
-        if redacted != message:
-            record.msg = redacted
-            record.args = ()
+        active = self.active_request.get()
+        request = active() if active is not None else None
+        args = record.args
+        # A request hook can change this URL or issue an unrelated raw request.
+        if (
+            request is None or not isinstance(args, tuple)
+            or len(args) < 2 or args[1] is not request.url
+        ):
+            return True
+
+        url = urlsplit(str(request.url))
+        fields = url.query.split("&")
+        for i, field in enumerate(fields):
+            name, sep, _ = field.partition("=")
+            if sep and unquote_plus(name).lower() == "api_key":
+                fields[i] = name + "=<redacted>"
+        query = "&".join(fields)
+        if query != url.query:
+            record.args = (args[0], url._replace(query=query).geturl(), *args[2:])
         return True
 
 
 def _protect_httpx2_logs():
     logger = logging.getLogger("httpx2")
-    if not any(isinstance(item, _ApiKeyLogFilter) for item in logger.filters):
-        logger.addFilter(_ApiKeyLogFilter())
+    for item in logger.filters:
+        if isinstance(item, _ApiKeyLogFilter):
+            return item
+    log_filter = _ApiKeyLogFilter()
+    logger.addFilter(log_filter)
+    return log_filter
+
+
+def _asyncio_loop():
+    try:
+        return asyncio.get_running_loop()
+    except RuntimeError:
+        raise RuntimeError("serpapi.AsyncClient requires asyncio with a running event loop.") from None
 
 
 class AsyncHTTPClient:
@@ -122,24 +162,29 @@ class AsyncHTTPClient:
 
     def __init__(self, *, api_key=None, timeout=None):
         self._httpx2 = _import_httpx2()
-        _protect_httpx2_logs()
+        self._log_filter = _protect_httpx2_logs()
         self.api_key = api_key
         self.timeout = timeout
         self._closed = False
         self._close_task = None
         self._option_sessions = {}
+        self._default_ssl_context = _ssl_context(self._httpx2, True, None)
         self.session = self._create_session(verify=True)
+
+    def _check_can_request(self):
+        _asyncio_loop()
+        if self._closed:
+            raise RuntimeError("Cannot send a request, as the client has been closed.")
 
     async def request(self, method, path, params, *, assert_200=True, **kwargs):
         httpx2 = self._httpx2
-        if self._closed:
-            raise RuntimeError("Cannot send a request, as the client has been closed.")
+        self._check_can_request()
 
         # Inject the API Key into the params.
         request_data = kwargs.get("data")
         api_key_in_data = isinstance(request_data, dict) and "api_key" in request_data
         if "api_key" not in params and not api_key_in_data:
-            params["api_key"] = self.api_key
+            params = {**params, "api_key": self.api_key}
 
         # Build the URL, as needed.
         if not path.startswith("http"):
@@ -183,30 +228,10 @@ class AsyncHTTPClient:
             kwargs["content"] = _read_body(prepared.body)
 
         # Make the HTTP request.
-        temporary = False
         try:
-            session, temporary = self._session_for(prepared.url, proxies, verify, cert)
-            r = await session.request(
-                method=method, url=prepared.url, headers=headers,
-                follow_redirects=False, **kwargs
-            )
-            history = []
-            while follow_redirects and r.next_request is not None:
-                if len(history) >= requests.models.DEFAULT_REDIRECT_LIMIT:
-                    raise httpx2.TooManyRedirects(
-                        "Exceeded maximum allowed redirects.", request=r.next_request
-                    )
-                history.append(r)
-                next_request = r.next_request
-                if temporary:
-                    await session.aclose()
-                    temporary = False
-                # Redirects may change the host or scheme and therefore the selected proxy.
-                session, temporary = self._session_for(
-                    str(next_request.url), proxies, verify, cert
-                )
-                r = await session.send(next_request, follow_redirects=False)
-                r.history = list(history)
+            auth = kwargs.pop("auth", httpx2.USE_CLIENT_DEFAULT)
+            request = self.session.build_request(method, prepared.url, headers=headers, **kwargs)
+            r = await self._send_with_auth(request, auth, follow_redirects, proxies, verify, cert)
         except httpx2.ConnectTimeout as e:
             # requests reports connection timeouts as connection errors.
             raise _connection_error(e) from e
@@ -216,9 +241,16 @@ class AsyncHTTPClient:
             httpx2.NetworkError, httpx2.ProtocolError, httpx2.ProxyError, ssl.SSLError
         ) as e:
             raise _connection_error(e) from e
-        finally:
-            if temporary:
-                await session.aclose()
+        except httpx2.DecodingError as e:
+            raise requests.exceptions.ContentDecodingError(str(e)) from e
+        except httpx2.TooManyRedirects as e:
+            raise requests.exceptions.TooManyRedirects(str(e), request=_error_request(e)) from e
+        except httpx2.UnsupportedProtocol as e:
+            raise requests.exceptions.InvalidSchema(str(e), request=_error_request(e)) from e
+        except httpx2.HTTPError as e:
+            raise requests.exceptions.RequestException(
+                str(e), request=_error_request(e), response=getattr(e, "response", None)
+            ) from e
 
         # Raise an exception if the status code is not 200.
         if assert_200 and 400 <= r.status_code < 600:
@@ -226,13 +258,65 @@ class AsyncHTTPClient:
 
         return r
 
+    async def _send_with_auth(self, request, auth, follow_redirects, proxies, verify, cert):
+        from contextlib import AsyncExitStack, aclosing
+
+        # Match httpx2's ordering: select auth once (including session defaults and
+        # URL credentials), then give it the response *after* following redirects.
+        auth = self.session._build_request_auth(request, auth)
+        auth_history = []
+        redirects = []
+        async with aclosing(auth.async_auth_flow(request)) as flow:
+            request = await flow.__anext__()
+            while True:
+                async with AsyncExitStack() as cleanup:
+                    response = await self._open_response(request, proxies, verify, cert, cleanup)
+                    response.history = auth_history + redirects
+                    if follow_redirects and response.next_request is not None:
+                        await response.aread()
+                        if len(redirects) >= requests.models.DEFAULT_REDIRECT_LIMIT:
+                            raise requests.exceptions.TooManyRedirects(
+                                f"Exceeded {len(redirects)} redirects.",
+                                response=response, request=request,
+                            )
+                        redirects.append(response)
+                        request = response.next_request
+                    else:
+                        # Auth can reject the status or headers without reading the body.
+                        try:
+                            request = await flow.asend(response)
+                        except StopAsyncIteration:
+                            await response.aread()
+                            return response
+                        response.history = list(auth_history)
+                        await response.aread()
+                        auth_history.append(response)
+                        redirects.clear()
+                if len(auth_history) > self.session.max_redirects:
+                    raise self._httpx2.TooManyRedirects(
+                        "Exceeded maximum allowed redirects.", request=request
+                    )
+
+    async def _open_response(self, request, proxies, verify, cert, cleanup):
+        session, temporary = self._session_for(str(request.url), proxies, verify, cert)
+        if temporary:
+            cleanup.push_async_callback(session.aclose)
+        with self._log_filter.for_request(request):
+            # An explicit no-op, not auth=None: the latter can still apply URL credentials.
+            response = await session.send(
+                request, auth=self._httpx2.Auth(), follow_redirects=False, stream=True
+            )
+        cleanup.push_async_callback(response.aclose)
+        return response
+
     async def aclose(self):
         """Close the client's HTTP connections. The client cannot send requests afterwards."""
 
+        loop = _asyncio_loop()
         self._closed = True
         if self._close_task is None:
             # Close in a task, so that the sessions still close if the caller is cancelled.
-            self._close_task = asyncio.create_task(self._close_sessions())
+            self._close_task = loop.create_task(self._close_sessions())
             self._close_task.add_done_callback(self._after_close)
 
         await asyncio.shield(self._close_task)
@@ -255,6 +339,7 @@ class AsyncHTTPClient:
                 raise result
 
     async def __aenter__(self):
+        _asyncio_loop()
         if self._closed:
             raise RuntimeError("Cannot reopen a client instance, once it has been closed.")
 
@@ -301,13 +386,18 @@ class AsyncHTTPClient:
         self._option_sessions[key] = session
         return session, False
 
+    def _session_ssl_context(self, verify, cert):
+        if verify is True and not cert:
+            return self._default_ssl_context
+        return _ssl_context(self._httpx2, verify, cert)
+
     def _create_session(self, proxy=None, verify=None, cert=None):
         httpx2 = self._httpx2
-        context = _ssl_context(httpx2, verify, cert)
+        context = self._session_ssl_context(verify, cert)
         if proxy and proxy.startswith("https://"):
             # Like requests, verify the proxy with the request's settings, but only
             # offer the client certificate to the destination.
-            proxy_context = _ssl_context(httpx2, verify, None) if cert else context
+            proxy_context = self._session_ssl_context(verify, None) if cert else context
             proxy = httpx2.Proxy(proxy, ssl_context=proxy_context)
 
         return httpx2.AsyncClient(
@@ -422,14 +512,16 @@ def _ssl_context(httpx2, verify, cert):
     return context
 
 
-def _connection_error(e):
+def _error_request(e):
     # httpx2 exceptions raise RuntimeError, rather than returning None, when they have no request.
     try:
-        request = getattr(e, "request", None)
+        return getattr(e, "request", None)
     except RuntimeError:
-        request = None
+        return None
 
-    return HTTPConnectionError(requests.exceptions.ConnectionError(*e.args, request=request))
+
+def _connection_error(e):
+    return HTTPConnectionError(requests.exceptions.ConnectionError(*e.args, request=_error_request(e)))
 
 
 def _status_error(r):

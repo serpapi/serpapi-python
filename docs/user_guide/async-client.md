@@ -74,7 +74,7 @@ asyncio.run(main())
 
 `asyncio.run()` starts an event loop and runs `main()` in it. `async with` closes the client's connections at the end of the block. If you can't use `async with`, for example when your application creates the client at startup, call `await client.aclose()` when you no longer need the client.
 
-For JSON responses, the client returns a `serpapi.AsyncSerpResults` object, which you can read like a dictionary, as with `SerpResults`. With `output="md"` or `output="html"`, it returns a string.
+For JSON responses, the client returns a `serpapi.AsyncSerpResults` object. It is not a subclass of `SerpResults`: both have the same dictionary helpers, but their pagination methods use different protocols. With `output="md"` or `output="html"`, the client returns a string.
 
 The other examples on this page use the same imports.
 
@@ -184,6 +184,8 @@ asyncio.run(main())
 
 `asyncio.gather()` runs the account request and the upload at the same time, and returns their results in order.
 
+`upload_image()` reads the image off the event loop. If you pass an open file, it stays yours: the SDK doesn't close it, and cancellation waits for any in-progress read to finish before returning control to you.
+
 ## Run Searches at the Same Time
 
 Pass several searches to `asyncio.gather()` to send them at once:
@@ -207,7 +209,7 @@ async def main():
 asyncio.run(main())
 ```
 
-One client can send many requests at once and reuses its connections between them. Share one client rather than creating a client for each search.
+One client can send many requests at once and reuses its connections between them. Share one client rather than creating a client for each search. You can also reuse a base parameter dictionary: async methods don't write per-call overrides or the client's API key back into it.
 
 ### Limit Concurrent Searches
 
@@ -291,7 +293,7 @@ Both clients use certifi's CA bundle by default. They read `REQUESTS_CA_BUNDLE` 
 
 The async client loads CA bundle and client-certificate contents into an SSL context when an option-specific session is created. If you replace either file at the same path, close the existing `AsyncClient` and create a new one before making another request so the new contents are loaded.
 
-HTTP/HTTPS proxy dictionaries use the same selection rules as `requests`, including credentials in proxy URLs, scheme/host-specific entries, environment proxies, and `NO_PROXY`. Proxy selection is repeated after redirects. See [Differences from Client](#differences-from-client) for the remaining transport differences.
+HTTP/HTTPS proxy dictionaries use the same selection rules as `requests`, including credentials in proxy URLs, scheme/host-specific entries, environment proxies, and `NO_PROXY`. A redirect selects the proxy for the new URL without restarting authentication. For example, passing `auth=None` to `AsyncClient.request()` disables session authentication for the entire redirect chain. See [Differences from Client](#differences-from-client) for the remaining transport differences.
 
 ## Errors
 
@@ -321,7 +323,7 @@ See [Errors and Timeouts](errors-and-timeouts.md) for what each exception means.
 
 Use each client in only one event loop. Each `asyncio.run()` call starts a new event loop, so create the client inside the coroutine you pass to `asyncio.run()`, as the examples on this page do. In a long-running application, create one client when the application starts, share it, and close it with `await client.aclose()` when the application stops.
 
-`AsyncClient` runs on `asyncio` only. Other async libraries that httpx2 can run on, such as Trio, are not supported.
+`AsyncClient` runs on `asyncio` only. On another backend, such as Trio, it raises `RuntimeError` before entering the client, sending a request, or starting cleanup.
 
 ## Differences from Client
 
@@ -337,11 +339,13 @@ Use each client in only one event loop. Each `asyncio.run()` call starts a new e
 | TLS contexts | Shared options include CA files/directories and client certificates. | Also accepts an `ssl.SSLContext` for `verify`. Load client certificates into that context; combining it with `cert` raises `TypeError`. The context is also used to connect to an HTTPS proxy, which is then offered a client certificate loaded into it. |
 | SOCKS proxies | Requires requests' SOCKS dependencies; `socks5://` resolves DNS locally, `socks5h://` at the proxy. | Requires `pip install "httpx2[socks]"` separately. Both schemes resolve DNS at the proxy. Use `socks5h://` for matching behavior. SOCKS4 is unsupported. |
 | Connection limits | The default pool cache size is not a hard concurrency limit. | Each pool defaults to at most 100 connections; this is not a global SDK limit. |
-| Streaming | `stream` is forwarded to requests, but high-level methods still consume the response before returning results. | `stream` is accepted but ignored. Responses and file/iterator request bodies are buffered; file reading and body preparation are synchronous. |
+| Streaming | `stream` is forwarded to requests, but high-level methods still consume the response before returning results. | `stream` is accepted but ignored. Responses and request bodies are buffered. `upload_image()` reads the file off the event loop; low-level request body preparation is synchronous. |
 | Error details | HTTP error responses are `requests.Response` objects. | HTTP error responses are `httpx2.Response` objects. Exception text can differ; blank read/write/pool timeout messages receive a fallback. |
 
 Neither client sets a timeout by default. A numeric or `(connect, read)` timeout is not a total wall-clock deadline, and the async client does not apply those forms to waiting for a free pool connection. Use a native `httpx2.Timeout` if you need a separate pool-wait timeout.
 
 The async client keeps its default pool plus up to 16 cached proxy/TLS/certificate combinations. Further uncached combinations use temporary sessions that close after the request, so they do not reuse connections between requests. Cached entries are not evicted. This bounds the number of cached pools but can reduce performance when rotating through many configurations.
 
-Async `HTTPError` messages omit the `api_key` query parameter, and httpx2 INFO request logs redact it. This does not sanitize raw request/response URLs; do not log those with credentials. Other transport failures, such as too many redirects, can still raise httpx2-specific exceptions rather than SDK exceptions.
+Async `HTTPError` messages omit the `api_key` query parameter. In httpx2 INFO request logs, the SDK redacts `api_key` from the URL it actually sends, including keys supplied by session defaults, authentication, or request hooks. Unrelated httpx2 requests and raw request/response URLs are unchanged; do not log raw URLs containing credentials.
+
+Exceeding the redirect limit raises `requests.exceptions.TooManyRedirects`, invalid compressed content raises `requests.exceptions.ContentDecodingError`, and an unsupported transport protocol raises `requests.exceptions.InvalidSchema`. Other httpx2 HTTP failures can also be caught with `requests.exceptions.RequestException`. This does not cover input validation errors such as a malformed URL.

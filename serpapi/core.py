@@ -1,3 +1,4 @@
+import asyncio
 import io
 import json
 import os
@@ -236,6 +237,38 @@ def _async_response_json(response):
         ) from error
 
 
+def _read_upload_image(image):
+    if isinstance(image, (str, os.PathLike)):
+        with open(image, "rb") as image_file:
+            return _read_upload_image(image_file)
+    if isinstance(image, io.TextIOBase):
+        raise TypeError("image file must be opened in binary mode, e.g. open(path, 'rb')")
+    if hasattr(image, "read"):
+        return (requests.utils.guess_filename(image) or "image", image.read())
+    return image
+
+
+async def _prepare_upload_image(image):
+    if not hasattr(image, "read"):
+        return await asyncio.to_thread(_read_upload_image, image)
+
+    # A worker cannot be cancelled mid-read. Don't return a borrowed file to
+    # its caller until the worker has finished with it, even on cancellation.
+    # Keep the executor future itself; a shutdown sweep can cancel all asyncio tasks.
+    read = asyncio.get_running_loop().run_in_executor(None, _read_upload_image, image)
+    cancelled = None
+    while not read.done():
+        try:
+            await asyncio.wait((read,))
+        except asyncio.CancelledError as exc:
+            cancelled = exc
+    if cancelled is not None:
+        if not read.cancelled():
+            read.exception()
+        raise cancelled
+    return read.result()
+
+
 class AsyncClient(AsyncHTTPClient):
     """An asynchronous version of :class:`Client <serpapi.Client>` for use with ``await``.
 
@@ -277,13 +310,8 @@ class AsyncClient(AsyncHTTPClient):
 
         **Learn more**: https://serpapi.com/search-api
         """
-        if params is None:
-            params = {}
-
         request_kwargs = _pop_request_options(kwargs)
-
-        if kwargs:
-            params.update(kwargs)
+        params = dict(params or {}, **kwargs)
 
         r = await self.request("GET", "/search", params=params, **request_kwargs)
 
@@ -298,7 +326,6 @@ class AsyncClient(AsyncHTTPClient):
         :param params: Optional mapping of Extract API parameters, including the required ``url``. Put ``timeout`` here to set the API fetch timeout in milliseconds.
         :param kwargs: Additional API parameters or HTTP request options, as in :meth:`search`. The ``timeout`` keyword controls the HTTP client timeout in seconds.
         """
-        params = dict(params) if params is not None else {}
         kwargs["engine"] = "extract"
         return await self.search(params, **kwargs)
 
@@ -310,13 +337,8 @@ class AsyncClient(AsyncHTTPClient):
 
         **Learn more**: https://serpapi.com/search-archive-api
         """
-        if params is None:
-            params = {}
-
         request_kwargs = _pop_request_options(kwargs)
-
-        if kwargs:
-            params.update(kwargs)
+        params = dict(params or {}, **kwargs)
 
         try:
             search_id = params["search_id"]
@@ -351,28 +373,12 @@ class AsyncClient(AsyncHTTPClient):
         if "api_key" not in data:
             data["api_key"] = self.api_key
 
-        image_file = None
-        try:
-            if isinstance(image, (str, os.PathLike)):
-                image_file = open(image, "rb")
-                image = image_file
-            elif isinstance(image, io.TextIOBase):
-                raise TypeError(
-                    "image file must be opened in binary mode, e.g. open(path, 'rb')"
-                )
-
-            r = await self.request(
-                "POST",
-                "/image",
-                params={},
-                data=data,
-                files={"image": image},
-                **request_kwargs,
-            )
-            return _async_response_json(r)
-        finally:
-            if image_file is not None:
-                image_file.close()
+        self._check_can_request()
+        image = await _prepare_upload_image(image)
+        r = await self.request(
+            "POST", "/image", params={}, data=data, files={"image": image}, **request_kwargs
+        )
+        return _async_response_json(r)
 
     async def locations(self, params: dict = None, **kwargs):
         """Get a list of supported Google locations. Use it with ``await``.
@@ -382,13 +388,8 @@ class AsyncClient(AsyncHTTPClient):
 
         **Learn more**: https://serpapi.com/locations-api
         """
-        if params is None:
-            params = {}
-
         request_kwargs = _pop_request_options(kwargs)
-
-        if kwargs:
-            params.update(kwargs)
+        params = dict(params or {}, **kwargs)
 
         r = await self.request(
             "GET",
@@ -407,13 +408,8 @@ class AsyncClient(AsyncHTTPClient):
 
         **Learn more**: https://serpapi.com/account-api
         """
-        if params is None:
-            params = {}
-
         request_kwargs = _pop_request_options(kwargs)
-
-        if kwargs:
-            params.update(kwargs)
+        params = dict(params or {}, **kwargs)
 
         r = await self.request(
             "GET", "/account.json", params=params, assert_200=True, **request_kwargs

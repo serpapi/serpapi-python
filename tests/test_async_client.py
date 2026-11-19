@@ -1,7 +1,10 @@
 import asyncio
+import io
 import json
 import logging
+import pickle
 import ssl
+import threading
 from pathlib import Path
 
 import certifi
@@ -92,6 +95,37 @@ async def test_search_sends_the_same_request_as_client(async_client, server):
     assert server.last_request.headers["User-Agent"] == serpapi.HTTPClient.USER_AGENT
 
 
+@pytest.mark.parametrize("method", ["search", "search_archive", "locations", "account"])
+async def test_shared_params_do_not_carry_over_between_calls(async_client, server, method):
+    base = {"search_id": "original"}
+    async with serpapi.AsyncClient(api_key="second-key") as other:
+        await asyncio.gather(*(getattr(async_client, method)(base, gl=gl) for gl in ("us", "ca")))
+        await getattr(other, method)(base)
+
+    assert base == {"search_id": "original"}
+    assert [(r.url.params.get("gl"), r.url.params["api_key"]) for r in server.requests] == [
+        ("us", "test-api-key"), ("ca", "test-api-key"), (None, "second-key"),
+    ]
+
+
+async def test_direct_request_does_not_inject_key_into_input(async_client, server):
+    params = {"q": "coffee"}
+    await async_client.request("GET", "/search", params)
+    assert params == {"q": "coffee"}
+    assert server.last_request.url.params["api_key"] == "test-api-key"
+
+
+async def test_async_results_are_not_sync_paginators(async_client, server):
+    server.handler = lambda request: httpx2.Response(200, json={"page": 1})
+    result = await async_client.search()
+    assert not isinstance(result, serpapi.SerpResults)
+    assert await result.next_page() is None
+    assert [page.as_dict() async for page in result.yield_pages()] == [{"page": 1}]
+    restored = pickle.loads(pickle.dumps(result))
+    assert type(restored) is serpapi.AsyncSerpResults
+    assert restored.as_dict() == {"page": 1}
+
+
 @pytest.mark.parametrize(
     ("output", "content_type"), [("html", "text/html"), ("md", "text/markdown")]
 )
@@ -173,6 +207,63 @@ async def test_upload_image_rejects_text_mode_file(async_client, server, tmp_pat
     assert server.requests == []
 
 
+async def test_upload_reads_files_off_the_event_loop(async_client, server, tmp_path, monkeypatch):
+    image_path = tmp_path / "test.png"
+    image_path.write_bytes(b"image-data")
+    threads = []
+    real_open = open
+
+    class Image(io.BytesIO):
+        name = "test.png"
+
+        def read(self, *args):
+            threads.append(threading.get_ident())
+            return super().read(*args)
+
+    def open_image(path, *args, **kwargs):
+        if path == image_path:
+            threads.append(threading.get_ident())
+            return Image(b"image-data")
+        return real_open(path, *args, **kwargs)
+
+    monkeypatch.setattr("builtins.open", open_image)
+    borrowed = Image(b"image-data")
+    for image in (image_path, borrowed):
+        await async_client.upload_image(image)
+        assert b'filename="test.png"\r\n\r\nimage-data\r\n' in server.last_request.content
+    assert len(threads) == 3 and threading.get_ident() not in threads
+    assert not borrowed.closed
+
+
+async def test_cancelled_upload_finishes_read_before_returning_borrowed_file(async_client, server):
+    loop = asyncio.get_running_loop()
+    started = asyncio.Event()
+    release = threading.Event()
+
+    class Image(io.BytesIO):
+        def read(self):
+            loop.call_soon_threadsafe(started.set)
+            assert release.wait(timeout=5)
+            return super().read()
+
+    with Image(b"image") as image:
+        before = asyncio.all_tasks()
+        upload = asyncio.create_task(async_client.upload_image(image))
+        try:
+            await asyncio.wait_for(started.wait(), timeout=5)
+            # Application shutdown may cancel both the upload and its child tasks.
+            for task in asyncio.all_tasks() - before:
+                task.cancel()
+            await asyncio.sleep(0)
+            assert not upload.done()
+        finally:
+            release.set()
+            with pytest.raises(asyncio.CancelledError):
+                await upload
+        assert image.tell() == len(b"image")
+    assert not server.requests
+
+
 async def test_locations_and_account_return_json(async_client, server):
     def handler(request):
         if request.url.path == "/locations.json":
@@ -242,6 +333,97 @@ async def test_http_logs_redact_api_key_from_search_and_pagination(
     assert "start=10" in http_logs[1]
 
 
+async def test_http_logs_only_redact_sdk_request_urls(async_client, server, caplog):
+    async def handler(request):
+        if request.url.path == "/search":
+            await async_client.session.get("https://example.test/other?api_key=test-api-key")
+            return httpx2.Response(302, headers={"Location": "/redirect?api_key=redirect-key"})
+        return httpx2.Response(200, json={})
+
+    server.handler = handler
+    caplog.set_level(logging.INFO, logger="httpx2")
+    await asyncio.gather(
+        async_client.search(), async_client.session.get("https://example.test/raw?api_key=raw-key")
+    )
+    records = [r for r in caplog.records if r.name == "httpx2"]
+    assert len(records) == 4 and all(len(r.args) == 5 for r in records)
+    for path, key in (("other", "test-api-key"), ("raw", "raw-key")):
+        record = next(r for r in records if "/{}?".format(path) in r.getMessage())
+        assert isinstance(record.args[1], httpx2.URL) and record.args[1].params["api_key"] == key
+    for path in ("search", "redirect"):
+        record = next(r for r in records if "/{}?".format(path) in r.getMessage())
+        assert "api_key=<redacted>" in record.getMessage()
+        assert record.msg.startswith("HTTP Request: %s %s")
+
+
+async def test_http_logs_protect_keys_when_auth_rebuilds_the_request(async_client, server, caplog):
+    class RebuildRequest(httpx2.Auth):
+        async def async_auth_flow(self, request):
+            response = yield request
+            if response.status_code == 401:
+                yield httpx2.Request(request.method, request.url.copy_set_param("api_key", "retry-key"))
+
+    server.handler = lambda r: httpx2.Response(200 if r.url.params["api_key"] == "retry-key" else 401)
+    caplog.set_level(logging.INFO, logger="httpx2")
+    await async_client.request("GET", "/search", {}, auth=RebuildRequest())
+    assert [r.url.params["api_key"] for r in server.requests] == ["test-api-key", "retry-key"]
+    assert "test-api-key" not in caplog.text and "retry-key" not in caplog.text
+    assert caplog.text.count("api_key=<redacted>") == 2
+
+
+@pytest.mark.parametrize("source", ["session", "request_hook", "auth"])
+async def test_http_logs_redact_the_key_on_the_final_request(server, caplog, source):
+    key = "late-fixture-key"
+
+    async def add_key(request):
+        request.url = request.url.copy_set_param("api_key", key)
+
+    class ReplaceRequest(httpx2.Auth):
+        def auth_flow(self, request):
+            yield httpx2.Request(request.method, request.url.copy_set_param("api_key", key))
+
+    caplog.set_level(logging.INFO, logger="httpx2")
+    async with serpapi.AsyncClient() as client:
+        if source == "session":
+            client.session.params = {"api_key": key}
+        elif source == "request_hook":
+            client.session.event_hooks = {"request": [add_key]}
+        else:
+            client.session.auth = ReplaceRequest()
+        await client.search()
+
+    assert server.last_request.url.params["api_key"] == key
+    record, = [r for r in caplog.records if r.name == "httpx2"]
+    assert key not in record.getMessage() and key not in str(record.args[1])
+    assert "api_key=<redacted>" in record.getMessage()
+    assert record.msg.startswith("HTTP Request: %s %s")
+
+
+async def test_corrupt_content_is_a_requests_decoding_error(async_client, server):
+    server.handler = lambda r: httpx2.Response(
+        200, headers={"Content-Encoding": "gzip"}, stream=httpx2.ByteStream(b"invalid gzip")
+    )
+    with pytest.raises(requests.exceptions.ContentDecodingError) as exc:
+        await async_client.account()
+    assert isinstance(exc.value.__cause__, httpx2.DecodingError)
+
+
+@pytest.mark.parametrize(("native", "mapped"), [
+    (httpx2.TooManyRedirects, requests.exceptions.TooManyRedirects),
+    (httpx2.UnsupportedProtocol, requests.exceptions.InvalidSchema),
+    (httpx2.RequestError, requests.exceptions.RequestException),
+])
+async def test_other_transport_errors_reach_requests_handlers(async_client, server, native, mapped):
+    def handler(request):
+        raise native("test transport failure", request=request)
+
+    server.handler = handler
+    with pytest.raises(mapped) as exc:
+        await async_client.search()
+    assert isinstance(exc.value.__cause__, native)
+    assert exc.value.request is server.last_request
+
+
 @pytest.mark.parametrize(
     ("exception", "expected", "message", "expected_message"),
     [
@@ -301,6 +483,35 @@ async def test_dictionary_methods_decode_json_with_the_response_charset(async_cl
     )
 
     assert await async_client.account() == {"plan_name": "Caf\u00e9"}
+
+
+@pytest.mark.parametrize(
+    "charset,expected", [("gb18030", "\u6bdb"), ("latin1", "\u00c3\u00ab")]
+)
+async def test_declared_charset_takes_precedence_over_valid_utf8(async_client, server, charset, expected):
+    def respond(request, status=200):
+        return httpx2.Response(
+            status, content=b'{"error":"\xc3\xab"}',
+            headers={"Content-Type": f"application/json; charset={charset}"},
+        )
+
+    server.handler = respond
+    assert (await async_client.search(q="coffee"))["error"] == expected
+    assert (await async_client.account())["error"] == expected
+
+    server.handler = lambda request: respond(request, 401)
+    with pytest.raises(serpapi.HTTPError) as exc_info:
+        await async_client.account()
+    assert exc_info.value.error == expected
+
+
+@pytest.mark.parametrize("charset", ["utf8", "base64", "unknown-charset"])
+async def test_json_byte_decoder_preserves_utf8_bom(async_client, server, charset):
+    server.handler = lambda request: httpx2.Response(
+        200, content=b'\xef\xbb\xbf{"value":1}',
+        headers={"Content-Type": f"application/json; charset={charset}"},
+    )
+    assert await async_client.account() == {"value": 1}
 
 
 async def test_results_decode_json_with_the_response_charset(async_client, server):
@@ -431,6 +642,39 @@ async def test_sessions_beyond_the_cache_limit_close_after_the_request(
     (_, default), (_, cached), (_, temporary) = server.sessions
     assert not cached.is_closed
     assert temporary.is_closed
+
+
+async def test_proxy_sessions_reuse_only_the_clients_default_trust(async_client, server, monkeypatch):
+    monkeypatch.setattr(async_client, "_MAX_OPTION_SESSIONS", 0)
+    default_context = server.sessions[0][0]["verify"]
+    await async_client.search(proxies={"https": "http://first.test:8080"})
+    await async_client.search(proxies={"https": "http://second.test:8080"})
+    assert all(options["verify"] is default_context for options, _ in server.sessions)
+    async with serpapi.AsyncClient():
+        assert server.sessions[-1][0]["verify"] is not default_context
+
+
+async def test_default_trust_never_inherits_a_client_certificate(async_client, server, monkeypatch):
+    loaded = []
+    monkeypatch.setattr(ssl.SSLContext, "load_cert_chain", lambda ctx, *args: loaded.append(ctx))
+    default = server.sessions[0][0]["verify"]
+    await async_client.search(cert="client.pem", proxies={"https": "https://proxy.test"})
+    options = server.sessions[-1][0]
+    assert loaded == [options["verify"]] and options["verify"] is not default
+    assert options["proxy"].ssl_context is default
+
+
+@pytest.mark.parametrize("method", ["__aenter__", "search", "aclose"])
+def test_rejects_use_without_an_asyncio_loop_before_doing_work(server, method):
+    client = serpapi.AsyncClient()
+    action = getattr(client, method)()
+    try:
+        with pytest.raises(RuntimeError, match="requires asyncio"):
+            action.send(None)
+        assert not server.requests and not client._closed
+    finally:
+        action.close()
+        asyncio.run(client.aclose())
 
 
 async def test_closed_client_cannot_send_requests_or_reopen(server):
@@ -655,18 +899,90 @@ async def test_redirects_reselect_the_proxy_for_the_destination(async_client, se
     ]
 
 
+@pytest.mark.parametrize("target,disable_auth,expected", [
+    ("/done", True, [False, False]),
+    ("https://other.test/done", False, [True, False]),
+])
+async def test_redirect_does_not_restart_session_auth(async_client, server, target, disable_auth, expected):
+    async_client.session.auth = ("fixture", "fixture")
+    server.handler = lambda r: (
+        httpx2.Response(302, headers={"Location": target}) if r.url.path == "/start"
+        else httpx2.Response(200)
+    )
+    options = {"auth": None} if disable_auth else {}
+    await async_client.request("GET", "/start", {}, **options)
+    assert ["Authorization" in r.headers for r in server.requests] == expected
+
+
+async def test_auth_receives_redirect_destination_before_retry(async_client, server):
+    statuses = []
+
+    class Challenge(httpx2.Auth):
+        async def async_auth_flow(self, request):
+            response = yield request
+            statuses.append(response.status_code)
+            if response.status_code == 401:
+                retry = httpx2.Request("GET", response.url)
+                retry.headers["X-Test-Retry"] = "1"
+                response = yield retry
+                statuses.append(response.status_code)
+
+    def handler(request):
+        if request.url.path == "/start":
+            return httpx2.Response(302, headers={"Location": "/challenge"})
+        return httpx2.Response(200 if "X-Test-Retry" in request.headers else 401)
+
+    server.handler = handler
+    response = await async_client.request("GET", "/start", {}, auth=Challenge(), assert_200=False)
+    assert statuses == [401, 200]
+    assert response.status_code == 200
+
+
+async def test_auth_can_reject_headers_before_reading_the_body(async_client, server, monkeypatch):
+    events = []
+
+    class SlowBody(httpx2.AsyncByteStream):
+        async def __aiter__(self):
+            events.append("read")
+            yield b"partial"
+            raise httpx2.ReadTimeout("body timeout")
+
+        async def aclose(self):
+            events.append("closed")
+
+    class Reject(httpx2.Auth):
+        async def async_auth_flow(self, request):
+            response = yield request
+            assert response.status_code == 403
+            assert not server.sessions[-1][1].is_closed
+            raise ValueError("auth rejected response")
+
+    monkeypatch.setattr(async_client, "_MAX_OPTION_SESSIONS", 0)
+    server.handler = lambda request: httpx2.Response(403, stream=SlowBody())
+    with pytest.raises(ValueError, match="auth rejected response"):
+        await async_client.request("GET", "/search", {}, auth=Reject(), verify=False)
+    assert events == ["closed"]
+    assert server.sessions[-1][1].is_closed
+
+
 @pytest.mark.parametrize("redirects", [25, 31])
 async def test_redirect_limit_matches_requests(async_client, server, redirects):
     def handler(request):
         remaining = int(request.url.params["redirects"])
         if remaining:
-            return httpx2.Response(302, headers={"Location": "/search?redirects={}".format(remaining - 1)})
+            return httpx2.Response(
+                302, headers={"Location": "/search?redirects={}".format(remaining - 1)},
+                stream=httpx2.ByteStream(b"redirect"),
+            )
         return httpx2.Response(200, json={"done": True})
 
     server.handler = handler
     if redirects > 30:
-        with pytest.raises(httpx2.TooManyRedirects):
+        with pytest.raises(requests.exceptions.TooManyRedirects) as exc:
             await async_client.search(redirects=redirects)
+        assert exc.value.response.status_code == 302
+        assert exc.value.response.content == b"redirect"
+        assert exc.value.request is exc.value.response.request
     else:
         result = await async_client.search(redirects=redirects)
         assert result["done"]

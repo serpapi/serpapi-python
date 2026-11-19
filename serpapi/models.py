@@ -111,10 +111,7 @@ class AsyncSerpResults(_BaseSerpResults):
         """Return the next page of results, if any. Use it with ``await``."""
 
         if self.next_page_url:
-            # Include support for the API key, as it is not included in the next page URL.
-            params = {"api_key": self.client.api_key}
-
-            r = await self.client.request("GET", path=self.next_page_url, params=params)
+            r = await self.client.request("GET", path=self.next_page_url, params={})
             return AsyncSerpResults.from_http_response(r, client=self.client)
 
     async def yield_pages(self, max_pages=1_000):

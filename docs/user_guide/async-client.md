@@ -287,6 +287,8 @@ asyncio.run(main())
 
 Both constructors accept `api_key` and `timeout`. Pass `proxies`, `verify`, `stream`, and `cert` to individual method calls, not to the constructor.
 
+On `AsyncClient`, `client.session.params` supplies query defaults without replacing the search or an existing URL query. A per-call `api_key` takes precedence over the constructor key, then the session key; passing `api_key=None` to `search()` omits the key for that call. Request and response hooks registered on `client.session.event_hooks` also run when a proxy or custom TLS setting selects a different connection pool.
+
 As with `Client`, a timeout in seconds applies to connecting and to each wait for data, and a `(connect, read)` tuple sets them separately. A per-request `timeout=None` disables the timeout, including a client default. Per-request zero, negative, and boolean timeout values are rejected.
 
 Both clients use certifi's CA bundle by default. They read `REQUESTS_CA_BUNDLE` (or `CURL_CA_BUNDLE` as a fallback) per request; an explicit `verify` path or `verify=False` overrides those variables. `SSL_CERT_FILE` and `SSL_CERT_DIR` do not override certifi. CA bundle files, CA directories, and client certificates supplied as a PEM file or `(cert, key)` pair work with `AsyncClient`.

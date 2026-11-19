@@ -370,7 +370,7 @@ class AsyncClient(AsyncHTTPClient):
         request_kwargs = _pop_request_options(kwargs)
 
         data = kwargs
-        if "api_key" not in data:
+        if self.api_key is not None and "api_key" not in data:
             data["api_key"] = self.api_key
 
         self._check_can_request()

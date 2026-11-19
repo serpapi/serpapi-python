@@ -3,7 +3,7 @@ import logging
 import os
 import ssl
 from contextlib import contextmanager
-from urllib.parse import unquote_plus, urlsplit
+from urllib.parse import unquote_plus, urlencode, urlsplit
 from weakref import ref
 
 import requests
@@ -183,7 +183,7 @@ class AsyncHTTPClient:
         # Inject the API Key into the params.
         request_data = kwargs.get("data")
         api_key_in_data = isinstance(request_data, dict) and "api_key" in request_data
-        if "api_key" not in params and not api_key_in_data:
+        if self.api_key is not None and "api_key" not in params and not api_key_in_data:
             params = {**params, "api_key": self.api_key}
 
         # Build the URL, as needed.
@@ -231,6 +231,11 @@ class AsyncHTTPClient:
         try:
             auth = kwargs.pop("auth", httpx2.USE_CLIENT_DEFAULT)
             request = self.session.build_request(method, prepared.url, headers=headers, **kwargs)
+            if self.session.params:
+                # build_request replaces the entire query when the session has defaults.
+                request.url = _with_query_defaults(
+                    httpx2.URL(prepared.url), self.session.params, params, api_key_in_data
+                )
             r = await self._send_with_auth(request, auth, follow_redirects, proxies, verify, cert)
         except httpx2.ConnectTimeout as e:
             # requests reports connection timeouts as connection errors.
@@ -400,15 +405,40 @@ class AsyncHTTPClient:
             proxy_context = self._session_ssl_context(verify, None) if cert else context
             proxy = httpx2.Proxy(proxy, ssl_context=proxy_context)
 
+        primary = getattr(self, "session", None)
         return httpx2.AsyncClient(
             proxy=proxy,
             # Proxy selection and CA environment overrides use requests' rules instead.
             trust_env=False,
             verify=context,
-            cookies=self.session.cookies.jar if hasattr(self, "session") else None,
+            cookies=primary.cookies.jar if primary is not None else None,
+            event_hooks={
+                event: [_forward_hooks(primary, event)] for event in ("request", "response")
+            } if primary is not None else None,
             timeout=None,
             follow_redirects=True,
         )
+
+
+def _with_query_defaults(url, defaults, params, api_key_in_data):
+    # Explicit None suppresses a default even though it isn't in the encoded URL.
+    specified = set(url.params).union(params)
+    if api_key_in_data:
+        specified.add("api_key")
+    missing = [(k, v) for k, v in defaults.multi_items() if k not in specified]
+    if not missing:
+        return url
+    suffix = urlencode(missing).encode("ascii")
+    return url.copy_with(query=url.query + b"&" + suffix if url.query else suffix)
+
+
+def _forward_hooks(primary, event):
+    # Look up the current hooks when httpx2 dispatches the event, even on cached sessions.
+    async def dispatch(value):
+        for hook in primary.event_hooks[event]:
+            await hook(value)
+
+    return dispatch
 
 
 def _read_body(body):

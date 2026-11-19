@@ -67,6 +67,7 @@ def server(monkeypatch):
             follow_redirects=kwargs["follow_redirects"],
             timeout=kwargs["timeout"],
             cookies=kwargs.get("cookies"),
+            event_hooks=kwargs.get("event_hooks"),
         )
         server.sessions.append((kwargs, session))
         return session
@@ -93,6 +94,55 @@ async def test_search_sends_the_same_request_as_client(async_client, server):
         "?engine=google&q=coffee+shops&no_cache=True&tbs=a&tbs=b&api_key=test-api-key"
     )
     assert server.last_request.headers["User-Agent"] == serpapi.HTTPClient.USER_AGENT
+
+
+@pytest.mark.parametrize("constructor,overrides,keys", [
+    (None, {}, ["session"]),
+    ("constructor", {}, ["constructor"]),
+    ("constructor", {"api_key": "per-call"}, ["per-call"]),
+    ("constructor", {"api_key": None}, []),
+])
+async def test_search_merges_session_defaults(server, constructor, overrides, keys):
+    async with serpapi.AsyncClient(api_key=constructor) as client:
+        client.session.params = {"api_key": "session", "hl": "en", "gl": "us", "start": 10}
+        await client.search(engine="google", q="coffee", gl="ca", start=None, **overrides)
+        query = server.last_request.url.params
+        assert (query.get("engine"), query.get("q"), query.get("hl"), query.get("gl")) == (
+            "google", "coffee", "en", "ca"
+        )
+        assert "start" not in query
+        assert query.get_list("api_key") == keys
+        assert client.session.params["gl"] == "us"
+
+
+async def test_session_defaults_preserve_existing_query_bytes(server):
+    raw = "q=iced%20tea&flag&x=1&z=2&x=3"
+    server.handler = lambda request: httpx2.Response(
+        200, json={"serpapi_pagination": {"next": "https://serpapi.com/search?" + raw}}
+    )
+    async with serpapi.AsyncClient() as client:
+        client.session.params = {
+            "q": "default", "x": "default", "flag": "default",
+            "tag": ["a", "b"], "api_key": "session",
+        }
+        result = await client.search(q="first")
+        await result.next_page()
+    assert server.last_request.url.query.startswith(raw.encode("ascii") + b"&")
+    query = server.last_request.url.params
+    assert query.get_list("q") == ["iced tea"] and query.get_list("x") == ["1", "3"]
+    assert query.get_list("flag") == [""] and query.get_list("tag") == ["a", "b"]
+    assert query.get_list("api_key") == ["session"]
+
+
+@pytest.mark.parametrize(
+    "overrides,keys", [({}, ["session"]), ({"api_key": "form"}, []), ({"api_key": None}, [])]
+)
+async def test_upload_session_key_does_not_compete_with_form_key(server, overrides, keys):
+    async with serpapi.AsyncClient() as client:
+        client.session.params = {"api_key": "session"}
+        await client.upload_image(io.BytesIO(b"image"), **overrides)
+    assert server.last_request.url.params.get_list("api_key") == keys
+    assert (b'name="api_key"' in server.last_request.content) == (overrides.get("api_key") == "form")
 
 
 @pytest.mark.parametrize("method", ["search", "search_archive", "locations", "account"])
@@ -390,9 +440,10 @@ async def test_http_logs_redact_the_key_on_the_final_request(server, caplog, sou
             client.session.event_hooks = {"request": [add_key]}
         else:
             client.session.auth = ReplaceRequest()
-        await client.search()
+        await client.search(q="coffee")
 
     assert server.last_request.url.params["api_key"] == key
+    assert server.last_request.url.params["q"] == "coffee"
     record, = [r for r in caplog.records if r.name == "httpx2"]
     assert key not in record.getMessage() and key not in str(record.args[1])
     assert "api_key=<redacted>" in record.getMessage()
@@ -629,6 +680,51 @@ async def test_request_options_use_cached_sessions(async_client, server):
     for options, _ in server.sessions:
         assert options["follow_redirects"] is True
         assert options["timeout"] is None
+
+
+async def test_cached_session_uses_current_request_and_response_hooks(async_client, server):
+    events = []
+
+    async def old(request):
+        events.append("old")
+        async_client.session.event_hooks["response"].append(after)
+
+    async def before(request):
+        events.append("request")
+
+    async def after(response):
+        events.append("response")
+
+    async_client.session.event_hooks = {"request": [old]}
+    await async_client.search(verify=False)
+    async_client.session.event_hooks = {"request": [before]}
+    async_client.session.event_hooks["response"].append(after)
+    await async_client.search(verify=False)
+    assert events == ["old", "response", "request", "response"]
+
+
+async def test_redirect_runs_current_hooks_once_per_hop(async_client, server, monkeypatch):
+    monkeypatch.setattr(async_client, "_MAX_OPTION_SESSIONS", 0)
+    events = []
+
+    async def before(request):
+        events.append(("request", request.url.path))
+
+    async def after(response):
+        events.append(("response", response.request.url.path))
+
+    def handle(request):
+        if request.url.path == "/start":
+            return httpx2.Response(302, headers={"Location": "https://other.test/end"})
+        return httpx2.Response(200)
+
+    server.handler = handle
+    async_client.session.event_hooks = {"request": [before], "response": [after]}
+    await async_client.request("GET", "/start", {}, proxies={"https://serpapi.com": "http://proxy.test"})
+    assert events == [
+        ("request", "/start"), ("response", "/start"), ("request", "/end"), ("response", "/end"),
+    ]
+    assert len(server.sessions) == 2 and server.sessions[-1][1].is_closed
 
 
 async def test_sessions_beyond_the_cache_limit_close_after_the_request(

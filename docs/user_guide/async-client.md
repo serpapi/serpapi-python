@@ -287,7 +287,7 @@ asyncio.run(main())
 
 Both constructors accept `api_key` and `timeout`. Pass `proxies`, `verify`, `stream`, and `cert` to individual method calls, not to the constructor.
 
-On `AsyncClient`, `client.session.params` supplies query defaults without replacing the search or an existing URL query. A per-call `api_key` takes precedence over the constructor key, then the session key; passing `api_key=None` to `search()` omits the key for that call. Request and response hooks registered on `client.session.event_hooks` also run when a proxy or custom TLS setting selects a different connection pool.
+On `AsyncClient`, `client.session.params` supplies query defaults without replacing the search or an existing URL query. A per-call `api_key` takes precedence over the constructor key, then the session key; passing `api_key=None` to `search()` omits the key for that call. An `api_key` supplied as a form field also prevents a default key from being added to the query.
 
 As with `Client`, a timeout in seconds applies to connecting and to each wait for data, and a `(connect, read)` tuple sets them separately. A per-request `timeout=None` disables the timeout, including a client default. Per-request zero, negative, and boolean timeout values are rejected.
 
@@ -295,7 +295,7 @@ Both clients use certifi's CA bundle by default. They read `REQUESTS_CA_BUNDLE` 
 
 The async client loads CA bundle and client-certificate contents into an SSL context when an option-specific session is created. If you replace either file at the same path, close the existing `AsyncClient` and create a new one before making another request so the new contents are loaded.
 
-HTTP/HTTPS proxy dictionaries use the same selection rules as `requests`, including credentials in proxy URLs, scheme/host-specific entries, environment proxies, and `NO_PROXY`. A redirect selects the proxy for the new URL without restarting authentication. For example, passing `auth=None` to `AsyncClient.request()` disables session authentication for the entire redirect chain. See [Differences from Client](#differences-from-client) for the remaining transport differences.
+HTTP/HTTPS proxy dictionaries use the same selection rules as `requests`, including credentials in proxy URLs, scheme/host-specific entries, environment proxies, and `NO_PROXY`. Hooks on `client.session.event_hooks` run regardless of which pool is used. If a request hook changes the destination, the client selects the proxy for the final URL. A redirect also selects the proxy for the new URL without restarting authentication. For example, passing `auth=None` to `AsyncClient.request()` disables session authentication for the entire redirect chain. See [Differences from Client](#differences-from-client) for the remaining transport differences.
 
 ## Errors
 
@@ -346,7 +346,7 @@ Use each client in only one event loop. Each `asyncio.run()` call starts a new e
 
 Neither client sets a timeout by default. A numeric or `(connect, read)` timeout is not a total wall-clock deadline, and the async client does not apply those forms to waiting for a free pool connection. Use a native `httpx2.Timeout` if you need a separate pool-wait timeout.
 
-The async client keeps its default pool plus up to 16 cached proxy/TLS/certificate combinations. Further uncached combinations use temporary sessions that close after the request, so they do not reuse connections between requests. Cached entries are not evicted. This bounds the number of cached pools but can reduce performance when rotating through many configurations.
+The async client keeps its default pool plus up to 16 cached proxy/TLS/certificate combinations. Further uncached combinations use temporary pools that close after the request, so they do not reuse connections between requests. Cached entries are not evicted. This bounds the number of cached pools but can reduce performance when rotating through many configurations.
 
 Async `HTTPError` messages omit the `api_key` query parameter. In httpx2 INFO request logs, the SDK redacts `api_key` from the URL it actually sends, including keys supplied by session defaults, authentication, or request hooks. Unrelated httpx2 requests and raw request/response URLs are unchanged; do not log raw URLs containing credentials.
 

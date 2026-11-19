@@ -5,6 +5,7 @@ import logging
 import pickle
 import ssl
 import threading
+from collections import UserDict
 from pathlib import Path
 
 import certifi
@@ -35,13 +36,13 @@ def clean_transport_environment(monkeypatch):
 
 
 class Server:
-    """Answers and records the requests of every session an AsyncClient creates."""
+    """Answers requests and records which pool actually sent each one."""
 
     def __init__(self):
         self.handler = lambda request: httpx2.Response(200, json={})
         self.requests = []
-        # The keyword arguments and httpx2.AsyncClient of each session.
-        self.sessions = []
+        self.pools = []
+        self.sent_via = []
 
     async def handle(self, request):
         self.requests.append(request)
@@ -58,21 +59,22 @@ class Server:
 @pytest.fixture
 def server(monkeypatch):
     server = Server()
-    real_async_client = httpx2.AsyncClient
 
-    def async_client(**kwargs):
-        # Leave out the proxy and TLS options, so that requests go to the server instead of the network.
-        session = real_async_client(
-            transport=httpx2.MockTransport(server.handle),
-            follow_redirects=kwargs["follow_redirects"],
-            timeout=kwargs["timeout"],
-            cookies=kwargs.get("cookies"),
-            event_hooks=kwargs.get("event_hooks"),
-        )
-        server.sessions.append((kwargs, session))
-        return session
+    class Pool(httpx2.MockTransport):
+        def __init__(self, **options):
+            super().__init__(server.handle)
+            self.proxy = options["proxy"]
+            self.is_closed = False
+            server.pools.append((options, self))
 
-    monkeypatch.setattr(httpx2, "AsyncClient", async_client)
+        async def handle_async_request(self, request):
+            server.sent_via.append(self.proxy)
+            return await super().handle_async_request(request)
+
+        async def aclose(self):
+            self.is_closed = True
+
+    monkeypatch.setattr(httpx2, "AsyncHTTPTransport", Pool)
     return server
 
 
@@ -143,6 +145,27 @@ async def test_upload_session_key_does_not_compete_with_form_key(server, overrid
         await client.upload_image(io.BytesIO(b"image"), **overrides)
     assert server.last_request.url.params.get_list("api_key") == keys
     assert (b'name="api_key"' in server.last_request.content) == (overrides.get("api_key") == "form")
+
+
+@pytest.mark.parametrize("data", [
+    UserDict({"api_key": "form", "tag": ["one", "two"]}),
+    [("tag", "one"), (b"api_key", "form"), ("tag", "two")],
+])
+async def test_multipart_form_key_suppresses_query_defaults(async_client, server, data):
+    async_client.session.params = {"api_key": "session"}
+    await async_client.request("POST", "/image", {}, data=data, files={"image": b"image"})
+    assert "api_key" not in server.last_request.url.params
+    body = server.last_request.content
+    assert b'name="api_key"\r\n\r\nform' in body
+    assert body.index(b'name="tag"\r\n\r\none') < body.index(b'name="tag"\r\n\r\ntwo')
+
+
+@pytest.mark.parametrize("value,expected", [(None, []), ("per-call", ["per-call"])])
+async def test_bytes_query_names_override_text_defaults(async_client, server, value, expected):
+    async_client.session.params = {"api_key": "session", "hl": "en"}
+    await async_client.search({b"api_key": value, b"hl": None})
+    assert server.last_request.url.params.get_list("api_key") == expected
+    assert "hl" not in server.last_request.url.params
 
 
 @pytest.mark.parametrize("method", ["search", "search_archive", "locations", "account"])
@@ -670,16 +693,15 @@ async def test_request_options_use_cached_sessions(async_client, server):
     await async_client.search(q="coffee", verify=False)
     await async_client.search(q="coffee")
 
-    assert len(server.sessions) == 3
-    (default, _), (proxy, _), (no_verify, _) = server.sessions
+    assert len(server.pools) == 3
+    (default, _), (proxy, _), (no_verify, _) = server.pools
     assert default["proxy"] is None
     assert default["trust_env"] is False
     assert proxy["proxy"] == "http://proxy.example:8080"
     assert proxy["trust_env"] is False
     assert no_verify["verify"].verify_mode == ssl.CERT_NONE
-    for options, _ in server.sessions:
-        assert options["follow_redirects"] is True
-        assert options["timeout"] is None
+    assert async_client.session.follow_redirects is True
+    assert async_client.session.timeout == httpx2.Timeout(None)
 
 
 async def test_cached_session_uses_current_request_and_response_hooks(async_client, server):
@@ -704,7 +726,7 @@ async def test_cached_session_uses_current_request_and_response_hooks(async_clie
 
 
 async def test_redirect_runs_current_hooks_once_per_hop(async_client, server, monkeypatch):
-    monkeypatch.setattr(async_client, "_MAX_OPTION_SESSIONS", 0)
+    monkeypatch.setattr(async_client, "_MAX_OPTION_POOLS", 0)
     events = []
 
     async def before(request):
@@ -724,38 +746,50 @@ async def test_redirect_runs_current_hooks_once_per_hop(async_client, server, mo
     assert events == [
         ("request", "/start"), ("response", "/start"), ("request", "/end"), ("response", "/end"),
     ]
-    assert len(server.sessions) == 2 and server.sessions[-1][1].is_closed
+    assert len(server.pools) == 2 and server.pools[-1][1].is_closed
+
+
+@pytest.mark.parametrize("proxied_host", ["serpapi.com", "mirror.test"])
+async def test_request_hook_selects_proxy_for_final_host(async_client, server, proxied_host):
+    async def rewrite(request):
+        request.url = request.url.copy_with(host="mirror.test")
+
+    async_client.session.event_hooks["request"].append(rewrite)
+    proxy = "http://proxy.test"
+    await async_client.search(proxies={"https://" + proxied_host: proxy})
+    assert server.last_request.url.host == "mirror.test"
+    assert server.sent_via == [proxy if proxied_host == "mirror.test" else None]
 
 
 async def test_sessions_beyond_the_cache_limit_close_after_the_request(
     async_client, server, monkeypatch
 ):
-    monkeypatch.setattr(async_client, "_MAX_OPTION_SESSIONS", 1)
+    monkeypatch.setattr(async_client, "_MAX_OPTION_POOLS", 1)
 
     await async_client.search(q="coffee", verify=False)
     await async_client.search(q="coffee", proxies={"https": "http://proxy.example:8080"})
 
-    (_, default), (_, cached), (_, temporary) = server.sessions
+    (_, default), (_, cached), (_, temporary) = server.pools
     assert not cached.is_closed
     assert temporary.is_closed
 
 
 async def test_proxy_sessions_reuse_only_the_clients_default_trust(async_client, server, monkeypatch):
-    monkeypatch.setattr(async_client, "_MAX_OPTION_SESSIONS", 0)
-    default_context = server.sessions[0][0]["verify"]
+    monkeypatch.setattr(async_client, "_MAX_OPTION_POOLS", 0)
+    default_context = server.pools[0][0]["verify"]
     await async_client.search(proxies={"https": "http://first.test:8080"})
     await async_client.search(proxies={"https": "http://second.test:8080"})
-    assert all(options["verify"] is default_context for options, _ in server.sessions)
+    assert all(options["verify"] is default_context for options, _ in server.pools)
     async with serpapi.AsyncClient():
-        assert server.sessions[-1][0]["verify"] is not default_context
+        assert server.pools[-1][0]["verify"] is not default_context
 
 
 async def test_default_trust_never_inherits_a_client_certificate(async_client, server, monkeypatch):
     loaded = []
     monkeypatch.setattr(ssl.SSLContext, "load_cert_chain", lambda ctx, *args: loaded.append(ctx))
-    default = server.sessions[0][0]["verify"]
+    default = server.pools[0][0]["verify"]
     await async_client.search(cert="client.pem", proxies={"https": "https://proxy.test"})
-    options = server.sessions[-1][0]
+    options = server.pools[-1][0]
     assert loaded == [options["verify"]] and options["verify"] is not default
     assert options["proxy"].ssl_context is default
 
@@ -780,7 +814,7 @@ async def test_closed_client_cannot_send_requests_or_reopen(server):
     await client.aclose()
     await client.aclose()
 
-    assert all(session.is_closed for _, session in server.sessions)
+    assert all(session.is_closed for _, session in server.pools)
     with pytest.raises(RuntimeError, match="closed"):
         await client.search(q="coffee")
     with pytest.raises(RuntimeError, match="reopen"):
@@ -793,7 +827,7 @@ async def test_aclose_finishes_closing_sessions_when_caller_is_cancelled(
 ):
     client = serpapi.AsyncClient(api_key="test-api-key")
     await client.search(q="coffee", verify=False)
-    sessions = [client.session, *client._option_sessions.values()]
+    sessions = [client.session, *client._option_pools.values()]
 
     close_started = asyncio.Event()
     allow_close = asyncio.Event()
@@ -819,7 +853,7 @@ async def test_aclose_finishes_closing_sessions_when_caller_is_cancelled(
 
         assert all(session.is_closed for session in sessions)
         assert client._close_task is None
-        assert not client._option_sessions
+        assert not client._option_pools
     finally:
         allow_close.set()
         await client.aclose()
@@ -870,7 +904,7 @@ async def test_closed_client_does_not_create_new_sessions(async_client):
     await async_client.aclose()
 
     with pytest.raises(RuntimeError, match="closed"):
-        async_client._session_for(
+        async_client._pool_for(
             "https://serpapi.com/search",
             {"https": "http://proxy.example:8080"},
             None,
@@ -921,16 +955,16 @@ def test_default_tls_uses_certifi_not_ssl_environment(monkeypatch, tmp_path):
 async def test_proxy_environment_is_resolved_for_each_request(async_client, server, monkeypatch):
     monkeypatch.setenv("HTTPS_PROXY", "http://first.example:8080")
     await async_client.search(q="coffee")
-    assert server.sessions[-1][0]["proxy"] == "http://first.example:8080"
+    assert server.pools[-1][0]["proxy"] == "http://first.example:8080"
 
     monkeypatch.setenv("HTTPS_PROXY", "http://second.example:8080")
     await async_client.search(q="tea")
-    assert server.sessions[-1][0]["proxy"] == "http://second.example:8080"
+    assert server.pools[-1][0]["proxy"] == "http://second.example:8080"
 
     monkeypatch.setenv("NO_PROXY", "serpapi.com")
     await async_client.search(q="water")
-    assert len(server.sessions) == 3
-    assert server.sessions[0][0]["trust_env"] is False
+    assert len(server.pools) == 3
+    assert server.pools[0][0]["trust_env"] is False
 
 
 @pytest.mark.parametrize("variable", ["REQUESTS_CA_BUNDLE", "CURL_CA_BUNDLE"])
@@ -943,8 +977,8 @@ async def test_ca_environment_is_resolved_for_each_request(
 
     await async_client.search(q="coffee", verify=True)
 
-    assert len(server.sessions) == 2
-    assert server.sessions[-1][0]["verify"].get_ca_certs()
+    assert len(server.pools) == 2
+    assert server.pools[-1][0]["verify"].get_ca_certs()
 
     monkeypatch.setenv(variable, str(tmp_path / "missing.pem"))
     with pytest.raises(OSError):
@@ -954,7 +988,7 @@ async def test_ca_environment_is_resolved_for_each_request(
 async def test_https_proxy_uses_the_request_tls_context(async_client, server):
     await async_client.search(proxies={"https": "https://proxy.example:8443"}, verify=False)
 
-    options, _ = server.sessions[-1]
+    options, _ = server.pools[-1]
     assert isinstance(options["proxy"], httpx2.Proxy)
     assert options["proxy"].ssl_context is options["verify"]
     assert options["proxy"].ssl_context.verify_mode == ssl.CERT_NONE
@@ -974,7 +1008,7 @@ async def test_https_proxy_is_not_offered_the_client_certificate(
         proxies={"https": "https://proxy.example:8443"}, verify=False, cert="client.pem"
     )
 
-    options, _ = server.sessions[-1]
+    options, _ = server.pools[-1]
     assert with_client_certificate == [options["verify"]]
     assert options["proxy"].ssl_context is not options["verify"]
     assert options["proxy"].ssl_context.verify_mode == ssl.CERT_NONE
@@ -990,7 +1024,7 @@ async def test_redirects_reselect_the_proxy_for_the_destination(async_client, se
     await async_client.request("GET", "http://serpapi.com/search", {}, proxies={
         "http": "http://first.example:8080", "https": "http://second.example:8080",
     })
-    assert [options["proxy"] for options, _ in server.sessions] == [
+    assert [options["proxy"] for options, _ in server.pools] == [
         None, "http://first.example:8080", "http://second.example:8080",
     ]
 
@@ -1050,15 +1084,15 @@ async def test_auth_can_reject_headers_before_reading_the_body(async_client, ser
         async def async_auth_flow(self, request):
             response = yield request
             assert response.status_code == 403
-            assert not server.sessions[-1][1].is_closed
+            assert not server.pools[-1][1].is_closed
             raise ValueError("auth rejected response")
 
-    monkeypatch.setattr(async_client, "_MAX_OPTION_SESSIONS", 0)
+    monkeypatch.setattr(async_client, "_MAX_OPTION_POOLS", 0)
     server.handler = lambda request: httpx2.Response(403, stream=SlowBody())
     with pytest.raises(ValueError, match="auth rejected response"):
         await async_client.request("GET", "/search", {}, auth=Reject(), verify=False)
     assert events == ["closed"]
-    assert server.sessions[-1][1].is_closed
+    assert server.pools[-1][1].is_closed
 
 
 @pytest.mark.parametrize("redirects", [25, 31])

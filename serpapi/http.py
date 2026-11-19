@@ -2,6 +2,7 @@ import asyncio
 import logging
 import os
 import ssl
+from collections.abc import Mapping
 from contextlib import contextmanager
 from urllib.parse import unquote_plus, urlencode, urlsplit
 from weakref import ref
@@ -147,6 +148,38 @@ def _asyncio_loop():
         raise RuntimeError("serpapi.AsyncClient requires asyncio with a running event loop.") from None
 
 
+class _RoutingTransport:
+    """Dispatch SDK sends after native request hooks; raw session sends use the default pool."""
+
+    def __init__(self, default):
+        self.default = default
+        self._routes = {}
+
+    @contextmanager
+    def route(self, request, select):
+        key = (asyncio.current_task(), id(request))
+        self._routes[key] = select
+        try:
+            yield
+        finally:
+            del self._routes[key]
+
+    async def handle_async_request(self, request):
+        select = self._routes.get((asyncio.current_task(), id(request)))
+        transport = self.default if select is None else select(str(request.url))
+        return await transport.handle_async_request(request)
+
+    async def __aenter__(self):
+        await self.default.__aenter__()
+        return self
+
+    async def __aexit__(self, *exc_info):
+        await self.default.__aexit__(*exc_info)
+
+    async def aclose(self):
+        await self.default.aclose()
+
+
 class AsyncHTTPClient:
     """This class handles outgoing asynchronous HTTP requests to SerpApi.com.
 
@@ -157,8 +190,7 @@ class AsyncHTTPClient:
     BASE_DOMAIN = HTTPClient.BASE_DOMAIN
     USER_AGENT = HTTPClient.USER_AGENT
 
-    # The most HTTP sessions kept open for requests with their own proxies, verify, or cert options.
-    _MAX_OPTION_SESSIONS = 16
+    _MAX_OPTION_POOLS = 16
 
     def __init__(self, *, api_key=None, timeout=None):
         self._httpx2 = _import_httpx2()
@@ -167,9 +199,12 @@ class AsyncHTTPClient:
         self.timeout = timeout
         self._closed = False
         self._close_task = None
-        self._option_sessions = {}
+        self._option_pools = {}
         self._default_ssl_context = _ssl_context(self._httpx2, True, None)
-        self.session = self._create_session(verify=True)
+        self._router = _RoutingTransport(self._create_pool(verify=True))
+        self.session = self._httpx2.AsyncClient(
+            transport=self._router, trust_env=False, timeout=None, follow_redirects=True
+        )
 
     def _check_can_request(self):
         _asyncio_loop()
@@ -181,9 +216,8 @@ class AsyncHTTPClient:
         self._check_can_request()
 
         # Inject the API Key into the params.
-        request_data = kwargs.get("data")
-        api_key_in_data = isinstance(request_data, dict) and "api_key" in request_data
-        if self.api_key is not None and "api_key" not in params and not api_key_in_data:
+        api_key_in_data = _form_has_api_key(kwargs.get("data"))
+        if self.api_key is not None and not api_key_in_data and not _has_api_key(params):
             params = {**params, "api_key": self.api_key}
 
         # Build the URL, as needed.
@@ -303,12 +337,15 @@ class AsyncHTTPClient:
                     )
 
     async def _open_response(self, request, proxies, verify, cert, cleanup):
-        session, temporary = self._session_for(str(request.url), proxies, verify, cert)
-        if temporary:
-            cleanup.push_async_callback(session.aclose)
-        with self._log_filter.for_request(request):
+        def select(url):
+            pool, temporary = self._pool_for(url, proxies, verify, cert)
+            if temporary:
+                cleanup.push_async_callback(pool.aclose)
+            return pool
+
+        with self._router.route(request, select), self._log_filter.for_request(request):
             # An explicit no-op, not auth=None: the latter can still apply URL credentials.
-            response = await session.send(
+            response = await self.session.send(
                 request, auth=self._httpx2.Auth(), follow_redirects=False, stream=True
             )
         cleanup.push_async_callback(response.aclose)
@@ -321,7 +358,7 @@ class AsyncHTTPClient:
         self._closed = True
         if self._close_task is None:
             # Close in a task, so that the sessions still close if the caller is cancelled.
-            self._close_task = loop.create_task(self._close_sessions())
+            self._close_task = loop.create_task(self._close_pools())
             self._close_task.add_done_callback(self._after_close)
 
         await asyncio.shield(self._close_task)
@@ -330,12 +367,12 @@ class AsyncHTTPClient:
         self._close_task = None
         # Reading the exception also stops asyncio reporting it as never retrieved.
         if not close_task.cancelled() and close_task.exception() is None:
-            self._option_sessions.clear()
+            self._option_pools.clear()
 
-    async def _close_sessions(self):
-        sessions = [self.session, *self._option_sessions.values()]
+    async def _close_pools(self):
+        resources = [self.session, *self._option_pools.values()]
         results = await asyncio.gather(
-            *(session.aclose() for session in sessions), return_exceptions=True
+            *(resource.aclose() for resource in resources), return_exceptions=True
         )
         for result in results:
             if isinstance(result, asyncio.CancelledError):
@@ -353,8 +390,8 @@ class AsyncHTTPClient:
     async def __aexit__(self, exc_type=None, exc_value=None, traceback=None):
         await self.aclose()
 
-    def _session_for(self, url, proxies, verify, cert):
-        """Return the session for these request options, and whether to close it after the request."""
+    def _pool_for(self, url, proxies, verify, cert):
+        """Return the transport for this destination and whether it is temporary."""
 
         if self._closed:
             raise RuntimeError("Cannot create a request session, as the client has been closed.")
@@ -372,7 +409,7 @@ class AsyncHTTPClient:
             cert = None
         proxy = _select_proxy(url, proxies or {})
         if proxy is None and verify is True and cert is None:
-            return self.session, False
+            return self._router.default, False
 
         if cert is None or isinstance(cert, (str, bytes, os.PathLike)):
             cert_key = cert
@@ -380,23 +417,23 @@ class AsyncHTTPClient:
             cert_key = tuple(cert)
         key = (proxy, verify, cert_key)
 
-        session = self._option_sessions.get(key)
-        if session is not None:
-            return session, False
+        pool = self._option_pools.get(key)
+        if pool is not None:
+            return pool, False
 
-        session = self._create_session(proxy, verify, cert)
-        if len(self._option_sessions) >= self._MAX_OPTION_SESSIONS:
-            return session, True
+        pool = self._create_pool(proxy, verify, cert)
+        if len(self._option_pools) >= self._MAX_OPTION_POOLS:
+            return pool, True
 
-        self._option_sessions[key] = session
-        return session, False
+        self._option_pools[key] = pool
+        return pool, False
 
     def _session_ssl_context(self, verify, cert):
         if verify is True and not cert:
             return self._default_ssl_context
         return _ssl_context(self._httpx2, verify, cert)
 
-    def _create_session(self, proxy=None, verify=None, cert=None):
+    def _create_pool(self, proxy=None, verify=None, cert=None):
         httpx2 = self._httpx2
         context = self._session_ssl_context(verify, cert)
         if proxy and proxy.startswith("https://"):
@@ -405,19 +442,28 @@ class AsyncHTTPClient:
             proxy_context = self._session_ssl_context(verify, None) if cert else context
             proxy = httpx2.Proxy(proxy, ssl_context=proxy_context)
 
-        primary = getattr(self, "session", None)
-        return httpx2.AsyncClient(
+        return httpx2.AsyncHTTPTransport(
             proxy=proxy,
             # Proxy selection and CA environment overrides use requests' rules instead.
             trust_env=False,
             verify=context,
-            cookies=primary.cookies.jar if primary is not None else None,
-            event_hooks={
-                event: [_forward_hooks(primary, event)] for event in ("request", "response")
-            } if primary is not None else None,
-            timeout=None,
-            follow_redirects=True,
         )
+
+
+def _has_api_key(names):
+    return "api_key" in names or b"api_key" in names
+
+
+def _form_has_api_key(data):
+    if isinstance(data, Mapping):
+        return _has_api_key(data)
+    if isinstance(data, (list, tuple)):
+        # Inspect ordinary form pairs without touching file objects or iterators.
+        return any(
+            isinstance(pair, (list, tuple)) and pair and pair[0] in ("api_key", b"api_key")
+            for pair in data
+        )
+    return False
 
 
 def _with_query_defaults(url, defaults, params, api_key_in_data):
@@ -425,20 +471,14 @@ def _with_query_defaults(url, defaults, params, api_key_in_data):
     specified = set(url.params).union(params)
     if api_key_in_data:
         specified.add("api_key")
-    missing = [(k, v) for k, v in defaults.multi_items() if k not in specified]
+    missing = [
+        (k, v) for k, v in defaults.multi_items()
+        if k not in specified and k.encode("utf-8") not in specified
+    ]
     if not missing:
         return url
     suffix = urlencode(missing).encode("ascii")
     return url.copy_with(query=url.query + b"&" + suffix if url.query else suffix)
-
-
-def _forward_hooks(primary, event):
-    # Look up the current hooks when httpx2 dispatches the event, even on cached sessions.
-    async def dispatch(value):
-        for hook in primary.event_hooks[event]:
-            await hook(value)
-
-    return dispatch
 
 
 def _read_body(body):

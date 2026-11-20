@@ -11,7 +11,7 @@ Python's `asyncio` is separate from SerpApi's `async` search parameter, which su
 
 ## Installation
 
-`AsyncClient` requires Python 3.11 or newer and the `async` extra, which installs the [httpx2](https://pypi.org/project/httpx2/) HTTP library:
+`AsyncClient` requires Python 3.11 or newer and the `async` extra, which installs version 2 of the [httpx2](https://pypi.org/project/httpx2/) HTTP library (2.16.1 or later):
 
 ::::{tab-set}
 

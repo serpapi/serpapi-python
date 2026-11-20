@@ -1061,6 +1061,28 @@ async def test_redirect_does_not_restart_session_auth(async_client, server, targ
     assert ["Authorization" in r.headers for r in server.requests] == expected
 
 
+def _header_auth(request):
+    request.headers["X-Test-Auth"] = "callable"
+    return request
+
+
+# Client sends the same headers through requests for each of these auth forms.
+@pytest.mark.parametrize("path,options,header,value", [
+    ("/search", {"auth": ("user", "pass")}, "Authorization", "Basic dXNlcjpwYXNz"),
+    ("https://user:pass@serpapi.com/search", {}, "Authorization", "Basic dXNlcjpwYXNz"),
+    ("/search", {"auth": _header_auth}, "X-Test-Auth", "callable"),
+])
+async def test_request_auth_forms_match_client(async_client, server, path, options, header, value):
+    await async_client.request("GET", path, {}, **options)
+    assert server.last_request.headers.get(header) == value
+
+
+async def test_invalid_auth_raises_type_error_before_sending(async_client, server):
+    with pytest.raises(TypeError, match='Invalid "auth" argument'):
+        await async_client.request("GET", "/search", {}, auth=123)
+    assert server.requests == []
+
+
 async def test_auth_receives_redirect_destination_before_retry(async_client, server):
     statuses = []
 

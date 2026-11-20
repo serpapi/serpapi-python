@@ -306,7 +306,7 @@ class AsyncHTTPClient:
 
         # Match httpx2's ordering: select auth once (including session defaults and
         # URL credentials), then give it the response *after* following redirects.
-        auth = self.session._build_request_auth(request, auth)
+        auth = _request_auth(self._httpx2, self.session, request, auth)
         auth_history = []
         redirects = []
         async with aclosing(auth.async_auth_flow(request)) as flow:
@@ -601,6 +601,26 @@ def _ssl_context(httpx2, verify, cert):
             context.load_cert_chain(*cert)
 
     return context
+
+
+def _request_auth(httpx2, session, request, auth):
+    """Select a request's auth like httpx2's client does, using only public httpx2 API."""
+
+    if isinstance(auth, type(httpx2.USE_CLIENT_DEFAULT)):
+        auth = session.auth
+    elif isinstance(auth, tuple):
+        auth = httpx2.BasicAuth(username=auth[0], password=auth[1])
+    elif auth is not None and not isinstance(auth, httpx2.Auth):
+        if not callable(auth):
+            raise TypeError(f'Invalid "auth" argument: {auth!r}')
+        auth = httpx2.FunctionAuth(func=auth)
+    if auth is not None:
+        return auth
+
+    username, password = request.url.username, request.url.password
+    if username or password:
+        return httpx2.BasicAuth(username=username, password=password)
+    return httpx2.Auth()
 
 
 def _error_request(e):

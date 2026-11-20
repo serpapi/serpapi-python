@@ -193,6 +193,7 @@ class AsyncHTTPClient:
     USER_AGENT = HTTPClient.USER_AGENT
 
     _MAX_OPTION_POOLS = 16
+    _MAX_SSL_CONTEXTS = 16
 
     def __init__(self, *, api_key=None, timeout=None):
         self._httpx2 = _import_httpx2()
@@ -202,6 +203,7 @@ class AsyncHTTPClient:
         self._closed = False
         self._close_task = None
         self._option_pools = {}
+        self._ssl_contexts = {}
         self._default_ssl_context = _ssl_context(self._httpx2, True, None)
         self._router = _RoutingTransport(self._create_pool(verify=True))
         self.session = self._httpx2.AsyncClient(
@@ -418,11 +420,7 @@ class AsyncHTTPClient:
         if proxy is None and verify is True and cert is None:
             return self._router.default, False
 
-        if cert is None or isinstance(cert, (str, bytes, os.PathLike)):
-            cert_key = cert
-        else:
-            cert_key = tuple(cert)
-        key = (proxy, verify, cert_key)
+        key = (proxy, verify, _cert_key(cert))
 
         pool = self._option_pools.get(key)
         if pool is not None:
@@ -438,7 +436,17 @@ class AsyncHTTPClient:
     def _session_ssl_context(self, verify, cert):
         if verify is True and not cert:
             return self._default_ssl_context
-        return _ssl_context(self._httpx2, verify, cert)
+        if isinstance(verify, ssl.SSLContext):
+            return _ssl_context(self._httpx2, verify, cert)
+
+        # Load each CA bundle and certificate once, even for proxies and temporary pools.
+        key = (verify, _cert_key(cert))
+        context = self._ssl_contexts.get(key)
+        if context is None:
+            context = _ssl_context(self._httpx2, verify, cert)
+            if len(self._ssl_contexts) < self._MAX_SSL_CONTEXTS:
+                self._ssl_contexts[key] = context
+        return context
 
     def _create_pool(self, proxy=None, verify=None, cert=None):
         httpx2 = self._httpx2
@@ -546,6 +554,12 @@ def _select_proxy(url, proxies):
     proxy = requests.utils.select_proxy(url, proxies)
     if proxy:
         return requests.utils.prepend_scheme_if_needed(proxy, "http")
+
+
+def _cert_key(cert):
+    if cert is None or isinstance(cert, (str, bytes, os.PathLike)):
+        return cert
+    return tuple(cert)
 
 
 def _ssl_context(httpx2, verify, cert):

@@ -293,7 +293,7 @@ As with `Client`, a timeout in seconds applies to connecting and to each wait fo
 
 Both clients use certifi's CA bundle by default. They read `REQUESTS_CA_BUNDLE` (or `CURL_CA_BUNDLE` as a fallback) per request; an explicit `verify` path or `verify=False` overrides those variables. `SSL_CERT_FILE` and `SSL_CERT_DIR` do not override certifi. CA bundle files, CA directories, and client certificates supplied as a PEM file or `(cert, key)` pair work with `AsyncClient`.
 
-The async client loads CA bundle and client-certificate contents into an SSL context when an option-specific session is created. If you replace either file at the same path, close the existing `AsyncClient` and create a new one before making another request so the new contents are loaded.
+The async client loads a CA bundle or client certificate into an SSL context the first time a request uses it, and reuses that context for later requests with the same `verify` and `cert` values. If you replace either file at the same path, close the existing `AsyncClient` and create a new one before making another request so the new contents are loaded.
 
 HTTP/HTTPS proxy dictionaries use the same selection rules as `requests`, including credentials in proxy URLs, scheme/host-specific entries, environment proxies, and `NO_PROXY`. Hooks on `client.session.event_hooks` run regardless of which pool is used. If a request hook changes the destination, the client selects the proxy for the final URL. A redirect also selects the proxy for the new URL without restarting authentication. For example, passing `auth=None` to `AsyncClient.request()` disables session authentication for the entire redirect chain. See [Differences from Client](#differences-from-client) for the remaining transport differences.
 
@@ -346,7 +346,7 @@ Use each client in only one event loop. Each `asyncio.run()` call starts a new e
 
 Neither client sets a timeout by default. A numeric or `(connect, read)` timeout is not a total wall-clock deadline, and the async client does not apply those forms to waiting for a free pool connection. Use a native `httpx2.Timeout` if you need a separate pool-wait timeout.
 
-The async client keeps its default pool plus up to 16 cached proxy/TLS/certificate combinations. Further uncached combinations use temporary pools that close after the request, so they do not reuse connections between requests. Cached entries are not evicted. This bounds the number of cached pools but can reduce performance when rotating through many configurations.
+The async client keeps its default pool plus up to 16 cached proxy/TLS/certificate combinations. Further uncached combinations use temporary pools that close after the request, so they do not reuse connections between requests. Cached entries are not evicted. This bounds the number of cached pools but can reduce performance when rotating through many configurations. SSL contexts are cached separately for up to 16 `verify`/`cert` settings, so rotating proxies does not reload CA bundles or certificates. A setting beyond that limit is loaded again for each new pool.
 
 Async `HTTPError` messages omit the `api_key` query parameter. In httpx2 INFO request logs, the SDK redacts `api_key` from the URL it actually sends, including keys supplied by session defaults, authentication, or request hooks. Unrelated httpx2 requests and raw request/response URLs are unchanged; do not log raw URLs containing credentials.
 

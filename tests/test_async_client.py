@@ -784,6 +784,23 @@ async def test_proxy_sessions_reuse_only_the_clients_default_trust(async_client,
         assert server.pools[-1][0]["verify"] is not default_context
 
 
+@pytest.mark.parametrize("tls", [{"verify": certifi.where()}, {"cert": "client.pem"}])
+async def test_custom_tls_files_load_once_across_proxies(async_client, server, monkeypatch, tls):
+    monkeypatch.setattr(async_client, "_MAX_OPTION_POOLS", 1)
+    monkeypatch.setattr(ssl.SSLContext, "load_cert_chain", lambda ctx, *args: None)
+    loaded = []
+    load = ssl.SSLContext.load_verify_locations
+    monkeypatch.setattr(
+        ssl.SSLContext, "load_verify_locations",
+        lambda ctx, *args, **kwargs: loaded.append(ctx) or load(ctx, *args, **kwargs),
+    )
+    # One cached pool, then temporary pools beyond the cache limit.
+    for host in ("first", "second", "third"):
+        await async_client.search(proxies={"https": f"http://{host}.test:8080"}, **tls)
+    assert len(loaded) == 1
+    assert all(options["verify"] is loaded[0] for options, _ in server.pools[1:])
+
+
 async def test_default_trust_never_inherits_a_client_certificate(async_client, server, monkeypatch):
     loaded = []
     monkeypatch.setattr(ssl.SSLContext, "load_cert_chain", lambda ctx, *args: loaded.append(ctx))

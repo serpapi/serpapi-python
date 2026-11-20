@@ -1118,6 +1118,49 @@ async def test_redirect_limit_matches_requests(async_client, server, redirects):
         assert result["done"]
 
 
+def redirect_to(location):
+    return lambda request: (
+        httpx2.Response(302, headers={"Location": location}, json={"redirect": True})
+        if request.url.path == "/search" else httpx2.Response(200, json={"followed": True})
+    )
+
+
+@pytest.mark.parametrize("location,expected", [
+    ("http://127.0.0.1:bad/", requests.exceptions.InvalidURL),
+    ("http://[::1/done", requests.exceptions.InvalidURL),
+    ("http://127.0.0.1:99999/done", requests.exceptions.InvalidURL),
+    ("mailto:user@example.com", requests.exceptions.InvalidSchema),
+])
+async def test_invalid_redirect_targets_raise_requests_errors(async_client, server, location, expected):
+    server.handler = redirect_to(location)
+    with pytest.raises(expected) as exc:
+        await async_client.search()
+    assert type(exc.value) is expected
+    assert exc.value.response.status_code == 302
+    assert exc.value.response.json() == {"redirect": True}
+    assert [r.url.path for r in server.requests] == ["/search"]
+
+
+async def test_unfollowed_invalid_redirect_is_returned(async_client, server):
+    server.handler = redirect_to("http://127.0.0.1:bad/")
+    response = await async_client.request("GET", "/search", {}, allow_redirects=False)
+    assert response.status_code == 302 and response.next_request is None
+
+
+async def test_empty_redirect_location_returns_the_response_like_client(async_client, server):
+    server.handler = redirect_to("")
+    assert await async_client.search() == {"redirect": True}
+    assert len(server.requests) == 1
+
+
+async def test_only_unfollowed_redirects_keep_next_request(async_client, server):
+    server.handler = redirect_to("/done")
+    followed = await async_client.request("GET", "/search", {})
+    unfollowed = await async_client.request("GET", "/search", {}, allow_redirects=False)
+    assert [r.next_request for r in followed.history] == [None]
+    assert unfollowed.next_request.url.path == "/done"
+
+
 async def test_cookies_survive_request_option_changes(async_client, server):
     server.handler = lambda request: httpx2.Response(
         200, json={}, headers={"Set-Cookie": "session=local-value; Path=/"}

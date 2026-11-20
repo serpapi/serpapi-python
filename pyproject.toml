@@ -40,10 +40,10 @@ classifiers = [
 
 [project.optional-dependencies]
 color = ["pygments"]
-async = ["httpx2>=2.15.1; python_version >= '3.11'"]
+async = ["httpx2>=2.16.1; python_version >= '3.11'"]
 test = [
   "pytest",
-  "httpx2>=2.15.1; python_version >= '3.11'",
+  "httpx2>=2.16.1; python_version >= '3.11'",
   "anyio; python_version >= '3.11'",
 ]
 docs = [

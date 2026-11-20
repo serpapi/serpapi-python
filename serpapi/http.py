@@ -8,6 +8,8 @@ from urllib.parse import unquote_plus, urlencode, urlsplit
 from weakref import ref
 
 import requests
+from urllib3.exceptions import LocationValueError
+from urllib3.util import parse_url
 
 from .exceptions import (
     HTTPError,
@@ -311,15 +313,20 @@ class AsyncHTTPClient:
                 async with AsyncExitStack() as cleanup:
                     response = await self._open_response(request, proxies, verify, cert, cleanup)
                     response.history = auth_history + redirects
-                    if follow_redirects and response.next_request is not None:
+                    # Like requests, an empty Location header ends redirect handling.
+                    location = response.headers.get("Location")
+                    if follow_redirects and response.has_redirect_location and location:
                         await response.aread()
                         if len(redirects) >= requests.models.DEFAULT_REDIRECT_LIMIT:
                             raise requests.exceptions.TooManyRedirects(
                                 f"Exceeded {len(redirects)} redirects.",
                                 response=response, request=request,
                             )
+                        next_request = _redirect_request(request, response)
+                        # httpx2 only keeps next_request on redirects that it does not follow.
+                        response.next_request = None
                         redirects.append(response)
-                        request = response.next_request
+                        request = next_request
                     else:
                         # Auth can reject the status or headers without reading the body.
                         try:
@@ -588,6 +595,35 @@ def _error_request(e):
         return getattr(e, "request", None)
     except RuntimeError:
         return None
+
+
+def _redirect_request(request, response):
+    """Return the next redirect request, or raise the error requests raises for its target."""
+
+    next_request = response.next_request
+    if next_request is None:
+        # httpx2 builds no next request when the Location header is not a valid URL.
+        try:
+            scheme = urlsplit(response.headers["Location"]).scheme.lower()
+        except ValueError:
+            scheme = ""
+        if scheme and scheme not in ("http", "https"):
+            raise requests.exceptions.InvalidSchema(
+                "No connection adapters were found for the redirect location.",
+                request=request, response=response,
+            )
+        raise requests.exceptions.InvalidURL(
+            "Invalid URL in the redirect location header.", request=request, response=response
+        )
+
+    # requests rejects URLs that urllib3 cannot parse, such as ports above 65535.
+    try:
+        parse_url(str(next_request.url))
+    except LocationValueError:
+        raise requests.exceptions.InvalidURL(
+            "Invalid URL in the redirect location header.", request=request, response=response
+        ) from None
+    return next_request
 
 
 def _connection_error(e):

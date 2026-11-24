@@ -21,7 +21,9 @@ The client passes these keyword arguments to `requests.Session.request()`:
 | `stream` | Set the `requests` streaming option. The client still reads the response before returning results. |
 | `cert` | Authenticate the request with a client certificate. |
 
-These options are supported by `search()`, `search_archive()`, `account()`, and `locations()`.
+These options are supported by `search()`, `extract()`, `search_archive()`, `upload_image()`, `account()`, and `locations()`.
+
+`serpapi.AsyncClient` accepts the same options, including certifi-based TLS verification and HTTP/HTTPS proxy selection. It sends requests with httpx2 instead of `requests`; raw sessions, streaming, connection pools, and SOCKS DNS are not identical. See [Differences from Client](async-client.md#differences-from-client).
 
 ## Per-Request Timeout
 

@@ -1,3 +1,5 @@
+import subprocess
+import sys
 from unittest.mock import Mock
 import pytest
 import requests
@@ -31,3 +33,16 @@ def test_transport_errors_are_translated(monkeypatch, cause, expected):
 
     with pytest.raises(expected):
         client.search(engine="google", q="coffee")
+
+
+def test_async_client_explains_how_to_install_the_extra(monkeypatch):
+    monkeypatch.setitem(sys.modules, "httpx2", None)
+
+    with pytest.raises(ImportError, match=r'pip install "serpapi\[async\]"'):
+        serpapi.AsyncClient(api_key="test-api-key")
+
+
+def test_importing_serpapi_does_not_import_httpx2():
+    code = "import sys, serpapi; assert 'httpx2' not in sys.modules"
+
+    subprocess.run([sys.executable, "-c", code], check=True)

@@ -1,3 +1,4 @@
+from contextlib import contextmanager
 import json
 import os
 from pathlib import Path
@@ -10,7 +11,7 @@ import threading
 from urllib.parse import parse_qs, urlsplit
 
 import serpapi
-from serpapi.http import HTTPClient
+from serpapi.http import AsyncHTTPClient, HTTPClient
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -78,29 +79,44 @@ def validate_response(response, path, params):
 
 def install_http_checks():
     original_request = HTTPClient.request
+    original_async_request = AsyncHTTPClient.request
     report_path = Path(os.environ["DOCS_EXAMPLE_REPORT_DIR"]) / f"{os.getpid()}.jsonl"
     lock = threading.Lock()
 
-    def checked_request(self, method, path, params, **kwargs):
+    @contextmanager
+    def checked(client, path, params, kwargs):
+        """Record one request, and yield a function that validates its response."""
         url = urlsplit(path)
         query = {key: values[-1] for key, values in parse_qs(url.query).items()}
         query.update(params)
         record = {"path": url.path, "engine": query.get("engine"), "ok": False}
-        if not self.timeout and not kwargs.get("timeout"):
+        if not client.timeout and not kwargs.get("timeout"):
             kwargs["timeout"] = 30
         try:
-            response = original_request(self, method, path, params, **kwargs)
-            validate_response(response, url.path, query)
+            yield lambda response: validate_response(response, url.path, query)
             record["ok"] = True
-            return response
-        except Exception as exc:
+        # BaseException also records requests that asyncio cancels.
+        except BaseException as exc:
             record["error"] = redact(f"{type(exc).__name__}: {exc}")
             raise
         finally:
             with lock, report_path.open("a") as report:
                 report.write(json.dumps(record) + "\n")
 
+    def checked_request(self, method, path, params, **kwargs):
+        with checked(self, path, params, kwargs) as validate:
+            response = original_request(self, method, path, params, **kwargs)
+            validate(response)
+            return response
+
+    async def checked_async_request(self, method, path, params, **kwargs):
+        with checked(self, path, params, kwargs) as validate:
+            response = await original_async_request(self, method, path, params, **kwargs)
+            validate(response)
+            return response
+
     HTTPClient.request = checked_request
+    AsyncHTTPClient.request = checked_async_request
 
 
 def script_for_page(path):

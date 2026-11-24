@@ -1,5 +1,7 @@
 import requests
 
+from .utils import _response_json
+
 
 class SerpApiError(Exception):
     """Base class for exceptions in this module."""
@@ -27,9 +29,10 @@ class HTTPError(requests.exceptions.HTTPError, SerpApiError):
             http_error_exception: requests.exceptions.HTTPError = original_exception
 
             self.status_code = http_error_exception.response.status_code
+            # requests and httpx2 raise different JSON decoding errors; both are ValueErrors.
             try:
-                self.error = http_error_exception.response.json().get("error", None)
-            except requests.exceptions.JSONDecodeError:
+                self.error = _response_json(http_error_exception.response).get("error", None)
+            except ValueError:
                 self.error = None
         else:
             self.status_code = -1

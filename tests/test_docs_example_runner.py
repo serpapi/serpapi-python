@@ -90,6 +90,44 @@ except AssertionError:
         assert "private-test-key" not in report.read_text()
 
 
+def test_doc_runner_checks_async_client_requests(tmp_path):
+    pytest.importorskip("httpx2")
+    code = """
+import asyncio
+import httpx2
+
+async def fake_send(self, request, **kwargs):
+    if request.url.params['engine'] == 'google':
+        payload = {'organic_results': [{'title': 'Coffee'}]}
+    else:
+        payload = {'error': 'No results'}
+    return httpx2.Response(200, json=payload, request=request)
+
+httpx2.AsyncClient.send = fake_send
+
+async def main():
+    async with serpapi.AsyncClient(api_key='secret_api_key') as client:
+        results = await asyncio.gather(
+            client.search(engine='google', q='coffee'),
+            client.search(engine='bing', q='coffee'),
+            return_exceptions=True,
+        )
+    assert results[0]['organic_results'][0]['title'] == 'Coffee'
+    assert isinstance(results[1], AssertionError)
+
+asyncio.run(main())
+"""
+    page = markdown_page(tmp_path, code)
+    with pytest.raises(RuntimeError, match="bing: AssertionError: No results"):
+        run_page(page, tmp_path / "run", "test-key")
+    records = [
+        json.loads(line)
+        for report in (tmp_path / "run" / "requests").glob("*.jsonl")
+        for line in report.read_text().splitlines()
+    ]
+    assert {record["engine"]: record["ok"] for record in records} == {"google": True, "bing": False}
+
+
 def test_doc_runner_rejects_examples_without_requests(tmp_path):
     page = markdown_page(tmp_path, "if __name__ == 'docs_examples':\n    client.search(q='coffee')")
     with pytest.raises(RuntimeError, match="without making a SerpApi request"):

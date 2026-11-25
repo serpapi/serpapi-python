@@ -17,13 +17,7 @@ To install the `serpapi` package, simply run the following command inside your P
 pip install serpapi
 ```
 
-To use `serpapi.AsyncClient` with `asyncio`, install the `async` extra instead. It requires Python 3.11 or later:
-
-```bash
-pip install "serpapi[async]"
-```
-
-Without this extra, creating an `AsyncClient` raises an `ImportError` that includes the installation command. The synchronous `Client` works without it.
+Please note that this package is separate from the legacy `serpapi` module, which is available on PyPi as `google-search-results`. This package is maintained by SerpApi, and is the recommended way to access the SerpApi service from Python.
 
 ## Quickstart
 
@@ -182,6 +176,8 @@ print(results["search_metadata"]["status"])
 If the search is still processing, retrieve it again later. See the [async search guide](https://serpapi-python.readthedocs.io/en/latest/user_guide/async-search-archive.html) for polling with HTTP timeouts and a deadline.
 
 ## Async client
+
+If your app uses `asyncio` on Python 3.11 or later, you can use `serpapi.AsyncClient` to search without blocking other tasks.
 
 `serpapi.AsyncClient` has the same SDK methods and API parameters as `serpapi.Client`, for programs that use `asyncio`, with some [transport differences](https://serpapi-python.readthedocs.io/en/latest/user_guide/async-client.html#differences-from-client). Call its request methods with `await`. It requires Python 3.11 or later and the `async` extra:
 

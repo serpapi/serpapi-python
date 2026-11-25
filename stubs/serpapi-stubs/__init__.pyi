@@ -1,5 +1,6 @@
 from .__version__ import __version__ as __version__
 from .core import (
+    AsyncClient as AsyncClient,
     Client as Client,
     account as account,
     extract as extract,
@@ -16,5 +17,5 @@ from .exceptions import (
     SerpApiError as SerpApiError,
     TimeoutError as TimeoutError,
 )
-from .http import HTTPClient as HTTPClient
-from .models import SerpResults as SerpResults
+from .http import AsyncHTTPClient as AsyncHTTPClient, HTTPClient as HTTPClient
+from .models import AsyncSerpResults as AsyncSerpResults, SerpResults as SerpResults

@@ -5,7 +5,7 @@ description: "Submit searches now and retrieve their results later with the Sear
 
 # Async Search Archive
 
-An asynchronous search lets you submit a request now and collect the results later. Set the API's `async` parameter to `true` to receive a search ID, then use that ID with the Search Archive API. Each Python client call still waits for an HTTP response. These methods do not use Python's `asyncio` or `await`.
+An asynchronous search lets you submit a request now and collect the results later. Set the API's `async` parameter to `true` to receive a search ID, then use that ID with the Search Archive API. The `async` parameter is separate from Python's `asyncio`. Each `serpapi.Client` call still waits for its HTTP response. To send requests with `asyncio` and `await`, use [`serpapi.AsyncClient`](async-client.md), which also accepts the `async` parameter.
 
 Create a client as shown in the [client usage guide](client-usage.md#create-a-client) before running the examples.
 

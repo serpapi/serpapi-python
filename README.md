@@ -17,17 +17,15 @@ To install the `serpapi` package, simply run the following command inside your P
 pip install serpapi
 ```
 
-To add engine-specific type hints for mypy, pyright, and IDEs, install the `typing` extra. It installs [`serpapi-stubs`](https://github.com/serpapi/serpapi-python/tree/master/stubs), a typing-only package versioned with the SDK:
+Please note that this package is separate from the legacy `serpapi` module, which is available on PyPi as `google-search-results`. This package is maintained by SerpApi, and is the recommended way to access the SerpApi service from Python.
+
+For engine-specific type hints in mypy, pyright, and IDEs, install [`serpapi-stubs`](https://github.com/serpapi/serpapi-python/tree/master/stubs). SDK 1.3.0 was released before the `typing` extra, so install its matching stubs directly:
 
 ```bash
-pip install "serpapi[typing]"
+pip install "serpapi==1.3.0" "serpapi-stubs==1.3.0.*"
 ```
 
-SDK 1.2.0 was released before the `typing` extra. To use the stubs with it, install them directly:
-
-```bash
-pip install "serpapi-stubs==1.2.0.*"
-```
+For `AsyncClient` on Python 3.11+, use `"serpapi[async]==1.3.0"` in that command. SDK releases that include the `typing` extra can install the matching stubs with `pip install "serpapi[typing]"` or `pip install "serpapi[async,typing]"`.
 
 ## Quickstart
 
@@ -94,6 +92,7 @@ A successful HTTP response can still contain an `error` field, such as when a se
 ## Features
 
 - **Asynchronous searches** for submitting jobs and retrieving completed results from the Search Archive API.
+- **asyncio support** with `serpapi.AsyncClient` for running searches at the same time with `await`.
 - **Persistent connections and connection pooling** for reusing HTTP connections across searches.
 - Search results as a dict-like **SerpResults** object by default, token-efficient **Markdown** with `"output": "md"`, or raw **search-engine HTML** with `"output": "html"`.
 - SDK methods for the [Image API](https://serpapi.com/image-api), [Location API](https://serpapi.com/locations-api), [Search Archive API](https://serpapi.com/search-archive-api), and [Account API](https://serpapi.com/account-api).
@@ -163,7 +162,7 @@ Learn more about [SerpApi Markdown Output](https://serpapi.com/markdown-output).
 
 Searches wait for their results by default. Use `{"async": True}` to submit a search job on SerpApi and retrieve its results later from the Search Archive API.
 
-SerpApi's `async` parameter is separate from Python `asyncio`. The SDK methods are synchronous: each call blocks until its HTTP response arrives and cannot be used with `await`.
+SerpApi's `async` parameter is separate from Python `asyncio`. `serpapi.Client` methods are synchronous: each call blocks until its HTTP response arrives. To use `await`, see [Async client](#async-client).
 
 > **Note:** `async` is a reserved keyword in Python 3.7+, so pass it inside the parameters dictionary (`{"async": True}`) rather than as a keyword argument.
 
@@ -183,6 +182,41 @@ print(results["search_metadata"]["status"])
 ```
 
 If the search is still processing, retrieve it again later. See the [async search guide](https://serpapi-python.readthedocs.io/en/latest/user_guide/async-search-archive.html) for polling with HTTP timeouts and a deadline.
+
+## Async client
+
+If your app uses `asyncio` on Python 3.11 or later, you can use `serpapi.AsyncClient` to search without blocking other tasks.
+
+`serpapi.AsyncClient` has the same SDK methods and API parameters as `serpapi.Client`, for programs that use `asyncio`, with some [transport differences](https://serpapi-python.readthedocs.io/en/latest/user_guide/async-client.html#differences-from-client). Call its request methods with `await`. It requires Python 3.11 or later and the `async` extra:
+
+```bash
+pip install "serpapi[async]"
+```
+
+Run several searches at the same time with `asyncio.gather()`:
+
+```python
+import asyncio
+import os
+
+import serpapi
+
+
+async def main():
+    async with serpapi.AsyncClient(api_key=os.environ["SERPAPI_KEY"], timeout=20) as client:
+        google, bing = await asyncio.gather(
+            client.search({"engine": "google", "q": "coffee"}),
+            client.search({"engine": "bing", "q": "coffee"}),
+        )
+
+    print("Google:", len(google.get("organic_results", [])), "results")
+    print("Bing:", len(bing.get("organic_results", [])), "results")
+
+
+asyncio.run(main())
+```
+
+`asyncio.gather()` returns the results in the order of the searches. `async with` closes the client's connections when the block ends. To fetch more pages, use `await results.next_page()` or `async for page in results.yield_pages()`. See [Migrating from Sync to Async](https://serpapi-python.readthedocs.io/en/latest/user_guide/async-client.html#migrating-from-sync-to-async) for a before-and-after example, or the [async client guide](https://serpapi-python.readthedocs.io/en/latest/user_guide/async-client.html) for limiting concurrent searches.
 
 ## Examples
 

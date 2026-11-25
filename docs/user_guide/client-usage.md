@@ -5,7 +5,9 @@ description: "Use the SerpApi client, module helpers, request options, and respo
 
 # Client Usage
 
-Create a `serpapi.Client` to reuse your API key, timeout, and HTTP connection settings across requests.
+Create a `serpapi.Client` to reuse your API key, timeout, and HTTP connection settings across requests. If your program uses `asyncio`, [`serpapi.AsyncClient`](async-client.md) has the same methods for use with `await`.
+
+See [Migrating from Sync to Async](async-client.md#migrating-from-sync-to-async) for a before-and-after example and the [current client differences](async-client.md#differences-from-client).
 
 ## Create a Client
 
@@ -86,7 +88,7 @@ locations = client.locations(q="Austin", limit=3)
 
 ## Request Options
 
-`search()`, `search_archive()`, `account()`, and `locations()` pass these keyword arguments to the underlying `requests` call:
+`search()`, `extract()`, `search_archive()`, `upload_image()`, `account()`, and `locations()` pass these keyword arguments to the underlying `requests` call:
 
 | Option | Use |
 | --- | --- |

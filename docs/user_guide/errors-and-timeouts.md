@@ -7,7 +7,7 @@ description: "Handle SerpApi HTTP errors, connection errors, timeouts, and API-l
 
 The client raises exceptions when a request times out, cannot connect, or receives an HTTP error. Use `try` and `except` to decide what your script should do when a request fails.
 
-The examples use a client created as shown in [Client Usage](client-usage.md#create-a-client).
+The examples use a client created as shown in [Client Usage](client-usage.md#create-a-client). `serpapi.AsyncClient` raises the same exceptions. See [Async Client](async-client.md#errors).
 
 ## HTTP Errors
 

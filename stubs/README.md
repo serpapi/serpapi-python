@@ -6,21 +6,21 @@ The stubs are typing-only. They do not change runtime behavior.
 
 ## Installation
 
-Install them through the SDK's `typing` extra:
+SDK 1.3.0 includes `AsyncClient` but predates the `typing` extra. Install the stubs alongside that SDK:
 
 ```sh
-pip install "serpapi[typing]"
+pip install "serpapi==1.3.0" "serpapi-stubs==1.3.0.*"
 ```
 
-The extra installs the newest stubs built for the installed SDK version.
-
-SDK 1.2.0 was released before the extra existed, so pip ignores `[typing]` there and warns that the extra does not exist. Install its stubs directly:
+For async support on Python 3.11+, keep the same stub pin and add the SDK's `async` extra:
 
 ```sh
-pip install "serpapi-stubs==1.2.0.*"
+pip install "serpapi[async]==1.3.0" "serpapi-stubs==1.3.0.*"
 ```
 
-Stubs are not published for SDK versions older than 1.2.0.
+Starting with the SDK release that includes the `typing` extra, use `pip install "serpapi[typing]"` or `pip install "serpapi[async,typing]"`. The extra selects the matching stub series automatically.
+
+Requests 2.34 and later includes its own types. On Python 3.10+ with Requests pinned below 2.34, install a compatible `types-requests` separately. On older Python versions the stubs install it automatically.
 
 ## Usage
 
@@ -31,12 +31,23 @@ import serpapi
 
 client = serpapi.Client(api_key="...")
 client.search(engine="google", q="coffee", device="mobile")  # OK
-client.search(engine="google", q="coffee", locaton="Austin")  # error: unexpected keyword "locaton"
-client.search(engine="google", q="coffee", device="watch")  # error: invalid option
+client.search(engine="google", q="coffee", locaton="Austin")  # typo: use location
+client.search(engine="google", q="coffee", device="watch")  # not a Google device option
 html = client.search(engine="bing", q="coffee", output="html")  # str, not SerpResults
 ```
 
-A plain dict is accepted as before. Its keys are checked only when you annotate it with a parameter type from `serpapi.engine_params`. That module exists only for type checkers, so import it under `TYPE_CHECKING`:
+`AsyncClient` accepts the same engine parameters. Await the call for its result; iterate over pages with `async for`:
+
+```python
+async def search_pages():
+    async with serpapi.AsyncClient(api_key="...") as client:
+        results = await client.search(engine="google", q="coffee")  # AsyncSerpResults
+        async for page in results.yield_pages(max_pages=2):
+            print(page.as_dict())
+        html = await client.search(engine="bing", q="coffee", output="html")  # str
+```
+
+A plain dict is accepted as before. Annotate it with a parameter type from `serpapi.engine_params` to check its keys and get field-specific errors instead of mypy's list of candidate overloads. That module exists only for type checkers, so import it under `TYPE_CHECKING`:
 
 ```python
 from typing import TYPE_CHECKING
@@ -54,11 +65,13 @@ Notes:
 
 - `async` and `from` are Python keywords, so pass them in the params dict: `client.search({"engine": "google", "q": "coffee", "async": True})`.
 - In keyword calls, `timeout` is the HTTP request timeout. Pass Extract's API `timeout` parameter in the params dict.
-- `output="json_with_pixel_position"` ([Pixel Position](https://serpapi.com/pixel-position-api)) is accepted for `google`, `google_ads`, and the Search Archive, and returns `SerpResults`.
-- `proxies` accepts a mutable mapping such as `dict`, not a read-only `Mapping`: Requests updates it when merging environment proxies. A `None` value disables that configured proxy.
+- Set an optional query field to `None` to omit it or suppress a session default. Google `tbs` also accepts a sequence of strings, sent as repeated query parameters.
+- `output="json_with_pixel_position"` ([Pixel Position](https://serpapi.com/pixel-position-api)) is accepted for `google`, `google_ads`, and the Search Archive. It returns `SerpResults` synchronously and `AsyncSerpResults` when awaited.
+- For sync calls, `proxies` must be mutable because Requests updates it when merging environment proxies. Async calls copy the mapping, so a read-only mapping works too. A `None` value disables that configured proxy.
+- Both clients raise `serpapi.HTTPError`. Use `exc.status_code` and `exc.error` for transport-independent details. The inherited request and response annotations describe Requests, but async errors can carry httpx2 objects. For transport-specific attributes, pass `exc.response` or `exc.request` to a helper whose parameter is typed `object`, then narrow it with `isinstance(response, httpx2.Response)` or `isinstance(request, httpx2.Request)`.
 - Keyword calls need literal `engine` and `output` values so the checker can select the engine's overload. A `str` variable, or `**` unpacking of a `Dict[str, str]`, is rejected. When either value is computed at runtime, pass a params dict, or type the value as `Literal` or `Final`.
 - A `dict` variable that is not annotated with a parameter type gives a `SerpResults | Any` result, because the checker cannot see its `output` value. Pass `output="md"` or `output="html"` as a keyword to get `str`, or `output="json"` to get `SerpResults`. The keyword overrides any `output` in the mapping.
-- `search()`, `search_archive()`, `locations()`, and `account()` write the API key into the mapping they receive, so pass a `dict` or a `serpapi.engine_params` type. A read-only `Mapping` or your own `TypedDict` is rejected; pass `dict(params)` instead. `extract()` copies its mapping and accepts any `Mapping`.
+- On the sync client, `search()`, `search_archive()`, `locations()`, and `account()` write the API key into the mapping they receive, so pass a `dict` or a `serpapi.engine_params` type. A read-only `Mapping` or your own `TypedDict` is rejected; pass `dict(params)` instead. Sync `extract()` and all async methods that take search parameters copy the mapping and accept any `Mapping`.
 - Pyright reports `reportMissingModuleSource` for `serpapi.engine_params` because the module has no runtime source. Importing it under `TYPE_CHECKING` is safe.
 
 Engine parameters come from the [SerpApi Playground](https://serpapi.com/playground). Parameters that SerpApi has not documented there are reported as errors. Use a `# type: ignore` comment or an untyped `dict` if you need one. Parameters that the Playground gives no type accept `str`, `int`, or `float`, because the SDK sends numbers as text.
@@ -67,19 +80,15 @@ The Playground sometimes uses UI-specific values rather than the API values (for
 
 ## Versions
 
-Stub versions use the SDK version they describe, followed by the release date: `1.2.0.20260715` contains stubs for `serpapi` 1.2.0 published on 2026-07-15. A second release on the same day adds a counter, such as `1.2.0.20260715.1`.
+Stub versions use the SDK version they describe, followed by the UTC release date. For example, `1.3.0.YYYYMMDD` identifies stubs for SDK 1.3.0; a second release on the same day adds `.1`.
 
 Stub releases currently support final numeric SDK versions only (`X.Y.Z`). Prerelease, post-release, and development SDK versions are not supported by the stub versioning scheme or its exact-series extra pin.
 
 `serpapi[typing]` requires `serpapi-stubs==<SDK version>.*`, so you get stub updates for your SDK version only. New stubs are published with each SDK release and whenever parameter metadata changes between SDK releases.
 
-A stub update can add, remove, or narrow parameters as SerpApi engines change. That can make code that passed type checking fail it, but runtime behavior never changes. To control when you take these updates, pin the stubs alongside the extra or use a lockfile:
+A stub update can add, remove, or narrow parameters as SerpApi engines change. That can make code that passed type checking fail it, but runtime behavior never changes. To control when you take these updates, pin the full installed `serpapi-stubs` version or use a lockfile.
 
-```sh
-pip install "serpapi[typing]" "serpapi-stubs==1.2.0.20260715"
-```
-
-A stub release that breaks valid code is yanked from PyPI and fixed in a newer release.
+If a broken stub release is the only installable one for its SDK version, maintainers publish a replacement before yanking it so the SDK's typing extra remains installable.
 
 ## Development
 

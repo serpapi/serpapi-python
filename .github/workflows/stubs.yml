@@ -52,14 +52,31 @@ jobs:
       - name: Install SDK and stubs
         run: pip install . stubs/dist/*.whl
 
+      # Check consumers of the installed wheel, not the in-tree serpapi-stubs directory.
+      - name: Copy type-check samples outside the checkout
+        run: |
+          mkdir -p "$RUNNER_TEMP/stub-consumer/tests"
+          cp stubs/pyproject.toml "$RUNNER_TEMP/stub-consumer/"
+          cp -R stubs/tests/typecheck "$RUNNER_TEMP/stub-consumer/tests/"
+
+      - name: Check sync typing without the async extra
+        working-directory: ${{ runner.temp }}/stub-consumer
+        run: |
+          python -c "from importlib.util import find_spec; assert find_spec('requests-stubs') is None, 'types-requests masks the inline Requests types'"
+          mypy tests/typecheck/check_usage.py tests/typecheck/check_errors.py
+          pyright tests/typecheck/check_usage.py tests/typecheck/check_errors.py
+
+      - name: Install async transport for the full stub checks
+        run: pip install '.[async]'
+
       - name: Compare stubs with the runtime SDK
         working-directory: stubs
         run: python -m mypy.stubtest serpapi --allowlist tests/stubtest_allowlist.txt
 
       - name: Type-check usage samples with mypy
-        working-directory: stubs
+        working-directory: ${{ runner.temp }}/stub-consumer
         run: mypy
 
       - name: Type-check usage samples with pyright
-        working-directory: stubs
+        working-directory: ${{ runner.temp }}/stub-consumer
         run: pyright

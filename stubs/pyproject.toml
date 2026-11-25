@@ -11,7 +11,10 @@ license = "MIT"
 license-files = ["LICENSE"]
 authors = [{ name = "SerpApi", email = "support@serpapi.com" }]
 requires-python = ">=3.6"
-dependencies = ["types-requests"]
+dependencies = [
+  "typing-extensions",
+  "types-requests; python_version < '3.10'",
+]
 keywords = ["serpapi", "stubs", "typing", "mypy", "pyright"]
 classifiers = [
   "Programming Language :: Python :: 3",

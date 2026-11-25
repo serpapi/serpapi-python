@@ -14,6 +14,8 @@ client.search(engine="google", q="coffee", locaton="Austin")  # type: ignore
 client.search(engine="gogle", q="coffee")  # type: ignore
 client.search(search_query="coffee")  # type: ignore
 client.search(engine="google", q="coffee", device="watch")  # type: ignore
+client.search(engine="google", q="coffee", device=["mobile"])  # type: ignore
+client.extract(url=None)  # type: ignore
 # A Python bool is sent as "False", which SerpApi ignores here; the parameter takes "true" or "false".
 client.search(engine="yandex", text="coffee", fix_typo=False)  # type: ignore
 client.search(engine="google", q="coffee", output="xml")  # type: ignore

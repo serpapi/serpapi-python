@@ -18,6 +18,7 @@ STUBS_ROOT = Path(__file__).resolve().parent.parent
 SDK_VERSION_FILE = STUBS_ROOT.parent / "serpapi" / "__version__.py"
 VERSION_FILE = STUBS_ROOT / "VERSION"
 PYPI_JSON_URL = "https://pypi.org/pypi/serpapi-stubs/json"
+SDK_PYPI_JSON_URL = "https://pypi.org/pypi/serpapi/json"
 FINAL_RELEASE = re.compile(r"[0-9]+\.[0-9]+\.[0-9]+")
 
 
@@ -93,6 +94,7 @@ def parse_args(argv: list[str]) -> argparse.Namespace:
     parser.add_argument("--offline", action="store_true", help="do not query PyPI for existing versions")
     parser.add_argument("--output", type=Path, default=VERSION_FILE, help="file that setuptools reads the version from")
     parser.add_argument("--sdk-version", action="store_true", help="print the SDK version and exit")
+    parser.add_argument("--sdk-published", action="store_true", help="print whether this exact SDK version is installable from PyPI")
     parser.add_argument(
         "--series-check",
         metavar="TAG",
@@ -110,6 +112,9 @@ def main(argv: list[str] | None = None) -> int:
         return 1
     if args.sdk_version:
         print(sdk_version)
+        return 0
+    if args.sdk_published:
+        print("true" if sdk_version in published_versions(SDK_PYPI_JSON_URL, available_only=True) else "false")
         return 0
     if args.series_check is not None:
         return series_check(args.series_check, sdk_version)

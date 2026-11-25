@@ -43,15 +43,15 @@ def params(engine):
 
 def test_param_types(engines):
     google = params(engines["google"])
-    assert google["device"].typ == 'Literal["desktop", "mobile"]'
-    assert google["num"].typ == "_Number"
-    assert google["nfpr"].typ == "_Flag"
-    assert google["async"].typ == "_Flag"
-    assert google["q"].typ == "_Scalar"
+    assert google["device"].typ == 'Optional[Literal["desktop", "mobile"]]'
+    assert google["num"].typ == "Optional[_Number]"
+    assert google["nfpr"].typ == "Optional[_Flag]"
+    assert google["async"].typ == "Optional[_Flag]"
+    assert google["q"].typ == "Optional[_Scalar]"
     naver = params(engines["naver"])
-    assert naver["page"].typ == "_Number"
-    assert naver["start"].typ == "_Number"
-    assert naver["num"].typ == "_Number"
+    assert naver["page"].typ == "Optional[_Number]"
+    assert naver["start"].typ == "Optional[_Number]"
+    assert naver["num"].typ == "Optional[_Number]"
 
 
 @pytest.mark.parametrize(
@@ -111,15 +111,15 @@ def test_rendered_stubs_are_valid_and_cover_engine_shapes(snapshot):
         ast.parse(content)
     core = outputs["core.pyi"]
     assert "engine: Literal[\"google\"]" in core
-    assert '"from": NotRequired[_Scalar]' in outputs["engine_params.pyi"]
+    assert '"from": NotRequired[Optional[_Scalar]]' in outputs["engine_params.pyi"]
     assert '"url": Required[_Scalar]' in outputs["engine_params.pyi"]
     assert "params: None = None" in core
 
 
-def fallbacks(core, function):
-    """The (signature, return type) of each `**kwargs` overload of a Client method, in order."""
+def fallbacks(core, function, definition="def"):
+    """The (signature, return type) of each `**kwargs` overload of a client method, in order."""
     found = []
-    for overload in core.split(f"    def {function}(")[1:]:
+    for overload in core.split(f"    {definition} {function}(")[1:]:
         signature, _, rest = overload.partition(") -> ")
         if "**kwargs: Any," in signature:
             found.append((signature, rest.split(":")[0]))
@@ -142,12 +142,13 @@ def test_only_extract_accepts_read_only_mappings(snapshot):
         ("search_archive", 'Literal["json", "json_with_pixel_position"]'),
     ],
 )
-def test_output_keyword_decides_the_fallback_return_type(snapshot, function, json_values):
+@pytest.mark.parametrize(("definition", "result"), [("def", "SerpResults"), ("async def", "AsyncSerpResults")])
+def test_output_keyword_decides_the_fallback_return_type(snapshot, function, json_values, definition, result):
     # Both literal-output overloads must precede the catch-all.
-    text, json_output, catch_all = fallbacks(generate_stubs.render(snapshot)["core.pyi"], function)
+    text, json_output, catch_all = fallbacks(generate_stubs.render(snapshot)["core.pyi"], function, definition)
     assert 'output: Literal["html", "md"],' in text[0] and text[1] == "str"
-    assert f"output: {json_values}," in json_output[0] and json_output[1] == "SerpResults"
-    assert "output:" not in catch_all[0] and catch_all[1] == "Union[SerpResults, Any]"
+    assert f"output: {json_values}," in json_output[0] and json_output[1] == result
+    assert "output:" not in catch_all[0] and catch_all[1] == f"Union[{result}, Any]"
 
 
 def test_pixel_position_output_is_limited_to_the_apis_that_document_it(snapshot):
@@ -170,7 +171,7 @@ def test_pixel_position_output_is_limited_to_the_apis_that_document_it(snapshot)
 def test_google_can_omit_engine(snapshot):
     core = generate_stubs.render(snapshot)["core.pyi"]
     search_overloads = core.split("def search(")[1:]
-    assert any("engine:" not in overload.split(") ->")[0] and "q: _Scalar" in overload for overload in search_overloads)
+    assert any("engine:" not in overload.split(") ->")[0] and "q: Optional[_Scalar]" in overload for overload in search_overloads)
 
 
 def test_check_reports_stale_files(snapshot, tmp_path, capsys):

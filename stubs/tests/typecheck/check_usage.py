@@ -21,6 +21,7 @@ if TYPE_CHECKING:
 client = Client(api_key="secret", timeout=20)
 
 assert_type(client.search(engine="google", q="coffee"), SerpResults)
+assert_type(client.search(q="coffee", location=None, start=None, tbs=("a", "b")), SerpResults)
 assert_type(client.search(q="coffee", location="Austin, Texas", no_cache=True), SerpResults)
 assert_type(client.search(engine="bing", q="coffee", output="html"), str)
 assert_type(client.search(engine="bing", q="coffee", mkt="en-US", cc="us", safeSearch="Moderate"), SerpResults)
@@ -78,7 +79,7 @@ def json_overrides_text(
     assert_type(client.search_archive(archive, output="json"), SerpResults)
     assert_type(serpapi.search(search, output="json"), SerpResults)
 
-typed: "GoogleJsonSearchParams" = {"engine": "google", "q": "coffee", "device": "mobile"}
+typed: "GoogleJsonSearchParams" = {"engine": "google", "q": "coffee", "device": None, "api_key": None, "tbs": ["a", "b"]}
 assert_type(client.search(typed), SerpResults)
 assert_type(client.search(typed, start=10), Union[SerpResults, Any])
 

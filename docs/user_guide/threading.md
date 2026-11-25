@@ -5,7 +5,7 @@ description: "Run several independent searches at the same time with ThreadPoolE
 
 # Threading
 
-Search requests spend time waiting for network responses. Threads let your program make another request while one is waiting. Use them for independent searches, such as running the same query in several countries.
+Search requests spend time waiting for network responses. Threads let your program make another request while one is waiting. Use them for independent searches, such as running the same query in several countries. If your program uses `asyncio`, run searches at the same time with [`serpapi.AsyncClient`](async-client.md) instead.
 
 ## ThreadPoolExecutor Example
 

@@ -144,6 +144,26 @@ def test_sdk_version_flag_prints_the_sdk_version(capsys):
     assert capsys.readouterr().out == release_version.read_sdk_version() + "\n"
 
 
+@pytest.mark.parametrize(
+    ("releases", "expected"),
+    [
+        ({"1.3.0": [{"yanked": False}]}, "true"),
+        ({"1.3.0": [{"yanked": True}]}, "false"),
+        ({"1.3.0": [], "1.3.1": [{}]}, "false"),
+        ({"1.2.0": [{}]}, "false"),
+    ],
+)
+def test_sdk_published_checks_the_sdk_not_the_stub_series(monkeypatch, capsys, releases, expected):
+    def sdk_index(request, timeout):
+        assert request.full_url == "https://pypi.org/pypi/serpapi/json"
+        return io.BytesIO(json.dumps({"releases": releases}).encode())
+
+    monkeypatch.setattr(release_version, "urlopen", sdk_index)
+    monkeypatch.setattr(release_version, "read_sdk_version", lambda: "1.3.0")
+    assert release_version.main(["--sdk-published"]) == 0
+    assert capsys.readouterr().out == expected + "\n"
+
+
 def test_non_final_sdk_version_fails_with_a_message(monkeypatch, capsys):
     def non_final():
         raise ValueError("SDK version '1.3.0rc1' is not a final X.Y.Z release")

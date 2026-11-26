@@ -173,7 +173,7 @@ results = client.search_archive(search_id=search_id)
 print(results["search_metadata"]["status"])
 ```
 
-If the search is still processing, retrieve it again later. See the [async search guide](https://serpapi-python.readthedocs.io/en/latest/user_guide/async-search-archive.html) for polling with HTTP timeouts and a deadline.
+If the search is still processing, retrieve it again later. See the [async search guide](https://serpapi-python.readthedocs.io/en/latest/user_guide/async-search-archive.html) for polling with HTTP timeouts and a deadline, and for polling a batch of searches.
 
 ## Async client
 

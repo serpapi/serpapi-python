@@ -1,6 +1,27 @@
 Release History
 ===============
 
+1.3.0 (2026-11-24)
+------------------
+
+- Add `serpapi.AsyncClient` for `asyncio` applications. It has the same methods and API parameters as `serpapi.Client`;
+  call them with `await`. It requires Python 3.11 or later and the new `async` extra, `pip install "serpapi[async]"`,
+  which installs httpx2 (`>=2.16.1,<3`).
+- Add `serpapi.AsyncSerpResults`, the async counterpart of `SerpResults`. Fetch more pages with
+  `await results.next_page()` or `async for page in results.yield_pages()`.
+- `serpapi.Client` still uses `requests` and supports Python 3.6 or later. Existing code works without changes.
+- Add the Async Client guide to the documentation, and revise the README and the Async Search Archive guide.
+- CI and release test jobs set up Python with uv, which keeps Python 3.8 and 3.9 in the test matrix.
+- Documentation publishing: a tag for the newest stable release now rebuilds `latest` as well as `stable` on Read the
+  Docs.
+
+1.2.0 (2026-10-30)
+------------------
+
+- Add Extract API support through `client.extract()` and `serpapi.extract()` for scraping, URL discovery, and crawling.
+- Add Extract API documentation, examples, and tests.
+- Add Python 3.15 to the test matrix.
+
 1.1.2 (2026-09-15)
 ------------------
 

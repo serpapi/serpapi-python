@@ -1,3 +1,4 @@
+import json
 import os
 import subprocess
 import sys
@@ -89,6 +90,44 @@ except AssertionError:
         assert "private-test-key" not in report.read_text()
 
 
+def test_doc_runner_checks_async_client_requests(tmp_path):
+    pytest.importorskip("httpx2")
+    code = """
+import asyncio
+import httpx2
+
+async def fake_send(self, request, **kwargs):
+    if request.url.params['engine'] == 'google':
+        payload = {'organic_results': [{'title': 'Coffee'}]}
+    else:
+        payload = {'error': 'No results'}
+    return httpx2.Response(200, json=payload, request=request)
+
+httpx2.AsyncClient.send = fake_send
+
+async def main():
+    async with serpapi.AsyncClient(api_key='secret_api_key') as client:
+        results = await asyncio.gather(
+            client.search(engine='google', q='coffee'),
+            client.search(engine='bing', q='coffee'),
+            return_exceptions=True,
+        )
+    assert results[0]['organic_results'][0]['title'] == 'Coffee'
+    assert isinstance(results[1], AssertionError)
+
+asyncio.run(main())
+"""
+    page = markdown_page(tmp_path, code)
+    with pytest.raises(RuntimeError, match="bing: AssertionError: No results"):
+        run_page(page, tmp_path / "run", "test-key")
+    records = [
+        json.loads(line)
+        for report in (tmp_path / "run" / "requests").glob("*.jsonl")
+        for line in report.read_text().splitlines()
+    ]
+    assert {record["engine"]: record["ok"] for record in records} == {"google": True, "bing": False}
+
+
 def test_doc_runner_rejects_examples_without_requests(tmp_path):
     page = markdown_page(tmp_path, "if __name__ == 'docs_examples':\n    client.search(q='coffee')")
     with pytest.raises(RuntimeError, match="without making a SerpApi request"):
@@ -109,6 +148,39 @@ def test_doc_response_check_rejects_json_for_text_output(output):
     response._content = b'{"organic_results": [{"title": "Coffee"}]}'
     with pytest.raises(AssertionError, match="nonempty string"):
         validate_response(response, "/search", {"output": output})
+
+
+@pytest.mark.parametrize(
+    "start, overrides, accepted",
+    [
+        pytest.param(70, {}, True, id="empty-final-page"),
+        pytest.param(0, {}, False, id="empty-first-page"),
+        pytest.param(70, {"search_metadata": {"status": "Error"}}, False,
+                     id="failed-search"),
+        pytest.param(70, {"error": "Failed to fetch results"}, False,
+                     id="different-error"),
+        pytest.param(70, {"serpapi_pagination": {"next": "https://serpapi.com/search?start=80"}},
+                     False, id="not-final-page"),
+    ],
+)
+def test_doc_response_check_handles_empty_google_pagination(start, overrides, accepted):
+    payload = {
+        "search_metadata": {"status": "Success"},
+        "search_information": {"organic_results_state": "Fully empty"},
+        "error": "Google hasn't returned any results for this query.",
+    }
+    payload.update(overrides)
+    response = requests.Response()
+    response.status_code = 200
+    response.headers["Content-Type"] = "application/json"
+    response._content = json.dumps(payload).encode()
+    params = {"engine": "google", "start": str(start)}
+
+    if accepted:
+        validate_response(response, "/search.json", params)
+    else:
+        with pytest.raises(AssertionError):
+            validate_response(response, "/search.json", params)
 
 
 def test_doc_gate_fails_without_a_key():

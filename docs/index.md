@@ -35,7 +35,7 @@ uv add serpapi
 
 ::::
 
-The package requires Python 3.6 or newer.
+The package requires Python 3.6 or newer. To send requests with `asyncio` and `await`, install `serpapi[async]` on Python 3.11 or newer and use [`serpapi.AsyncClient`](user_guide/async-client.md).
 
 ## First Request
 
@@ -90,10 +90,12 @@ Use the same search parameter names as the [SerpApi API documentation](https://s
 - [Getting Started](user_guide/getting-started.md) covers installation and your first search. [Client Usage](user_guide/client-usage.md) explains how to make requests and read responses.
 - [AI Agents](ai-agents.md) covers search tools, Markdown results, and API references for agents.
 - [Output Formats](user_guide/output-formats.md) explains when to use JSON, Markdown, or HTML.
+- [Extract API](user_guide/extract.md) covers page content in Markdown or JSON, URL discovery, and crawling.
 - [Migration Guide](user_guide/migrating-from-google-search-results.md) shows how to replace `google-search-results` with this package.
 - [Parameters and Engines](user_guide/parameters-and-engines.md) explains search parameters and how to test them in the [SerpApi Playground](https://serpapi.com/playground).
 - For scripts that collect results, see [pagination](user_guide/pagination.md), [timeouts and errors](user_guide/errors-and-timeouts.md), [request options](user_guide/request-options.md), and [account and locations](user_guide/account-and-locations.md).
 - For searches you retrieve later, selected response fields, and data retention settings, see [Async Search Archive](user_guide/async-search-archive.md), [JSON Restrictor](user_guide/json-restrictor.md), and [Zero Trace](user_guide/zero-trace.md).
+- [Async Client](user_guide/async-client.md) covers `serpapi.AsyncClient`, which runs searches at the same time with `asyncio` and `await`.
 - [Examples](examples/index.md) includes searches for web pages, AI answers, local businesses, products, travel, finance, trends, jobs, media, apps, and research.
 
 ```{toctree}
@@ -113,6 +115,7 @@ user_guide/client-usage
 User Guide Overview <user_guide/index>
 user_guide/parameters-and-engines
 user_guide/output-formats
+user_guide/extract
 user_guide/pagination
 user_guide/errors-and-timeouts
 user_guide/account-and-locations
@@ -132,6 +135,7 @@ user_guide/migrating-from-google-search-results
 :caption: Advanced Usage
 
 user_guide/async-search-archive
+user_guide/async-client
 user_guide/threading
 user_guide/multiprocessing
 user_guide/zero-trace

@@ -20,7 +20,7 @@ autodoc_member_order = "bysource"
 autodoc_default_options = {
     "members": True,
     "imported-members": True,
-    "exclude-members": "HTTPClient, from_http_response",
+    "exclude-members": "HTTPClient, AsyncHTTPClient, from_http_response",
 }
 
 html_theme = "sphinx_rtd_theme"

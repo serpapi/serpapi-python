@@ -5,7 +5,9 @@ description: "Use the SerpApi client, module helpers, request options, and respo
 
 # Client Usage
 
-Create a `serpapi.Client` to reuse your API key, timeout, and HTTP connection settings across requests.
+Create a `serpapi.Client` to reuse your API key, timeout, and HTTP connection settings across requests. If your program uses `asyncio`, [`serpapi.AsyncClient`](async-client.md) has the same methods for use with `await`.
+
+See [Migrating from Sync to Async](async-client.md#migrating-from-sync-to-async) for a before-and-after example and the [current client differences](async-client.md#differences-from-client).
 
 ## Create a Client
 
@@ -41,7 +43,7 @@ params = {
 results = client.search(params)
 ```
 
-You can combine a dictionary with keyword arguments. The client adds the keyword arguments to the dictionary and replaces existing values with the same name:
+You can combine a dictionary with keyword arguments. Keyword arguments override matching search parameters for this request only. The client leaves your dictionary unchanged, so you can reuse it for another search:
 
 ```python
 params = {"engine": "google", "q": "coffee"}
@@ -86,7 +88,7 @@ locations = client.locations(q="Austin", limit=3)
 
 ## Request Options
 
-`search()`, `search_archive()`, `account()`, and `locations()` pass these keyword arguments to the underlying `requests` call:
+`search()`, `extract()`, `search_archive()`, `upload_image()`, `account()`, and `locations()` pass these keyword arguments to the underlying `requests` call:
 
 | Option | Use |
 | --- | --- |
@@ -148,10 +150,13 @@ For one additional page, call `next_page()`:
 next_results = results.next_page()
 ```
 
-Use `yield_pages()` in a loop to read the current page and fetch more pages. This example stops after ten pages, or earlier if there is no next page:
+Use `yield_pages()` in a loop to read the current page and fetch more pages. This example reads up to ten pages and stops if a page contains an `error` message:
 
 ```python
 for page_number, page in enumerate(results.yield_pages(max_pages=10), start=1):
+    if "error" in page:
+        print(page["error"])
+        break
     current = page.get("serpapi_pagination", {}).get("current", page_number)
     print(current)
 ```

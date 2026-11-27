@@ -5,12 +5,32 @@ import textwrap
 from pathlib import Path
 
 import pytest
+from packaging.requirements import Requirement
+from packaging.version import Version
+
+from release_version import FINAL_RELEASE, read_sdk_version
 
 STUBS_ROOT = Path(__file__).resolve().parent.parent
 
 
 def test_license_matches_the_sdk_license():
     assert (STUBS_ROOT / "LICENSE").read_bytes() == (STUBS_ROOT.parent / "LICENSE").read_bytes()
+
+
+def test_stubs_declare_their_supported_sdk_range():
+    import tomllib
+
+    project = tomllib.loads((STUBS_ROOT / "pyproject.toml").read_text())["project"]
+    sdk, = (req for req in map(Requirement, project["dependencies"]) if req.name == "serpapi")
+    current = Version(read_sdk_version())
+    raw_floor, = (spec.version for spec in sdk.specifier if spec.operator == ">=")
+    floor = Version(raw_floor)
+    assert FINAL_RELEASE.fullmatch(raw_floor) and raw_floor == str(floor), (
+        f"Use the full SDK tag version X.Y.Z without leading zeros, not {raw_floor!r}"
+    )
+    assert floor.major == current.major
+    assert current in sdk.specifier
+    assert sdk == Requirement(f"serpapi>={floor},<{current.major + 1}")
 
 
 def test_release_compares_every_path_that_starts_it():
@@ -44,22 +64,22 @@ def git_repo(tmp_path):
     return repo, env, git
 
 
-@pytest.mark.parametrize("maintainer, regenerated", [(True, False), (True, True), (False, False)])
+@pytest.mark.parametrize("correction, regenerated", [("before_fetch", False), ("before_fetch", True), ("after_fetch", False), (None, False)])
 @pytest.mark.parametrize("bot_followup", [False, True])
-def test_refresh_preserves_maintainer_prs(tmp_path, git_repo, maintainer, regenerated, bot_followup):
+def test_refresh_preserves_maintainer_prs(tmp_path, git_repo, correction, regenerated, bot_followup):
     workflow = (STUBS_ROOT.parent / ".github" / "workflows" / "stubs-refresh.yml").read_text(encoding="utf-8")
     script = textwrap.dedent(workflow.rsplit("        run: |\n", 1)[1])
     script = script.replace("${{ github.event.repository.default_branch }}", "master")
     calls = tmp_path / "gh-calls"
     repo, env, git = git_repo
-    env.update(BRANCH="bot/refresh-serpapi-stubs", GH_CALLS=str(calls))
+    env.update(BRANCH="bot/refresh-serpapi-stubs", GH_CALLS=str(calls), LATE_TIP="")
     (repo / "stubs").mkdir()
     stub = repo / "stubs" / "example.pyi"
     stub.write_text("original\n", encoding="utf-8")
     git("add", "stubs")
     git("commit", "--quiet", "-m", "Base")
     git("switch", "--quiet", "-c", env["BRANCH"])
-    if maintainer:
+    if correction == "before_fetch":
         env["GIT_AUTHOR_NAME"] = env["GIT_COMMITTER_NAME"] = "Maintainer"
     stub.write_text("reviewed correction\n", encoding="utf-8")
     git("commit", "--quiet", "-am", "Correct stubs")
@@ -68,29 +88,48 @@ def test_refresh_preserves_maintainer_prs(tmp_path, git_repo, maintainer, regene
         stub.write_text("reviewed correction\nbot followup\n", encoding="utf-8")
         git("commit", "--quiet", "-am", "Bot followup")
     tip = git("rev-parse", "HEAD")
+    if correction == "after_fetch":
+        # Prepare a real correction without moving the remote branch until the workflow has fetched it.
+        git("switch", "--quiet", "--detach", tip)
+        env["GIT_AUTHOR_NAME"] = env["GIT_COMMITTER_NAME"] = "Maintainer"
+        stub.write_text("concurrent maintainer correction\n", encoding="utf-8")
+        git("commit", "--quiet", "-am", "Concurrent correction")
+        env["LATE_TIP"] = git("rev-parse", "HEAD")
     git("switch", "--quiet", "master")
     git("remote", "add", "origin", str(repo))
     if regenerated:
         stub.write_text("new generated metadata\n", encoding="utf-8")
 
-    # Stub only GitHub calls; all branch inspection uses a real, local Git repository.
-    gh = """
+    prelude = """
+git() {
+  command git "$@" || return
+  if [ "$1" = fetch ] && [ -n "$LATE_TIP" ]; then
+    command git update-ref "refs/heads/$BRANCH" "$LATE_TIP" FETCH_HEAD
+  fi
+}
 gh() {
   printf '%s\\n' "$*" >> "$GH_CALLS"
   if [ "$1 $2" = "pr list" ]; then printf '42\\n'; fi
 }
 """
     result = subprocess.run(
-        ["bash", "-e", "-c", gh + script], cwd=repo, env=env, capture_output=True, text=True
+        ["bash", "-e", "-c", prelude + script], cwd=repo, env=env, capture_output=True, text=True
     )
-    assert result.returncode == 0, result.stderr
     commands = calls.read_text(encoding="utf-8").splitlines()
-    assert git("rev-parse", env["BRANCH"]) == tip
-    if maintainer:
+    if correction == "after_fetch":
+        assert len(commands) == 1, commands  # Only the initial PR lookup; no close or comment.
+        assert git("rev-parse", env["BRANCH"]) == env["LATE_TIP"]
+        assert result.returncode != 0, result.stdout
+        return
+    assert result.returncode == 0, result.stderr
+    if correction == "before_fetch":
+        assert git("rev-parse", env["BRANCH"]) == tip
         assert len(commands) == 1, commands
         assert "left unchanged" in result.stdout
     else:
-        assert any(command.startswith("pr close 42 ") and "--delete-branch" in command for command in commands)
+        assert not git("ls-remote", "origin", f"refs/heads/{env['BRANCH']}")
+        assert "pr close 42" in commands
+        assert any(command.startswith("pr comment 42 --body ") for command in commands)
 
 
 @pytest.mark.parametrize(

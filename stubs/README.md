@@ -2,23 +2,23 @@
 
 Type stubs for [`serpapi`](https://pypi.org/project/serpapi/), the official SerpApi Python client. They describe the parameters of every SerpApi engine, so mypy, pyright, and IDEs can autocomplete parameter names and flag typos or invalid option values before a request is sent.
 
-The stubs are typing-only. They do not change runtime behavior.
+The stub files are used by type checkers and IDEs, not by the running SDK.
 
 ## Installation
 
 SDK 1.3.0 includes `AsyncClient` but predates the `typing` extra. Install the stubs alongside that SDK:
 
 ```sh
-pip install "serpapi==1.3.0" "serpapi-stubs==1.3.0.*"
+pip install "serpapi==1.3.0" "serpapi-stubs>=1,<2"
 ```
 
-For async support on Python 3.11+, keep the same stub pin and add the SDK's `async` extra:
+For async support on Python 3.11+, add the SDK's `async` extra:
 
 ```sh
-pip install "serpapi[async]==1.3.0" "serpapi-stubs==1.3.0.*"
+pip install "serpapi[async]==1.3.0" "serpapi-stubs>=1,<2"
 ```
 
-Starting with the SDK release that includes the `typing` extra, use `pip install "serpapi[typing]"` or `pip install "serpapi[async,typing]"`. The extra selects the matching stub series automatically.
+Starting with the SDK release that includes the `typing` extra, use `pip install "serpapi[typing]"` or `pip install "serpapi[async,typing]"`. A fresh install selects the newest compatible stubs; a plain SDK install does not request them.
 
 Requests 2.34 and later includes its own types. On Python 3.10+ with Requests pinned below 2.34, install a compatible `types-requests` separately. On older Python versions the stubs install it automatically.
 
@@ -85,15 +85,17 @@ The Playground sometimes uses UI-specific values rather than the API values (for
 
 ## Versions
 
-Stub versions use the SDK version they describe, followed by the UTC release date. For example, `1.3.0.YYYYMMDD` identifies stubs for SDK 1.3.0. A second release that day adds `.1`; later releases increment the highest published suffix for that SDK and date rather than filling gaps.
+Stub versions start with the SDK version used to build them, followed by the UTC release date, for example `1.3.0.YYYYMMDD`. The prefix identifies the build, not the oldest compatible SDK. A second release that day adds `.1`; later releases increment the highest published suffix for that SDK and date rather than filling gaps.
 
-Stub releases currently support final numeric SDK versions only (`X.Y.Z`). Prerelease, post-release, and development SDK versions are not supported by the stub versioning scheme or its exact-series extra pin.
+Stub releases can only be built from final numeric SDK versions (`X.Y.Z`).
 
-`serpapi[typing]` requires `serpapi-stubs==<SDK version>.*`, so you get stub updates for your SDK version only. New stubs are published with each SDK release and whenever parameter metadata changes between SDK releases.
+The 1.x SDK's `typing` extra requests `serpapi-stubs>=1,<2`. Each stub wheel declares the SDK versions it supports (currently `serpapi>=1.3.0,<2`). New engine parameters can reach older SDKs without a runtime upgrade. If a later stub wheel needs a new client method, its minimum SDK goes up: a fresh install with the older SDK pinned selects the newest wheel that still supports it.
 
-A stub update can add, remove, or narrow parameters as SerpApi engines change. That can make code that passed type checking fail it, but runtime behavior never changes. To control when you take these updates, pin the full installed `serpapi-stubs` version or use a lockfile.
+A stub update can add, remove, or narrow parameters as SerpApi engines change. Code that previously passed type checking can then fail the check even if the SDK hasn't changed.
 
-If a broken stub release is the only installable one for its SDK version, maintainers publish a replacement before yanking it so the SDK's typing extra remains installable.
+Installing or upgrading `serpapi-stubs` on its own can also upgrade `serpapi` to satisfy the wheel's requirements. To keep the SDK fixed while refreshing stubs, pin it in the same command, for example `pip install --upgrade "serpapi==1.3.0" "serpapi-stubs>=1,<2"`, or supply an SDK pin in a constraints file. To freeze both versions, use a lockfile.
+
+Before yanking a broken stub release, maintainers make sure every affected supported SDK still has an installable alternative.
 
 ## Development
 

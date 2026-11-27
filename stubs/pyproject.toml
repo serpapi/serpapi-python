@@ -12,6 +12,7 @@ license-files = ["LICENSE"]
 authors = [{ name = "SerpApi", email = "support@serpapi.com" }]
 requires-python = ">=3.6"
 dependencies = [
+  "serpapi>=1.3.0,<2",
   "typing-extensions",
   "types-requests; python_version < '3.10'",
 ]

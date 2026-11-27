@@ -40,7 +40,7 @@ classifiers = [
 
 [project.optional-dependencies]
 color = ["pygments"]
-typing = ["serpapi-stubs==1.3.0.*"]
+typing = ["serpapi-stubs>=1,<2"]
 async = ["httpx2>=2.16.1,<3; python_version >= '3.11'"]
 test = [
   "pytest",

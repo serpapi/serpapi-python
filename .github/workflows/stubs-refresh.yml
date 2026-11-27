@@ -72,8 +72,12 @@ jobs:
           if [ -z "$(git status --porcelain -- stubs/)" ]; then
             echo "Stubs are up to date."
             if [ -n "$open_pr" ]; then
-              gh pr close "$open_pr" --delete-branch \
-                --comment "Closing this refresh PR because the generated stubs now match the default branch."
+              # Delete only the tip we inspected. If a maintainer pushed since the fetch,
+              # the lease fails and the step stops before closing their PR.
+              git push --force-with-lease="refs/heads/$BRANCH:$branch_tip" origin ":refs/heads/$BRANCH"
+              gh pr close "$open_pr"
+              # Deleting the head can already have closed the PR, so comment separately.
+              gh pr comment "$open_pr" --body "Closed this refresh PR because the generated stubs now match the default branch."
             fi
             exit 0
           fi

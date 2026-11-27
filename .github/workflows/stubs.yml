@@ -28,6 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-python@v6
         with:
@@ -80,3 +82,32 @@ jobs:
       - name: Type-check usage samples with pyright
         working-directory: ${{ runner.temp }}/stub-consumer
         run: pyright
+
+      - name: Compare the stub wheel with its oldest supported SDK
+        working-directory: ${{ runner.temp }}/stub-consumer
+        shell: bash
+        run: |
+          floor=$(python - <<'PY'
+          from importlib.metadata import requires
+          from packaging.requirements import Requirement
+
+          sdk, = (r for r in map(Requirement, requires("serpapi-stubs")) if r.name == "serpapi")
+          floor, = (s.version for s in sdk.specifier if s.operator == ">=")
+          print(floor)
+          PY
+          )
+          tag="refs/tags/v$floor"
+          if ! git -C "$GITHUB_WORKSPACE" show-ref --verify --quiet "$tag"; then
+            # Before a new minimum SDK is tagged, the checkout is the only copy available.
+            if [ "$floor" = "$(python -c 'from importlib.metadata import version; print(version("serpapi"))')" ]; then
+              echo "SDK $floor is not tagged yet; stubtest checked the current SDK above."
+              exit 0
+            fi
+            echo "::error::Missing minimum SDK tag v$floor"
+            exit 1
+          fi
+          sdk_dir="$RUNNER_TEMP/minimum-sdk"
+          mkdir -p "$sdk_dir"
+          git -C "$GITHUB_WORKSPACE" archive "$tag" | tar -x -C "$sdk_dir"
+          python -m pip install "${sdk_dir}[async]" "$GITHUB_WORKSPACE"/stubs/dist/*.whl
+          python -m mypy.stubtest serpapi --allowlist "$GITHUB_WORKSPACE/stubs/tests/stubtest_allowlist.txt"

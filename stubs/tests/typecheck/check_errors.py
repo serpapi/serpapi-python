@@ -1,12 +1,15 @@
 """Calls that must be rejected. Each `# type: ignore` must be needed (unused ignores fail the check)."""
 
 from types import MappingProxyType
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any, Dict, Union
 
 import serpapi
 
 if TYPE_CHECKING:
-    from serpapi.engine_params import ExtractJsonParams, GoogleJsonSearchParams, SearchArchiveTextParams
+    from serpapi.engine_params import (
+        BingJsonSearchParams, ExtractJsonParams, GoogleJsonSearchParams, GoogleTextSearchParams,
+        SearchArchiveJsonParams, SearchArchiveTextParams, SearchParams,
+    )
 
 client = serpapi.Client(api_key="secret")
 
@@ -36,3 +39,21 @@ typo: "GoogleJsonSearchParams" = {"engine": "google", "qq": "coffee"}  # type: i
 bad_output: "GoogleJsonSearchParams" = {"engine": "google", "q": "coffee", "output": "md"}  # type: ignore
 no_url: "ExtractJsonParams" = {"timeout": 30000}  # type: ignore
 no_search_id: "SearchArchiveTextParams" = {"output": "md"}  # type: ignore
+
+
+def incompatible_outputs(
+    text: "GoogleTextSearchParams", json: "GoogleJsonSearchParams", bing: "BingJsonSearchParams",
+    archive_text: "SearchArchiveTextParams", archive_json: "SearchArchiveJsonParams", unknown: "SearchParams",
+) -> None:
+    client.search(text, output="json")  # type: ignore
+    serpapi.search(json, start=10, output="md")  # type: ignore
+    client.search(bing, output="json_with_pixel_position")  # type: ignore
+    client.search_archive(archive_json, output="html")  # type: ignore
+    serpapi.search_archive(archive_text, output="json")  # type: ignore
+    client.search(unknown, output="md")  # type: ignore
+    client.search(unknown, timeout="30")  # type: ignore
+
+
+def unsafe_overrides(params: "Union[SearchParams, Dict[str, Any]]", text: "GoogleTextSearchParams", options: Dict[str, int]) -> None:
+    serpapi.search(params, output="json")  # type: ignore
+    client.search(text, **options)  # type: ignore

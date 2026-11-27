@@ -117,19 +117,19 @@ def test_rendered_stubs_are_valid_and_cover_engine_shapes(snapshot):
 
 
 def fallbacks(core, function, definition="def"):
-    """The (signature, return type) of each `**kwargs` overload of a client method, in order."""
+    """The (signature, return type) of each untyped mapping fallback, in order."""
     found = []
     for overload in core.split(f"    {definition} {function}(")[1:]:
         signature, _, rest = overload.partition(") -> ")
-        if "**kwargs: Any," in signature:
+        if "params: Mapping[" in signature or "params: MutableMapping[" in signature:
             found.append((signature, rest.split(":")[0]))
     return found
 
 
 def test_only_extract_accepts_read_only_mappings(snapshot):
     core = generate_stubs.render(snapshot)["core.pyi"]
-    assert "params: Union[SearchParams, MutableMapping[str, Any]]," in fallbacks(core, "search")[-1][0]
-    assert "params: Union[SearchArchiveParams, MutableMapping[str, Any]]," in fallbacks(core, "search_archive")[-1][0]
+    assert "params: MutableMapping[str, Any]," in fallbacks(core, "search")[-1][0]
+    assert "params: MutableMapping[str, Any]," in fallbacks(core, "search_archive")[-1][0]
     assert "params: Mapping[str, Any]," in fallbacks(core, "extract")[-1][0]
     assert "def locations(params: Optional[MutableMapping[str, Any]] = None" in core
 

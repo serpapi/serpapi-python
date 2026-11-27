@@ -103,6 +103,8 @@ client = serpapi.Client(api_key=os.environ["SERPAPI_KEY"], timeout=20)
 try:
     results = client.search(engine="google", q="coffee", timeout=(3, 20))
     for page in results.yield_pages(max_pages=2):
+        if isinstance(page, str):
+            break
         print(len(page.get("organic_results", [])))
 finally:
     client.session.close()
@@ -123,6 +125,8 @@ async def main():
     async with serpapi.AsyncClient(api_key=os.environ["SERPAPI_KEY"], timeout=20) as client:
         results = await client.search(engine="google", q="coffee", timeout=(3, 20))
         async for page in results.yield_pages(max_pages=2):
+            if isinstance(page, str):
+                break
             print(len(page.get("organic_results", [])))
 
 
@@ -257,10 +261,13 @@ async def main():
         results = await client.search(engine="google", q="coffee", location="Austin, Texas")
 
         next_results = await results.next_page()
-        if next_results:
+        if isinstance(next_results, serpapi.AsyncSerpResults):
             print(len(next_results.get("organic_results", [])))
 
         async for page in results.yield_pages(max_pages=3):
+            if isinstance(page, str):
+                print(page)
+                break
             current = page.get("serpapi_pagination", {}).get("current")
             print(current, len(page.get("organic_results", [])))
 
@@ -268,7 +275,9 @@ async def main():
 asyncio.run(main())
 ```
 
-`next_page()` returns `None` when there is no next page. Each page's URL comes from the previous page, so `yield_pages()` fetches one page at a time. To fetch several Google pages at once, pass each page's `start` value to `search()` with `asyncio.gather()`. See [Google `start` Offsets](pagination.md#google-start-offsets).
+`next_page()` returns `None` when there is no next page, or raw text if the next response is HTML, Markdown, or invalid JSON. If `yield_pages()` yields a string, break after handling it: the SDK cannot read a next-page link from text.
+
+`yield_pages()` fetches one page at a time because each URL comes from the previous page. To fetch several Google pages at once, pass each page's `start` value to `search()` with `asyncio.gather()`. See [Google `start` Offsets](pagination.md#google-start-offsets).
 
 ## Request Options
 

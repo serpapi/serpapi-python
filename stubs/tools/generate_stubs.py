@@ -257,10 +257,18 @@ def keyword_overloads(
     return lines
 
 
+def typed_mapping_overload(
+    function: str, surface: Surface, params_type: str, result: str, *, output: str | None = None
+) -> list[str]:
+    params = [f"params: {params_type}", "*", *(f"{name}: {typ} = ..." for name, typ in surface.options)]
+    if output is not None:
+        params.extend([f"output: {output} = ...", "**kwargs: Any"])
+    return overload(function, surface, params, result)
+
+
 def mapping_overloads(function: str, surface: Surface, json_type: str, text_type: str) -> list[str]:
-    options = ["*"] + [f"{name}: {typ} = ..." for name, typ in surface.options]
-    lines = overload(function, surface, [f"params: {text_type}", *options], "str")
-    lines.extend(overload(function, surface, [f"params: {json_type}", *options], surface.result))
+    lines = typed_mapping_overload(function, surface, text_type, "str")
+    lines.extend(typed_mapping_overload(function, surface, json_type, surface.result))
     return lines
 
 
@@ -284,8 +292,23 @@ def search_overloads(engines: list[Engine], surface: Surface) -> list[str]:
         if not engine.engine_required:
             lines.extend(keyword_overloads("search", surface, list(engine.params), engine.json_output))
     # The engine in an untyped mapping is unknown, so the fallback takes every JSON output value.
-    params_type = surface.mapping if surface == ASYNC_CLIENT else f"Union[SearchParams, {surface.mapping}]"
-    lines.extend(fallback_overload("search", surface, params_type, PIXEL_POSITION_OUTPUT))
+    lines.extend(fallback_overload("search", surface, surface.mapping, PIXEL_POSITION_OUTPUT))
+    if surface != ASYNC_CLIENT:
+        # Sync search mutates its input. Group safe overrides by format *after* the raw
+        # mapping overloads so mypy need not infer dict(params) once per engine.
+        lines.extend(typed_mapping_overload("search", surface, "_TextSearchParams", "str", output=TEXT_OUTPUT))
+        lines.extend(typed_mapping_overload("search", surface, "_JsonSearchParams", surface.result, output=JSON_OUTPUT))
+        pixel = [engine.json_params for engine in engines if engine.name in PIXEL_POSITION_ENGINES]
+        if pixel:
+            lines.extend(typed_mapping_overload(
+                "search", surface, f"Union[{', '.join(pixel)}]", surface.result, output=PIXEL_POSITION_OUTPUT
+            ))
+        # Pyright cannot expand SearchParams across hundreds of overloads. Preserve
+        # unions with raw mappings too, but do not let either case overwrite output.
+        lines.extend(typed_mapping_overload("search", surface, "SearchParams", f"Union[{surface.result}, str]", output="Never"))
+        lines.extend(typed_mapping_overload(
+            "search", surface, f"Union[SearchParams, {surface.mapping}]", f"Union[{surface.result}, Any]", output="Never"
+        ))
     return lines
 
 
@@ -297,10 +320,15 @@ def extract_overloads(extract: Engine, surface: Surface) -> list[str]:
 
 
 def archive_overloads(surface: Surface) -> list[str]:
-    lines = mapping_overloads("search_archive", surface, "SearchArchiveJsonParams", "SearchArchiveTextParams")
+    if surface == ASYNC_CLIENT:
+        lines = mapping_overloads("search_archive", surface, "SearchArchiveJsonParams", "SearchArchiveTextParams")
+    else:
+        lines = typed_mapping_overload("search_archive", surface, "SearchArchiveTextParams", "str", output=TEXT_OUTPUT)
+        lines.extend(typed_mapping_overload(
+            "search_archive", surface, "SearchArchiveJsonParams", surface.result, output=PIXEL_POSITION_OUTPUT
+        ))
     lines.extend(keyword_overloads("search_archive", surface, list(ARCHIVE_PARAMS), PIXEL_POSITION_OUTPUT))
-    params_type = surface.mapping if surface == ASYNC_CLIENT else f"Union[SearchArchiveParams, {surface.mapping}]"
-    lines.extend(fallback_overload("search_archive", surface, params_type, PIXEL_POSITION_OUTPUT))
+    lines.extend(fallback_overload("search_archive", surface, surface.mapping, PIXEL_POSITION_OUTPUT))
     return lines
 
 
@@ -330,7 +358,6 @@ def build_core_stub(engines: list[Engine]) -> str:
         "ExtractJsonParams",
         "ExtractTextParams",
         "SearchArchiveJsonParams",
-        "SearchArchiveParams",
         "SearchArchiveTextParams",
         "SearchParams",
         "_Flag",
@@ -341,7 +368,7 @@ def build_core_stub(engines: list[Engine]) -> str:
         HEADER,
         "from os import PathLike",
         "from typing import IO, Any, Dict, List, Mapping, MutableMapping, Optional, Sequence, Union, overload",
-        "from typing_extensions import Literal",
+        "from typing_extensions import Literal, Never",
         "",
         "from .engine_params import (",
         *(f"    {name}," for name in sorted(imported)),
@@ -349,11 +376,16 @@ def build_core_stub(engines: list[Engine]) -> str:
         "from .http import AsyncHTTPClient, HTTPClient, _AsyncCert, _AsyncProxies, _AsyncTimeout, _AsyncVerify, _Cert, _Proxies, _Timeout, _Verify",
         "from .models import AsyncSerpResults, SerpResults",
         "",
+    ]
+    for alias, names in (("_JsonSearchParams", (engine.json_params for engine in engines)),
+                         ("_TextSearchParams", (engine.text_params for engine in engines))):
+        lines += [f"{alias} = Union[", *(f"    {name}," for name in names), "]", ""]
+    lines.extend([
         "class Client(HTTPClient):",
         "    DASHBOARD_URL: str",
         "    def __init__(self, *, api_key: Optional[str] = None, timeout: _Timeout = None) -> None: ...",
         "    def __repr__(self) -> str: ...",
-    ]
+    ])
     lines.extend(f"    {line}" for line in functions(engines, CLIENT))
     lines.extend(["", "class AsyncClient(AsyncHTTPClient):", "    DASHBOARD_URL: str"])
     lines.extend(f"    {line}" for line in functions(engines, ASYNC_CLIENT))

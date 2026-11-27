@@ -3,7 +3,7 @@
 from types import MappingProxyType
 from typing import TYPE_CHECKING, Any, Dict, List, Union
 
-from typing_extensions import assert_type
+from typing_extensions import TypedDict, assert_type
 
 import serpapi
 from serpapi import Client, SerpResults
@@ -71,23 +71,42 @@ assert_type(client.extract(params, output="json"), SerpResults)
 assert_type(client.search_archive(params, output="json"), SerpResults)
 
 
-def json_overrides_text(
+def mapping_output_overrides(
     search: "GoogleTextSearchParams", extract: "ExtractTextParams", archive: "SearchArchiveTextParams"
 ) -> None:
-    assert_type(client.search(search, output="json"), SerpResults)
+    assert_type(client.search(search, output="html", start=10), str)
+    assert_type(client.search(dict(search), output="json"), SerpResults)
     assert_type(client.extract(extract, output="json"), SerpResults)
-    assert_type(client.search_archive(archive, output="json"), SerpResults)
-    assert_type(serpapi.search(search, output="json"), SerpResults)
+    assert_type(client.search_archive(archive, output="md"), str)
+    assert_type(serpapi.search_archive(dict(archive), output="json"), SerpResults)
 
 typed: "GoogleJsonSearchParams" = {"engine": "google", "q": "coffee", "device": None, "api_key": None, "tbs": ["a", "b"]}
 assert_type(client.search(typed), SerpResults)
-assert_type(client.search(typed, start=10), Union[SerpResults, Any])
+assert_type(client.search(typed, start=10), SerpResults)
+assert_type(serpapi.search(typed, output="json_with_pixel_position"), SerpResults)
 
 
 # Function parameters keep their declared union; a module-level assignment would be narrowed.
 def any_engine(params: "SearchParams", archive: "SearchArchiveParams") -> None:
+    assert_type(client.search(params), Union[SerpResults, str])
+    assert_type(serpapi.search(params, start=10), Union[SerpResults, str])
+    assert_type(client.search_archive(archive), Union[SerpResults, str])
+    assert_type(client.search(dict(params), output="json"), SerpResults)
+    assert_type(serpapi.search(dict(params), output="md"), str)
+    assert_type(client.search(dict(params), start=10), Union[SerpResults, Any])
+
+
+def typed_or_raw(params: "Union[SearchParams, Dict[str, Any]]") -> None:
     assert_type(client.search(params), Union[SerpResults, Any])
-    assert_type(client.search_archive(archive), Union[SerpResults, Any])
+    assert_type(serpapi.search(params, start=10), Union[SerpResults, Any])
+
+
+class StartOption(TypedDict):
+    start: int
+
+
+def known_overrides(params: "GoogleJsonSearchParams", options: StartOption) -> None:
+    assert_type(client.search(params, **options), SerpResults)
 
 
 assert_type(client.extract(url="https://example.com"), SerpResults)
@@ -98,9 +117,12 @@ assert_type(client.search_archive({"search_id": "abc", "output": "html"}), str)
 
 results = client.search(q="coffee")
 assert_type(results.next_page_url, Union[str, None])
-assert_type(results.next_page(), Union[SerpResults, None])
+assert_type(results.next_page(), Union[SerpResults, str, None])
 for page in results.yield_pages(max_pages=2):
-    assert_type(page, SerpResults)
+    assert_type(page, Union[SerpResults, str])
+    if isinstance(page, str):
+        break
+    assert_type(page.as_dict(), Dict[str, Any])
 assert_type(results.as_dict(), Dict[str, Any])
 
 assert_type(client.upload_image("photo.jpg"), Dict[str, Any])

@@ -3,7 +3,7 @@
 import ssl
 from pathlib import Path
 from types import MappingProxyType
-from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Optional, Union
+from typing import TYPE_CHECKING, Any, Dict, List, Mapping, Union
 
 import httpx2
 import requests
@@ -32,9 +32,11 @@ async def check_client(typed: "GoogleTextSearchParams", params: Mapping[str, Any
         assert_type(await client.upload_image(Path("photo.jpg")), Dict[str, Any])
         assert_type(await client.locations(params), List[Dict[str, Any]])
         assert_type(await client.account(params), Dict[str, Any])
-        assert_type(await result.next_page(), Optional[serpapi.AsyncSerpResults])
+        assert_type(await result.next_page(), Union[serpapi.AsyncSerpResults, str, None])
         async for page in result.yield_pages(max_pages=2):
-            assert_type(page, serpapi.AsyncSerpResults)
+            assert_type(page, Union[serpapi.AsyncSerpResults, str])
+            if isinstance(page, str):
+                break
             assert_type(page.as_dict(), Dict[str, Any])
         assert_type(client.session, httpx2.AsyncClient)
         response = await client.request("GET", "/search", params=params)

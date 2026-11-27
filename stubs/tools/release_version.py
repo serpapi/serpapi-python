@@ -36,14 +36,13 @@ def read_sdk_version(path: Path = SDK_VERSION_FILE) -> str:
 
 
 def next_version(sdk_version: str, date: datetime.date, existing: Iterable[str]) -> str:
-    published = set(existing)
     base = f"{sdk_version}.{date:%Y%m%d}"
-    if base not in published:
-        return base
-    serial = 1
-    while f"{base}.{serial}" in published:
-        serial += 1
-    return f"{base}.{serial}"
+    same_day = re.compile(rf"{re.escape(base)}(?:\.([0-9]+))?")
+    highest = max(
+        (int(match.group(1) or 0) for version in existing if (match := same_day.fullmatch(version))),
+        default=-1,
+    )
+    return base if highest == -1 else f"{base}.{highest + 1}"
 
 
 def has_published_series(sdk_version: str, existing: Iterable[str]) -> bool:

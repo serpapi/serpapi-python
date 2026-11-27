@@ -43,6 +43,9 @@ async def search_pages():
     async with serpapi.AsyncClient(api_key="...") as client:
         results = await client.search(engine="google", q="coffee")  # AsyncSerpResults
         async for page in results.yield_pages(max_pages=2):
+            if isinstance(page, str):
+                print(page)
+                break
             print(page.as_dict())
         html = await client.search(engine="bing", q="coffee", output="html")  # str
 ```
@@ -71,6 +74,8 @@ Notes:
 - Both clients raise `serpapi.HTTPError`. Use `exc.status_code` and `exc.error` for transport-independent details. The inherited request and response annotations describe Requests, but async errors can carry httpx2 objects. For transport-specific attributes, pass `exc.response` or `exc.request` to a helper whose parameter is typed `object`, then narrow it with `isinstance(response, httpx2.Response)` or `isinstance(request, httpx2.Request)`.
 - Keyword calls need literal `engine` and `output` values so the checker can select the engine's overload. A `str` variable, or `**` unpacking of a `Dict[str, str]`, is rejected. When either value is computed at runtime, pass a params dict, or type the value as `Literal` or `Final`.
 - A `dict` variable that is not annotated with a parameter type gives a `SerpResults | Any` result, because the checker cannot see its `output` value. Pass `output="md"` or `output="html"` as a keyword to get `str`, or `output="json"` to get `SerpResults`. The keyword overrides any `output` in the mapping.
+- Sync `search()` and `search_archive()` (including their module-level helpers) write overrides back into the original dictionary. To request JSON with a text-typed dictionary, use `client.search(dict(params), output="json")`; reusing `params` still requests text. With a typed dictionary, pass other overrides by name (`start=10`) or unpack a `TypedDict` with known keys. If the override keys are only known at runtime, pass `dict(params)` so an `output` override cannot change the original. Sync `extract()` and the async methods already copy their input.
+- `next_page()` can return raw text instead of a result object, and returns `None` when there is no next page. If `yield_pages()` yields a string, handle it and break: text has no next-page link. This applies to sync and async pagination.
 - On the sync client, `search()`, `search_archive()`, `locations()`, and `account()` write the API key into the mapping they receive, so pass a `dict` or a `serpapi.engine_params` type. A read-only `Mapping` or your own `TypedDict` is rejected; pass `dict(params)` instead. Sync `extract()` and all async methods that take search parameters copy the mapping and accept any `Mapping`.
 - Pyright reports `reportMissingModuleSource` for `serpapi.engine_params` because the module has no runtime source. Importing it under `TYPE_CHECKING` is safe.
 
@@ -80,7 +85,7 @@ The Playground sometimes uses UI-specific values rather than the API values (for
 
 ## Versions
 
-Stub versions use the SDK version they describe, followed by the UTC release date. For example, `1.3.0.YYYYMMDD` identifies stubs for SDK 1.3.0; a second release on the same day adds `.1`.
+Stub versions use the SDK version they describe, followed by the UTC release date. For example, `1.3.0.YYYYMMDD` identifies stubs for SDK 1.3.0. A second release that day adds `.1`; later releases increment the highest published suffix for that SDK and date rather than filling gaps.
 
 Stub releases currently support final numeric SDK versions only (`X.Y.Z`). Prerelease, post-release, and development SDK versions are not supported by the stub versioning scheme or its exact-series extra pin.
 

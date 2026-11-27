@@ -154,6 +154,9 @@ Use `yield_pages()` in a loop to read the current page and fetch more pages. Thi
 
 ```python
 for page_number, page in enumerate(results.yield_pages(max_pages=10), start=1):
+    if isinstance(page, str):
+        print(page)
+        break
     if "error" in page:
         print(page["error"])
         break

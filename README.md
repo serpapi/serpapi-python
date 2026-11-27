@@ -175,6 +175,23 @@ print(results["search_metadata"]["status"])
 
 If the search is still processing, retrieve it again later. See the [async search guide](https://serpapi-python.readthedocs.io/en/latest/user_guide/async-search-archive.html) for polling with HTTP timeouts and a deadline.
 
+### Batch asynchronous searches
+
+To run many searches at once, `async_search()` submits the whole batch with `{"async": True}` and polls the Search Archive API until every search finishes:
+
+```python
+queries = ["burly", "creator", "doubtful", "minecraft"]
+results = client.async_search(queries=queries, engine="youtube", device="desktop")
+
+for query, result in zip(queries, results):
+    if isinstance(result, Exception):
+        print(query, "failed:", result)
+    else:
+        print(query, result["search_metadata"]["status"])
+```
+
+Each item of the batch can also be a full parameter dictionary, so searches with different engines or parameters can be mixed in one call. The results come back in the same order as the input. A search that fails, or is still running when the `timeout` (300 seconds by default) expires, leaves its exception in its place instead of failing the whole batch.
+
 ## Async client
 
 If your app uses `asyncio` on Python 3.11 or later, you can use `serpapi.AsyncClient` to search without blocking other tasks.

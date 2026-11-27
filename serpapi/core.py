@@ -2,11 +2,13 @@ import asyncio
 import io
 import json
 import os
+import time
+from collections.abc import Mapping
 
 import requests
 
 from .http import AsyncHTTPClient, HTTPClient
-from .exceptions import SearchIDNotProvided
+from .exceptions import SearchIDNotProvided, TimeoutError
 from .models import AsyncSerpResults, SerpResults
 from .utils import _response_json
 
@@ -115,6 +117,119 @@ class Client(HTTPClient):
 
         r = self.request("GET", f"/searches/{ search_id }", params=params, **request_kwargs)
         return SerpResults.from_http_response(r, client=self)
+
+    def async_search(self, searches=None, *, queries=None, poll_interval=1, timeout=300, **kwargs):
+        """Run a batch of searches asynchronously and wait for every result.
+
+        Each search is submitted with ``{"async": True}``, then the Search
+        Archive API is polled until every search finishes. This is the submit,
+        poll and re-queue loop from the async search guide, without the
+        bookkeeping.
+
+        Searches are given as a list of parameter dictionaries, or as a list
+        of query strings with shared parameters:
+
+        .. code-block:: python
+
+            results = client.async_search(
+                queries=["burly", "creator", "doubtful", "minecraft"],
+                engine="youtube",
+                device="desktop",
+            )
+
+        A plain string in the list is shorthand for ``{"q": string}``.
+        Parameters passed as keyword arguments apply to every search, and a
+        search's own parameters take precedence over them. The ``proxies``,
+        ``verify``, ``stream``, and ``cert`` keyword arguments are passed to
+        the underlying HTTP requests, as in :meth:`search`.
+
+        The returned list has one entry per search, in the same order as the
+        input. An entry is a ``serpapi.SerpResults`` object once its search
+        finishes, including searches whose final status is ``"Error"``. If a
+        search could not be submitted or retrieved, or is still unfinished
+        when ``timeout`` expires, its entry is the exception instead, so one
+        failed search does not lose the rest of the batch.
+
+        :param searches: A list of searches. Each item is a parameter
+            dictionary like the one :meth:`search` accepts, or a query string.
+        :param queries: A list of query strings, as an alternative to
+            ``searches``. Combined with shared keyword parameters, such as
+            ``engine``, this is the quickest way to run one search per query.
+        :param poll_interval: Seconds to wait between rounds of archive
+            checks. Defaults to 1.
+        :param timeout: Overall deadline in seconds, covering submission and
+            polling. Searches still unfinished at the deadline get a
+            ``TimeoutError`` entry. Pass ``None`` to wait without a deadline.
+            Defaults to 300.
+
+        **Learn more**: https://serpapi.com/search-archive-api
+        """
+        if searches is None:
+            searches = queries
+        if searches is None:
+            raise TypeError("async_search() requires a list of searches or queries")
+        if isinstance(searches, (str, Mapping)):
+            searches = [searches]
+
+        # These are arguments that should be passed to the underlying requests.request call.
+        request_kwargs = {}
+        for key in ["proxies", "verify", "stream", "cert"]:
+            if key in kwargs:
+                request_kwargs[key] = kwargs.pop(key)
+
+        results = [None] * len(searches)
+        pending = {}
+
+        for index, item in enumerate(searches):
+            params = {"q": item} if isinstance(item, str) else dict(item)
+            for key, value in kwargs.items():
+                params.setdefault(key, value)
+            params["async"] = True
+
+            try:
+                submitted = self.search(params, **request_kwargs)
+                search_id = submitted["search_metadata"]["id"]
+            except Exception as error:  # One failed search must not sink the batch.
+                results[index] = error
+            else:
+                pending[index] = search_id
+
+        deadline = None if timeout is None else time.monotonic() + timeout
+        while pending:
+            if deadline is not None and time.monotonic() >= deadline:
+                break
+
+            for index, search_id in list(pending.items()):
+                try:
+                    # Send only the search ID: reusing the search parameters
+                    # (such as "q") makes the Search Archive API return an error.
+                    result = self.search_archive(
+                        {"search_id": search_id}, **request_kwargs
+                    )
+                except Exception as error:  # One failed search must not sink the batch.
+                    results[index] = error
+                    del pending[index]
+                    continue
+
+                metadata = (
+                    result.get("search_metadata")
+                    if isinstance(result, Mapping)
+                    else None
+                )
+                status = metadata.get("status") if metadata else None
+                if status is None or status in ("Success", "Cached", "Error"):
+                    results[index] = result
+                    del pending[index]
+
+            if pending:
+                time.sleep(poll_interval)
+
+        for index, search_id in pending.items():
+            results[index] = TimeoutError(
+                f"Search {search_id} did not finish within {timeout} seconds"
+            )
+
+        return results
 
     def upload_image(self, image, **kwargs):
         """Upload an image to SerpApi's Image API.
@@ -422,6 +537,7 @@ _client = Client()
 search = _client.search
 extract = _client.extract
 search_archive = _client.search_archive
+async_search = _client.async_search
 upload_image = _client.upload_image
 locations = _client.locations
 account = _client.account

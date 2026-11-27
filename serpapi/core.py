@@ -35,7 +35,8 @@ class Client(HTTPClient):
         Returns a ``serpapi.SerpResults`` object for JSON responses, or text
         when ``output="html"`` or ``output="md"`` is requested. Prefer passing SerpApi engine
         parameters as keyword arguments. A parameter dictionary is also accepted
-        when your code already has parameters in a mapping.
+        when your code already has parameters in a mapping. The caller's mapping
+        is not modified.
 
 
         :param params: Optional mapping of SerpApi search parameters such as ``engine``, ``q``, ``location``, and ``output``.
@@ -44,17 +45,8 @@ class Client(HTTPClient):
 
         **Learn more**: https://serpapi.com/search-api
         """
-        if params is None:
-            params = {}
-
-        # These are arguments that should be passed to the underlying requests.request call.
-        request_kwargs = {}
-        for key in ["timeout", "proxies", "verify", "stream", "cert"]:
-            if key in kwargs:
-                request_kwargs[key] = kwargs.pop(key)
-
-        if kwargs:
-            params.update(kwargs)
+        request_kwargs = _pop_request_options(kwargs)
+        params = dict(params if params is not None else {}, **kwargs)
 
         r = self.request("GET", "/search", params=params, **request_kwargs)
 
@@ -94,17 +86,8 @@ class Client(HTTPClient):
 
         **Learn more**: https://serpapi.com/search-archive-api
         """
-        if params is None:
-            params = {}
-
-        # These are arguments that should be passed to the underlying requests.request call.
-        request_kwargs = {}
-        for key in ["timeout", "proxies", "verify", "stream", "cert"]:
-            if key in kwargs:
-                request_kwargs[key] = kwargs.pop(key)
-
-        if kwargs:
-            params.update(kwargs)
+        request_kwargs = _pop_request_options(kwargs)
+        params = dict(params if params is not None else {}, **kwargs)
 
         try:
             search_id = params["search_id"]
@@ -137,7 +120,7 @@ class Client(HTTPClient):
                 request_kwargs[key] = kwargs.pop(key)
 
         data = kwargs
-        if "api_key" not in data:
+        if self.api_key is not None and "api_key" not in data:
             data["api_key"] = self.api_key
 
         image_file = None
@@ -172,17 +155,8 @@ class Client(HTTPClient):
 
         **Learn more**: https://serpapi.com/locations-api
         """
-        if params is None:
-            params = {}
-
-        # These are arguments that should be passed to the underlying requests.request call.
-        request_kwargs = {}
-        for key in ["timeout", "proxies", "verify", "stream", "cert"]:
-            if key in kwargs:
-                request_kwargs[key] = kwargs.pop(key)
-
-        if kwargs:
-            params.update(kwargs)
+        request_kwargs = _pop_request_options(kwargs)
+        params = dict(params if params is not None else {}, **kwargs)
 
         r = self.request(
             "GET",
@@ -202,17 +176,8 @@ class Client(HTTPClient):
         **Learn more**: https://serpapi.com/account-api
         """
 
-        if params is None:
-            params = {}
-
-        # These are arguments that should be passed to the underlying requests.request call.
-        request_kwargs = {}
-        for key in ["timeout", "proxies", "verify", "stream", "cert"]:
-            if key in kwargs:
-                request_kwargs[key] = kwargs.pop(key)
-
-        if kwargs:
-            params.update(kwargs)
+        request_kwargs = _pop_request_options(kwargs)
+        params = dict(params if params is not None else {}, **kwargs)
 
         r = self.request("GET", "/account.json", params=params, assert_200=True, **request_kwargs)
         return r.json()

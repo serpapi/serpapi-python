@@ -34,7 +34,7 @@ The commands below use `python` from that environment.
 These tests cover response parsing, image uploads and extraction with simulated responses, timeouts, exceptions, the async client, documentation syntax, and the example runner:
 
 ```sh
-python -m pytest tests/test_output_formats.py tests/test_image_upload.py tests/test_extract.py tests/test_timeout.py tests/test_exceptions.py tests/test_async_client.py tests/test_docs_examples.py tests/test_docs_example_runner.py -k 'not live' -q
+python -m pytest tests/test_output_formats.py tests/test_image_upload.py tests/test_extract.py tests/test_timeout.py tests/test_exceptions.py tests/test_parameter_reuse.py tests/test_async_client.py tests/test_docs_examples.py tests/test_docs_example_runner.py -k 'not live' -q
 ```
 
 The file list limits this command to tests that make no external requests. Applying `-k 'not live'` to the entire suite is not enough to run offline: some SDK integration tests do not have `live` in their names.

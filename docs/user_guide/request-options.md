@@ -122,7 +122,7 @@ The client sends the arguments to two places:
 - `timeout`, `proxies`, `verify`, `stream`, and `cert` are passed to `requests`.
 - All remaining keyword arguments are sent to SerpApi as API parameters.
 
-If you pass a parameter dictionary and keyword arguments together, the search parameters in the keyword arguments update your dictionary:
+If you pass a parameter dictionary and keyword arguments together, keyword arguments override matching parameters for that request without changing the dictionary:
 
 ```python
 params = {"engine": "google", "q": "coffee"}
@@ -131,9 +131,4 @@ results = client.search(params, location="Austin, Texas", timeout=10)
 
 In this example, `location` is added to the SerpApi request parameters, while `timeout` is passed to `requests`.
 
-When you want to keep the original dictionary unchanged, pass a copy:
-
-```python
-params = {"engine": "google", "q": "coffee"}
-results = client.search(params.copy(), location="Austin, Texas")
-```
+For searches, a per-call `api_key` overrides the client's key, which in turn overrides a key in `client.session.params`. Pass `api_key=None` to omit the key for that search.

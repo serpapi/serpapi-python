@@ -43,7 +43,7 @@ params = {
 results = client.search(params)
 ```
 
-You can combine a dictionary with keyword arguments. The client adds the keyword arguments to the dictionary and replaces existing values with the same name:
+You can combine a dictionary with keyword arguments. Keyword arguments override matching search parameters for this request only. The client leaves your dictionary unchanged, so you can reuse it for another search:
 
 ```python
 params = {"engine": "google", "q": "coffee"}

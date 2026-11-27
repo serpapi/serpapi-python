@@ -33,11 +33,9 @@ class HTTPClient:
         self.session = requests.Session()
 
     def request(self, method, path, params, *, assert_200=True, **kwargs):
-        # Inject the API Key into the params.
-        request_data = kwargs.get("data")
-        api_key_in_data = isinstance(request_data, dict) and "api_key" in request_data
-        if "api_key" not in params and not api_key_in_data:
-            params["api_key"] = self.api_key
+        params = _sync_query_params(
+            params, kwargs.get("data"), self.api_key, getattr(self.session, "params", None)
+        )
 
         # Build the URL, as needed.
         if not path.startswith("http"):
@@ -479,6 +477,22 @@ def _form_has_api_key(data):
             for pair in data
         )
     return False
+
+
+def _sync_query_params(params, data, api_key, defaults):
+    form_key = _form_has_api_key(data)
+    if api_key is not None and not form_key and not _has_api_key(params):
+        params = {**params, "api_key": api_key}
+
+    # Requests merges session defaults into mappings by exact key. A None value
+    # suppresses that spelling without putting it in the URL or changing the session.
+    if isinstance(defaults, Mapping) and _has_api_key(defaults):
+        query = params or {}
+        if isinstance(query, Mapping) and (form_key or _has_api_key(query)):
+            suppress = {k: None for k in ("api_key", b"api_key") if k in defaults and k not in query}
+            if suppress:
+                return {**query, **suppress}
+    return params
 
 
 def _with_query_defaults(url, defaults, params, api_key_in_data):

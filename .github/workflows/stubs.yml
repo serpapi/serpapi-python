@@ -1,0 +1,113 @@
+name: serpapi-stubs
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - "serpapi/**"
+      - "stubs/**"
+      - "pyproject.toml"
+      - "LICENSE"
+      - ".github/workflows/stubs*.yml"
+  pull_request:
+    branches: [master]
+    paths:
+      - "serpapi/**"
+      - "stubs/**"
+      - "pyproject.toml"
+      - "LICENSE"
+      - ".github/workflows/stubs*.yml"
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check stubs
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - name: Install tools
+        run: pip install build pytest "mypy==2.4.1" "pyright==1.1.414"
+
+      - name: Check generated stubs are current
+        run: python stubs/tools/generate_stubs.py --check
+
+      - name: Test stub tooling
+        working-directory: stubs
+        run: python -m pytest
+
+      - name: Build stub distribution
+        working-directory: stubs
+        run: |
+          python tools/release_version.py --offline
+          python -m build
+
+      - name: Install SDK and stubs
+        run: pip install . stubs/dist/*.whl
+
+      # Check consumers of the installed wheel, not the in-tree serpapi-stubs directory.
+      - name: Copy type-check samples outside the checkout
+        run: |
+          mkdir -p "$RUNNER_TEMP/stub-consumer/tests"
+          cp stubs/pyproject.toml "$RUNNER_TEMP/stub-consumer/"
+          cp -R stubs/tests/typecheck "$RUNNER_TEMP/stub-consumer/tests/"
+
+      - name: Check sync typing without the async extra
+        working-directory: ${{ runner.temp }}/stub-consumer
+        run: |
+          python -c "from importlib.util import find_spec; assert find_spec('requests-stubs') is None, 'types-requests masks the inline Requests types'"
+          mypy tests/typecheck/check_usage.py tests/typecheck/check_errors.py
+          pyright tests/typecheck/check_usage.py tests/typecheck/check_errors.py
+
+      - name: Install async transport for the full stub checks
+        run: pip install '.[async]'
+
+      - name: Compare stubs with the runtime SDK
+        working-directory: stubs
+        run: python -m mypy.stubtest serpapi --allowlist tests/stubtest_allowlist.txt
+
+      - name: Type-check usage samples with mypy
+        working-directory: ${{ runner.temp }}/stub-consumer
+        run: mypy
+
+      - name: Type-check usage samples with pyright
+        working-directory: ${{ runner.temp }}/stub-consumer
+        run: pyright
+
+      - name: Compare the stub wheel with its oldest supported SDK
+        working-directory: ${{ runner.temp }}/stub-consumer
+        shell: bash
+        run: |
+          floor=$(python - <<'PY'
+          from importlib.metadata import requires
+          from packaging.requirements import Requirement
+
+          sdk, = (r for r in map(Requirement, requires("serpapi-stubs")) if r.name == "serpapi")
+          floor, = (s.version for s in sdk.specifier if s.operator == ">=")
+          print(floor)
+          PY
+          )
+          tag="refs/tags/v$floor"
+          if ! git -C "$GITHUB_WORKSPACE" show-ref --verify --quiet "$tag"; then
+            # Before a new minimum SDK is tagged, the checkout is the only copy available.
+            if [ "$floor" = "$(python -c 'from importlib.metadata import version; print(version("serpapi"))')" ]; then
+              echo "SDK $floor is not tagged yet; stubtest checked the current SDK above."
+              exit 0
+            fi
+            echo "::error::Missing minimum SDK tag v$floor"
+            exit 1
+          fi
+          sdk_dir="$RUNNER_TEMP/minimum-sdk"
+          mkdir -p "$sdk_dir"
+          git -C "$GITHUB_WORKSPACE" archive "$tag" | tar -x -C "$sdk_dir"
+          python -m pip install "${sdk_dir}[async]" "$GITHUB_WORKSPACE"/stubs/dist/*.whl
+          python -m mypy.stubtest serpapi --allowlist "$GITHUB_WORKSPACE/stubs/tests/stubtest_allowlist.txt"

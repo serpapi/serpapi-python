@@ -19,6 +19,14 @@ pip install serpapi
 
 Please note that this package is separate from the legacy `serpapi` module, which is available on PyPi as `google-search-results`. This package is maintained by SerpApi, and is the recommended way to access the SerpApi service from Python.
 
+For engine-specific type hints in mypy, pyright, and IDEs, install [`serpapi-stubs`](https://github.com/serpapi/serpapi-python/tree/master/stubs). SDK 1.3.0 was released before the `typing` extra, so request compatible stubs directly:
+
+```bash
+pip install "serpapi==1.3.0" "serpapi-stubs>=1,<2"
+```
+
+For `AsyncClient` on Python 3.11+, use `"serpapi[async]==1.3.0"` in that command. For SDK releases that include the `typing` extra, use `pip install "serpapi[typing]"` or `pip install "serpapi[async,typing]"`. A fresh install selects the newest stubs compatible with the selected SDK.
+
 ## Quickstart
 
 [Create a SerpApi account](https://serpapi.com/users/sign_up?plan=free) to get your API key, then store it in an environment variable:

@@ -132,6 +132,8 @@ results = client.search(
 )
 
 for page in results.yield_pages(max_pages=3):
+    if isinstance(page, str):
+        break
     for result in page.get("organic_results", []):
         print(result["title"], result["link"])
 ```

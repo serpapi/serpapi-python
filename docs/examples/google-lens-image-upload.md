@@ -41,4 +41,4 @@ for match in results.get("visual_matches", [])[:5]:
 
 Read matching images and pages from `visual_matches`. Each match can include a `title`, `source`, `link`, and `thumbnail`. The example prints up to five matches and prints nothing if that list is empty.
 
-Set `type="products"` to look for products, or `type="exact_matches"` to find pages containing the same image. See the [Google Lens API documentation](https://serpapi.com/google-lens-api) for search types and other parameters.
+Set `type="exact_matches"` to find pages containing the same image. See the [Google Lens API documentation](https://serpapi.com/google-lens-api) for search types and other parameters.

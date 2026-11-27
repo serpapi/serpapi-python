@@ -20,12 +20,14 @@ results = client.search(
 
 next_results = results.next_page()
 
-if next_results:
+if isinstance(next_results, str):
+    print(next_results)
+elif next_results is not None:
     for item in next_results.get("organic_results", []):
         print(item.get("title"))
 ```
 
-`next_page()` returns `None` when the response does not include a next page URL.
+`next_page()` returns `None` when the response does not include a next page URL. If the next response is HTML, Markdown, or invalid JSON, it returns the raw text instead of a result object.
 
 ## Iterate Through Pages
 
@@ -39,11 +41,14 @@ results = client.search(
 )
 
 for page in results.yield_pages(max_pages=5):
+    if isinstance(page, str):
+        print(page)
+        break
     for item in page.get("organic_results", []):
         print(item.get("position"), item.get("title"))
 ```
 
-Set `max_pages` to limit how many pages your script reads, including the first page. Each additional page requires another request. The loop stops early if there is no next-page link, and results may change between requests.
+`max_pages` counts the first page. Iteration stops early when a result has no next-page link. Each additional page requires another request, so results may change between pages. If a page is raw text, break out of the loop: the SDK cannot follow a next-page link on a string.
 
 ## Google `start` Offsets
 
@@ -73,6 +78,8 @@ To keep less data in memory or storage, copy the fields you need into a list of 
 records = []
 
 for page in results.yield_pages(max_pages=3):
+    if isinstance(page, str):
+        break
     for item in page.get("organic_results", []):
         records.append({
             "title": item.get("title"),

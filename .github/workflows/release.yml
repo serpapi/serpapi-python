@@ -72,9 +72,79 @@ jobs:
           path: dist/
           if-no-files-found: error
 
+  stubs-check:
+    name: Check stubs
+    uses: ./.github/workflows/stubs.yml
+
+  stubs-series:
+    name: Check for an existing stub release
+    runs-on: ubuntu-latest
+    outputs:
+      publish: ${{ steps.check.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - id: check
+        name: Require a matching tag and publish only once per SDK series
+        run: python stubs/tools/release_version.py --series-check "$GITHUB_REF_NAME"
+
+  stubs-build:
+    name: Build stub distribution
+    needs: [test, stubs-check, stubs-series]
+    if: needs.stubs-series.outputs.publish == 'true'
+    uses: ./.github/workflows/stubs-build.yml
+
+  # Stubs are published first so that `serpapi[typing]` resolves as soon as the SDK is available.
+  publish-stubs:
+    name: Publish serpapi-stubs
+    needs: [build, stubs-series, stubs-build]
+    if: needs.stubs-series.outputs.publish == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: pypi-stubs
+      url: https://pypi.org/p/serpapi-stubs
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+
+      - uses: actions/download-artifact@v8
+        with:
+          name: stubs-dist
+          path: dist/
+
+      - id: final-check
+        name: Do not supersede an installable stub series
+        run: python stubs/tools/release_version.py --series-check "$GITHUB_REF_NAME"
+
+      - name: Publish to PyPI
+        if: steps.final-check.outputs.publish == 'true'
+        uses: pypa/gh-action-pypi-publish@release/v1
+
   publish:
     name: Publish release
-    needs: [build]
+    needs: [test, build, stubs-check, stubs-series, stubs-build, publish-stubs]
+    # A status function is needed so skipped stub jobs do not skip this job; unlike `always()`,
+    # `!cancelled()` still lets a cancelled run stop before the SDK is published.
+    if: >-
+      !cancelled() &&
+      needs.test.result == 'success' &&
+      needs.build.result == 'success' &&
+      needs.stubs-check.result == 'success' &&
+      needs.stubs-series.result == 'success' &&
+      (needs.stubs-build.result == 'success' ||
+       (needs.stubs-build.result == 'skipped' && needs.stubs-series.outputs.publish == 'false')) &&
+      (needs.publish-stubs.result == 'success' ||
+       (needs.publish-stubs.result == 'skipped' && needs.stubs-series.outputs.publish == 'false'))
     runs-on: ubuntu-latest
     environment:
       name: pypi
@@ -102,6 +172,9 @@ jobs:
   smoke-test:
     name: Smoke test published package
     needs: [publish]
+    # `publish` still runs when the stub jobs are skipped, but a plain `needs` would skip this job
+    # because its grandparents were skipped.
+    if: ${{ !cancelled() && needs.publish.result == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/setup-python@v6
@@ -111,9 +184,10 @@ jobs:
       - name: Wait for PyPI availability
         run: |
           VERSION=${GITHUB_REF_NAME#v}
-          echo "Waiting for serpapi==$VERSION on PyPI..."
+          echo "Waiting for serpapi==$VERSION and its serpapi-stubs series on PyPI..."
           for i in $(seq 1 12); do
-            if pip index versions serpapi 2>/dev/null | grep -q "$VERSION"; then
+            if pip index versions serpapi 2>/dev/null | grep -q "$VERSION" \
+              && pip index versions serpapi-stubs 2>/dev/null | grep -qF "$VERSION."; then
               echo "Available!"
               exit 0
             fi
@@ -126,6 +200,12 @@ jobs:
         run: |
           VERSION=${GITHUB_REF_NAME#v}
           pip install "serpapi==$VERSION"
+
+      - name: Install typing extra
+        run: |
+          VERSION=${GITHUB_REF_NAME#v}
+          pip install "serpapi[typing]==$VERSION"
+          pip show serpapi-stubs
 
       - name: Verify import and version
         env:
